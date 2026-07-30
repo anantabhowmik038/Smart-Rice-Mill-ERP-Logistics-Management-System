@@ -1,0 +1,384 @@
+/* =========================================
+   Smart Rice Mill ERP - Login Page
+   ========================================= */
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #151d2a;
+    background-color: #f3f7fa;
+}
+
+
+/* Main Login Layout */
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 36% 64%;
+}
+
+
+/* =========================================
+   Left Branding Section
+   ========================================= */
+
+.brand-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: #075d2e;
+    color: #ffffff;
+}
+
+.brand-content {
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
+}
+
+.brand-logo {
+    position: relative;
+    width: 64px;
+    height: 48px;
+    margin: 0 auto 20px;
+}
+
+.logo-part {
+    position: absolute;
+    width: 16px;
+    height: 38px;
+    background-color: #ffffff;
+    transform: rotate(-55deg);
+}
+
+.logo-part-one {
+    left: 15px;
+    top: 4px;
+}
+
+.logo-part-two {
+    left: 36px;
+    top: 4px;
+}
+
+.brand-content h1 {
+    margin-bottom: 14px;
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.brand-content p {
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #f1f5f2;
+}
+
+
+/* =========================================
+   Right Login Section
+   ========================================= */
+
+.login-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: #f3f7fa;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 470px;
+    padding: 60px 50px;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #dce2e7;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(21, 29, 42, 0.08);
+}
+
+
+/* Login Heading */
+.login-header {
+    margin-bottom: 42px;
+}
+
+.login-header h2 {
+    margin-bottom: 8px;
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #151d2a;
+}
+
+.login-header p {
+    font-size: 1rem;
+    color: #7b8492;
+}
+
+
+/* =========================================
+   Login Form
+   ========================================= */
+
+.login-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: inline-block;
+    margin-bottom: 9px;
+    font-size: 0.94rem;
+    font-weight: 500;
+    color: #151d2a;
+}
+
+.form-group input {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: #151d2a;
+    background-color: #ffffff;
+    border: 1px solid #d7dde3;
+    border-radius: 7px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: #929aa6;
+}
+
+.form-group input:hover {
+    border-color: #b7c0c9;
+}
+
+.form-group input:focus {
+    border-color: #139536;
+    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.12);
+}
+
+
+/* Login Button */
+.login-button {
+    width: 100%;
+    height: 52px;
+    margin-top: 22px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #139536;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(19, 149, 54, 0.15);
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.login-button:hover {
+    background-color: #0f812e;
+    box-shadow: 0 8px 18px rgba(19, 149, 54, 0.22);
+    transform: translateY(-1px);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+.login-button:focus-visible {
+    outline: 3px solid rgba(19, 149, 54, 0.25);
+    outline-offset: 3px;
+}
+
+.button-icon {
+    margin-right: 7px;
+    font-size: 0.9rem;
+}
+
+
+/* =========================================
+   Login Links and Notes
+   ========================================= */
+
+.forgot-password {
+    display: inline-block;
+    margin-top: 23px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #148d35;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.create-account {
+    margin-top: 36px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #7b8492;
+}
+
+.create-account a {
+    margin-left: 4px;
+    font-weight: 600;
+    color: #148d35;
+    text-decoration: none;
+}
+
+.create-account a:hover {
+    text-decoration: underline;
+}
+
+.account-note {
+    max-width: 330px;
+    margin: 23px auto 0;
+    font-size: 0.83rem;
+    line-height: 1.45;
+    color: #7b8492;
+}
+
+
+/* =========================================
+   Tablet Responsive Design
+   ========================================= */
+
+@media screen and (max-width: 950px) {
+    .login-page {
+        grid-template-columns: 40% 60%;
+    }
+
+    .brand-section,
+    .login-section {
+        padding: 30px;
+    }
+
+    .brand-content h1 {
+        font-size: 1.9rem;
+    }
+
+    .brand-content p {
+        font-size: 0.95rem;
+    }
+
+    .login-card {
+        padding: 50px 38px;
+    }
+}
+
+
+/* =========================================
+   Mobile Responsive Design
+   ========================================= */
+
+@media screen and (max-width: 720px) {
+    .login-page {
+        display: block;
+    }
+
+    .brand-section {
+        min-height: 260px;
+        padding: 35px 24px;
+    }
+
+    .brand-logo {
+        width: 55px;
+        height: 42px;
+        margin-bottom: 16px;
+    }
+
+    .logo-part {
+        width: 14px;
+        height: 33px;
+    }
+
+    .logo-part-one {
+        left: 13px;
+    }
+
+    .logo-part-two {
+        left: 31px;
+    }
+
+    .brand-content h1 {
+        margin-bottom: 10px;
+        font-size: 1.8rem;
+    }
+
+    .login-section {
+        min-height: calc(100vh - 260px);
+        padding: 35px 20px;
+    }
+
+    .login-card {
+        max-width: 500px;
+        padding: 42px 28px;
+    }
+
+    .login-header {
+        margin-bottom: 32px;
+    }
+
+    .login-header h2 {
+        font-size: 1.8rem;
+    }
+}
+
+
+/* Small Mobile Devices */
+@media screen and (max-width: 420px) {
+    .brand-section {
+        min-height: 230px;
+    }
+
+    .login-section {
+        min-height: calc(100vh - 230px);
+        padding: 25px 14px;
+    }
+
+    .login-card {
+        padding: 35px 20px;
+        border-radius: 11px;
+    }
+
+    .login-header h2 {
+        font-size: 1.65rem;
+    }
+
+    .form-group input,
+    .login-button {
+        height: 48px;
+    }
+
+    .create-account {
+        margin-top: 30px;
+    }
+}

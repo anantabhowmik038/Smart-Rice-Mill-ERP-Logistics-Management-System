@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Smart Rice Mill ERP</title>
+    <link rel="stylesheet" href="styles/login.css">
+</head>
+<body>
+
+
+    <main class="login-page">
+
+        <!-- left Branding Section -->
+         <section class="brand-section">
+            <div class="brand-content">
+                <div class="brand-logo" aria-hidden="true">
+                    <span class="logo-part logo-part-one"></span>
+                    <span class="logo-part logo-part-two"></span>
+
+                </div>
+
+                <h1>Smart Rice Mill</h1>
+                <p>
+                    ERP &amp; Logistics management System
+                </p>
+            </div>
+         </section>
+
+         <!-- Right log in section  -->
+          <section class="login-section">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>Welcome Back</h2>
+                    <p>Login to your account</p>
+                </div>
+
+                <form class="login-form" action="#" method="post">
+
+                    <!-- Email Field -->
+                     <div class="form-group">
+                        <label for="email">
+                            Email Address 
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="admin@ricemill.com"
+                            autocomplete="email"
+                            required
+                        >
+                     </div>
+                     <!-- Password Field -->
+                      <div class="form-group">
+                        <label for="Password">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="........"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                      </div>
+
+                      <!-- login Button -->
+                       <button class="login-button" type="submit">
+                        <span class="button-icon" aria-hidden="true">
+
+                        </span>
+                        Login
+                       </button>
+                </form>
+
+                <!-- Forgot Password Link -->
+                 <a class="forgot-password" href="#">
+                    Forgot password?
+                 </a>
+
+                 <!--Create Admin Account -->
+                 <p class="create-account">
+                    Don't have an account?
+                    <a href="#">
+                        Create Admin 
+                    </a>
+                 </p>
+                 <p class="account-note">
+                    Account can also be created by Admin from user Role
+                    management.
+                 </p>
+            </div>
+        </section>
+
+    </main>
+    
+</body>
+</html>
