@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sales & Invoice Management | Smart Rice Mill ERP</title>
+
+    <!-- Common dashboard design -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Sales page design -->
+    <link rel="stylesheet" href="../styles/sales.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="sales.html">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Area
+        ====================================== -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Sales &amp; Invoice Management</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 Sales Content
+            ====================================== -->
+            <section class="dashboard-content sales-content">
+
+                <!-- Summary Cards -->
+                <section class="sales-summary-grid"
+                         aria-label="Sales summary">
+
+                    <!-- Today Sales -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            ৳
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Today Sales</p>
+
+                            <h2 class="green-value">
+                                ৳1,20,000
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Invoices -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon blue-icon">
+
+                            <svg class="sales-card-icon"
+                                 viewBox="0 0 64 64"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+
+                                <rect
+                                    x="17"
+                                    y="10"
+                                    width="30"
+                                    height="44"
+                                    rx="3"
+                                    fill="#ffffff"
+                                    stroke="#176cc8"
+                                    stroke-width="3"
+                                />
+
+                                <path
+                                    d="M23 20H41"
+                                    stroke="#176cc8"
+                                    stroke-width="3"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M23 28H41"
+                                    stroke="#176cc8"
+                                    stroke-width="3"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M23 36H35"
+                                    stroke="#176cc8"
+                                    stroke-width="3"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M23 44H38"
+                                    stroke="#176cc8"
+                                    stroke-width="3"
+                                    stroke-linecap="round"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Invoices</p>
+
+                            <h2 class="blue-value">
+                                14
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Due Payment -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon orange-icon">
+
+                            <svg class="sales-card-icon"
+                                 viewBox="0 0 64 64"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+
+                                <path
+                                    d="M32 9L56 53H8L32 9Z"
+                                    fill="#ed9000"
+                                />
+
+                                <rect
+                                    x="29.5"
+                                    y="24"
+                                    width="5"
+                                    height="15"
+                                    rx="2"
+                                    fill="#ffffff"
+                                />
+
+                                <circle
+                                    cx="32"
+                                    cy="45"
+                                    r="3"
+                                    fill="#ffffff"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Due Payment</p>
+
+                            <h2 class="orange-value">
+                                ৳2,80,000
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =====================================
+                     Generate Invoice Form
+                ====================================== -->
+                <section class="content-card sales-form-card">
+
+                    <h2>Generate Invoice</h2>
+
+
+                    <form class="sales-form">
+
+                        <!-- Customer Name -->
+                        <div class="form-field">
+
+                            <label for="customer-name">
+                                Customer Name
+                            </label>
+
+                            <select id="customer-name"
+                                    name="customerName"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select customer name
+                                </option>
+
+                                <option value="abc-traders">
+                                    ABC Traders
+                                </option>
+
+                                <option value="noor-store">
+                                    Noor Store
+                                </option>
+
+                                <option value="bhowmik-store">
+                                    Bhowmik Store
+                                </option>
+
+                                <option value="dhaka-foods">
+                                    Dhaka Foods
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Product -->
+                        <div class="form-field">
+
+                            <label for="product">
+                                Product
+                            </label>
+
+                            <select id="product"
+                                    name="product"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select product
+                                </option>
+
+                                <option value="rice">
+                                    Rice
+                                </option>
+
+                                <option value="khud">
+                                    Khud
+                                </option>
+
+                                <option value="tush">
+                                    Tush
+                                </option>
+
+                                <option value="bran">
+                                    Bran
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Quantity -->
+                        <div class="form-field">
+
+                            <label for="quantity">
+                                Quantity
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                placeholder="Select quantity"
+                                min="1"
+                                step="1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Price -->
+                        <div class="form-field">
+
+                            <label for="price">
+                                Price
+                            </label>
+
+                            <input
+                                type="number"
+                                id="price"
+                                name="price"
+                                placeholder="Select price"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Payment Status -->
+                        <div class="form-field">
+
+                            <label for="payment-status">
+                                Payment Status
+                            </label>
+
+                            <select id="payment-status"
+                                    name="paymentStatus"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select payment status
+                                </option>
+
+                                <option value="paid">
+                                    Paid
+                                </option>
+
+                                <option value="due">
+                                    Due
+                                </option>
+
+                                <option value="partial">
+                                    Partially Paid
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Delivery Required -->
+                        <div class="form-field">
+
+                            <label for="delivery-required">
+                                Delivery Required
+                            </label>
+
+                            <select id="delivery-required"
+                                    name="deliveryRequired"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select delivery required
+                                </option>
+
+                                <option value="yes">
+                                    Yes
+                                </option>
+
+                                <option value="no">
+                                    No
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Submit Button -->
+                        <div class="form-action">
+
+                            <button class="primary-action-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Generate Invoice
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     Sales & Invoice Records
+                ====================================== -->
+                <section class="content-card sales-list-card">
+
+                    <h2>Sales &amp; Invoice List</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="sales-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Payment</th>
+                                    <th>Date</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>ABC Traders</td>
+                                    <td>Rice</td>
+                                    <td>100 Bags</td>
+
+                                    <td>
+                                        <span class="status-badge status-due">
+                                            Due
+                                        </span>
+                                    </td>
+
+                                    <td>01 Jul 2026</td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>Noor Store</td>
+                                    <td>Rice</td>
+                                    <td>60 Bags</td>
+
+                                    <td>
+                                        <span class="status-badge status-paid">
+                                            Paid
+                                        </span>
+                                    </td>
+
+                                    <td>01 Jul 2026</td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

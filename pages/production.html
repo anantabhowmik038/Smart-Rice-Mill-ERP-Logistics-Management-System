@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Production Management | Smart Rice Mill ERP</title>
+
+    <!-- Common dashboard styles -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Production page styles -->
+    <link rel="stylesheet" href="../styles/production.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Area
+        ====================================== -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Production Management</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 Production Content
+            ====================================== -->
+            <section class="dashboard-content production-content">
+
+                <!-- Summary Cards -->
+                <section class="production-summary-grid"
+                         aria-label="Production summary">
+
+                    <!-- Input Paddy -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+
+                            <svg class="production-card-icon"
+                                 viewBox="0 0 64 64"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+
+                                <rect x="11"
+                                      y="29"
+                                      width="42"
+                                      height="25"
+                                      rx="3"
+                                      fill="#4fa862"/>
+
+                                <rect x="17"
+                                      y="19"
+                                      width="7"
+                                      height="35"
+                                      fill="#d5dadd"/>
+
+                                <rect x="29"
+                                      y="14"
+                                      width="7"
+                                      height="40"
+                                      fill="#d5dadd"/>
+
+                                <rect x="41"
+                                      y="21"
+                                      width="7"
+                                      height="33"
+                                      fill="#d5dadd"/>
+
+                                <rect x="19"
+                                      y="23"
+                                      width="3"
+                                      height="6"
+                                      fill="#dd3838"/>
+
+                                <rect x="31"
+                                      y="18"
+                                      width="3"
+                                      height="6"
+                                      fill="#dd3838"/>
+
+                                <rect x="43"
+                                      y="25"
+                                      width="3"
+                                      height="6"
+                                      fill="#dd3838"/>
+
+                                <rect x="17"
+                                      y="40"
+                                      width="8"
+                                      height="14"
+                                      fill="#ffffff"/>
+
+                                <rect x="35"
+                                      y="39"
+                                      width="11"
+                                      height="8"
+                                      fill="#ffffff"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Input Paddy</p>
+
+                            <h2 class="green-value">
+                                1,000 kg
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Rice Produced -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon blue-icon">
+
+                            <svg class="production-card-icon"
+                                 viewBox="0 0 64 64"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+
+                                <rect x="15"
+                                      y="13"
+                                      width="34"
+                                      height="38"
+                                      rx="3"
+                                      fill="none"
+                                      stroke="#176cc8"
+                                      stroke-width="4"/>
+
+                                <rect x="24"
+                                      y="23"
+                                      width="16"
+                                      height="18"
+                                      rx="2"
+                                      fill="#176cc8"/>
+
+                                <rect x="28"
+                                      y="27"
+                                      width="8"
+                                      height="10"
+                                      fill="#e8f2fc"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Rice Produced</p>
+
+                            <h2 class="blue-value">
+                                650 kg
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Waste -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon orange-icon">
+
+                            <svg class="production-card-icon"
+                                 viewBox="0 0 64 64"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+
+                                <path
+                                    d="M14 24L28 34L28 25L48 40"
+                                    fill="none"
+                                    stroke="#ed9000"
+                                    stroke-width="6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+                                <path
+                                    d="M39 40H49V30"
+                                    fill="none"
+                                    stroke="#ed9000"
+                                    stroke-width="6"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Waste</p>
+
+                            <h2 class="orange-value">
+                                5%
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =====================================
+                     Production Form
+                ====================================== -->
+                <section class="content-card production-form-card">
+
+                    <h2>Save Production</h2>
+
+
+                    <form class="production-form">
+
+                        <div class="form-field">
+
+                            <label for="input-paddy">
+                                Input Paddy Quantity
+                            </label>
+
+                            <input
+                                type="number"
+                                id="input-paddy"
+                                name="inputPaddy"
+                                placeholder="Select input paddy quantity"
+                                min="1"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="rice-produced">
+                                Rice Produced
+                            </label>
+
+                            <input
+                                type="number"
+                                id="rice-produced"
+                                name="riceProduced"
+                                placeholder="Select rice produced"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="khud-produced">
+                                Khud Produced
+                            </label>
+
+                            <input
+                                type="number"
+                                id="khud-produced"
+                                name="khudProduced"
+                                placeholder="Select khud produced"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="tush-produced">
+                                Tush Produced
+                            </label>
+
+                            <input
+                                type="number"
+                                id="tush-produced"
+                                name="tushProduced"
+                                placeholder="Select tush produced"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="waste">
+                                Waste
+                            </label>
+
+                            <input
+                                type="number"
+                                id="waste"
+                                name="waste"
+                                placeholder="Select waste"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="production-date">
+                                Production Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="production-date"
+                                name="productionDate"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-action">
+
+                            <button class="primary-action-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Save Production
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     Production Records
+                ====================================== -->
+                <section class="content-card production-list-card">
+
+                    <h2>Production List</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="production-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Batch</th>
+                                    <th>Paddy Input</th>
+                                    <th>Rice</th>
+                                    <th>By-products</th>
+                                    <th>Date</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+                                    <td>B-1024</td>
+                                    <td>1,000 kg</td>
+                                    <td>650 kg</td>
+                                    <td>350 kg</td>
+                                    <td>01 Jul 2026</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>B-1023</td>
+                                    <td>850 kg</td>
+                                    <td>552 kg</td>
+                                    <td>298 kg</td>
+                                    <td>30 Jun 2026</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

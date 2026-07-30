@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Inventory Management | Smart Rice Mill ERP</title>
+
+    <!-- Common dashboard design -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Inventory page design -->
+    <link rel="stylesheet" href="../styles/inventory.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="sales.html">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Area
+        ====================================== -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Inventory Management</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 Inventory Content
+            ====================================== -->
+            <section class="dashboard-content inventory-content">
+
+                <!-- Summary Cards -->
+                <section class="inventory-summary-grid"
+                         aria-label="Inventory summary">
+
+                    <!-- Rice Stock -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+
+                            <svg class="inventory-card-icon"
+                                 viewBox="0 0 64 64"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+
+                                <rect
+                                    x="14"
+                                    y="14"
+                                    width="36"
+                                    height="36"
+                                    rx="2"
+                                    fill="none"
+                                    stroke="#15913a"
+                                    stroke-width="4"
+                                />
+
+                                <rect
+                                    x="25"
+                                    y="24"
+                                    width="14"
+                                    height="16"
+                                    rx="1"
+                                    fill="#15913a"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Rice Stock</p>
+
+                            <h2 class="green-value">
+                                450 Bags
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Paddy Stock -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            🌾
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Paddy Stock</p>
+
+                            <h2 class="blue-value">
+                                900 Bags
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Low Stock -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon orange-icon">
+
+                            <svg class="inventory-card-icon"
+                                 viewBox="0 0 64 64"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 aria-hidden="true">
+
+                                <path
+                                    d="M32 10L55 51H9L32 10Z"
+                                    fill="#ed9000"
+                                />
+
+                                <rect
+                                    x="29.5"
+                                    y="24"
+                                    width="5"
+                                    height="15"
+                                    rx="2"
+                                    fill="#ffffff"
+                                />
+
+                                <circle
+                                    cx="32"
+                                    cy="45"
+                                    r="3"
+                                    fill="#ffffff"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Low Stock</p>
+
+                            <h2 class="orange-value">
+                                2 Items
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =====================================
+                     Stock Update Form
+                ====================================== -->
+                <section class="content-card inventory-form-card">
+
+                    <h2>Add Stock Update</h2>
+
+
+                    <form class="inventory-form">
+
+                        <div class="form-field">
+
+                            <label for="product">
+                                Product
+                            </label>
+
+                            <select id="product"
+                                    name="product"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select product
+                                </option>
+
+                                <option value="rice">
+                                    Rice
+                                </option>
+
+                                <option value="paddy">
+                                    Paddy
+                                </option>
+
+                                <option value="khud">
+                                    Khud
+                                </option>
+
+                                <option value="tush">
+                                    Tush
+                                </option>
+
+                                <option value="bran">
+                                    Bran
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="available-stock">
+                                Available Stock
+                            </label>
+
+                            <input
+                                type="number"
+                                id="available-stock"
+                                name="availableStock"
+                                placeholder="Select available stock"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="unit">
+                                Unit
+                            </label>
+
+                            <select id="unit"
+                                    name="unit"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select unit
+                                </option>
+
+                                <option value="bags">
+                                    Bags
+                                </option>
+
+                                <option value="kg">
+                                    Kilograms
+                                </option>
+
+                                <option value="tons">
+                                    Tons
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="last-updated">
+                                Last Updated
+                            </label>
+
+                            <input
+                                type="date"
+                                id="last-updated"
+                                name="lastUpdated"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="stock-status">
+                                Status
+                            </label>
+
+                            <select id="stock-status"
+                                    name="stockStatus"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select status
+                                </option>
+
+                                <option value="active">
+                                    Active
+                                </option>
+
+                                <option value="low-stock">
+                                    Low Stock
+                                </option>
+
+                                <option value="out-of-stock">
+                                    Out of Stock
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-action">
+
+                            <button class="primary-action-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Add Stock Update
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     Inventory Records
+                ====================================== -->
+                <section class="content-card inventory-list-card">
+
+                    <h2>Inventory List</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="inventory-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Available Stock</th>
+                                    <th>Unit</th>
+                                    <th>Last Updated</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>Rice</td>
+                                    <td>450</td>
+                                    <td>Bags</td>
+                                    <td>01 Jul 2026</td>
+
+                                    <td>
+                                        <span class="status-badge status-active">
+                                            Active
+                                        </span>
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>Paddy</td>
+                                    <td>900</td>
+                                    <td>Bags</td>
+                                    <td>01 Jul 2026</td>
+
+                                    <td>
+                                        <span class="status-badge status-active">
+                                            Active
+                                        </span>
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>Khud</td>
+                                    <td>120</td>
+                                    <td>Bags</td>
+                                    <td>30 Jun 2026</td>
+
+                                    <td>
+                                        <span class="status-badge status-low">
+                                            Low Stock
+                                        </span>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

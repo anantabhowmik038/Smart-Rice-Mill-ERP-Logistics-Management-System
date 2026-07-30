@@ -1,0 +1,336 @@
+/* =========================================
+   Smart Rice Mill ERP - Production Page
+   ========================================= */
+
+
+/* =========================================
+   Production Summary Cards
+   ========================================= */
+
+.production-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.production-card-icon {
+    width: 43px;
+    height: 43px;
+    display: block;
+}
+
+
+/* =========================================
+   Production Form Card
+   ========================================= */
+
+.production-form-card {
+    margin-top: 36px;
+    padding: 24px 25px 22px;
+}
+
+.production-form-card h2 {
+    margin-bottom: 25px;
+}
+
+
+/* =========================================
+   Production Form Grid
+   ========================================= */
+
+.production-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 30px;
+    row-gap: 20px;
+}
+
+
+/* =========================================
+   Form Fields
+   ========================================= */
+
+.form-field {
+    min-width: 0;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #171e29;
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: #171e29;
+    background-color: #ffffff;
+    border: 1px solid #d7dee4;
+    border-radius: 7px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-field input::placeholder {
+    color: #929aa6;
+}
+
+.form-field input:hover,
+.form-field select:hover {
+    border-color: #b9c2ca;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: #139536;
+    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+}
+
+
+/* Date Input */
+
+.form-field input[type="date"] {
+    cursor: pointer;
+    color: #7e8793;
+}
+
+
+/* Remove Number Input Arrows */
+
+.form-field input[type="number"]::-webkit-inner-spin-button,
+.form-field input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+}
+
+
+/* =========================================
+   Save Production Button
+   ========================================= */
+
+.form-action {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.primary-action-button {
+    min-width: 210px;
+    height: 48px;
+    padding: 0 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #129238;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-action-button:hover {
+    background-color: #0e7f30;
+    box-shadow: 0 8px 17px rgba(18, 146, 56, 0.22);
+    transform: translateY(-1px);
+}
+
+.primary-action-button:active {
+    transform: translateY(0);
+}
+
+.primary-action-button:focus-visible {
+    outline: 3px solid rgba(18, 146, 56, 0.24);
+    outline-offset: 3px;
+}
+
+
+/* =========================================
+   Production List Card
+   ========================================= */
+
+.production-list-card {
+    margin-top: 45px;
+    padding: 23px 21px 10px;
+}
+
+.production-list-card h2 {
+    margin-bottom: 24px;
+}
+
+
+/* =========================================
+   Production Table
+   ========================================= */
+
+.production-table {
+    width: 100%;
+    min-width: 720px;
+
+    /* Required for rounded table-header corners */
+    border-collapse: separate;
+    border-spacing: 0;
+
+    font-size: 0.9rem;
+}
+
+.production-table th,
+.production-table td {
+    padding: 14px 20px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+
+/* Table Header */
+
+.production-table thead {
+    background-color: #fafcfc;
+}
+
+.production-table thead th {
+    font-weight: 500;
+    color: #171e29;
+    background-color: #fafcfc;
+    border-top: 1px solid #d8dee3;
+    border-bottom: 1px solid #d8dee3;
+}
+
+
+/* Left Side of Header */
+
+.production-table thead th:first-child {
+    border-left: 1px solid #d8dee3;
+    border-radius: 8px 0 0 8px;
+}
+
+
+/* Right Side of Header */
+
+.production-table thead th:last-child {
+    border-right: 1px solid #d8dee3;
+    border-radius: 0 8px 8px 0;
+}
+
+
+/* Table Body */
+
+.production-table tbody td {
+    border-bottom: 1px solid #e1e5e8;
+}
+
+.production-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.production-table tbody tr:hover td {
+    background-color: #fafcfa;
+}
+
+
+/* =========================================
+   Responsive Design
+   ========================================= */
+
+
+/* Small Laptops */
+
+@media screen and (max-width: 1250px) {
+    .production-summary-grid {
+        gap: 20px;
+    }
+
+    .production-form {
+        column-gap: 22px;
+    }
+}
+
+
+/* Tablets */
+
+@media screen and (max-width: 1000px) {
+    .production-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .production-summary-grid .summary-card:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .production-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* Mobile Devices */
+
+@media screen and (max-width: 720px) {
+    .production-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .production-summary-grid .summary-card:last-child {
+        grid-column: auto;
+    }
+
+    .production-form-card {
+        margin-top: 25px;
+        padding: 21px 18px;
+    }
+
+    .production-form {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .form-action {
+        margin-top: 8px;
+    }
+
+    .primary-action-button {
+        width: 100%;
+    }
+
+    .production-list-card {
+        margin-top: 25px;
+        padding: 20px 16px 8px;
+    }
+}
+
+
+/* Small Mobile Devices */
+
+@media screen and (max-width: 440px) {
+    .production-form-card h2,
+    .production-list-card h2 {
+        font-size: 1.15rem;
+    }
+
+    .form-field input,
+    .form-field select {
+        height: 45px;
+    }
+
+    .production-table th,
+    .production-table td {
+        padding: 12px 15px;
+    }
+}
