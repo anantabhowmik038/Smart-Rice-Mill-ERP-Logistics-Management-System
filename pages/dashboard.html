@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Smart Rice Mill ERP</title>
+
+    <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =========================
+             Sidebar
+        ========================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link active"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =========================
+             Main Area
+        ========================== -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Dashboard</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- Page Content -->
+            <section class="dashboard-content">
+
+                <!-- Summary Cards -->
+                <section class="summary-grid"
+                         aria-label="Dashboard summary">
+
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            🚚
+                        </div>
+
+                        <div class="summary-details">
+                            <p>Today’s Purchase</p>
+                            <h2 class="green-value">৳85,000</h2>
+                        </div>
+
+                    </article>
+
+
+                    <article class="summary-card">
+
+                        <div class="summary-icon blue-icon">
+                            ৳
+                        </div>
+
+                        <div class="summary-details">
+                            <p>Today’s Sales</p>
+                            <h2 class="blue-value">৳1,20,000</h2>
+                        </div>
+
+                    </article>
+
+
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            ▣
+                        </div>
+
+                        <div class="summary-details">
+                            <p>Rice Stock</p>
+                            <h2 class="green-value">450 Bags</h2>
+                        </div>
+
+                    </article>
+
+
+                    <article class="summary-card">
+
+                        <div class="summary-icon orange-icon">
+                            ⌛
+                        </div>
+
+                        <div class="summary-details">
+                            <p>Pending Deliveries</p>
+                            <h2 class="orange-value">5</h2>
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- Charts -->
+                <section class="chart-grid">
+
+                    <!-- Sales Overview -->
+                    <article class="content-card chart-card">
+
+                        <h2>Sales Overview</h2>
+
+                        <div class="line-chart"
+                             aria-label="Sales overview chart">
+
+                            <div class="chart-line horizontal-line line-one"></div>
+                            <div class="chart-line horizontal-line line-two"></div>
+                            <div class="chart-line horizontal-line line-three"></div>
+                            <div class="chart-line horizontal-line line-four"></div>
+
+                            <svg class="sales-chart-svg"
+                                 viewBox="0 0 500 180"
+                                 role="img"
+                                 aria-label="Sales trend line">
+
+                                <polyline
+                                    points="20,135 115,110 190,48 285,83 375,25 470,42"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+                                <g fill="#ffffff"
+                                   stroke="currentColor"
+                                   stroke-width="4">
+
+                                    <circle cx="20" cy="135" r="6"></circle>
+                                    <circle cx="115" cy="110" r="6"></circle>
+                                    <circle cx="190" cy="48" r="6"></circle>
+                                    <circle cx="285" cy="83" r="6"></circle>
+                                    <circle cx="375" cy="25" r="6"></circle>
+                                    <circle cx="470" cy="42" r="6"></circle>
+
+                                </g>
+
+                            </svg>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Inventory Summary -->
+                    <article class="content-card chart-card">
+
+                        <h2>Inventory Summary</h2>
+
+                        <div class="bar-chart"
+                             aria-label="Inventory summary chart">
+
+                            <div class="chart-line horizontal-line line-one"></div>
+                            <div class="chart-line horizontal-line line-two"></div>
+                            <div class="chart-line horizontal-line line-three"></div>
+                            <div class="chart-line horizontal-line line-four"></div>
+
+                            <div class="bars">
+
+                                <span class="bar"
+                                      style="height: 45%;"></span>
+
+                                <span class="bar"
+                                      style="height: 68%;"></span>
+
+                                <span class="bar"
+                                      style="height: 53%;"></span>
+
+                                <span class="bar warning-bar"
+                                      style="height: 85%;"></span>
+
+                                <span class="bar"
+                                      style="height: 62%;"></span>
+
+                                <span class="bar"
+                                      style="height: 96%;"></span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- Recent Activity -->
+                <section class="content-card activity-card">
+
+                    <h2>Recent Activity</h2>
+
+                    <div class="table-wrapper">
+
+                        <table class="activity-table">
+
+                            <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Module</th>
+                                    <th>Amount/Qty</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        Paddy purchased from Rahim Farmer
+                                    </td>
+
+                                    <td>Purchase</td>
+                                    <td>650 kg</td>
+
+                                    <td>
+                                        <span class="status-badge status-paid">
+                                            Paid
+                                        </span>
+                                    </td>
+
+                                    <td>10:30 AM</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+                                        Invoice generated for ABC Traders
+                                    </td>
+
+                                    <td>Sales</td>
+                                    <td>100 Bags</td>
+
+                                    <td>
+                                        <span class="status-badge status-due">
+                                            Due
+                                        </span>
+                                    </td>
+
+                                    <td>11:15 AM</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+                                        Production batch completed
+                                    </td>
+
+                                    <td>Production</td>
+                                    <td>420 Bags</td>
+
+                                    <td>
+                                        <span class="status-badge status-active">
+                                            Active
+                                        </span>
+                                    </td>
+
+                                    <td>12:20 PM</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
