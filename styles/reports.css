@@ -1,0 +1,518 @@
+/* =========================================
+   Smart Rice Mill ERP
+   Reports & Analytics Page
+   ========================================= */
+
+
+/* =========================================
+   Reports Filter Card
+   ========================================= */
+
+.reports-filter-card {
+    padding: 24px 26px 20px;
+}
+
+.reports-filter-card h2 {
+    margin-bottom: 18px;
+}
+
+
+/* Filter Form */
+
+.reports-filter-form {
+    display: grid;
+
+    grid-template-columns:
+        minmax(190px, 1.15fr)
+        minmax(170px, 0.8fr)
+        minmax(170px, 0.8fr)
+        auto;
+
+    align-items: end;
+    column-gap: 38px;
+    row-gap: 20px;
+}
+
+
+/* Filter Fields */
+
+.reports-field {
+    min-width: 0;
+}
+
+.reports-field label {
+    display: block;
+    margin-bottom: 9px;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    color: #171e29;
+}
+
+.reports-field input,
+.reports-field select {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 14px;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    color: #707985;
+    background-color: #ffffff;
+
+    border: 1px solid #d7dee4;
+    border-radius: 7px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.reports-field select,
+.reports-field input[type="date"] {
+    cursor: pointer;
+}
+
+.reports-field input:hover,
+.reports-field select:hover {
+    border-color: #b9c2ca;
+}
+
+.reports-field input:focus,
+.reports-field select:focus {
+    border-color: #139536;
+    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+}
+
+
+/* Generate Report Button */
+
+.reports-filter-action {
+    display: flex;
+    align-items: flex-end;
+}
+
+.reports-generate-button {
+    min-width: 195px;
+    height: 46px;
+
+    padding: 0 23px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    font-family: inherit;
+    font-size: 0.93rem;
+    font-weight: 600;
+
+    color: #ffffff;
+    background-color: #129238;
+
+    border: none;
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
+
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.reports-generate-button:hover {
+    background-color: #0e7f30;
+    box-shadow: 0 8px 17px rgba(18, 146, 56, 0.22);
+    transform: translateY(-1px);
+}
+
+.reports-generate-button:active {
+    transform: translateY(0);
+}
+
+.reports-generate-button:focus-visible {
+    outline: 3px solid rgba(18, 146, 56, 0.24);
+    outline-offset: 3px;
+}
+
+
+/* =========================================
+   Summary Cards
+   ========================================= */
+
+.reports-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+    margin-top: 66px;
+}
+
+.reports-summary-grid .summary-card {
+    min-width: 0;
+    padding: 22px 18px;
+}
+
+.reports-simple-icon {
+    font-size: 2rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.reports-summary-grid .summary-details {
+    min-width: 0;
+}
+
+.reports-summary-grid .summary-details p {
+    white-space: nowrap;
+}
+
+.reports-summary-grid .summary-details h2 {
+    white-space: nowrap;
+    font-size: 1.65rem;
+}
+
+
+/* Purple Summary Card */
+
+.reports-purple-icon {
+    color: #7d34dc;
+    background-color: #f1e7ff;
+    border: 1px solid #dfcaf8;
+}
+
+.reports-purple-value {
+    color: #7d34dc;
+}
+
+
+/* =========================================
+   Reports Charts Layout
+   ========================================= */
+
+.reports-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+    margin-top: 58px;
+}
+
+.reports-chart-card {
+    min-width: 0;
+    padding: 23px 28px 25px;
+}
+
+.reports-chart-card h2 {
+    margin-bottom: 18px;
+}
+
+
+/* =========================================
+   Monthly Sales Trend
+   ========================================= */
+
+.reports-line-chart {
+    width: 100%;
+    height: 205px;
+
+    padding: 8px 12px;
+
+    overflow: hidden;
+
+    background-color: #fcfdfd;
+
+    border: 1px solid #d8e0e4;
+    border-radius: 8px;
+}
+
+.reports-line-svg {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+    overflow: hidden;
+}
+
+
+/* =========================================
+   Profit and Loss Bar Chart
+   ========================================= */
+
+.reports-bar-chart {
+    position: relative;
+
+    width: 100%;
+    height: 205px;
+
+    padding: 18px 35px 0;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 20px;
+
+    overflow: hidden;
+
+    background-color: #fcfdfd;
+
+    background-image:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 39px,
+            #e3e8eb 40px,
+            transparent 41px
+        );
+
+    border: 1px solid #d8e0e4;
+    border-radius: 8px;
+}
+
+.reports-bar {
+    width: 28px;
+
+    position: relative;
+    z-index: 2;
+
+    background-color: #15913a;
+
+    border-radius: 5px 5px 0 0;
+}
+
+.reports-bar-one {
+    height: 45%;
+}
+
+.reports-bar-two {
+    height: 68%;
+}
+
+.reports-bar-three {
+    height: 55%;
+}
+
+.reports-loss-bar {
+    height: 85%;
+    background-color: #df2429;
+}
+
+.reports-bar-five {
+    height: 63%;
+}
+
+.reports-bar-six {
+    height: 95%;
+}
+
+
+/* =========================================
+   Generated Reports Card
+   ========================================= */
+
+.reports-generated-card {
+    margin-top: 28px;
+    padding: 23px 21px 10px;
+}
+
+.reports-generated-card h2 {
+    margin-bottom: 24px;
+}
+
+
+/* =========================================
+   Generated Reports Table
+   ========================================= */
+
+.reports-table {
+    width: 100%;
+    min-width: 720px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    font-size: 0.9rem;
+}
+
+.reports-table th,
+.reports-table td {
+    padding: 14px 20px;
+
+    text-align: left;
+    vertical-align: middle;
+}
+
+
+/* Rounded Table Header */
+
+.reports-table thead th {
+    font-weight: 500;
+
+    color: #171e29;
+    background-color: #fafcfc;
+
+    border-top: 1px solid #d8dee3;
+    border-bottom: 1px solid #d8dee3;
+}
+
+.reports-table thead th:first-child {
+    border-left: 1px solid #d8dee3;
+    border-radius: 8px 0 0 8px;
+}
+
+.reports-table thead th:last-child {
+    border-right: 1px solid #d8dee3;
+    border-radius: 0 8px 8px 0;
+}
+
+
+/* Table Body */
+
+.reports-table tbody td {
+    border-bottom: 1px solid #e1e5e8;
+}
+
+.reports-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.reports-table tbody tr:hover td {
+    background-color: #fafcfa;
+}
+
+
+/* Ready Status */
+
+.reports-ready-status {
+    min-width: 102px;
+
+    color: #148d35;
+    background-color: #edf8ef;
+
+    border: 1px solid #148d35;
+}
+
+
+/* =========================================
+   Responsive Design
+   ========================================= */
+
+@media screen and (max-width: 1250px) {
+
+    .reports-filter-form {
+        column-gap: 20px;
+    }
+
+    .reports-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media screen and (max-width: 1000px) {
+
+    .reports-filter-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reports-filter-action {
+        grid-column: 1 / -1;
+        justify-content: center;
+    }
+
+    .reports-chart-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media screen and (max-width: 720px) {
+
+    .reports-filter-card {
+        padding: 21px 18px;
+    }
+
+    .reports-filter-form {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .reports-filter-action {
+        grid-column: auto;
+    }
+
+    .reports-generate-button {
+        width: 100%;
+    }
+
+    .reports-summary-grid {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+        margin-top: 25px;
+    }
+
+    .reports-chart-grid {
+        margin-top: 25px;
+    }
+
+    .reports-chart-card {
+        padding: 20px 16px;
+    }
+
+    .reports-line-chart,
+    .reports-bar-chart {
+        height: 205px;
+    }
+
+    .reports-generated-card {
+        margin-top: 25px;
+        padding: 20px 16px 8px;
+    }
+
+}
+
+
+@media screen and (max-width: 440px) {
+
+    .reports-filter-card h2,
+    .reports-chart-card h2,
+    .reports-generated-card h2 {
+        font-size: 1.15rem;
+    }
+
+    .reports-field input,
+    .reports-field select {
+        height: 45px;
+    }
+
+    .reports-summary-grid .summary-details h2 {
+        font-size: 1.45rem;
+    }
+
+    .reports-bar-chart {
+        gap: 10px;
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .reports-bar {
+        width: 24px;
+    }
+
+    .reports-table th,
+    .reports-table td {
+        padding: 12px 15px;
+    }
+
+}

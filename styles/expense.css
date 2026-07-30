@@ -1,0 +1,354 @@
+/* =========================================
+   Smart Rice Mill ERP
+   Expense & Salary Management Page
+   ========================================= */
+
+
+/* =========================================
+   Summary Cards
+   ========================================= */
+
+.expense-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.expense-summary-grid .summary-icon {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   Form Cards Layout
+   ========================================= */
+
+.management-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 50px;
+    margin-top: 36px;
+}
+
+.expense-form-card,
+.salary-form-card {
+    padding: 24px 25px 26px;
+}
+
+.expense-form-card h2,
+.salary-form-card h2 {
+    margin-bottom: 25px;
+}
+
+
+/* =========================================
+   Forms
+   ========================================= */
+
+.expense-form,
+.salary-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 28px;
+    row-gap: 20px;
+}
+
+
+/* Form Fields */
+
+.form-field {
+    min-width: 0;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #171e29;
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    color: #171e29;
+    background-color: #ffffff;
+    border: 1px solid #d7dee4;
+    border-radius: 7px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-field input::placeholder {
+    color: #929aa6;
+}
+
+.form-field select {
+    cursor: pointer;
+}
+
+.form-field input:hover,
+.form-field select:hover {
+    border-color: #b9c2ca;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: #139536;
+    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+}
+
+.form-field input[type="date"] {
+    cursor: pointer;
+    color: #7e8793;
+}
+
+
+/* =========================================
+   Form Buttons
+   ========================================= */
+
+.form-action {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-top: 22px;
+}
+
+.primary-action-button {
+    min-width: 205px;
+    height: 48px;
+    padding: 0 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #129238;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-action-button:hover {
+    background-color: #0e7f30;
+    box-shadow: 0 8px 17px rgba(18, 146, 56, 0.22);
+    transform: translateY(-1px);
+}
+
+.primary-action-button:active {
+    transform: translateY(0);
+}
+
+.primary-action-button:focus-visible {
+    outline: 3px solid rgba(18, 146, 56, 0.24);
+    outline-offset: 3px;
+}
+
+
+/* =========================================
+   Records Layout
+   ========================================= */
+
+.records-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px;
+    margin-top: 68px;
+}
+
+.records-card {
+    padding: 23px 21px 10px;
+}
+
+.records-card h2 {
+    margin-bottom: 24px;
+}
+
+
+/* =========================================
+   Records Tables
+   ========================================= */
+
+.expense-table,
+.salary-table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.87rem;
+}
+
+.expense-table th,
+.expense-table td,
+.salary-table th,
+.salary-table td {
+    padding: 14px 20px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+
+/* Rounded Table Headers */
+
+.expense-table thead th,
+.salary-table thead th {
+    font-weight: 500;
+    color: #171e29;
+    background-color: #fafcfc;
+    border-top: 1px solid #d8dee3;
+    border-bottom: 1px solid #d8dee3;
+}
+
+.expense-table thead th:first-child,
+.salary-table thead th:first-child {
+    border-left: 1px solid #d8dee3;
+    border-radius: 8px 0 0 8px;
+}
+
+.expense-table thead th:last-child,
+.salary-table thead th:last-child {
+    border-right: 1px solid #d8dee3;
+    border-radius: 0 8px 8px 0;
+}
+
+
+/* Table Body */
+
+.expense-table tbody td,
+.salary-table tbody td {
+    border-bottom: 1px solid #e1e5e8;
+}
+
+.expense-table tbody tr:last-child td,
+.salary-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.expense-table tbody tr:hover td,
+.salary-table tbody tr:hover td {
+    background-color: #fafcfa;
+}
+
+
+/* =========================================
+   Responsive Design
+   ========================================= */
+
+@media screen and (max-width: 1250px) {
+
+    .expense-summary-grid {
+        gap: 20px;
+    }
+
+    .management-form-grid {
+        gap: 25px;
+    }
+
+    .expense-form,
+    .salary-form {
+        column-gap: 20px;
+    }
+
+}
+
+
+@media screen and (max-width: 1050px) {
+
+    .expense-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .expense-summary-grid .summary-card:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .management-form-grid,
+    .records-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .records-grid {
+        margin-top: 35px;
+    }
+
+}
+
+
+@media screen and (max-width: 720px) {
+
+    .expense-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .expense-summary-grid .summary-card:last-child {
+        grid-column: auto;
+    }
+
+    .management-form-grid {
+        margin-top: 25px;
+    }
+
+    .expense-form-card,
+    .salary-form-card {
+        padding: 21px 18px;
+    }
+
+    .expense-form,
+    .salary-form {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .form-action {
+        margin-top: 8px;
+    }
+
+    .primary-action-button {
+        width: 100%;
+    }
+
+    .records-card {
+        padding: 20px 16px 8px;
+    }
+
+}
+
+
+@media screen and (max-width: 440px) {
+
+    .expense-form-card h2,
+    .salary-form-card h2,
+    .records-card h2 {
+        font-size: 1.15rem;
+    }
+
+    .form-field input,
+    .form-field select {
+        height: 45px;
+    }
+
+    .expense-table th,
+    .expense-table td,
+    .salary-table th,
+    .salary-table td {
+        padding: 12px 15px;
+    }
+
+}

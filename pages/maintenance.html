@@ -7,22 +7,17 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Customer Management | Smart Rice Mill ERP</title>
+    <title>Machine Maintenance | Smart Rice Mill ERP</title>
 
-    <!-- Common Dashboard CSS -->
     <link rel="stylesheet" href="../styles/dashboard.css">
-
-    <!-- Customer Page CSS -->
-    <link rel="stylesheet" href="../styles/customer.css">
+    <link rel="stylesheet" href="../styles/maintenance.css">
 </head>
 
 <body>
 
     <div class="dashboard-layout">
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
+        <!-- Sidebar -->
         <aside class="sidebar">
 
             <div class="sidebar-header">
@@ -89,7 +84,7 @@
                 </a>
 
 
-                <a class="navigation-link active"
+                <a class="navigation-link"
                    href="sales.html">
 
                     <span class="navigation-icon">◇</span>
@@ -110,7 +105,7 @@
 
 
                 <a class="navigation-link"
-                   href="#">
+                   href="expense.html">
 
                     <span class="navigation-icon">▥</span>
                     <span class="navigation-text">Reports</span>
@@ -119,8 +114,18 @@
                 </a>
 
 
-                <a class="navigation-link"
-                   href="#">
+                <a class="navigation-link active"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+                
+                <a class="navigation-link active"
+                   href="reports.html">
 
                     <span class="navigation-icon">⚙</span>
                     <span class="navigation-text">Settings</span>
@@ -142,9 +147,7 @@
         </aside>
 
 
-        <!-- =====================================
-             Main Area
-        ====================================== -->
+        <!-- Main Area -->
         <main class="main-area">
 
             <!-- Topbar -->
@@ -160,7 +163,7 @@
 
                     </button>
 
-                    <h1>Customer Management</h1>
+                    <h1>Machine Maintenance</h1>
 
                 </div>
 
@@ -203,28 +206,26 @@
             </header>
 
 
-            <!-- =====================================
-                 Customer Content
-            ====================================== -->
-            <section class="dashboard-content customer-content">
+            <!-- Maintenance Content -->
+            <section class="dashboard-content maintenance-content">
 
                 <!-- Summary Cards -->
-                <section class="customer-summary-grid"
-                         aria-label="Customer summary">
+                <section class="maintenance-summary-grid"
+                         aria-label="Machine maintenance summary">
 
-                    <!-- Total Customers -->
+                    <!-- Active Machines -->
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon">
-                            👥
+                            ⚙️
                         </div>
 
                         <div class="summary-details">
 
-                            <p>Total Customers</p>
+                            <p>Active Machines</p>
 
                             <h2 class="green-value">
-                                42
+                                6
                             </h2>
 
                         </div>
@@ -232,19 +233,19 @@
                     </article>
 
 
-                    <!-- Active Buyers -->
+                    <!-- Maintenance Due -->
                     <article class="summary-card">
 
-                        <div class="summary-icon green-icon">
-                            👤
+                        <div class="summary-icon orange-icon">
+                            🔧
                         </div>
 
                         <div class="summary-details">
 
-                            <p>Active Buyers</p>
+                            <p>Maintenance Due</p>
 
-                            <h2 class="green-value">
-                                31
+                            <h2 class="orange-value">
+                                2
                             </h2>
 
                         </div>
@@ -252,19 +253,19 @@
                     </article>
 
 
-                    <!-- Due Amount -->
+                    <!-- Last Service -->
                     <article class="summary-card">
 
-                        <div class="summary-icon green-icon">
-                            ৳
+                        <div class="summary-icon blue-icon">
+                            ▣
                         </div>
 
                         <div class="summary-details">
 
-                            <p>Due Amount</p>
+                            <p>Last Service</p>
 
-                            <h2 class="green-value">
-                                ৳1,20,000
+                            <h2 class="blue-value last-service-value">
+                                25 Jun 2026
                             </h2>
 
                         </div>
@@ -274,101 +275,51 @@
                 </section>
 
 
-                <!-- =====================================
-                     Customer Form
-                ====================================== -->
-                <section class="content-card customer-form-card">
+                <!-- Maintenance Form -->
+                <section class="content-card maintenance-form-card">
 
-                    <h2>Save Customer</h2>
+                    <h2>Add Maintenance Record</h2>
 
 
-                    <form class="customer-form">
+                    <form class="maintenance-form">
 
-                        <!-- Customer Name -->
+                        <!-- Machine Name -->
                         <div class="form-field">
 
-                            <label for="customer-name">
-                                Customer Name
+                            <label for="machine-name">
+                                Machine Name
                             </label>
 
-                            <input
-                                type="text"
-                                id="customer-name"
-                                name="customerName"
-                                placeholder="Select customer name"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Phone Number -->
-                        <div class="form-field">
-
-                            <label for="phone-number">
-                                Phone Number
-                            </label>
-
-                            <input
-                                type="tel"
-                                id="phone-number"
-                                name="phoneNumber"
-                                placeholder="Select phone number"
-                                pattern="[0-9]{11}"
-                                maxlength="11"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- City -->
-                        <div class="form-field">
-
-                            <label for="city">
-                                City
-                            </label>
-
-                            <input
-                                type="text"
-                                id="city"
-                                name="city"
-                                placeholder="Select city"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Customer Type -->
-                        <div class="form-field">
-
-                            <label for="customer-type">
-                                Customer Type
-                            </label>
-
-                            <select id="customer-type"
-                                    name="customerType"
+                            <select id="machine-name"
+                                    name="machineName"
                                     required>
 
                                 <option value="" selected disabled>
-                                    Select customer type
+                                    Select machine name
                                 </option>
 
-                                <option value="dealer">
-                                    Dealer
+                                <option value="polishing-machine">
+                                    Polishing Machine
                                 </option>
 
-                                <option value="retailer">
-                                    Retailer
+                                <option value="dryer-machine">
+                                    Dryer Machine
                                 </option>
 
-                                <option value="business">
-                                    Business
+                                <option value="husker-machine">
+                                    Husker Machine
                                 </option>
 
-                                <option value="wholesaler">
-                                    Wholesaler
+                                <option value="separator-machine">
+                                    Separator Machine
+                                </option>
+
+                                <option value="grader-machine">
+                                    Grader Machine
+                                </option>
+
+                                <option value="packaging-machine">
+                                    Packaging Machine
                                 </option>
 
                             </select>
@@ -376,31 +327,129 @@
                         </div>
 
 
-                        <!-- Payment Status -->
+                        <!-- Service Type -->
                         <div class="form-field">
 
-                            <label for="payment-status">
-                                Payment Status
+                            <label for="service-type">
+                                Service Type
                             </label>
 
-                            <select id="payment-status"
-                                    name="paymentStatus"
+                            <select id="service-type"
+                                    name="serviceType"
                                     required>
 
                                 <option value="" selected disabled>
-                                    Select payment status
+                                    Select service type
                                 </option>
 
-                                <option value="paid">
-                                    Paid
+                                <option value="oil-change">
+                                    Oil Change
+                                </option>
+
+                                <option value="repair">
+                                    Repair
+                                </option>
+
+                                <option value="cleaning">
+                                    Cleaning
+                                </option>
+
+                                <option value="inspection">
+                                    Inspection
+                                </option>
+
+                                <option value="parts-replacement">
+                                    Parts Replacement
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Last Service Date -->
+                        <div class="form-field">
+
+                            <label for="last-service-date">
+                                Last Service Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="last-service-date"
+                                name="lastServiceDate"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Next Service Date -->
+                        <div class="form-field">
+
+                            <label for="next-service-date">
+                                Next Service Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="next-service-date"
+                                name="nextServiceDate"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Cost -->
+                        <div class="form-field">
+
+                            <label for="maintenance-cost">
+                                Cost
+                            </label>
+
+                            <input
+                                type="number"
+                                id="maintenance-cost"
+                                name="maintenanceCost"
+                                placeholder="Select cost"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Status -->
+                        <div class="form-field">
+
+                            <label for="maintenance-status">
+                                Status
+                            </label>
+
+                            <select id="maintenance-status"
+                                    name="maintenanceStatus"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select status
+                                </option>
+
+                                <option value="completed">
+                                    Completed
                                 </option>
 
                                 <option value="due">
                                     Due
                                 </option>
 
-                                <option value="partial">
-                                    Partially Paid
+                                <option value="pending">
+                                    Pending
+                                </option>
+
+                                <option value="in-progress">
+                                    In Progress
                                 </option>
 
                             </select>
@@ -415,7 +464,7 @@
                                     type="button">
 
                                 <span aria-hidden="true">▣</span>
-                                Save Customer
+                                Save Maintenance
 
                             </button>
 
@@ -426,27 +475,25 @@
                 </section>
 
 
-                <!-- =====================================
-                     Customer List
-                ====================================== -->
-                <section class="content-card customer-list-card">
+                <!-- Maintenance Records -->
+                <section class="content-card maintenance-list-card">
 
-                    <h2>Customer List</h2>
+                    <h2>Maintenance Records</h2>
 
 
                     <div class="table-wrapper">
 
-                        <table class="customer-table">
+                        <table class="maintenance-table">
 
                             <thead>
 
                                 <tr>
-                                    <th>Customer</th>
-                                    <th>Phone</th>
-                                    <th>City</th>
-                                    <th>Type</th>
-                                    <th>Payment Status</th>
-                                    <th>Action</th>
+                                    <th>Machine</th>
+                                    <th>Service Type</th>
+                                    <th>Last Service</th>
+                                    <th>Next Service</th>
+                                    <th>Cost</th>
+                                    <th>Status</th>
                                 </tr>
 
                             </thead>
@@ -456,10 +503,11 @@
 
                                 <tr>
 
-                                    <td>ABC Traders</td>
-                                    <td>017XXXXXXXX</td>
-                                    <td>Dhaka</td>
-                                    <td>Dealer</td>
+                                    <td>Polishing Machine</td>
+                                    <td>Oil Change</td>
+                                    <td>25 Jun 2026</td>
+                                    <td>10 Jul 2026</td>
+                                    <td>৳5,000</td>
 
                                     <td>
 
@@ -469,72 +517,22 @@
 
                                     </td>
 
-                                    <td>
-
-                                        <button class="edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
-
-                                    </td>
-
                                 </tr>
 
 
                                 <tr>
 
-                                    <td>Bhowmik Store</td>
-                                    <td>018XXXXXXXX</td>
-                                    <td>Khulna</td>
-                                    <td>Retailer</td>
+                                    <td>Dryer Machine</td>
+                                    <td>Repair</td>
+                                    <td>20 Jun 2026</td>
+                                    <td>05 Jul 2026</td>
+                                    <td>৳8,000</td>
 
                                     <td>
 
-                                        <span class="status-badge status-paid">
-                                            Paid
+                                        <span class="status-badge status-pending">
+                                            Pending
                                         </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <button class="edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Dhaka Foods</td>
-                                    <td>019XXXXXXXX</td>
-                                    <td>Dhaka</td>
-                                    <td>Business</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-paid">
-                                            Paid
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <button class="edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
 
                                     </td>
 

@@ -1,0 +1,494 @@
+/* =========================================
+   Truck & Delivery Management Page
+   ========================================= */
+
+
+/* Summary Cards */
+
+.delivery-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.delivery-summary-grid .summary-icon {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+
+/* Form and Map Layout */
+
+.delivery-workspace {
+    display: grid;
+    grid-template-columns: 330px minmax(0, 1fr);
+    gap: 22px;
+    margin-top: 36px;
+    align-items: stretch;
+}
+
+
+/* Delivery Form */
+
+.delivery-form-card {
+    padding: 24px 24px 28px;
+}
+
+.delivery-form-card h2 {
+    margin-bottom: 23px;
+}
+
+.delivery-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 18px;
+    row-gap: 20px;
+}
+
+.form-field {
+    min-width: 0;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #171e29;
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    height: 46px;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: #171e29;
+    background-color: #ffffff;
+    border: 1px solid #d7dee4;
+    border-radius: 7px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-field input::placeholder {
+    color: #929aa6;
+}
+
+.form-field select {
+    cursor: pointer;
+}
+
+.form-field input:hover,
+.form-field select:hover {
+    border-color: #b9c2ca;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: #139536;
+    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+}
+
+
+/* Save Button */
+
+.form-action {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.primary-action-button {
+    width: 205px;
+    height: 48px;
+    padding: 0 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #129238;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.primary-action-button:hover {
+    background-color: #0e7f30;
+    transform: translateY(-1px);
+}
+
+.primary-action-button:active {
+    transform: translateY(0);
+}
+
+
+/* Delivery Map Card */
+
+.delivery-map-card {
+    padding: 24px 24px 10px;
+}
+
+.delivery-map-card h2 {
+    margin-bottom: 22px;
+}
+
+
+/* Simple CSS Map */
+
+.delivery-map {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    overflow: hidden;
+    background-color: #f7fbfd;
+    border: 1px solid #d7e0e5;
+    border-radius: 8px;
+}
+
+.map-background-shape {
+    position: absolute;
+    left: 34%;
+    top: 46%;
+    width: 34%;
+    height: 18%;
+    border: 10px solid #dceaf3;
+    transform: skew(-12deg);
+}
+
+
+/* Route Lines */
+
+.route-line {
+    position: absolute;
+    height: 4px;
+    border-radius: 10px;
+    transform-origin: left center;
+}
+
+.completed-route {
+    left: 21%;
+    top: 27%;
+    width: 39%;
+    background-color: #139536;
+    transform: rotate(34deg);
+}
+
+.running-route {
+    left: 51%;
+    top: 64%;
+    width: 34%;
+    background-color: #ed9200;
+    transform: rotate(-26deg);
+}
+
+
+/* Map Locations */
+
+.map-location {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    z-index: 2;
+}
+
+.dinajpur-location {
+    left: 17%;
+    top: 18%;
+}
+
+.bogura-location {
+    left: 48%;
+    top: 58%;
+}
+
+.dhaka-location {
+    right: 16%;
+    top: 31%;
+}
+
+.location-point {
+    width: 29px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border-radius: 50%;
+    font-size: 0.9rem;
+}
+
+.completed-point {
+    background-color: #139536;
+}
+
+.current-point {
+    background-color: #ed9200;
+}
+
+.location-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #171e29;
+}
+
+
+/* Map Legend */
+
+.map-legend {
+    min-height: 57px;
+    margin-top: 22px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    border: 1px solid #d7dee4;
+    border-radius: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #252c35;
+}
+
+.legend-line {
+    width: 42px;
+    height: 4px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.completed-line {
+    background-color: #139536;
+}
+
+.running-line {
+    background-color: #ed9200;
+}
+
+.legend-circle {
+    width: 19px;
+    height: 19px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.completed-circle {
+    background-color: #139536;
+}
+
+.current-circle {
+    background-color: #ed9200;
+}
+
+
+/* Delivery Records */
+
+.delivery-list-card {
+    margin-top: 28px;
+    padding: 23px 21px 10px;
+}
+
+.delivery-list-card h2 {
+    margin-bottom: 24px;
+}
+
+
+/* Delivery Table */
+
+.delivery-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
+}
+
+.delivery-table th,
+.delivery-table td {
+    padding: 14px 20px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.delivery-table thead th {
+    font-weight: 500;
+    color: #171e29;
+    background-color: #fafcfc;
+    border-top: 1px solid #d8dee3;
+    border-bottom: 1px solid #d8dee3;
+}
+
+.delivery-table thead th:first-child {
+    border-left: 1px solid #d8dee3;
+    border-radius: 8px 0 0 8px;
+}
+
+.delivery-table thead th:last-child {
+    border-right: 1px solid #d8dee3;
+    border-radius: 0 8px 8px 0;
+}
+
+.delivery-table tbody td {
+    border-bottom: 1px solid #e1e5e8;
+}
+
+.delivery-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.delivery-table tbody tr:hover td {
+    background-color: #fafcfa;
+}
+
+
+/* Delivery Status */
+
+.status-on-way {
+    color: #148d35;
+    background-color: #edf8ef;
+    border: 1px solid #148d35;
+}
+
+.status-pending {
+    color: #e28a00;
+    background-color: #fff8ed;
+    border: 1px solid #e9a01b;
+}
+
+.status-delivered {
+    color: #176cc8;
+    background-color: #eef5fd;
+    border: 1px solid #176cc8;
+}
+
+
+/* Responsive */
+
+@media screen and (max-width: 1200px) {
+
+    .delivery-summary-grid {
+        gap: 20px;
+    }
+
+    .delivery-workspace {
+        grid-template-columns: 300px minmax(0, 1fr);
+    }
+
+    .map-legend {
+        justify-content: flex-start;
+    }
+
+}
+
+
+@media screen and (max-width: 1000px) {
+
+    .delivery-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .delivery-summary-grid .summary-card:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .delivery-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .delivery-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media screen and (max-width: 720px) {
+
+    .delivery-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .delivery-summary-grid .summary-card:last-child {
+        grid-column: auto;
+    }
+
+    .delivery-workspace {
+        margin-top: 25px;
+    }
+
+    .delivery-form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-action {
+        margin-top: 8px;
+    }
+
+    .primary-action-button {
+        width: 100%;
+    }
+
+    .delivery-map {
+        height: 320px;
+    }
+
+    .map-legend {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .delivery-list-card {
+        margin-top: 25px;
+        padding: 20px 16px 8px;
+    }
+
+}
+
+
+@media screen and (max-width: 440px) {
+
+    .delivery-form-card,
+    .delivery-map-card {
+        padding: 20px 16px;
+    }
+
+    .delivery-map {
+        height: 280px;
+    }
+
+    .location-name {
+        font-size: 0.75rem;
+    }
+
+    .location-point {
+        width: 25px;
+        height: 25px;
+    }
+
+    .delivery-table th,
+    .delivery-table td {
+        padding: 12px 15px;
+    }
+
+}

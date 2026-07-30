@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reports & Analytics | Smart Rice Mill ERP</title>
+
+    <!-- Common Dashboard CSS -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Reports Page CSS -->
+    <link rel="stylesheet" href="../styles/reports.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="sales.html">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="delivery.html">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="reports.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Area
+        ====================================== -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Reports &amp; Analytics</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 Reports Content
+            ====================================== -->
+            <section class="dashboard-content reports-page">
+
+                <!-- =====================================
+                     Report Filters
+                ====================================== -->
+                <section class="content-card reports-filter-card">
+
+                    <h2>Report Filters</h2>
+
+
+                    <form class="reports-filter-form">
+
+                        <!-- Report Type -->
+                        <div class="reports-field">
+
+                            <label for="report-type">
+                                Report Type
+                            </label>
+
+                            <select id="report-type"
+                                    name="reportType">
+
+                                <option value="all">
+                                    All Reports
+                                </option>
+
+                                <option value="sales">
+                                    Sales Report
+                                </option>
+
+                                <option value="purchase">
+                                    Purchase Report
+                                </option>
+
+                                <option value="inventory">
+                                    Inventory Report
+                                </option>
+
+                                <option value="production">
+                                    Production Report
+                                </option>
+
+                                <option value="expense">
+                                    Expense Report
+                                </option>
+
+                                <option value="profit-loss">
+                                    Profit &amp; Loss Report
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- From Date -->
+                        <div class="reports-field">
+
+                            <label for="from-date">
+                                From Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="from-date"
+                                name="fromDate"
+                                value="2026-07-01"
+                            >
+
+                        </div>
+
+
+                        <!-- To Date -->
+                        <div class="reports-field">
+
+                            <label for="to-date">
+                                To Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="to-date"
+                                name="toDate"
+                                value="2026-07-31"
+                            >
+
+                        </div>
+
+
+                        <!-- Generate Button -->
+                        <div class="reports-filter-action">
+
+                            <button class="reports-generate-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Generate Report
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     Report Summary Cards
+                ====================================== -->
+                <section class="reports-summary-grid"
+                         aria-label="Reports summary">
+
+                    <!-- Sales Report -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon reports-simple-icon">
+                            ↗
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Sales Report</p>
+
+                            <h2 class="green-value">
+                                ৳2,45,000
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Purchase Report -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon blue-icon reports-simple-icon">
+                            🛒
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Purchase Report</p>
+
+                            <h2 class="blue-value">
+                                ৳1,58,000
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Inventory Report -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon orange-icon reports-simple-icon">
+                            ▣
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Inventory Report</p>
+
+                            <h2 class="orange-value">
+                                1,250 Tons
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Profit and Loss -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon reports-purple-icon reports-simple-icon">
+                            ◔
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Profit &amp; Loss</p>
+
+                            <h2 class="reports-purple-value">
+                                ৳8,70,000
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =====================================
+                     Charts
+                ====================================== -->
+                <section class="reports-chart-grid">
+
+                    <!-- Monthly Sales Trend -->
+                    <section class="content-card reports-chart-card">
+
+                        <h2>Monthly Sales Trend</h2>
+
+
+                        <div class="reports-line-chart">
+
+                            <svg class="reports-line-svg"
+                                 viewBox="0 0 600 220"
+                                 role="img"
+                                 aria-label="Monthly sales trend chart">
+
+                                <!-- Horizontal Grid Lines -->
+                                <line
+                                    x1="20"
+                                    y1="30"
+                                    x2="580"
+                                    y2="30"
+                                    stroke="#e3e8eb"
+                                    stroke-width="1"
+                                />
+
+                                <line
+                                    x1="20"
+                                    y1="75"
+                                    x2="580"
+                                    y2="75"
+                                    stroke="#e3e8eb"
+                                    stroke-width="1"
+                                />
+
+                                <line
+                                    x1="20"
+                                    y1="120"
+                                    x2="580"
+                                    y2="120"
+                                    stroke="#e3e8eb"
+                                    stroke-width="1"
+                                />
+
+                                <line
+                                    x1="20"
+                                    y1="165"
+                                    x2="580"
+                                    y2="165"
+                                    stroke="#e3e8eb"
+                                    stroke-width="1"
+                                />
+
+                                <line
+                                    x1="20"
+                                    y1="205"
+                                    x2="580"
+                                    y2="205"
+                                    stroke="#e3e8eb"
+                                    stroke-width="1"
+                                />
+
+
+                                <!-- Sales Trend -->
+                                <polyline
+                                    points="
+                                        25,195
+                                        125,168
+                                        225,112
+                                        325,158
+                                        425,78
+                                        555,38
+                                    "
+                                    fill="none"
+                                    stroke="#15913a"
+                                    stroke-width="5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+
+                                <!-- Trend Points -->
+                                <circle
+                                    cx="25"
+                                    cy="195"
+                                    r="6"
+                                    fill="#ffffff"
+                                    stroke="#15913a"
+                                    stroke-width="3"
+                                />
+
+                                <circle
+                                    cx="125"
+                                    cy="168"
+                                    r="6"
+                                    fill="#ffffff"
+                                    stroke="#15913a"
+                                    stroke-width="3"
+                                />
+
+                                <circle
+                                    cx="225"
+                                    cy="112"
+                                    r="6"
+                                    fill="#ffffff"
+                                    stroke="#15913a"
+                                    stroke-width="3"
+                                />
+
+                                <circle
+                                    cx="325"
+                                    cy="158"
+                                    r="6"
+                                    fill="#ffffff"
+                                    stroke="#15913a"
+                                    stroke-width="3"
+                                />
+
+                                <circle
+                                    cx="425"
+                                    cy="78"
+                                    r="6"
+                                    fill="#ffffff"
+                                    stroke="#15913a"
+                                    stroke-width="3"
+                                />
+
+                                <circle
+                                    cx="555"
+                                    cy="38"
+                                    r="6"
+                                    fill="#ffffff"
+                                    stroke="#15913a"
+                                    stroke-width="3"
+                                />
+
+                            </svg>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- Profit and Loss Overview -->
+                    <section class="content-card reports-chart-card">
+
+                        <h2>Profit/Loss Overview</h2>
+
+
+                        <div class="reports-bar-chart">
+
+                            <div class="reports-bar reports-bar-one"></div>
+
+                            <div class="reports-bar reports-bar-two"></div>
+
+                            <div class="reports-bar reports-bar-three"></div>
+
+                            <div class="reports-bar reports-loss-bar"></div>
+
+                            <div class="reports-bar reports-bar-five"></div>
+
+                            <div class="reports-bar reports-bar-six"></div>
+
+                        </div>
+
+                    </section>
+
+                </section>
+
+
+                <!-- =====================================
+                     Generated Reports
+                ====================================== -->
+                <section class="content-card reports-generated-card">
+
+                    <h2>Generated Reports</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="reports-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Report Name</th>
+                                    <th>Date Range</th>
+                                    <th>Generated By</th>
+                                    <th>Status</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>Sales Report</td>
+                                    <td>01 Jul - 31 Jul</td>
+                                    <td>Admin User</td>
+
+                                    <td>
+
+                                        <span class="status-badge reports-ready-status">
+                                            Ready
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>Inventory Report</td>
+                                    <td>Current Month</td>
+                                    <td>Manager User</td>
+
+                                    <td>
+
+                                        <span class="status-badge reports-ready-status">
+                                            Ready
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

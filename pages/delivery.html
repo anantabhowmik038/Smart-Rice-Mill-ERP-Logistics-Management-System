@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Truck & Delivery Management | Smart Rice Mill ERP</title>
+
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="../styles/delivery.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="sales.html">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="delivery.html">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="expense.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- Main Area -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Truck &amp; Delivery Management</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- Delivery Content -->
+            <section class="dashboard-content delivery-content">
+
+                <!-- Summary Cards -->
+                <section class="delivery-summary-grid"
+                         aria-label="Delivery summary">
+
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            🚚
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Running Deliveries</p>
+
+                            <h2 class="green-value">
+                                5
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="summary-card">
+
+                        <div class="summary-icon blue-icon">
+                            ✓
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Delivered Today</p>
+
+                            <h2 class="blue-value">
+                                8
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="summary-card">
+
+                        <div class="summary-icon orange-icon">
+                            ◴
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Pending Deliveries</p>
+
+                            <h2 class="orange-value">
+                                3
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- Form and Map -->
+                <section class="delivery-workspace">
+
+                    <!-- Delivery Form -->
+                    <section class="content-card delivery-form-card">
+
+                        <h2>Add Delivery</h2>
+
+
+                        <form class="delivery-form">
+
+                            <div class="form-field">
+
+                                <label for="truck-number">
+                                    Truck Number
+                                </label>
+
+                                <select id="truck-number"
+                                        name="truckNumber"
+                                        required>
+
+                                    <option value="" selected disabled>
+                                        Select truck number
+                                    </option>
+
+                                    <option value="DHK-1234">
+                                        DHK-1234
+                                    </option>
+
+                                    <option value="RAJ-4587">
+                                        RAJ-4587
+                                    </option>
+
+                                    <option value="CTG-7812">
+                                        CTG-7812
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="driver-name">
+                                    Driver Name
+                                </label>
+
+                                <select id="driver-name"
+                                        name="driverName"
+                                        required>
+
+                                    <option value="" selected disabled>
+                                        Select driver name
+                                    </option>
+
+                                    <option value="kamal">
+                                        Kamal
+                                    </option>
+
+                                    <option value="jalal">
+                                        Jalal
+                                    </option>
+
+                                    <option value="rahim">
+                                        Rahim
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="destination">
+                                    Destination
+                                </label>
+
+                                <select id="destination"
+                                        name="destination"
+                                        required>
+
+                                    <option value="" selected disabled>
+                                        Select destination
+                                    </option>
+
+                                    <option value="dhaka">
+                                        Dhaka
+                                    </option>
+
+                                    <option value="bogura">
+                                        Bogura
+                                    </option>
+
+                                    <option value="dinajpur">
+                                        Dinajpur
+                                    </option>
+
+                                    <option value="rajshahi">
+                                        Rajshahi
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="product">
+                                    Product
+                                </label>
+
+                                <select id="product"
+                                        name="product"
+                                        required>
+
+                                    <option value="" selected disabled>
+                                        Select product
+                                    </option>
+
+                                    <option value="rice">
+                                        Rice
+                                    </option>
+
+                                    <option value="khud">
+                                        Khud
+                                    </option>
+
+                                    <option value="tush">
+                                        Tush
+                                    </option>
+
+                                    <option value="bran">
+                                        Bran
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="quantity">
+                                    Quantity
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="quantity"
+                                    name="quantity"
+                                    placeholder="Select quantity"
+                                    min="1"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="delivery-status">
+                                    Delivery Status
+                                </label>
+
+                                <select id="delivery-status"
+                                        name="deliveryStatus"
+                                        required>
+
+                                    <option value="" selected disabled>
+                                        Select delivery status
+                                    </option>
+
+                                    <option value="pending">
+                                        Pending
+                                    </option>
+
+                                    <option value="on-the-way">
+                                        On the Way
+                                    </option>
+
+                                    <option value="delivered">
+                                        Delivered
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-action">
+
+                                <button class="primary-action-button"
+                                        type="button">
+
+                                    <span aria-hidden="true">▣</span>
+                                    Save Delivery
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </section>
+
+
+                    <!-- Delivery Map -->
+                    <section class="content-card delivery-map-card">
+
+                        <h2>Delivery Map View</h2>
+
+
+                        <div class="delivery-map">
+
+                            <div class="map-background-shape"></div>
+
+                            <div class="route-line completed-route"></div>
+                            <div class="route-line running-route"></div>
+
+
+                            <div class="map-location dinajpur-location">
+
+                                <span class="location-point completed-point">
+                                    ⌖
+                                </span>
+
+                                <span class="location-name">
+                                    Dinajpur
+                                </span>
+
+                            </div>
+
+
+                            <div class="map-location bogura-location">
+
+                                <span class="location-point completed-point">
+                                    ⌖
+                                </span>
+
+                                <span class="location-name">
+                                    Bogura
+                                </span>
+
+                            </div>
+
+
+                            <div class="map-location dhaka-location">
+
+                                <span class="location-point current-point">
+                                    ⌖
+                                </span>
+
+                                <span class="location-name">
+                                    Dhaka
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="map-legend">
+
+                            <div class="legend-item">
+
+                                <span class="legend-line completed-line"></span>
+                                <span>Completed Route</span>
+
+                            </div>
+
+
+                            <div class="legend-item">
+
+                                <span class="legend-line running-line"></span>
+                                <span>Running Delivery</span>
+
+                            </div>
+
+
+                            <div class="legend-item">
+
+                                <span class="legend-circle completed-circle"></span>
+                                <span>Completed Location</span>
+
+                            </div>
+
+
+                            <div class="legend-item">
+
+                                <span class="legend-circle current-circle"></span>
+                                <span>Current Location</span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </section>
+
+
+                <!-- Delivery Records -->
+                <section class="content-card delivery-list-card">
+
+                    <h2>Delivery Records</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="delivery-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Truck No</th>
+                                    <th>Driver</th>
+                                    <th>Destination</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>DHK-1234</td>
+                                    <td>Kamal</td>
+                                    <td>Dhaka</td>
+                                    <td>60 Bags</td>
+
+                                    <td>
+
+                                        <span class="status-badge status-on-way">
+                                            On the Way
+                                        </span>
+
+                                    </td>
+
+                                    <td>01 Jul 2026</td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>RAJ-4587</td>
+                                    <td>Jalal</td>
+                                    <td>Rajshahi</td>
+                                    <td>80 Bags</td>
+
+                                    <td>
+
+                                        <span class="status-badge status-pending">
+                                            Pending
+                                        </span>
+
+                                    </td>
+
+                                    <td>01 Jul 2026</td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
