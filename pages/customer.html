@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Management | Smart Rice Mill ERP</title>
+
+    <!-- Common Dashboard CSS -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Customer Page CSS -->
+    <link rel="stylesheet" href="../styles/customer.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="sales.html">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Area
+        ====================================== -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Customer Management</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 Customer Content
+            ====================================== -->
+            <section class="dashboard-content customer-content">
+
+                <!-- Summary Cards -->
+                <section class="customer-summary-grid"
+                         aria-label="Customer summary">
+
+                    <!-- Total Customers -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            👥
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Total Customers</p>
+
+                            <h2 class="green-value">
+                                42
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Active Buyers -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            👤
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Active Buyers</p>
+
+                            <h2 class="green-value">
+                                31
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Due Amount -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            ৳
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Due Amount</p>
+
+                            <h2 class="green-value">
+                                ৳1,20,000
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =====================================
+                     Customer Form
+                ====================================== -->
+                <section class="content-card customer-form-card">
+
+                    <h2>Save Customer</h2>
+
+
+                    <form class="customer-form">
+
+                        <!-- Customer Name -->
+                        <div class="form-field">
+
+                            <label for="customer-name">
+                                Customer Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customer-name"
+                                name="customerName"
+                                placeholder="Select customer name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Phone Number -->
+                        <div class="form-field">
+
+                            <label for="phone-number">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone-number"
+                                name="phoneNumber"
+                                placeholder="Select phone number"
+                                pattern="[0-9]{11}"
+                                maxlength="11"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- City -->
+                        <div class="form-field">
+
+                            <label for="city">
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="city"
+                                name="city"
+                                placeholder="Select city"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Customer Type -->
+                        <div class="form-field">
+
+                            <label for="customer-type">
+                                Customer Type
+                            </label>
+
+                            <select id="customer-type"
+                                    name="customerType"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select customer type
+                                </option>
+
+                                <option value="dealer">
+                                    Dealer
+                                </option>
+
+                                <option value="retailer">
+                                    Retailer
+                                </option>
+
+                                <option value="business">
+                                    Business
+                                </option>
+
+                                <option value="wholesaler">
+                                    Wholesaler
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Payment Status -->
+                        <div class="form-field">
+
+                            <label for="payment-status">
+                                Payment Status
+                            </label>
+
+                            <select id="payment-status"
+                                    name="paymentStatus"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select payment status
+                                </option>
+
+                                <option value="paid">
+                                    Paid
+                                </option>
+
+                                <option value="due">
+                                    Due
+                                </option>
+
+                                <option value="partial">
+                                    Partially Paid
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Save Button -->
+                        <div class="form-action">
+
+                            <button class="primary-action-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Save Customer
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     Customer List
+                ====================================== -->
+                <section class="content-card customer-list-card">
+
+                    <h2>Customer List</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="customer-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Phone</th>
+                                    <th>City</th>
+                                    <th>Type</th>
+                                    <th>Payment Status</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>ABC Traders</td>
+                                    <td>017XXXXXXXX</td>
+                                    <td>Dhaka</td>
+                                    <td>Dealer</td>
+
+                                    <td>
+
+                                        <span class="status-badge status-due">
+                                            Due
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>Bhowmik Store</td>
+                                    <td>018XXXXXXXX</td>
+                                    <td>Khulna</td>
+                                    <td>Retailer</td>
+
+                                    <td>
+
+                                        <span class="status-badge status-paid">
+                                            Paid
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>Dhaka Foods</td>
+                                    <td>019XXXXXXXX</td>
+                                    <td>Dhaka</td>
+                                    <td>Business</td>
+
+                                    <td>
+
+                                        <span class="status-badge status-paid">
+                                            Paid
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

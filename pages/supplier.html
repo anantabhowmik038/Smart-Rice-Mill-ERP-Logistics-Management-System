@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Farmer & Supplier Management | Smart Rice Mill ERP</title>
+
+    <!-- Common dashboard design -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Supplier page design -->
+    <link rel="stylesheet" href="../styles/supplier.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="sales.html">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Area
+        ====================================== -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Farmer &amp; Supplier Management</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 Supplier Page Content
+            ====================================== -->
+            <section class="dashboard-content supplier-content">
+
+                <!-- Summary Cards -->
+                <section class="supplier-summary-grid"
+                         aria-label="Farmer and supplier summary">
+
+                    <!-- Total Farmers -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            👥
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Total Farmers</p>
+
+                            <h2 class="green-value">
+                                85
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Total Suppliers -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            📋
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Total Suppliers</p>
+
+                            <h2 class="green-value">
+                                24
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Due Payments -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon green-icon">
+                            ৳
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Due Payments</p>
+
+                            <h2 class="green-value">
+                                ৳67,200
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =====================================
+                     Supplier Form
+                ====================================== -->
+                <section class="content-card supplier-form-card">
+
+                    <h2>Save Supplier</h2>
+
+
+                    <form class="supplier-form">
+
+                        <!-- Name -->
+                        <div class="form-field">
+
+                            <label for="supplier-name">
+                                Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="supplier-name"
+                                name="supplierName"
+                                placeholder="Select name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Phone Number -->
+                        <div class="form-field">
+
+                            <label for="phone-number">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone-number"
+                                name="phoneNumber"
+                                placeholder="Select phone number"
+                                pattern="[0-9]{11}"
+                                maxlength="11"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Address -->
+                        <div class="form-field">
+
+                            <label for="address">
+                                Address
+                            </label>
+
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                placeholder="Select address"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Type -->
+                        <div class="form-field">
+
+                            <label for="supplier-type">
+                                Type
+                            </label>
+
+                            <select id="supplier-type"
+                                    name="supplierType"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select type
+                                </option>
+
+                                <option value="farmer">
+                                    Farmer
+                                </option>
+
+                                <option value="supplier">
+                                    Supplier
+                                </option>
+
+                                <option value="farmer-supplier">
+                                    Farmer &amp; Supplier
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Payment Status -->
+                        <div class="form-field">
+
+                            <label for="payment-status">
+                                Payment Status
+                            </label>
+
+                            <select id="payment-status"
+                                    name="paymentStatus"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select payment status
+                                </option>
+
+                                <option value="paid">
+                                    Paid
+                                </option>
+
+                                <option value="due">
+                                    Due
+                                </option>
+
+                                <option value="partial">
+                                    Partially Paid
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Save Button -->
+                        <div class="form-action">
+
+                            <button class="primary-action-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Save Supplier
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     Farmer and Supplier List
+                ====================================== -->
+                <section class="content-card supplier-list-card">
+
+                    <h2>Farmer &amp; Supplier List</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="supplier-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                    <th>Payment Status</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>Rahim Farmer</td>
+                                    <td>Farmer</td>
+                                    <td>017XXXXXXXX</td>
+                                    <td>Dinajpur</td>
+
+                                    <td>
+
+                                        <span class="status-badge status-paid">
+                                            Paid
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>Karim Supplier</td>
+                                    <td>Supplier</td>
+                                    <td>018XXXXXXXX</td>
+                                    <td>Bogura</td>
+
+                                    <td>
+
+                                        <span class="status-badge status-due">
+                                            Due
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>Molla Agro</td>
+                                    <td>Supplier</td>
+                                    <td>019XXXXXXXX</td>
+                                    <td>Naogaon</td>
+
+                                    <td>
+
+                                        <span class="status-badge status-paid">
+                                            Paid
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

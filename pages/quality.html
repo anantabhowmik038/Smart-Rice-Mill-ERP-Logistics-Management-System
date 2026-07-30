@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Quality Inspection | Smart Rice Mill ERP</title>
+
+    <!-- Common dashboard styles -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Quality inspection page styles -->
+    <link rel="stylesheet" href="../styles/quality.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="sales.html">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="#">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Area
+        ====================================== -->
+        <main class="main-area">
+
+            <!-- Topbar -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Quality Inspection</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="notification-area">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-profile">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 Quality Inspection Content
+            ====================================== -->
+            <section class="dashboard-content quality-content">
+
+                <!-- Summary Cards -->
+                <section class="quality-summary-grid"
+                         aria-label="Quality inspection summary">
+
+                    <!-- Accepted Batches -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon accepted-icon">
+                            ✓
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Accepted Batches</p>
+
+                            <h2 class="green-value">
+                                18
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Rejected Batches -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon rejected-icon">
+                            ✖
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Rejected Batches</p>
+
+                            <h2 class="red-value">
+                                2
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Average Moisture -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon moisture-icon">
+                            💧
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Avg Moisture</p>
+
+                            <h2 class="blue-value">
+                                14%
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =====================================
+                     Inspection Form
+                ====================================== -->
+                <section class="content-card quality-form-card">
+
+                    <h2>Save Inspection</h2>
+
+
+                    <form class="quality-form">
+
+                        <!-- Purchase ID -->
+                        <div class="form-field">
+
+                            <label for="purchase-id">
+                                Purchase ID
+                            </label>
+
+                            <select id="purchase-id"
+                                    name="purchaseId"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select purchase id
+                                </option>
+
+                                <option value="P-1024">
+                                    P-1024
+                                </option>
+
+                                <option value="P-1023">
+                                    P-1023
+                                </option>
+
+                                <option value="P-1022">
+                                    P-1022
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Supplier Name -->
+                        <div class="form-field">
+
+                            <label for="supplier-name">
+                                Supplier Name
+                            </label>
+
+                            <select id="supplier-name"
+                                    name="supplierName"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select supplier name
+                                </option>
+
+                                <option value="rahim-farmer">
+                                    Rahim Farmer
+                                </option>
+
+                                <option value="karim-supplier">
+                                    Karim Supplier
+                                </option>
+
+                                <option value="molla-agro">
+                                    Molla Agro
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Moisture -->
+                        <div class="form-field">
+
+                            <label for="moisture">
+                                Moisture %
+                            </label>
+
+                            <input
+                                type="number"
+                                id="moisture"
+                                name="moisture"
+                                placeholder="Select moisture %"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Impurity -->
+                        <div class="form-field">
+
+                            <label for="impurity">
+                                Impurity %
+                            </label>
+
+                            <input
+                                type="number"
+                                id="impurity"
+                                name="impurity"
+                                placeholder="Select impurity %"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Broken Paddy -->
+                        <div class="form-field">
+
+                            <label for="broken-paddy">
+                                Broken Paddy %
+                            </label>
+
+                            <input
+                                type="number"
+                                id="broken-paddy"
+                                name="brokenPaddy"
+                                placeholder="Select broken paddy %"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Grade -->
+                        <div class="form-field">
+
+                            <label for="grade">
+                                Grade
+                            </label>
+
+                            <select id="grade"
+                                    name="grade"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select grade
+                                </option>
+
+                                <option value="A">
+                                    Grade A
+                                </option>
+
+                                <option value="B">
+                                    Grade B
+                                </option>
+
+                                <option value="C">
+                                    Grade C
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Decision -->
+                        <div class="form-field">
+
+                            <label for="decision">
+                                Decision
+                            </label>
+
+                            <select id="decision"
+                                    name="decision"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Select decision
+                                </option>
+
+                                <option value="accepted">
+                                    Accepted
+                                </option>
+
+                                <option value="review">
+                                    Review
+                                </option>
+
+                                <option value="rejected">
+                                    Rejected
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Save Button -->
+                        <div class="form-action">
+
+                            <button class="primary-action-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Save Inspection
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =====================================
+                     Inspection Records
+                ====================================== -->
+                <section class="content-card quality-list-card">
+
+                    <h2>Quality Inspection</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="quality-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Purchase ID</th>
+                                    <th>Supplier</th>
+                                    <th>Moisture</th>
+                                    <th>Grade</th>
+                                    <th>Decision</th>
+                                    <th>Date</th>
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                <tr>
+
+                                    <td>P-1024</td>
+                                    <td>Rahim Farmer</td>
+                                    <td>14%</td>
+                                    <td>A</td>
+
+                                    <td>
+                                        <span class="status-badge status-accepted">
+                                            Accepted
+                                        </span>
+                                    </td>
+
+                                    <td>01 Jul 2026</td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>P-1023</td>
+                                    <td>Karim Supplier</td>
+                                    <td>18%</td>
+                                    <td>B</td>
+
+                                    <td>
+                                        <span class="status-badge status-review">
+                                            Review
+                                        </span>
+                                    </td>
+
+                                    <td>01 Jul 2026</td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

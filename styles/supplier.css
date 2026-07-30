@@ -1,0 +1,339 @@
+/* =========================================
+   Smart Rice Mill ERP
+   Farmer & Supplier Management Page
+   ========================================= */
+
+
+/* =========================================
+   Summary Cards
+   ========================================= */
+
+.supplier-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+
+/* Simple Emoji and Text Icons */
+
+.supplier-summary-grid .summary-icon {
+    font-size: 2rem;
+}
+
+
+/* =========================================
+   Supplier Form Card
+   ========================================= */
+
+.supplier-form-card {
+    margin-top: 36px;
+    padding: 24px 25px 22px;
+}
+
+.supplier-form-card h2 {
+    margin-bottom: 25px;
+}
+
+
+/* =========================================
+   Supplier Form Grid
+   ========================================= */
+
+.supplier-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 30px;
+    row-gap: 20px;
+}
+
+
+/* =========================================
+   Form Fields
+   ========================================= */
+
+.form-field {
+    min-width: 0;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #171e29;
+}
+
+.form-field input,
+.form-field select {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: #171e29;
+    background-color: #ffffff;
+    border: 1px solid #d7dee4;
+    border-radius: 7px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.form-field input::placeholder {
+    color: #929aa6;
+}
+
+.form-field select {
+    cursor: pointer;
+}
+
+.form-field input:hover,
+.form-field select:hover {
+    border-color: #b9c2ca;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: #139536;
+    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+}
+
+
+/* =========================================
+   Save Supplier Button
+   ========================================= */
+
+.form-action {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.primary-action-button {
+    min-width: 205px;
+    height: 48px;
+    padding: 0 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #129238;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-action-button:hover {
+    background-color: #0e7f30;
+    box-shadow: 0 8px 17px rgba(18, 146, 56, 0.22);
+    transform: translateY(-1px);
+}
+
+.primary-action-button:active {
+    transform: translateY(0);
+}
+
+.primary-action-button:focus-visible {
+    outline: 3px solid rgba(18, 146, 56, 0.24);
+    outline-offset: 3px;
+}
+
+
+/* =========================================
+   Supplier List Card
+   ========================================= */
+
+.supplier-list-card {
+    margin-top: 45px;
+    padding: 23px 21px 10px;
+}
+
+.supplier-list-card h2 {
+    margin-bottom: 24px;
+}
+
+
+/* =========================================
+   Supplier Table
+   ========================================= */
+
+.supplier-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
+}
+
+.supplier-table th,
+.supplier-table td {
+    padding: 14px 20px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+
+/* Rounded Table Header */
+
+.supplier-table thead th {
+    font-weight: 500;
+    color: #171e29;
+    background-color: #fafcfc;
+    border-top: 1px solid #d8dee3;
+    border-bottom: 1px solid #d8dee3;
+}
+
+.supplier-table thead th:first-child {
+    border-left: 1px solid #d8dee3;
+    border-radius: 8px 0 0 8px;
+}
+
+.supplier-table thead th:last-child {
+    border-right: 1px solid #d8dee3;
+    border-radius: 0 8px 8px 0;
+}
+
+
+/* Table Body */
+
+.supplier-table tbody td {
+    border-bottom: 1px solid #e1e5e8;
+}
+
+.supplier-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.supplier-table tbody tr:hover td {
+    background-color: #fafcfa;
+}
+
+
+/* =========================================
+   Edit Button
+   ========================================= */
+
+.edit-button {
+    min-width: 68px;
+    height: 34px;
+    padding: 0 16px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #148d35;
+    background-color: #ffffff;
+    border: 1px solid #148d35;
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.edit-button:hover {
+    color: #ffffff;
+    background-color: #148d35;
+}
+
+
+/* =========================================
+   Responsive Design
+   ========================================= */
+
+@media screen and (max-width: 1250px) {
+
+    .supplier-summary-grid {
+        gap: 20px;
+    }
+
+    .supplier-form {
+        column-gap: 22px;
+    }
+
+}
+
+
+@media screen and (max-width: 1000px) {
+
+    .supplier-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .supplier-summary-grid .summary-card:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .supplier-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media screen and (max-width: 720px) {
+
+    .supplier-summary-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .supplier-summary-grid .summary-card:last-child {
+        grid-column: auto;
+    }
+
+    .supplier-form-card {
+        margin-top: 25px;
+        padding: 21px 18px;
+    }
+
+    .supplier-form {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .form-action {
+        margin-top: 8px;
+    }
+
+    .primary-action-button {
+        width: 100%;
+    }
+
+    .supplier-list-card {
+        margin-top: 25px;
+        padding: 20px 16px 8px;
+    }
+
+}
+
+
+@media screen and (max-width: 440px) {
+
+    .supplier-form-card h2,
+    .supplier-list-card h2 {
+        font-size: 1.15rem;
+    }
+
+    .form-field input,
+    .form-field select {
+        height: 45px;
+    }
+
+    .supplier-table th,
+    .supplier-table td {
+        padding: 12px 15px;
+    }
+
+}
