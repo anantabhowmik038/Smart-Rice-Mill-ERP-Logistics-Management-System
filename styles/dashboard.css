@@ -823,7 +823,12 @@ a {
     }
 }
 
-.notification-page-link {
+/* .notification-page-link {
+    color: inherit;
+    text-decoration: none;
+} */
+.notification-page-link,
+.profile-topbar-link {
     color: inherit;
     text-decoration: none;
 }

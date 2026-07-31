@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Profile & Settings | Smart Rice Mill ERP</title>
+
+    <!-- Common Dashboard CSS -->
+    <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Profile Page CSS -->
+    <link rel="stylesheet" href="../styles/profile.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="sidebar-logo" aria-hidden="true">
+                    <span class="logo-shape logo-shape-one"></span>
+                    <span class="logo-shape logo-shape-two"></span>
+                </div>
+
+                <div class="sidebar-brand">
+
+                    <h2>Smart Rice Mill</h2>
+
+                    <p>
+                        ERP &amp; Logistics<br>
+                        Management System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <nav class="sidebar-navigation"
+                 aria-label="Main navigation">
+
+                <a class="navigation-link"
+                   href="dashboard.html">
+
+                    <span class="navigation-icon">⌂</span>
+                    <span class="navigation-text">Dashboard</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="purchase.html">
+
+                    <span class="navigation-icon">🛒</span>
+                    <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="production.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Production</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="inventory.html">
+
+                    <span class="navigation-icon">▣</span>
+                    <span class="navigation-text">Inventory</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="sales.html">
+
+                    <span class="navigation-icon">◇</span>
+                    <span class="navigation-text">Sales</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="delivery.html">
+
+                    <span class="navigation-icon">▱</span>
+                    <span class="navigation-text">Delivery</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="reports.html">
+
+                    <span class="navigation-icon">▥</span>
+                    <span class="navigation-text">Reports</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="profile.html">
+
+                    <span class="navigation-icon">⚙</span>
+                    <span class="navigation-text">Settings</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+            </nav>
+
+
+            <a class="logout-link"
+               href="../index.html">
+
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- =====================================
+             Main Area
+        ====================================== -->
+        <main class="main-area">
+
+            <!-- =====================================
+                 Topbar
+            ====================================== -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        ☰
+
+                    </button>
+
+                    <h1>Profile &amp; Settings</h1>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <!-- Notification Link -->
+                    <a class="notification-area profile-notification-link"
+                       href="notifications.html"
+                       aria-label="View notifications">
+
+                        <span class="notification-icon">♧</span>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </a>
+
+
+                    <!-- User Profile -->
+                    <a class="user-profile profile-topbar-link"
+                       href="profile.html">
+
+                        <div class="user-avatar"
+                             aria-hidden="true">
+
+                            👤
+
+                        </div>
+
+                        <div class="user-information">
+
+                            <strong>Admin User</strong>
+                            <span>Rice Mill Owner</span>
+
+                        </div>
+
+                        <span class="profile-arrow">⌄</span>
+
+                    </a>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================
+                 Profile Page Content
+            ====================================== -->
+            <section class="dashboard-content profile-page">
+
+                <section class="profile-settings-grid">
+
+                    <!-- =====================================
+                         Profile Information Card
+                    ====================================== -->
+                    <section class="content-card profile-information-card">
+
+                        <h2>Profile Information</h2>
+
+
+                        <!-- Profile Image -->
+                        <div class="profile-avatar-section">
+
+                            <div class="profile-large-avatar">
+                                👤
+
+                                <button class="profile-camera-button"
+                                        type="button"
+                                        aria-label="Change profile picture">
+
+                                    📷
+
+                                </button>
+
+                            </div>
+
+
+                            <h3>Admin User</h3>
+
+                            <p>Rice Mill Owner</p>
+
+                        </div>
+
+
+                        <!-- Profile Form -->
+                        <form class="profile-information-form">
+
+                            <!-- Full Name -->
+                            <div class="profile-form-field">
+
+                                <label for="profile-full-name">
+                                    Full Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="profile-full-name"
+                                    name="profileFullName"
+                                    value="Admin User"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Email -->
+                            <div class="profile-form-field">
+
+                                <label for="profile-email">
+                                    Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="profile-email"
+                                    name="profileEmail"
+                                    value="admin@ricemill.com"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Phone Number -->
+                            <div class="profile-form-field">
+
+                                <label for="profile-phone">
+                                    Phone Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="profile-phone"
+                                    name="profilePhone"
+                                    value="+880 1712 345678"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Current Password -->
+                            <div class="profile-form-field">
+
+                                <label for="current-password">
+                                    Current Password
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="current-password"
+                                    name="currentPassword"
+                                    placeholder="••••••••"
+                                >
+
+                            </div>
+
+
+                            <!-- New Password -->
+                            <div class="profile-form-field">
+
+                                <label for="new-password">
+                                    New Password
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="new-password"
+                                    name="newPassword"
+                                    placeholder="••••••••"
+                                >
+
+                            </div>
+
+
+                            <!-- Confirm Password -->
+                            <div class="profile-form-field">
+
+                                <label for="confirm-password">
+                                    Confirm Password
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="confirm-password"
+                                    name="confirmPassword"
+                                    placeholder="••••••••"
+                                >
+
+                            </div>
+
+
+                            <!-- Update Button -->
+                            <button class="profile-save-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Update Profile
+
+                            </button>
+
+                        </form>
+
+                    </section>
+
+
+                    <!-- =====================================
+                         System Settings Card
+                    ====================================== -->
+                    <section class="content-card system-settings-card">
+
+                        <h2>System Settings</h2>
+
+
+                        <form class="system-settings-form">
+
+                            <!-- Rice Mill Name -->
+                            <div class="settings-form-field">
+
+                                <label for="rice-mill-name">
+                                    Rice Mill Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="rice-mill-name"
+                                    name="riceMillName"
+                                    value="Smart Rice Mill"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Address -->
+                            <div class="settings-form-field">
+
+                                <label for="rice-mill-address">
+                                    Address
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="rice-mill-address"
+                                    name="riceMillAddress"
+                                    value="123 Rice Mill Road, Dinajpur"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Contact Number -->
+                            <div class="settings-form-field">
+
+                                <label for="rice-mill-contact">
+                                    Contact Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="rice-mill-contact"
+                                    name="riceMillContact"
+                                    value="+880 1712 345678"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <!-- Default Currency -->
+                            <div class="settings-form-field">
+
+                                <label for="default-currency">
+                                    Default Currency
+                                </label>
+
+                                <select id="default-currency"
+                                        name="defaultCurrency">
+
+                                    <option value="BDT" selected>
+                                        BDT (Bangladeshi Taka)
+                                    </option>
+
+                                    <option value="USD">
+                                        USD (US Dollar)
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Notification Preferences -->
+                            <div class="settings-form-field">
+
+                                <label for="notification-preference">
+                                    Notification Preferences
+                                </label>
+
+                                <select id="notification-preference"
+                                        name="notificationPreference">
+
+                                    <option value="email-in-app" selected>
+                                        Email and In-App Notifications
+                                    </option>
+
+                                    <option value="in-app">
+                                        In-App Notifications Only
+                                    </option>
+
+                                    <option value="email">
+                                        Email Notifications Only
+                                    </option>
+
+                                    <option value="none">
+                                        Turn Off Notifications
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Save Settings Button -->
+                            <button class="settings-save-button"
+                                    type="button">
+
+                                <span aria-hidden="true">▣</span>
+                                Save Settings
+
+                            </button>
+
+                        </form>
+
+                    </section>
+
+                </section>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

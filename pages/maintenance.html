@@ -9,7 +9,10 @@
 
     <title>Machine Maintenance | Smart Rice Mill ERP</title>
 
+    <!-- Common Dashboard CSS -->
     <link rel="stylesheet" href="../styles/dashboard.css">
+
+    <!-- Maintenance Page CSS -->
     <link rel="stylesheet" href="../styles/maintenance.css">
 </head>
 
@@ -17,15 +20,21 @@
 
     <div class="dashboard-layout">
 
-        <!-- Sidebar -->
+        <!-- =====================================
+             Sidebar
+        ====================================== -->
         <aside class="sidebar">
 
             <div class="sidebar-header">
 
-                <div class="sidebar-logo" aria-hidden="true">
+                <div class="sidebar-logo"
+                     aria-hidden="true">
+
                     <span class="logo-shape logo-shape-one"></span>
                     <span class="logo-shape logo-shape-two"></span>
+
                 </div>
+
 
                 <div class="sidebar-brand">
 
@@ -41,9 +50,11 @@
             </div>
 
 
+            <!-- Sidebar Navigation -->
             <nav class="sidebar-navigation"
                  aria-label="Main navigation">
 
+                <!-- Dashboard -->
                 <a class="navigation-link"
                    href="dashboard.html">
 
@@ -54,6 +65,7 @@
                 </a>
 
 
+                <!-- Purchase -->
                 <a class="navigation-link"
                    href="purchase.html">
 
@@ -64,6 +76,7 @@
                 </a>
 
 
+                <!-- Production -->
                 <a class="navigation-link"
                    href="production.html">
 
@@ -74,6 +87,7 @@
                 </a>
 
 
+                <!-- Inventory -->
                 <a class="navigation-link"
                    href="inventory.html">
 
@@ -84,6 +98,7 @@
                 </a>
 
 
+                <!-- Sales -->
                 <a class="navigation-link"
                    href="sales.html">
 
@@ -94,6 +109,7 @@
                 </a>
 
 
+                <!-- Delivery -->
                 <a class="navigation-link"
                    href="delivery.html">
 
@@ -104,8 +120,9 @@
                 </a>
 
 
+                <!-- Reports -->
                 <a class="navigation-link"
-                   href="expense.html">
+                   href="reports.html">
 
                     <span class="navigation-icon">▥</span>
                     <span class="navigation-text">Reports</span>
@@ -114,18 +131,9 @@
                 </a>
 
 
+                <!-- Settings -->
                 <a class="navigation-link active"
-                   href="maintenance.html">
-
-                    <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-                
-                <a class="navigation-link active"
-                   href="reports.html">
+                   href="profile.html">
 
                     <span class="navigation-icon">⚙</span>
                     <span class="navigation-text">Settings</span>
@@ -136,6 +144,7 @@
             </nav>
 
 
+            <!-- Logout -->
             <a class="logout-link"
                href="../index.html">
 
@@ -147,10 +156,14 @@
         </aside>
 
 
-        <!-- Main Area -->
+        <!-- =====================================
+             Main Area
+        ====================================== -->
         <main class="main-area">
 
-            <!-- Topbar -->
+            <!-- =====================================
+                 Topbar
+            ====================================== -->
             <header class="topbar">
 
                 <div class="topbar-left">
@@ -170,7 +183,10 @@
 
                 <div class="topbar-right">
 
-                    <div class="notification-area">
+                    <!-- Notification Link -->
+                    <a class="notification-area notification-page-link"
+                       href="notifications.html"
+                       aria-label="View notifications">
 
                         <span class="notification-icon">♧</span>
 
@@ -178,10 +194,12 @@
                             3
                         </span>
 
-                    </div>
+                    </a>
 
 
-                    <div class="user-profile">
+                    <!-- Profile Link -->
+                    <a class="user-profile profile-topbar-link"
+                       href="profile.html">
 
                         <div class="user-avatar"
                              aria-hidden="true">
@@ -190,6 +208,7 @@
 
                         </div>
 
+
                         <div class="user-information">
 
                             <strong>Admin User</strong>
@@ -197,19 +216,26 @@
 
                         </div>
 
-                        <span class="profile-arrow">⌄</span>
 
-                    </div>
+                        <span class="profile-arrow">
+                            ⌄
+                        </span>
+
+                    </a>
 
                 </div>
 
             </header>
 
 
-            <!-- Maintenance Content -->
+            <!-- =====================================
+                 Maintenance Content
+            ====================================== -->
             <section class="dashboard-content maintenance-content">
 
-                <!-- Summary Cards -->
+                <!-- =====================================
+                     Summary Cards
+                ====================================== -->
                 <section class="maintenance-summary-grid"
                          aria-label="Machine maintenance summary">
 
@@ -219,6 +245,7 @@
                         <div class="summary-icon green-icon">
                             ⚙️
                         </div>
+
 
                         <div class="summary-details">
 
@@ -240,6 +267,7 @@
                             🔧
                         </div>
 
+
                         <div class="summary-details">
 
                             <p>Maintenance Due</p>
@@ -260,6 +288,7 @@
                             ▣
                         </div>
 
+
                         <div class="summary-details">
 
                             <p>Last Service</p>
@@ -275,7 +304,9 @@
                 </section>
 
 
-                <!-- Maintenance Form -->
+                <!-- =====================================
+                     Maintenance Form
+                ====================================== -->
                 <section class="content-card maintenance-form-card">
 
                     <h2>Add Maintenance Record</h2>
@@ -290,12 +321,17 @@
                                 Machine Name
                             </label>
 
+
                             <select id="machine-name"
                                     name="machineName"
                                     required>
 
-                                <option value="" selected disabled>
+                                <option value=""
+                                        selected
+                                        disabled>
+
                                     Select machine name
+
                                 </option>
 
                                 <option value="polishing-machine">
@@ -334,12 +370,17 @@
                                 Service Type
                             </label>
 
+
                             <select id="service-type"
                                     name="serviceType"
                                     required>
 
-                                <option value="" selected disabled>
+                                <option value=""
+                                        selected
+                                        disabled>
+
                                     Select service type
+
                                 </option>
 
                                 <option value="oil-change">
@@ -374,6 +415,7 @@
                                 Last Service Date
                             </label>
 
+
                             <input
                                 type="date"
                                 id="last-service-date"
@@ -391,6 +433,7 @@
                                 Next Service Date
                             </label>
 
+
                             <input
                                 type="date"
                                 id="next-service-date"
@@ -401,12 +444,13 @@
                         </div>
 
 
-                        <!-- Cost -->
+                        <!-- Maintenance Cost -->
                         <div class="form-field">
 
                             <label for="maintenance-cost">
                                 Cost
                             </label>
+
 
                             <input
                                 type="number"
@@ -421,19 +465,24 @@
                         </div>
 
 
-                        <!-- Status -->
+                        <!-- Maintenance Status -->
                         <div class="form-field">
 
                             <label for="maintenance-status">
                                 Status
                             </label>
 
+
                             <select id="maintenance-status"
                                     name="maintenanceStatus"
                                     required>
 
-                                <option value="" selected disabled>
+                                <option value=""
+                                        selected
+                                        disabled>
+
                                     Select status
+
                                 </option>
 
                                 <option value="completed">
@@ -463,7 +512,10 @@
                             <button class="primary-action-button"
                                     type="button">
 
-                                <span aria-hidden="true">▣</span>
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
+
                                 Save Maintenance
 
                             </button>
@@ -475,7 +527,9 @@
                 </section>
 
 
-                <!-- Maintenance Records -->
+                <!-- =====================================
+                     Maintenance Records
+                ====================================== -->
                 <section class="content-card maintenance-list-card">
 
                     <h2>Maintenance Records</h2>
@@ -488,12 +542,14 @@
                             <thead>
 
                                 <tr>
+
                                     <th>Machine</th>
                                     <th>Service Type</th>
                                     <th>Last Service</th>
                                     <th>Next Service</th>
                                     <th>Cost</th>
                                     <th>Status</th>
+
                                 </tr>
 
                             </thead>
@@ -501,12 +557,17 @@
 
                             <tbody>
 
+                                <!-- First Record -->
                                 <tr>
 
                                     <td>Polishing Machine</td>
+
                                     <td>Oil Change</td>
+
                                     <td>25 Jun 2026</td>
+
                                     <td>10 Jul 2026</td>
+
                                     <td>৳5,000</td>
 
                                     <td>
@@ -520,12 +581,17 @@
                                 </tr>
 
 
+                                <!-- Second Record -->
                                 <tr>
 
                                     <td>Dryer Machine</td>
+
                                     <td>Repair</td>
+
                                     <td>20 Jun 2026</td>
+
                                     <td>05 Jul 2026</td>
+
                                     <td>৳8,000</td>
 
                                     <td>

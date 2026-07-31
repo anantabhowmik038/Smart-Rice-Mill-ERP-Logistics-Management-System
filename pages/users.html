@@ -7,13 +7,13 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Inventory Management | Smart Rice Mill ERP</title>
+    <title>User Role Management | Smart Rice Mill ERP</title>
 
-    <!-- Common dashboard design -->
+    <!-- Common Dashboard CSS -->
     <link rel="stylesheet" href="../styles/dashboard.css">
 
-    <!-- Inventory page design -->
-    <link rel="stylesheet" href="../styles/inventory.css">
+    <!-- User Role Page CSS -->
+    <link rel="stylesheet" href="../styles/users.css">
 </head>
 
 <body>
@@ -79,7 +79,7 @@
                 </a>
 
 
-                <a class="navigation-link active"
+                <a class="navigation-link"
                    href="inventory.html">
 
                     <span class="navigation-icon">▣</span>
@@ -119,7 +119,7 @@
                 </a>
 
 
-                <a class="navigation-link"
+                <a class="navigation-link active"
                    href="profile.html">
 
                     <span class="navigation-icon">⚙</span>
@@ -147,7 +147,9 @@
         ====================================== -->
         <main class="main-area">
 
-            <!-- Topbar -->
+            <!-- =====================================
+                 Topbar
+            ====================================== -->
             <header class="topbar">
 
                 <div class="topbar-left">
@@ -160,14 +162,16 @@
 
                     </button>
 
-                    <h1>Inventory Management</h1>
+                    <h1>User Role Management</h1>
 
                 </div>
 
 
                 <div class="topbar-right">
 
-                    <div class="notification-area">
+                    <a class="notification-area notification-page-link"
+                       href="notifications.html"
+                       aria-label="View notifications">
 
                         <span class="notification-icon">♧</span>
 
@@ -175,7 +179,7 @@
                             3
                         </span>
 
-                    </div>
+                    </a>
 
 
                     <div class="user-profile">
@@ -204,54 +208,29 @@
 
 
             <!-- =====================================
-                 Inventory Content
+                 User Role Content
             ====================================== -->
-            <section class="dashboard-content inventory-content">
+            <section class="dashboard-content users-page">
 
-                <!-- Summary Cards -->
-                <section class="inventory-summary-grid"
-                         aria-label="Inventory summary">
+                <!-- =====================================
+                     Summary Cards
+                ====================================== -->
+                <section class="users-summary-grid"
+                         aria-label="User role summary">
 
-                    <!-- Rice Stock -->
+                    <!-- Total Users -->
                     <article class="summary-card">
 
-                        <div class="summary-icon green-icon">
-
-                            <svg class="inventory-card-icon"
-                                 viewBox="0 0 64 64"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 aria-hidden="true">
-
-                                <rect
-                                    x="14"
-                                    y="14"
-                                    width="36"
-                                    height="36"
-                                    rx="2"
-                                    fill="none"
-                                    stroke="#15913a"
-                                    stroke-width="4"
-                                />
-
-                                <rect
-                                    x="25"
-                                    y="24"
-                                    width="14"
-                                    height="16"
-                                    rx="1"
-                                    fill="#15913a"
-                                />
-
-                            </svg>
-
+                        <div class="summary-icon green-icon users-simple-icon">
+                            👥
                         </div>
 
                         <div class="summary-details">
 
-                            <p>Rice Stock</p>
+                            <p>Total Users</p>
 
                             <h2 class="green-value">
-                                450 Bags
+                                12
                             </h2>
 
                         </div>
@@ -259,19 +238,19 @@
                     </article>
 
 
-                    <!-- Paddy Stock -->
+                    <!-- Admins -->
                     <article class="summary-card">
 
-                        <div class="summary-icon green-icon">
-                            🌾
+                        <div class="summary-icon blue-icon users-simple-icon">
+                            🛡
                         </div>
 
                         <div class="summary-details">
 
-                            <p>Paddy Stock</p>
+                            <p>Admins</p>
 
                             <h2 class="blue-value">
-                                900 Bags
+                                2
                             </h2>
 
                         </div>
@@ -279,47 +258,39 @@
                     </article>
 
 
-                    <!-- Low Stock -->
+                    <!-- Managers -->
                     <article class="summary-card">
 
-                        <div class="summary-icon orange-icon">
-
-                            <svg class="inventory-card-icon"
-                                 viewBox="0 0 64 64"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 aria-hidden="true">
-
-                                <path
-                                    d="M32 10L55 51H9L32 10Z"
-                                    fill="#ed9000"
-                                />
-
-                                <rect
-                                    x="29.5"
-                                    y="24"
-                                    width="5"
-                                    height="15"
-                                    rx="2"
-                                    fill="#ffffff"
-                                />
-
-                                <circle
-                                    cx="32"
-                                    cy="45"
-                                    r="3"
-                                    fill="#ffffff"
-                                />
-
-                            </svg>
-
+                        <div class="summary-icon orange-icon users-simple-icon">
+                            👤
                         </div>
 
                         <div class="summary-details">
 
-                            <p>Low Stock</p>
+                            <p>Managers</p>
 
                             <h2 class="orange-value">
-                                2 Items
+                                4
+                            </h2>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Drivers -->
+                    <article class="summary-card">
+
+                        <div class="summary-icon users-purple-icon users-simple-icon">
+                            🚚
+                        </div>
+
+                        <div class="summary-details">
+
+                            <p>Drivers</p>
+
+                            <h2 class="users-purple-value">
+                                3
                             </h2>
 
                         </div>
@@ -330,47 +301,108 @@
 
 
                 <!-- =====================================
-                     Stock Update Form
+                     Add User Form
                 ====================================== -->
-                <section class="content-card inventory-form-card">
+                <section class="content-card users-form-card">
 
-                    <h2>Add Stock Update</h2>
+                    <h2>Add User</h2>
 
 
-                    <form class="inventory-form">
+                    <form class="users-form">
 
-                        <div class="form-field">
+                        <!-- Full Name -->
+                        <div class="users-form-field">
 
-                            <label for="product">
-                                Product
+                            <label for="full-name">
+                                Full Name
                             </label>
 
-                            <select id="product"
-                                    name="product"
+                            <input
+                                type="text"
+                                id="full-name"
+                                name="fullName"
+                                placeholder="Select full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Email -->
+                        <div class="users-form-field">
+
+                            <label for="user-email">
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                id="user-email"
+                                name="userEmail"
+                                placeholder="Select email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Phone -->
+                        <div class="users-form-field">
+
+                            <label for="user-phone">
+                                Phone
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="user-phone"
+                                name="userPhone"
+                                placeholder="Select phone"
+                                pattern="[0-9]{11}"
+                                maxlength="11"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Role -->
+                        <div class="users-form-field">
+
+                            <label for="user-role">
+                                Role
+                            </label>
+
+                            <select id="user-role"
+                                    name="userRole"
                                     required>
 
                                 <option value="" selected disabled>
-                                    Select product
+                                    Select role
                                 </option>
 
-                                <option value="rice">
-                                    Rice
+                                <option value="owner">
+                                    Owner
                                 </option>
 
-                                <option value="paddy">
-                                    Paddy
+                                <option value="admin">
+                                    Admin
                                 </option>
 
-                                <option value="khud">
-                                    Khud
+                                <option value="manager">
+                                    Manager
                                 </option>
 
-                                <option value="tush">
-                                    Tush
+                                <option value="accountant">
+                                    Accountant
                                 </option>
 
-                                <option value="bran">
-                                    Bran
+                                <option value="operator">
+                                    Machine Operator
+                                </option>
+
+                                <option value="driver">
+                                    Driver
                                 </option>
 
                             </select>
@@ -378,80 +410,15 @@
                         </div>
 
 
-                        <div class="form-field">
+                        <!-- Status -->
+                        <div class="users-form-field">
 
-                            <label for="available-stock">
-                                Available Stock
-                            </label>
-
-                            <input
-                                type="number"
-                                id="available-stock"
-                                name="availableStock"
-                                placeholder="Select available stock"
-                                min="0"
-                                step="0.01"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-field">
-
-                            <label for="unit">
-                                Unit
-                            </label>
-
-                            <select id="unit"
-                                    name="unit"
-                                    required>
-
-                                <option value="" selected disabled>
-                                    Select unit
-                                </option>
-
-                                <option value="bags">
-                                    Bags
-                                </option>
-
-                                <option value="kg">
-                                    Kilograms
-                                </option>
-
-                                <option value="tons">
-                                    Tons
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="form-field">
-
-                            <label for="last-updated">
-                                Last Updated
-                            </label>
-
-                            <input
-                                type="date"
-                                id="last-updated"
-                                name="lastUpdated"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-field">
-
-                            <label for="stock-status">
+                            <label for="user-status">
                                 Status
                             </label>
 
-                            <select id="stock-status"
-                                    name="stockStatus"
+                            <select id="user-status"
+                                    name="userStatus"
                                     required>
 
                                 <option value="" selected disabled>
@@ -462,12 +429,12 @@
                                     Active
                                 </option>
 
-                                <option value="low-stock">
-                                    Low Stock
+                                <option value="inactive">
+                                    Inactive
                                 </option>
 
-                                <option value="out-of-stock">
-                                    Out of Stock
+                                <option value="suspended">
+                                    Suspended
                                 </option>
 
                             </select>
@@ -475,13 +442,14 @@
                         </div>
 
 
-                        <div class="form-action">
+                        <!-- Add User Button -->
+                        <div class="users-form-action">
 
-                            <button class="primary-action-button"
+                            <button class="users-add-button"
                                     type="button">
 
                                 <span aria-hidden="true">▣</span>
-                                Add Stock Update
+                                Add User
 
                             </button>
 
@@ -493,25 +461,25 @@
 
 
                 <!-- =====================================
-                     Inventory Records
+                     User List
                 ====================================== -->
-                <section class="content-card inventory-list-card">
+                <section class="content-card users-list-card">
 
-                    <h2>Inventory List</h2>
+                    <h2>User List</h2>
 
 
                     <div class="table-wrapper">
 
-                        <table class="inventory-table">
+                        <table class="users-table">
 
                             <thead>
 
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Available Stock</th>
-                                    <th>Unit</th>
-                                    <th>Last Updated</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
 
                             </thead>
@@ -521,15 +489,27 @@
 
                                 <tr>
 
-                                    <td>Rice</td>
-                                    <td>450</td>
-                                    <td>Bags</td>
-                                    <td>01 Jul 2026</td>
+                                    <td>Admin User</td>
+                                    <td>admin@ricemill.com</td>
+                                    <td>Owner</td>
 
                                     <td>
-                                        <span class="status-badge status-active">
+
+                                        <span class="status-badge users-active-status">
                                             Active
                                         </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="users-edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
                                     </td>
 
                                 </tr>
@@ -537,15 +517,27 @@
 
                                 <tr>
 
-                                    <td>Paddy</td>
-                                    <td>900</td>
-                                    <td>Bags</td>
-                                    <td>01 Jul 2026</td>
+                                    <td>Manager User</td>
+                                    <td>manager@ricemill.com</td>
+                                    <td>Manager</td>
 
                                     <td>
-                                        <span class="status-badge status-active">
+
+                                        <span class="status-badge users-active-status">
                                             Active
                                         </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="users-edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
                                     </td>
 
                                 </tr>
@@ -553,15 +545,27 @@
 
                                 <tr>
 
-                                    <td>Khud</td>
-                                    <td>120</td>
-                                    <td>Bags</td>
-                                    <td>30 Jun 2026</td>
+                                    <td>Driver User</td>
+                                    <td>driver@ricemill.com</td>
+                                    <td>Driver</td>
 
                                     <td>
-                                        <span class="status-badge status-low">
-                                            Low Stock
+
+                                        <span class="status-badge users-active-status">
+                                            Active
                                         </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <button class="users-edit-button"
+                                                type="button">
+
+                                            Edit
+
+                                        </button>
+
                                     </td>
 
                                 </tr>
