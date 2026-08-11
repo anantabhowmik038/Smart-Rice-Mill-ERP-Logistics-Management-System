@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -9,28 +10,36 @@
 
     <title>Inventory Management | Smart Rice Mill ERP</title>
 
-    <!-- Common dashboard design -->
+    <!-- Common Dashboard CSS -->
     <link rel="stylesheet" href="../styles/dashboard.css">
 
-    <!-- Inventory page design -->
+    <!-- Inventory CSS -->
     <link rel="stylesheet" href="../styles/inventory.css">
+
 </head>
+
 
 <body>
 
     <div class="dashboard-layout">
 
+
         <!-- =====================================
              Sidebar
         ====================================== -->
+
         <aside class="sidebar">
 
             <div class="sidebar-header">
 
-                <div class="sidebar-logo" aria-hidden="true">
+                <div class="sidebar-logo"
+                     aria-hidden="true">
+
                     <span class="logo-shape logo-shape-one"></span>
                     <span class="logo-shape logo-shape-two"></span>
+
                 </div>
+
 
                 <div class="sidebar-brand">
 
@@ -48,6 +57,7 @@
 
             <nav class="sidebar-navigation"
                  aria-label="Main navigation">
+
 
                 <a class="navigation-link"
                    href="dashboard.html">
@@ -142,12 +152,16 @@
         </aside>
 
 
+
         <!-- =====================================
              Main Area
         ====================================== -->
+
         <main class="main-area">
 
+
             <!-- Topbar -->
+
             <header class="topbar">
 
                 <div class="topbar-left">
@@ -169,7 +183,9 @@
 
                     <div class="notification-area">
 
-                        <span class="notification-icon">♧</span>
+                        <span class="notification-icon">
+                            ♧
+                        </span>
 
                         <span class="notification-count">
                             3
@@ -187,14 +203,19 @@
 
                         </div>
 
+
                         <div class="user-information">
 
                             <strong>Admin User</strong>
+
                             <span>Rice Mill Owner</span>
 
                         </div>
 
-                        <span class="profile-arrow">⌄</span>
+
+                        <span class="profile-arrow">
+                            ⌄
+                        </span>
 
                     </div>
 
@@ -203,55 +224,40 @@
             </header>
 
 
+
             <!-- =====================================
                  Inventory Content
             ====================================== -->
+
             <section class="dashboard-content inventory-content">
 
-                <!-- Summary Cards -->
+
+                <!-- =====================================
+                     Dynamic Summary
+                ====================================== -->
+
                 <section class="inventory-summary-grid"
                          aria-label="Inventory summary">
 
+
                     <!-- Rice Stock -->
+
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon">
-
-                            <svg class="inventory-card-icon"
-                                 viewBox="0 0 64 64"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 aria-hidden="true">
-
-                                <rect
-                                    x="14"
-                                    y="14"
-                                    width="36"
-                                    height="36"
-                                    rx="2"
-                                    fill="none"
-                                    stroke="#15913a"
-                                    stroke-width="4"
-                                />
-
-                                <rect
-                                    x="25"
-                                    y="24"
-                                    width="14"
-                                    height="16"
-                                    rx="1"
-                                    fill="#15913a"
-                                />
-
-                            </svg>
-
+                            ▣
                         </div>
+
 
                         <div class="summary-details">
 
                             <p>Rice Stock</p>
 
-                            <h2 class="green-value">
-                                450 Bags
+                            <h2 class="green-value"
+                                id="riceStockValue">
+
+                                0 kg
+
                             </h2>
 
                         </div>
@@ -259,19 +265,25 @@
                     </article>
 
 
+
                     <!-- Paddy Stock -->
+
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon">
                             🌾
                         </div>
 
+
                         <div class="summary-details">
 
                             <p>Paddy Stock</p>
 
-                            <h2 class="blue-value">
-                                900 Bags
+                            <h2 class="blue-value"
+                                id="paddyStockValue">
+
+                                0 kg
+
                             </h2>
 
                         </div>
@@ -279,47 +291,25 @@
                     </article>
 
 
+
                     <!-- Low Stock -->
+
                     <article class="summary-card">
 
                         <div class="summary-icon orange-icon">
-
-                            <svg class="inventory-card-icon"
-                                 viewBox="0 0 64 64"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 aria-hidden="true">
-
-                                <path
-                                    d="M32 10L55 51H9L32 10Z"
-                                    fill="#ed9000"
-                                />
-
-                                <rect
-                                    x="29.5"
-                                    y="24"
-                                    width="5"
-                                    height="15"
-                                    rx="2"
-                                    fill="#ffffff"
-                                />
-
-                                <circle
-                                    cx="32"
-                                    cy="45"
-                                    r="3"
-                                    fill="#ffffff"
-                                />
-
-                            </svg>
-
+                            ⚠
                         </div>
+
 
                         <div class="summary-details">
 
                             <p>Low Stock</p>
 
-                            <h2 class="orange-value">
-                                2 Items
+                            <h2 class="orange-value"
+                                id="lowStockValue">
+
+                                0 Items
+
                             </h2>
 
                         </div>
@@ -329,36 +319,50 @@
                 </section>
 
 
+
                 <!-- =====================================
-                     Stock Update Form
+                     Manual Stock Adjustment
                 ====================================== -->
+
                 <section class="content-card inventory-form-card">
 
-                    <h2>Add Stock Update</h2>
+                    <h2>Manual Stock Adjustment</h2>
 
 
-                    <form class="inventory-form">
+                    <form class="inventory-form"
+                          id="inventoryAdjustmentForm"
+                          novalidate>
+
+
+                        <!-- Product -->
 
                         <div class="form-field">
 
                             <label for="product">
+
                                 Product
+
                             </label>
 
-                            <select id="product"
-                                    name="product"
-                                    required>
 
-                                <option value="" selected disabled>
+                            <select id="product"
+                                    name="product">
+
+                                <option value=""
+                                        selected
+                                        disabled>
+
                                     Select product
+
+                                </option>
+
+
+                                <option value="paddy">
+                                    Paddy
                                 </option>
 
                                 <option value="rice">
                                     Rice
-                                </option>
-
-                                <option value="paddy">
-                                    Paddy
                                 </option>
 
                                 <option value="khud">
@@ -369,8 +373,42 @@
                                     Tush
                                 </option>
 
-                                <option value="bran">
-                                    Bran
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- Adjustment Type -->
+
+                        <div class="form-field">
+
+                            <label for="adjustment-type">
+
+                                Adjustment Type
+
+                            </label>
+
+
+                            <select id="adjustment-type"
+                                    name="adjustmentType">
+
+                                <option value=""
+                                        selected
+                                        disabled>
+
+                                    Select adjustment type
+
+                                </option>
+
+
+                                <option value="add">
+                                    Add Stock
+                                </option>
+
+
+                                <option value="remove">
+                                    Remove Stock
                                 </option>
 
                             </select>
@@ -378,49 +416,50 @@
                         </div>
 
 
+
+                        <!-- Quantity -->
+
                         <div class="form-field">
 
-                            <label for="available-stock">
-                                Available Stock
+                            <label for="adjustment-quantity">
+
+                                Quantity
+
                             </label>
+
 
                             <input
                                 type="number"
-                                id="available-stock"
-                                name="availableStock"
-                                placeholder="Select available stock"
-                                min="0"
+                                id="adjustment-quantity"
+                                name="adjustmentQuantity"
+                                placeholder="Enter quantity in kg"
+                                min="0.01"
                                 step="0.01"
-                                required
                             >
 
                         </div>
 
+
+
+                        <!-- Unit -->
 
                         <div class="form-field">
 
                             <label for="unit">
+
                                 Unit
+
                             </label>
 
+
                             <select id="unit"
-                                    name="unit"
-                                    required>
+                                    name="unit">
 
-                                <option value="" selected disabled>
-                                    Select unit
-                                </option>
+                                <option value="kg"
+                                        selected>
 
-                                <option value="bags">
-                                    Bags
-                                </option>
+                                    Kilograms (kg)
 
-                                <option value="kg">
-                                    Kilograms
-                                </option>
-
-                                <option value="tons">
-                                    Tons
                                 </option>
 
                             </select>
@@ -428,60 +467,63 @@
                         </div>
 
 
+
+                        <!-- Date -->
+
                         <div class="form-field">
 
-                            <label for="last-updated">
-                                Last Updated
+                            <label for="adjustment-date">
+
+                                Adjustment Date
+
                             </label>
+
 
                             <input
                                 type="date"
-                                id="last-updated"
-                                name="lastUpdated"
-                                required
+                                id="adjustment-date"
+                                name="adjustmentDate"
                             >
 
                         </div>
 
 
+
+                        <!-- Reason -->
+
                         <div class="form-field">
 
-                            <label for="stock-status">
-                                Status
+                            <label for="adjustment-reason">
+
+                                Reason
+
                             </label>
 
-                            <select id="stock-status"
-                                    name="stockStatus"
-                                    required>
 
-                                <option value="" selected disabled>
-                                    Select status
-                                </option>
-
-                                <option value="active">
-                                    Active
-                                </option>
-
-                                <option value="low-stock">
-                                    Low Stock
-                                </option>
-
-                                <option value="out-of-stock">
-                                    Out of Stock
-                                </option>
-
-                            </select>
+                            <input
+                                type="text"
+                                id="adjustment-reason"
+                                name="adjustmentReason"
+                                placeholder="Example: damaged stock correction"
+                            >
 
                         </div>
 
 
+
+                        <!-- Save -->
+
                         <div class="form-action">
 
                             <button class="primary-action-button"
-                                    type="button">
+                                    type="submit"
+                                    id="saveAdjustmentBtn">
 
-                                <span aria-hidden="true">▣</span>
-                                Add Stock Update
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
+
+                                Save Adjustment
 
                             </button>
 
@@ -492,12 +534,14 @@
                 </section>
 
 
+
                 <!-- =====================================
-                     Inventory Records
+                     Current Inventory
                 ====================================== -->
+
                 <section class="content-card inventory-list-card">
 
-                    <h2>Inventory List</h2>
+                    <h2>Current Inventory</h2>
 
 
                     <div class="table-wrapper">
@@ -507,64 +551,69 @@
                             <thead>
 
                                 <tr>
+
                                     <th>Product</th>
+
                                     <th>Available Stock</th>
+
                                     <th>Unit</th>
+
                                     <th>Last Updated</th>
+
                                     <th>Status</th>
+
                                 </tr>
 
                             </thead>
 
 
-                            <tbody>
+                            <tbody id="inventoryTableBody">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =====================================
+                     Adjustment Records
+                ====================================== -->
+
+                <section class="content-card inventory-list-card">
+
+                    <h2>Stock Adjustment History</h2>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="inventory-table">
+
+                            <thead>
 
                                 <tr>
 
-                                    <td>Rice</td>
-                                    <td>450</td>
-                                    <td>Bags</td>
-                                    <td>01 Jul 2026</td>
+                                    <th>Product</th>
 
-                                    <td>
-                                        <span class="status-badge status-active">
-                                            Active
-                                        </span>
-                                    </td>
+                                    <th>Type</th>
 
-                                </tr>
+                                    <th>Quantity</th>
 
+                                    <th>Reason</th>
 
-                                <tr>
+                                    <th>Date</th>
 
-                                    <td>Paddy</td>
-                                    <td>900</td>
-                                    <td>Bags</td>
-                                    <td>01 Jul 2026</td>
-
-                                    <td>
-                                        <span class="status-badge status-active">
-                                            Active
-                                        </span>
-                                    </td>
+                                    <th>Action</th>
 
                                 </tr>
 
+                            </thead>
 
-                                <tr>
 
-                                    <td>Khud</td>
-                                    <td>120</td>
-                                    <td>Bags</td>
-                                    <td>30 Jun 2026</td>
-
-                                    <td>
-                                        <span class="status-badge status-low">
-                                            Low Stock
-                                        </span>
-                                    </td>
-
-                                </tr>
+                            <tbody id="adjustmentTableBody">
 
                             </tbody>
 
@@ -579,7 +628,12 @@
         </main>
 
     </div>
-<script src="../scripts/auth.js"></script>
+
+
+    <script src="../scripts/auth.js"></script>
+
+    <script src="../scripts/inventory.js"></script>
+
 </body>
 
 </html>

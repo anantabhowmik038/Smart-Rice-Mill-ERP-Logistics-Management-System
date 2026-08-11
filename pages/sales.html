@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -9,28 +10,34 @@
 
     <title>Sales & Invoice Management | Smart Rice Mill ERP</title>
 
-    <!-- Common dashboard design -->
     <link rel="stylesheet" href="../styles/dashboard.css">
 
-    <!-- Sales page design -->
     <link rel="stylesheet" href="../styles/sales.css">
+
 </head>
+
 
 <body>
 
     <div class="dashboard-layout">
 
+
         <!-- =====================================
              Sidebar
         ====================================== -->
+
         <aside class="sidebar">
 
             <div class="sidebar-header">
 
-                <div class="sidebar-logo" aria-hidden="true">
+                <div class="sidebar-logo"
+                     aria-hidden="true">
+
                     <span class="logo-shape logo-shape-one"></span>
                     <span class="logo-shape logo-shape-two"></span>
+
                 </div>
+
 
                 <div class="sidebar-brand">
 
@@ -48,6 +55,7 @@
 
             <nav class="sidebar-navigation"
                  aria-label="Main navigation">
+
 
                 <a class="navigation-link"
                    href="dashboard.html">
@@ -142,12 +150,16 @@
         </aside>
 
 
+
         <!-- =====================================
              Main Area
         ====================================== -->
+
         <main class="main-area">
 
+
             <!-- Topbar -->
+
             <header class="topbar">
 
                 <div class="topbar-left">
@@ -169,7 +181,9 @@
 
                     <div class="notification-area">
 
-                        <span class="notification-icon">♧</span>
+                        <span class="notification-icon">
+                            ♧
+                        </span>
 
                         <span class="notification-count">
                             3
@@ -187,14 +201,19 @@
 
                         </div>
 
+
                         <div class="user-information">
 
                             <strong>Admin User</strong>
+
                             <span>Rice Mill Owner</span>
 
                         </div>
 
-                        <span class="profile-arrow">⌄</span>
+
+                        <span class="profile-arrow">
+                            ⌄
+                        </span>
 
                     </div>
 
@@ -203,28 +222,38 @@
             </header>
 
 
+
             <!-- =====================================
                  Sales Content
             ====================================== -->
+
             <section class="dashboard-content sales-content">
 
-                <!-- Summary Cards -->
+
+                <!-- =====================================
+                     Dynamic Summary
+                ====================================== -->
+
                 <section class="sales-summary-grid"
                          aria-label="Sales summary">
 
-                    <!-- Today Sales -->
+
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon">
                             ৳
                         </div>
 
+
                         <div class="summary-details">
 
                             <p>Today Sales</p>
 
-                            <h2 class="green-value">
-                                ৳1,20,000
+                            <h2 class="green-value"
+                                id="todaySalesValue">
+
+                                ৳0
+
                             </h2>
 
                         </div>
@@ -232,65 +261,23 @@
                     </article>
 
 
-                    <!-- Invoices -->
+
                     <article class="summary-card">
 
                         <div class="summary-icon blue-icon">
-
-                            <svg class="sales-card-icon"
-                                 viewBox="0 0 64 64"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 aria-hidden="true">
-
-                                <rect
-                                    x="17"
-                                    y="10"
-                                    width="30"
-                                    height="44"
-                                    rx="3"
-                                    fill="#ffffff"
-                                    stroke="#176cc8"
-                                    stroke-width="3"
-                                />
-
-                                <path
-                                    d="M23 20H41"
-                                    stroke="#176cc8"
-                                    stroke-width="3"
-                                    stroke-linecap="round"
-                                />
-
-                                <path
-                                    d="M23 28H41"
-                                    stroke="#176cc8"
-                                    stroke-width="3"
-                                    stroke-linecap="round"
-                                />
-
-                                <path
-                                    d="M23 36H35"
-                                    stroke="#176cc8"
-                                    stroke-width="3"
-                                    stroke-linecap="round"
-                                />
-
-                                <path
-                                    d="M23 44H38"
-                                    stroke="#176cc8"
-                                    stroke-width="3"
-                                    stroke-linecap="round"
-                                />
-
-                            </svg>
-
+                            ▣
                         </div>
+
 
                         <div class="summary-details">
 
                             <p>Invoices</p>
 
-                            <h2 class="blue-value">
-                                14
+                            <h2 class="blue-value"
+                                id="invoiceCountValue">
+
+                                0
+
                             </h2>
 
                         </div>
@@ -298,47 +285,23 @@
                     </article>
 
 
-                    <!-- Due Payment -->
+
                     <article class="summary-card">
 
                         <div class="summary-icon orange-icon">
-
-                            <svg class="sales-card-icon"
-                                 viewBox="0 0 64 64"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 aria-hidden="true">
-
-                                <path
-                                    d="M32 9L56 53H8L32 9Z"
-                                    fill="#ed9000"
-                                />
-
-                                <rect
-                                    x="29.5"
-                                    y="24"
-                                    width="5"
-                                    height="15"
-                                    rx="2"
-                                    fill="#ffffff"
-                                />
-
-                                <circle
-                                    cx="32"
-                                    cy="45"
-                                    r="3"
-                                    fill="#ffffff"
-                                />
-
-                            </svg>
-
+                            ⚠
                         </div>
+
 
                         <div class="summary-details">
 
                             <p>Due Payment</p>
 
-                            <h2 class="orange-value">
-                                ৳2,80,000
+                            <h2 class="orange-value"
+                                id="salesDueValue">
+
+                                ৳0
+
                             </h2>
 
                         </div>
@@ -348,81 +311,98 @@
                 </section>
 
 
+
                 <!-- =====================================
-                     Generate Invoice Form
+                     Generate Invoice
                 ====================================== -->
+
                 <section class="content-card sales-form-card">
 
                     <h2>Generate Invoice</h2>
 
 
-                    <form class="sales-form">
+                    <form class="sales-form"
+                          id="salesForm"
+                          novalidate>
 
-                        <!-- Customer Name -->
+
+                        <!-- Customer -->
+
                         <div class="form-field">
 
                             <label for="customer-name">
+
                                 Customer Name
+
                             </label>
 
-                            <select id="customer-name"
-                                    name="customerName"
-                                    required>
 
-                                <option value="" selected disabled>
-                                    Select customer name
-                                </option>
+                            <div class="customer-selection-row">
 
-                                <option value="abc-traders">
-                                    ABC Traders
-                                </option>
+                                <select id="customer-name"
+                                        name="customerName">
 
-                                <option value="noor-store">
-                                    Noor Store
-                                </option>
+                                    <option value=""
+                                            selected
+                                            disabled>
 
-                                <option value="bhowmik-store">
-                                    Bhowmik Store
-                                </option>
+                                        Select customer name
 
-                                <option value="dhaka-foods">
-                                    Dhaka Foods
-                                </option>
+                                    </option>
 
-                            </select>
+                                </select>
+
+
+                                <a href="customer.html"
+                                   class="add-customer-button">
+
+                                    <span>+</span>
+
+                                    Add New Customer
+
+                                </a>
+
+                            </div>
 
                         </div>
 
 
+
                         <!-- Product -->
+
                         <div class="form-field">
 
                             <label for="product">
+
                                 Product
+
                             </label>
 
-                            <select id="product"
-                                    name="product"
-                                    required>
 
-                                <option value="" selected disabled>
+                            <select id="product"
+                                    name="product">
+
+                                <option value=""
+                                        selected
+                                        disabled>
+
                                     Select product
+
                                 </option>
+
 
                                 <option value="rice">
                                     Rice
                                 </option>
 
+
                                 <option value="khud">
                                     Khud
                                 </option>
 
+
                                 <option value="tush">
                                     Tush
-                                </option>
-
-                                <option value="bran">
-                                    Bran
                                 </option>
 
                             </select>
@@ -430,68 +410,133 @@
                         </div>
 
 
+
+                        <!-- Available Stock -->
+
+                        <div class="form-field">
+
+                            <label for="available-stock">
+
+                                Available Stock
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="available-stock"
+                                name="availableStock"
+                                placeholder="Select product first"
+                                readonly
+                            >
+
+                        </div>
+
+
+
                         <!-- Quantity -->
+
                         <div class="form-field">
 
                             <label for="quantity">
-                                Quantity
+
+                                Quantity (kg)
+
                             </label>
+
 
                             <input
                                 type="number"
                                 id="quantity"
                                 name="quantity"
-                                placeholder="Select quantity"
-                                min="1"
-                                step="1"
-                                required
+                                placeholder="Enter quantity"
+                                min="0.01"
+                                step="0.01"
                             >
 
                         </div>
 
 
+
                         <!-- Price -->
+
                         <div class="form-field">
 
                             <label for="price">
-                                Price
+
+                                Price per kg
+
                             </label>
+
 
                             <input
                                 type="number"
                                 id="price"
                                 name="price"
-                                placeholder="Select price"
-                                min="0"
+                                placeholder="Enter price per kg"
+                                min="0.01"
                                 step="0.01"
-                                required
                             >
 
                         </div>
 
 
-                        <!-- Payment Status -->
+
+                        <!-- Total -->
+
+                        <div class="form-field">
+
+                            <label for="total-amount">
+
+                                Total Amount
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="total-amount"
+                                name="totalAmount"
+                                placeholder="৳0"
+                                readonly
+                            >
+
+                        </div>
+
+
+
+                        <!-- Payment -->
+
                         <div class="form-field">
 
                             <label for="payment-status">
+
                                 Payment Status
+
                             </label>
 
-                            <select id="payment-status"
-                                    name="paymentStatus"
-                                    required>
 
-                                <option value="" selected disabled>
+                            <select id="payment-status"
+                                    name="paymentStatus">
+
+                                <option value=""
+                                        selected
+                                        disabled>
+
                                     Select payment status
+
                                 </option>
+
 
                                 <option value="paid">
                                     Paid
                                 </option>
 
+
                                 <option value="due">
                                     Due
                                 </option>
+
 
                                 <option value="partial">
                                     Partially Paid
@@ -502,24 +547,65 @@
                         </div>
 
 
-                        <!-- Delivery Required -->
+
+                        <!-- Partial Paid Amount -->
+
+                        <div class="form-field"
+                             id="salesPartialField"
+                             hidden>
+
+                            <label for="paid-amount">
+
+                                Paid Amount
+
+                            </label>
+
+
+                            <input
+                                type="number"
+                                id="paid-amount"
+                                name="paidAmount"
+                                placeholder="Enter paid amount"
+                                min="0"
+                                step="0.01"
+                            >
+
+
+                            <small id="salesBalanceText">
+
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- Delivery -->
+
                         <div class="form-field">
 
                             <label for="delivery-required">
+
                                 Delivery Required
+
                             </label>
 
-                            <select id="delivery-required"
-                                    name="deliveryRequired"
-                                    required>
 
-                                <option value="" selected disabled>
+                            <select id="delivery-required"
+                                    name="deliveryRequired">
+
+                                <option value=""
+                                        selected
+                                        disabled>
+
                                     Select delivery required
+
                                 </option>
+
 
                                 <option value="yes">
                                     Yes
                                 </option>
+
 
                                 <option value="no">
                                     No
@@ -530,13 +616,19 @@
                         </div>
 
 
-                        <!-- Submit Button -->
+
+                        <!-- Generate -->
+
                         <div class="form-action">
 
                             <button class="primary-action-button"
-                                    type="button">
+                                    type="submit"
+                                    id="generateInvoiceBtn">
 
-                                <span aria-hidden="true">▣</span>
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
+
                                 Generate Invoice
 
                             </button>
@@ -548,9 +640,11 @@
                 </section>
 
 
+
                 <!-- =====================================
-                     Sales & Invoice Records
+                     Sales List
                 ====================================== -->
+
                 <section class="content-card sales-list-card">
 
                     <h2>Sales &amp; Invoice List</h2>
@@ -563,50 +657,31 @@
                             <thead>
 
                                 <tr>
+
+                                    <th>Invoice</th>
+
                                     <th>Customer</th>
+
                                     <th>Product</th>
+
                                     <th>Quantity</th>
+
+                                    <th>Total</th>
+
                                     <th>Payment</th>
+
+                                    <th>Delivery</th>
+
                                     <th>Date</th>
+
+                                    <th>Action</th>
+
                                 </tr>
 
                             </thead>
 
 
-                            <tbody>
-
-                                <tr>
-
-                                    <td>ABC Traders</td>
-                                    <td>Rice</td>
-                                    <td>100 Bags</td>
-
-                                    <td>
-                                        <span class="status-badge status-due">
-                                            Due
-                                        </span>
-                                    </td>
-
-                                    <td>01 Jul 2026</td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Noor Store</td>
-                                    <td>Rice</td>
-                                    <td>60 Bags</td>
-
-                                    <td>
-                                        <span class="status-badge status-paid">
-                                            Paid
-                                        </span>
-                                    </td>
-
-                                    <td>01 Jul 2026</td>
-
-                                </tr>
+                            <tbody id="salesTableBody">
 
                             </tbody>
 
@@ -621,7 +696,12 @@
         </main>
 
     </div>
-<script src="../scripts/auth.js"></script>
+
+
+    <script src="../scripts/auth.js"></script>
+
+    <script src="../scripts/sales.js"></script>
+
 </body>
 
 </html>
