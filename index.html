@@ -1,48 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Smart Rice Mill ERP</title>
+
+    <title>Smart Rice Mill - Login</title>
+
+    <!-- Login CSS -->
     <link rel="stylesheet" href="styles/login.css">
 </head>
-<body>
 
+<body>
 
     <main class="login-page">
 
-        <!-- left Branding Section -->
-         <section class="brand-section">
+        <!-- Left Branding Section -->
+        <section class="brand-section">
+
             <div class="brand-content">
+
                 <div class="brand-logo" aria-hidden="true">
                     <span class="logo-part logo-part-one"></span>
                     <span class="logo-part logo-part-two"></span>
-
                 </div>
 
                 <h1>Smart Rice Mill</h1>
+
                 <p>
                     ERP &amp; Logistics Management System
                 </p>
+
             </div>
-         </section>
 
-         <!-- Right log in section  -->
+        </section>
 
-          <section class="login-section">
+
+        <!-- Right Login Section -->
+        <section class="login-section">
+
             <div class="login-card">
+
                 <div class="login-header">
                     <h2>Welcome Back</h2>
                     <p>Login to your account</p>
                 </div>
 
-                <form class="login-form" action="pages/dashboard.html" method="get">
+
+                <!-- Login Form -->
+                <form class="login-form" id="loginForm">
 
                     <!-- Email Field -->
-                     <div class="form-group">
+                    <div class="form-group">
+
                         <label for="email">
-                            Email Address 
+                            Email Address
                         </label>
+
                         <input
                             type="email"
                             id="email"
@@ -51,12 +65,17 @@
                             autocomplete="email"
                             required
                         >
-                     </div>
-                     <!-- Password Field -->
-                      <div class="form-group">
-                        <label for="Password">
+
+                    </div>
+
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+
+                        <label for="password">
                             Password
                         </label>
+
                         <input
                             type="password"
                             id="password"
@@ -66,35 +85,60 @@
                             required
                         >
 
-                      </div>
+                    </div>
 
-                      <!-- login Button -->
-                       <button class="login-button" type="submit">
-                        <span class="button-icon" aria-hidden="true">▣</span>
+
+                    <!-- Login Error Message -->
+                    <p id="loginMessage"></p>
+
+
+                    <!-- Login Button -->
+                    <button class="login-button" type="submit">
+
+                        <span class="button-icon" aria-hidden="true">
+                            ▣
+                        </span>
+
                         Login
-                       </button>
+
+                    </button>
+
                 </form>
 
-                <!-- Forgot Password Link -->
-                 <a class="forgot-password" href="#">
-                    Forgot Password?
-                 </a>
 
-                 <!--Create Admin Account -->
-                 <p class="create-account">
+                <!-- Forgot Password Link -->
+                <a class="forgot-password" href="#">
+                    Forgot Password?
+                </a>
+
+
+                <!-- Create Admin Account -->
+                <p class="create-account">
+
                     Don't have an account?
+
                     <a href="#">
-                        Create Admin 
+                        Create Admin
                     </a>
-                 </p>
-                 <p class="account-note">
-                    Account can also be created by Admin from user Role
-                    management.
-                 </p>
+
+                </p>
+
+
+                <p class="account-note">
+                    Account can also be created by Admin from User Role
+                    Management.
+                </p>
+
             </div>
+
         </section>
 
     </main>
-    
+
+
+    <!-- JavaScript -->
+    <script src="scripts/login.js"></script>
+
 </body>
+
 </html>

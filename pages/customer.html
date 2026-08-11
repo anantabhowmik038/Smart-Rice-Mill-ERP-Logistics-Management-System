@@ -282,7 +282,7 @@
                     <h2>Save Customer</h2>
 
 
-                    <form class="customer-form">
+                    <form class="customer-form" id="customerForm">
 
                         <!-- Customer Name -->
                         <div class="form-field">
@@ -412,7 +412,8 @@
                         <div class="form-action">
 
                             <button class="primary-action-button"
-                                    type="button">
+                                    type="submit"
+                                    id="saveCustomerBtn">
 
                                 <span aria-hidden="true">▣</span>
                                 Save Customer
@@ -452,7 +453,7 @@
                             </thead>
 
 
-                            <tbody>
+                            <tbody id="customerTableBody">
 
                                 <tr>
 
@@ -553,7 +554,8 @@
         </main>
 
     </div>
-
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/customer.js"></script>
 </body>
 
 </html>

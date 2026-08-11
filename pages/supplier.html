@@ -20,9 +20,7 @@
 
     <div class="dashboard-layout">
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
+        <!--Sidebar -->
         <aside class="sidebar">
 
             <div class="sidebar-header">
@@ -132,7 +130,8 @@
 
 
             <a class="logout-link"
-               href="../index.html">
+               href="#"
+               id="logoutBtn">
 
                 <span class="logout-icon">↪</span>
                 <span>Logout</span>
@@ -142,9 +141,7 @@
         </aside>
 
 
-        <!-- =====================================
-             Main Area
-        ====================================== -->
+        <!--Main Area-->
         <main class="main-area">
 
             <!-- Topbar -->
@@ -203,9 +200,7 @@
             </header>
 
 
-            <!-- =====================================
-                 Supplier Page Content
-            ====================================== -->
+            <!-- Supplier Page Content -->
             <section class="dashboard-content supplier-content">
 
                 <!-- Summary Cards -->
@@ -274,15 +269,13 @@
                 </section>
 
 
-                <!-- =====================================
-                     Supplier Form
-                ====================================== -->
+                <!-- Supplier Form-->
                 <section class="content-card supplier-form-card">
 
                     <h2>Save Supplier</h2>
 
 
-                    <form class="supplier-form">
+                    <form class="supplier-form" id="supplierForm">
 
                         <!-- Name -->
                         <div class="form-field">
@@ -408,7 +401,8 @@
                         <div class="form-action">
 
                             <button class="primary-action-button"
-                                    type="button">
+                                    type="submit"
+                                    id="saveSupplierBtn">
 
                                 <span aria-hidden="true">▣</span>
                                 Save Supplier
@@ -422,9 +416,7 @@
                 </section>
 
 
-                <!-- =====================================
-                     Farmer and Supplier List
-                ====================================== -->
+                <!-- Farmer and Supplier List-->
                 <section class="content-card supplier-list-card">
 
                     <h2>Farmer &amp; Supplier List</h2>
@@ -448,7 +440,7 @@
                             </thead>
 
 
-                            <tbody>
+                            <tbody id="supplierTableBody">
 
                                 <tr>
 
@@ -549,7 +541,8 @@
         </main>
 
     </div>
-
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/supplier.js"></script>
 </body>
 
 </html>

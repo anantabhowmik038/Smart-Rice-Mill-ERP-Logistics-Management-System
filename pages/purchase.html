@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -9,36 +10,44 @@
 
     <title>Paddy Purchase | Smart Rice Mill ERP</title>
 
-    <!-- Common Dashboard Design -->
     <link rel="stylesheet" href="../styles/dashboard.css">
 
-    <!-- Purchase Page Design -->
     <link rel="stylesheet" href="../styles/purchase.css">
+
 </head>
+
 
 <body>
 
     <div class="dashboard-layout">
 
-        <!-- =========================
+
+        <!-- ==============================
              Sidebar
-        ========================== -->
+        =============================== -->
+
         <aside class="sidebar">
 
             <div class="sidebar-header">
 
-                <div class="sidebar-logo" aria-hidden="true">
+                <div class="sidebar-logo"
+                     aria-hidden="true">
+
                     <span class="logo-shape logo-shape-one"></span>
                     <span class="logo-shape logo-shape-two"></span>
+
                 </div>
 
+
                 <div class="sidebar-brand">
+
                     <h2>Smart Rice Mill</h2>
 
                     <p>
                         ERP &amp; Logistics<br>
                         Management System
                     </p>
+
                 </div>
 
             </div>
@@ -46,6 +55,7 @@
 
             <nav class="sidebar-navigation"
                  aria-label="Main navigation">
+
 
                 <a class="navigation-link"
                    href="dashboard.html">
@@ -140,12 +150,16 @@
         </aside>
 
 
-        <!-- =========================
+
+        <!-- ==============================
              Main Area
-        ========================== -->
+        =============================== -->
+
         <main class="main-area">
 
+
             <!-- Topbar -->
+
             <header class="topbar">
 
                 <div class="topbar-left">
@@ -167,7 +181,9 @@
 
                     <div class="notification-area">
 
-                        <span class="notification-icon">♧</span>
+                        <span class="notification-icon">
+                            ♧
+                        </span>
 
                         <span class="notification-count">
                             3
@@ -185,14 +201,19 @@
 
                         </div>
 
+
                         <div class="user-information">
 
                             <strong>Admin User</strong>
+
                             <span>Rice Mill Owner</span>
 
                         </div>
 
-                        <span class="profile-arrow">⌄</span>
+
+                        <span class="profile-arrow">
+                            ⌄
+                        </span>
 
                     </div>
 
@@ -201,37 +222,49 @@
             </header>
 
 
-            <!-- =========================
-                 Purchase Page Content
-            ========================== -->
+
+            <!-- ==============================
+                 Purchase Content
+            =============================== -->
+
             <section class="dashboard-content purchase-content">
 
-                <!-- Summary Cards -->
+
+                <!-- ==============================
+                     Dynamic Summary
+                =============================== -->
+
                 <section class="purchase-summary-grid"
                          aria-label="Purchase summary">
 
+
+                    <!-- Today's Purchase -->
+
                     <article class="summary-card">
-
-                        <div class="summary-icon green-icon" aria-hidden="true">
-
-    
 
                         <div class="summary-icon green-icon">
                             🌾
                         </div>
 
+
                         <div class="summary-details">
 
                             <p>Today’s Purchase</p>
 
-                            <h2 class="green-value">
-                                ৳85,000
+                            <h2 class="green-value"
+                                id="todayPurchaseValue">
+
+                                ৳0
+
                             </h2>
 
                         </div>
 
                     </article>
 
+
+
+                    <!-- Today's Paddy Quantity -->
 
                     <article class="summary-card">
 
@@ -239,12 +272,16 @@
                             ⚖
                         </div>
 
+
                         <div class="summary-details">
 
                             <p>Paddy Qty</p>
 
-                            <h2 class="blue-value">
-                                2,050 kg
+                            <h2 class="blue-value"
+                                id="todayPaddyQtyValue">
+
+                                0 kg
+
                             </h2>
 
                         </div>
@@ -252,18 +289,25 @@
                     </article>
 
 
+
+                    <!-- Total Due Bills -->
+
                     <article class="summary-card">
 
                         <div class="summary-icon orange-icon">
                             ৳
                         </div>
 
+
                         <div class="summary-details">
 
                             <p>Due Bills</p>
 
-                            <h2 class="orange-value">
-                                ৳28,000
+                            <h2 class="orange-value"
+                                id="dueBillsValue">
+
+                                ৳0
+
                             </h2>
 
                         </div>
@@ -273,145 +317,193 @@
                 </section>
 
 
-                <!-- =========================
+
+                <!-- ==============================
                      Purchase Form
-                ========================== -->
+                =============================== -->
+
                 <section class="content-card purchase-form-card">
 
                     <h2>Save Purchase</h2>
 
 
-                    <form class="purchase-form">
+                    <form class="purchase-form"
+                          id="purchaseForm"
+                          novalidate>
+
+
+                        <!-- Supplier -->
 
                         <div class="form-field">
 
                             <label for="supplier">
+
                                 Supplier/Farmer Name
+
                             </label>
 
-                            <select id="supplier"
-                                    name="supplier"
-                                    required>
 
-                                <option value="" selected disabled>
-                                    Select supplier/farmer name
-                                </option>
+                            <div class="supplier-selection-row">
 
-                                <option value="rahim-farmer">
-                                    Rahim Farmer
-                                </option>
+                                <select id="supplier"
+                                        name="supplier">
 
-                                <option value="karim-supplier">
-                                    Karim Supplier
-                                </option>
+                                    <option value=""
+                                            selected
+                                            disabled>
 
-                                <option value="molla-agro">
-                                    Molla Agro
-                                </option>
+                                        Select supplier/farmer name
 
-                            </select>
+                                    </option>
+
+                                </select>
+
+
+                                <a href="supplier.html"
+                                   class="add-supplier-button">
+
+                                    <span aria-hidden="true">
+                                        +
+                                    </span>
+
+                                    Add New Supplier
+
+                                </a>
+
+                            </div>
 
                         </div>
 
 
+
+                        <!-- Phone -->
+
                         <div class="form-field">
 
                             <label for="phone">
+
                                 Phone Number
+
                             </label>
+
 
                             <input
                                 type="tel"
                                 id="phone"
                                 name="phone"
-                                placeholder="Select phone number"
-                                pattern="[0-9]{11}"
-                                maxlength="11"
-                                required
+                                placeholder="Supplier phone number"
+                                readonly
                             >
 
                         </div>
 
 
+
+                        <!-- Paddy Weight -->
+
                         <div class="form-field">
 
                             <label for="paddy-weight">
+
                                 Paddy Weight
+
                             </label>
+
 
                             <input
                                 type="number"
                                 id="paddy-weight"
                                 name="paddyWeight"
-                                placeholder="Select paddy weight"
+                                placeholder="Enter paddy weight"
                                 min="1"
                                 step="0.01"
-                                required
                             >
 
                         </div>
 
 
+
+                        <!-- Moisture -->
+
                         <div class="form-field">
 
                             <label for="moisture">
+
                                 Moisture %
+
                             </label>
+
 
                             <input
                                 type="number"
                                 id="moisture"
                                 name="moisture"
-                                placeholder="Select moisture %"
+                                placeholder="Enter moisture %"
                                 min="0"
                                 max="100"
                                 step="0.01"
-                                required
                             >
 
                         </div>
 
 
+
+                        <!-- Price -->
+
                         <div class="form-field">
 
                             <label for="price">
+
                                 Price per kg
+
                             </label>
+
 
                             <input
                                 type="number"
                                 id="price"
                                 name="pricePerKg"
-                                placeholder="Select price per kg"
+                                placeholder="Enter price per kg"
                                 min="0"
                                 step="0.01"
-                                required
                             >
 
                         </div>
 
 
+
+                        <!-- Payment Status -->
+
                         <div class="form-field">
 
                             <label for="payment-status">
+
                                 Payment Status
+
                             </label>
 
-                            <select id="payment-status"
-                                    name="paymentStatus"
-                                    required>
 
-                                <option value="" selected disabled>
+                            <select id="payment-status"
+                                    name="paymentStatus">
+
+                                <option value=""
+                                        selected
+                                        disabled>
+
                                     Select payment status
+
                                 </option>
+
 
                                 <option value="paid">
                                     Paid
                                 </option>
 
+
                                 <option value="due">
                                     Due
                                 </option>
+
 
                                 <option value="partial">
                                     Partially Paid
@@ -422,12 +514,50 @@
                         </div>
 
 
+
+                        <!-- Partial Paid Amount -->
+
+                        <div class="form-field"
+                             id="partialPaymentField"
+                             hidden>
+
+                            <label for="paid-amount">
+
+                                Paid Amount
+
+                            </label>
+
+
+                            <input
+                                type="number"
+                                id="paid-amount"
+                                name="paidAmount"
+                                placeholder="Enter amount already paid"
+                                min="0"
+                                step="0.01"
+                            >
+
+
+                            <small id="paymentBalanceText">
+
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- Save -->
+
                         <div class="form-action">
 
                             <button class="primary-action-button"
-                                    type="button">
+                                    type="submit"
+                                    id="savePurchaseBtn">
 
-                                <span aria-hidden="true">▣</span>
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
+
                                 Save Purchase
 
                             </button>
@@ -439,9 +569,11 @@
                 </section>
 
 
-                <!-- =========================
-                     Purchase Records
-                ========================== -->
+
+                <!-- ==============================
+                     Purchase List
+                =============================== -->
+
                 <section class="content-card purchase-list-card">
 
                     <h2>Paddy Purchase List</h2>
@@ -454,73 +586,25 @@
                             <thead>
 
                                 <tr>
+
                                     <th>Supplier</th>
+
                                     <th>Weight</th>
+
                                     <th>Price</th>
+
                                     <th>Payment</th>
+
                                     <th>Date</th>
+
+                                    <th>Action</th>
+
                                 </tr>
 
                             </thead>
 
 
-                            <tbody>
-
-                                <tr>
-
-                                    <td>Rahim Farmer</td>
-                                    <td>650 kg</td>
-                                    <td>৳27,300</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-paid">
-                                            Paid
-                                        </span>
-
-                                    </td>
-
-                                    <td>01 Jul 2026</td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Karim Supplier</td>
-                                    <td>900 kg</td>
-                                    <td>৳37,800</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-due">
-                                            Due
-                                        </span>
-
-                                    </td>
-
-                                    <td>01 Jul 2026</td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Molla Agro</td>
-                                    <td>500 kg</td>
-                                    <td>৳21,000</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-paid">
-                                            Paid
-                                        </span>
-
-                                    </td>
-
-                                    <td>30 Jun 2026</td>
-
-                                </tr>
+                            <tbody id="purchaseTableBody">
 
                             </tbody>
 
@@ -535,6 +619,13 @@
         </main>
 
     </div>
+
+
+    <!-- JavaScript -->
+
+    <script src="../scripts/auth.js"></script>
+
+    <script src="../scripts/purchase.js"></script>
 
 </body>
 
