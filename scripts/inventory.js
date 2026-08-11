@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("adjustmentTableBody");
 
 
-    // Summary
+    // Summary Cards
 
     const riceStockValue =
         document.getElementById("riceStockValue");
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // SOURCE DATA
+    // GET PURCHASE DATA
     // ==========================================
 
     function getPurchases() {
@@ -68,11 +68,30 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    // ==========================================
+    // GET PRODUCTION DATA
+    // ==========================================
+
     function getProductions() {
 
         return (
             JSON.parse(
                 localStorage.getItem("productions")
+            ) || []
+        );
+
+    }
+
+
+    // ==========================================
+    // GET SALES DATA
+    // ==========================================
+
+    function getSales() {
+
+        return (
+            JSON.parse(
+                localStorage.getItem("sales")
             ) || []
         );
 
@@ -91,7 +110,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ) || [];
 
 
-    // Fix old IDs
+    // ==========================================
+    // FIX OLD ADJUSTMENTS WITHOUT ID
+    // ==========================================
 
     adjustments =
         adjustments.map(
@@ -132,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // TODAY
+    // TODAY DATE
     // ==========================================
 
     function getTodayDate() {
@@ -175,7 +196,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function formatDate(dateValue) {
 
         if (!dateValue) {
+
             return "";
+
         }
 
 
@@ -222,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // PRODUCT TEXT
+    // PRODUCT NAME
     // ==========================================
 
     function getProductText(product) {
@@ -249,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // CALCULATE MANUAL ADJUSTMENT
+    // MANUAL STOCK ADJUSTMENT TOTAL
     // ==========================================
 
     function getManualAdjustment(product) {
@@ -307,7 +330,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // CALCULATE INVENTORY
+    // TOTAL SOLD QUANTITY
+    // ==========================================
+
+    function getSoldQuantity(product) {
+
+        const sales =
+            getSales();
+
+
+        let totalSold = 0;
+
+
+        sales.forEach(
+            function (sale) {
+
+                if (
+                    sale.product ===
+                    product
+                ) {
+
+                    totalSold +=
+                        Number(
+                            sale.quantity || 0
+                        );
+
+                }
+
+            }
+        );
+
+
+        return totalSold;
+
+    }
+
+
+    // ==========================================
+    // CALCULATE CURRENT INVENTORY
     // ==========================================
 
     function calculateInventory() {
@@ -320,18 +380,12 @@ document.addEventListener("DOMContentLoaded", function () {
             getProductions();
 
 
+        // --------------------------------------
+        // Purchase Data
+        // --------------------------------------
+
         let purchasedPaddy = 0;
 
-        let productionInputPaddy = 0;
-
-        let riceProduced = 0;
-
-        let khudProduced = 0;
-
-        let tushProduced = 0;
-
-
-        // Total purchased paddy
 
         purchases.forEach(
             function (purchase) {
@@ -345,7 +399,18 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        // Production outputs
+        // --------------------------------------
+        // Production Data
+        // --------------------------------------
+
+        let productionInputPaddy = 0;
+
+        let riceProduced = 0;
+
+        let khudProduced = 0;
+
+        let tushProduced = 0;
+
 
         productions.forEach(
             function (production) {
@@ -377,36 +442,99 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
+        // --------------------------------------
+        // Sales Data
+        // --------------------------------------
+
+        const riceSold =
+            getSoldQuantity("rice");
+
+
+        const khudSold =
+            getSoldQuantity("khud");
+
+
+        const tushSold =
+            getSoldQuantity("tush");
+
+
+        // --------------------------------------
+        // Final Paddy Stock
+        // --------------------------------------
+
         let paddyStock =
-            purchasedPaddy -
-            productionInputPaddy +
+
+            purchasedPaddy
+
+            -
+
+            productionInputPaddy
+
+            +
+
             getManualAdjustment(
                 "paddy"
             );
 
 
+        // --------------------------------------
+        // Final Rice Stock
+        // --------------------------------------
+
         let riceStock =
-            riceProduced +
+
+            riceProduced
+
+            -
+
+            riceSold
+
+            +
+
             getManualAdjustment(
                 "rice"
             );
 
 
+        // --------------------------------------
+        // Final Khud Stock
+        // --------------------------------------
+
         let khudStock =
-            khudProduced +
+
+            khudProduced
+
+            -
+
+            khudSold
+
+            +
+
             getManualAdjustment(
                 "khud"
             );
 
 
+        // --------------------------------------
+        // Final Tush Stock
+        // --------------------------------------
+
         let tushStock =
-            tushProduced +
+
+            tushProduced
+
+            -
+
+            tushSold
+
+            +
+
             getManualAdjustment(
                 "tush"
             );
 
 
-        // Do not display negative inventory
+        // Prevent negative display
 
         paddyStock =
             Math.max(
@@ -452,7 +580,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // STATUS
+    // STOCK STATUS
     // ==========================================
 
     function getStockStatus(stock) {
@@ -460,8 +588,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (stock <= 0) {
 
             return {
-                text: "Out of Stock",
-                className: "inventory-status-out"
+
+                text:
+                    "Out of Stock",
+
+                className:
+                    "inventory-status-out"
+
             };
 
         }
@@ -473,23 +606,33 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
 
             return {
-                text: "Low Stock",
-                className: "status-low"
+
+                text:
+                    "Low Stock",
+
+                className:
+                    "status-low"
+
             };
 
         }
 
 
         return {
-            text: "Active",
-            className: "status-active"
+
+            text:
+                "Active",
+
+            className:
+                "status-active"
+
         };
 
     }
 
 
     // ==========================================
-    // DISPLAY INVENTORY
+    // DISPLAY CURRENT INVENTORY
     // ==========================================
 
     function displayInventory() {
@@ -683,7 +826,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // DISPLAY ADJUSTMENTS
+    // DISPLAY ADJUSTMENT HISTORY
     // ==========================================
 
     function displayAdjustments() {
@@ -702,9 +845,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 const adjustmentText =
+
                     adjustment.type ===
                     "add"
+
                         ? "Add Stock"
+
                         : "Remove Stock";
 
 
@@ -799,7 +945,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // SAVE / UPDATE ADJUSTMENT
+    // SAVE / UPDATE STOCK ADJUSTMENT
     // ==========================================
 
     inventoryAdjustmentForm.addEventListener(
@@ -831,6 +977,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 adjustmentReasonInput.value.trim();
 
 
+            // ----------------------------------
+            // Validation
+            // ----------------------------------
+
             if (!product) {
 
                 showToast(
@@ -856,7 +1006,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (
-                adjustmentQuantityInput.value === "" ||
+                adjustmentQuantityInput.value ===
+                    "" ||
                 quantity <= 0
             ) {
 
@@ -894,8 +1045,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            // Prevent removing more
-            // stock than available
+            // ==================================
+            // REMOVE STOCK VALIDATION
+            // ==================================
 
             if (
                 type === "remove"
@@ -913,7 +1065,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
 
-                let oldAdjustmentEffect = 0;
+                let oldAdjustmentEffect =
+                    0;
 
 
                 if (
@@ -939,7 +1092,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (
                         oldAdjustment &&
                         oldAdjustment.product ===
-                        product
+                            product
                     ) {
 
                         if (
@@ -967,7 +1120,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 const stockBeforeCurrentEdit =
-                    availableStock -
+
+                    availableStock
+
+                    -
+
                     oldAdjustmentEffect;
 
 
@@ -988,7 +1145,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            // ==================================
             // UPDATE
+            // ==================================
 
             if (
                 editingAdjustmentId !==
@@ -1056,7 +1215,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            // NEW
+            // ==================================
+            // NEW ADJUSTMENT
+            // ==================================
 
             const newAdjustment = {
 
@@ -1104,7 +1265,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // TABLE EVENTS
+    // TABLE BUTTON EVENTS
     // ==========================================
 
     adjustmentTableBody.addEventListener(
@@ -1154,7 +1315,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // EDIT
+    // EDIT ADJUSTMENT
     // ==========================================
 
     function editAdjustment(id) {
@@ -1234,7 +1395,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // DELETE
+    // DELETE ADJUSTMENT
     // ==========================================
 
     function deleteAdjustment(id) {
@@ -1302,7 +1463,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // RESET
+    // RESET FORM
     // ==========================================
 
     function resetAdjustmentForm() {
@@ -1429,7 +1590,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // DESIGN
+    // EXTRA DESIGN
     // ==========================================
 
     const style =
@@ -1442,40 +1603,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
         .inventory-status-out {
 
-            background-color:
-                #fdeaea;
+            background-color: #fdeaea;
 
-            color:
-                #c62828;
+            color: #c62828;
 
-            border:
-                1px solid #efb8b8;
+            border: 1px solid #efb8b8;
 
         }
 
 
         .inventory-edit-button {
 
-            padding:
-                7px 15px;
+            padding: 7px 15px;
 
-            border:
-                1px solid #15913a;
+            border: 1px solid #15913a;
 
-            border-radius:
-                6px;
+            border-radius: 6px;
 
-            background:
-                #ffffff;
+            background: #ffffff;
 
-            color:
-                #15913a;
+            color: #15913a;
 
-            font-weight:
-                600;
+            font-weight: 600;
 
-            cursor:
-                pointer;
+            cursor: pointer;
 
         }
 
@@ -1490,29 +1641,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         .inventory-delete-button {
 
-            margin-left:
-                6px;
+            margin-left: 6px;
 
-            padding:
-                7px 15px;
+            padding: 7px 15px;
 
             border:
                 1px solid #efb8b8;
 
-            border-radius:
-                6px;
+            border-radius: 6px;
 
             background-color:
                 #fff5f5;
 
-            color:
-                #c62828;
+            color: #c62828;
 
-            font-weight:
-                600;
+            font-weight: 600;
 
-            cursor:
-                pointer;
+            cursor: pointer;
 
         }
 
@@ -1527,29 +1672,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         .inventory-toast {
 
-            position:
-                fixed;
+            position: fixed;
 
-            top:
-                25px;
+            top: 25px;
 
-            right:
-                25px;
+            right: 25px;
 
-            min-width:
-                280px;
+            min-width: 280px;
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            gap:
-                12px;
+            gap: 12px;
 
-            padding:
-                14px 18px;
+            padding: 14px 18px;
 
             background-color:
                 #ffffff;
@@ -1591,8 +1728,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         .inventory-toast.show {
 
-            opacity:
-                1;
+            opacity: 1;
 
             transform:
                 translateX(0);
@@ -1602,23 +1738,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         .inventory-toast .toast-icon {
 
-            width:
-                26px;
+            width: 26px;
 
-            height:
-                26px;
+            height: 26px;
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                center;
+            justify-content: center;
 
-            border-radius:
-                50%;
+            border-radius: 50%;
 
             background-color:
                 #e7f5eb;
@@ -1626,8 +1756,7 @@ document.addEventListener("DOMContentLoaded", function () {
             color:
                 #15913a;
 
-            font-weight:
-                bold;
+            font-weight: bold;
 
         }
 
@@ -1663,7 +1792,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // INITIAL
+    // INITIAL LOAD
     // ==========================================
 
     adjustmentDateInput.value =
