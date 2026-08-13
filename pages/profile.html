@@ -27,10 +27,14 @@
 
             <div class="sidebar-header">
 
-                <div class="sidebar-logo" aria-hidden="true">
+                <div class="sidebar-logo"
+                     aria-hidden="true">
+
                     <span class="logo-shape logo-shape-one"></span>
                     <span class="logo-shape logo-shape-two"></span>
+
                 </div>
+
 
                 <div class="sidebar-brand">
 
@@ -157,9 +161,7 @@
                     <button class="menu-button"
                             type="button"
                             aria-label="Open navigation menu">
-
                         ☰
-
                     </button>
 
                     <h1>Profile &amp; Settings</h1>
@@ -169,7 +171,6 @@
 
                 <div class="topbar-right">
 
-                    <!-- Notification Link -->
                     <a class="notification-area profile-notification-link"
                        href="notifications.html"
                        aria-label="View notifications">
@@ -183,21 +184,23 @@
                     </a>
 
 
-                    <!-- User Profile -->
                     <a class="user-profile profile-topbar-link"
                        href="profile.html">
 
                         <div class="user-avatar"
                              aria-hidden="true">
-
                             👤
-
                         </div>
 
                         <div class="user-information">
 
-                            <strong>Admin User</strong>
-                            <span>Rice Mill Owner</span>
+                            <strong id="topbarProfileName">
+                                Admin User
+                            </strong>
+
+                            <span>
+                                Rice Mill Owner
+                            </span>
 
                         </div>
 
@@ -211,46 +214,53 @@
 
 
             <!-- =====================================
-                 Profile Page Content
+                 Profile Content
             ====================================== -->
             <section class="dashboard-content profile-page">
 
                 <section class="profile-settings-grid">
 
                     <!-- =====================================
-                         Profile Information Card
+                         Profile Information
                     ====================================== -->
                     <section class="content-card profile-information-card">
 
                         <h2>Profile Information</h2>
 
 
-                        <!-- Profile Image -->
                         <div class="profile-avatar-section">
 
                             <div class="profile-large-avatar">
+
                                 👤
 
-                                <button class="profile-camera-button"
-                                        type="button"
-                                        aria-label="Change profile picture">
-
+                                <button
+                                    class="profile-camera-button"
+                                    type="button"
+                                    id="profileCameraButton"
+                                    aria-label="Change profile picture"
+                                >
                                     📷
-
                                 </button>
 
                             </div>
 
 
-                            <h3>Admin User</h3>
+                            <h3 id="profileDisplayName">
+                                Admin User
+                            </h3>
 
-                            <p>Rice Mill Owner</p>
+                            <p>
+                                Rice Mill Owner
+                            </p>
 
                         </div>
 
 
-                        <!-- Profile Form -->
-                        <form class="profile-information-form">
+                        <form
+                            class="profile-information-form"
+                            id="profileInformationForm"
+                        >
 
                             <!-- Full Name -->
                             <div class="profile-form-field">
@@ -288,7 +298,7 @@
                             </div>
 
 
-                            <!-- Phone Number -->
+                            <!-- Phone -->
                             <div class="profile-form-field">
 
                                 <label for="profile-phone">
@@ -357,11 +367,14 @@
                             </div>
 
 
-                            <!-- Update Button -->
-                            <button class="profile-save-button"
-                                    type="button">
+                            <button
+                                class="profile-save-button"
+                                type="submit"
+                                id="updateProfileButton"
+                            >
 
                                 <span aria-hidden="true">▣</span>
+
                                 Update Profile
 
                             </button>
@@ -372,14 +385,17 @@
 
 
                     <!-- =====================================
-                         System Settings Card
+                         System Settings
                     ====================================== -->
                     <section class="content-card system-settings-card">
 
                         <h2>System Settings</h2>
 
 
-                        <form class="system-settings-form">
+                        <form
+                            class="system-settings-form"
+                            id="systemSettingsForm"
+                        >
 
                             <!-- Rice Mill Name -->
                             <div class="settings-form-field">
@@ -399,25 +415,148 @@
                             </div>
 
 
-                            <!-- Address -->
+                            <!-- =================================
+                                 Mill Location Section
+                            ================================== -->
+                            <div class="mill-location-section">
+
+                                <div class="settings-section-heading">
+
+                                    <div>
+
+                                        <h3>
+                                            Rice Mill Location
+                                        </h3>
+
+                                        <p>
+                                            This location is used as the
+                                            starting point for deliveries.
+                                        </p>
+
+                                    </div>
+
+                                    <span class="settings-location-icon">
+                                        ⌖
+                                    </span>
+
+                                </div>
+
+
+                                <div class="mill-location-grid">
+
+                                    <!-- Division -->
+                                    <div class="settings-form-field">
+
+                                        <label for="mill-division">
+                                            Division
+                                        </label>
+
+                                        <select
+                                            id="mill-division"
+                                            name="millDivision"
+                                            required
+                                            disabled
+                                        >
+
+                                            <option
+                                                value=""
+                                                selected
+                                                disabled
+                                            >
+                                                Loading divisions...
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- District -->
+                                    <div class="settings-form-field">
+
+                                        <label for="mill-district">
+                                            District
+                                        </label>
+
+                                        <select
+                                            id="mill-district"
+                                            name="millDistrict"
+                                            required
+                                            disabled
+                                        >
+
+                                            <option
+                                                value=""
+                                                selected
+                                                disabled
+                                            >
+                                                Select district
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <!-- Upazila -->
+                                    <div class="settings-form-field">
+
+                                        <label for="mill-upazila">
+                                            Upazila
+                                        </label>
+
+                                        <select
+                                            id="mill-upazila"
+                                            name="millUpazila"
+                                            required
+                                            disabled
+                                        >
+
+                                            <option
+                                                value=""
+                                                selected
+                                                disabled
+                                            >
+                                                Select upazila
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div
+                                    class="mill-location-message"
+                                    id="millLocationMessage"
+                                    aria-live="polite"
+                                >
+                                    Loading Bangladesh location data...
+                                </div>
+
+                            </div>
+
+
+                            <!-- Detailed Address -->
                             <div class="settings-form-field">
 
                                 <label for="rice-mill-address">
-                                    Address
+                                    Detailed Mill Address
                                 </label>
 
                                 <input
                                     type="text"
                                     id="rice-mill-address"
                                     name="riceMillAddress"
-                                    value="123 Rice Mill Road, Dinajpur"
+                                    placeholder="Village / Road / Market / Area"
                                     required
                                 >
 
                             </div>
 
 
-                            <!-- Contact Number -->
+                            <!-- Contact -->
                             <div class="settings-form-field">
 
                                 <label for="rice-mill-contact">
@@ -435,17 +574,22 @@
                             </div>
 
 
-                            <!-- Default Currency -->
+                            <!-- Currency -->
                             <div class="settings-form-field">
 
                                 <label for="default-currency">
                                     Default Currency
                                 </label>
 
-                                <select id="default-currency"
-                                        name="defaultCurrency">
+                                <select
+                                    id="default-currency"
+                                    name="defaultCurrency"
+                                >
 
-                                    <option value="BDT" selected>
+                                    <option
+                                        value="BDT"
+                                        selected
+                                    >
                                         BDT (Bangladeshi Taka)
                                     </option>
 
@@ -458,17 +602,22 @@
                             </div>
 
 
-                            <!-- Notification Preferences -->
+                            <!-- Notifications -->
                             <div class="settings-form-field">
 
                                 <label for="notification-preference">
                                     Notification Preferences
                                 </label>
 
-                                <select id="notification-preference"
-                                        name="notificationPreference">
+                                <select
+                                    id="notification-preference"
+                                    name="notificationPreference"
+                                >
 
-                                    <option value="email-in-app" selected>
+                                    <option
+                                        value="email-in-app"
+                                        selected
+                                    >
                                         Email and In-App Notifications
                                     </option>
 
@@ -489,11 +638,14 @@
                             </div>
 
 
-                            <!-- Save Settings Button -->
-                            <button class="settings-save-button"
-                                    type="button">
+                            <button
+                                class="settings-save-button"
+                                type="submit"
+                                id="saveSettingsButton"
+                            >
 
                                 <span aria-hidden="true">▣</span>
+
                                 Save Settings
 
                             </button>
@@ -509,7 +661,17 @@
         </main>
 
     </div>
-<script src="../scripts/auth.js"></script>
+
+
+    <!-- Authentication -->
+    <script src="../scripts/auth.js"></script>
+
+    <!-- Central Bangladesh Location Service -->
+    <script src="../scripts/bangladesh-locations.js"></script>
+
+    <!-- Profile & Settings -->
+    <script src="../scripts/profile.js"></script>
+
 </body>
 
 </html>
