@@ -155,9 +155,7 @@
                     <button class="menu-button"
                             type="button"
                             aria-label="Open navigation menu">
-
                         ☰
-
                     </button>
 
                     <h1>Customer Management</h1>
@@ -182,9 +180,7 @@
 
                         <div class="user-avatar"
                              aria-hidden="true">
-
                             👤
-
                         </div>
 
                         <div class="user-information">
@@ -208,11 +204,12 @@
             ====================================== -->
             <section class="dashboard-content customer-content">
 
-                <!-- Summary Cards -->
+                <!-- =====================================
+                     Summary Cards
+                ====================================== -->
                 <section class="customer-summary-grid"
                          aria-label="Customer summary">
 
-                    <!-- Total Customers -->
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon">
@@ -223,8 +220,9 @@
 
                             <p>Total Customers</p>
 
-                            <h2 class="green-value">
-                                42
+                            <h2 class="green-value"
+                                id="totalCustomersValue">
+                                0
                             </h2>
 
                         </div>
@@ -232,7 +230,6 @@
                     </article>
 
 
-                    <!-- Active Buyers -->
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon">
@@ -252,7 +249,6 @@
                     </article>
 
 
-                    <!-- Due Amount -->
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon">
@@ -279,10 +275,13 @@
                 ====================================== -->
                 <section class="content-card customer-form-card">
 
-                    <h2>Save Customer</h2>
+                    <h2 id="customerFormTitle">
+                        Save Customer
+                    </h2>
 
 
-                    <form class="customer-form" id="customerForm">
+                    <form class="customer-form"
+                          id="customerForm">
 
                         <!-- Customer Name -->
                         <div class="form-field">
@@ -295,7 +294,7 @@
                                 type="text"
                                 id="customer-name"
                                 name="customerName"
-                                placeholder="Select customer name"
+                                placeholder="Enter customer name"
                                 required
                             >
 
@@ -313,27 +312,9 @@
                                 type="tel"
                                 id="phone-number"
                                 name="phoneNumber"
-                                placeholder="Select phone number"
+                                placeholder="Enter 11-digit phone number"
                                 pattern="[0-9]{11}"
                                 maxlength="11"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- City -->
-                        <div class="form-field">
-
-                            <label for="city">
-                                City
-                            </label>
-
-                            <input
-                                type="text"
-                                id="city"
-                                name="city"
-                                placeholder="Select city"
                                 required
                             >
 
@@ -347,11 +328,15 @@
                                 Customer Type
                             </label>
 
-                            <select id="customer-type"
-                                    name="customerType"
-                                    required>
+                            <select
+                                id="customer-type"
+                                name="customerType"
+                                required
+                            >
 
-                                <option value="" selected disabled>
+                                <option value=""
+                                        selected
+                                        disabled>
                                     Select customer type
                                 </option>
 
@@ -376,6 +361,109 @@
                         </div>
 
 
+                        <!-- Division -->
+                        <div class="form-field">
+
+                            <label for="customer-division">
+                                Division
+                            </label>
+
+                            <select
+                                id="customer-division"
+                                name="customerDivision"
+                                required
+                                disabled
+                            >
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Loading divisions...
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- District -->
+                        <div class="form-field">
+
+                            <label for="customer-district">
+                                District
+                            </label>
+
+                            <select
+                                id="customer-district"
+                                name="customerDistrict"
+                                required
+                                disabled
+                            >
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select district
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Upazila -->
+                        <div class="form-field">
+
+                            <label for="customer-upazila">
+                                Upazila
+                            </label>
+
+                            <select
+                                id="customer-upazila"
+                                name="customerUpazila"
+                                required
+                                disabled
+                            >
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select upazila
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Location Message -->
+                        <div
+                            class="customer-location-message"
+                            id="customerLocationMessage"
+                            aria-live="polite"
+                        >
+                            Loading Bangladesh location data...
+                        </div>
+
+
+                        <!-- Detailed Address -->
+                        <div class="form-field customer-address-field">
+
+                            <label for="customer-address">
+                                Detailed Address
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customer-address"
+                                name="customerAddress"
+                                placeholder="Village / Road / Market / House details"
+                                required
+                            >
+
+                        </div>
+
+
                         <!-- Payment Status -->
                         <div class="form-field">
 
@@ -383,11 +471,15 @@
                                 Payment Status
                             </label>
 
-                            <select id="payment-status"
-                                    name="paymentStatus"
-                                    required>
+                            <select
+                                id="payment-status"
+                                name="paymentStatus"
+                                required
+                            >
 
-                                <option value="" selected disabled>
+                                <option value=""
+                                        selected
+                                        disabled>
                                     Select payment status
                                 </option>
 
@@ -411,11 +503,16 @@
                         <!-- Save Button -->
                         <div class="form-action">
 
-                            <button class="primary-action-button"
-                                    type="submit"
-                                    id="saveCustomerBtn">
+                            <button
+                                class="primary-action-button"
+                                type="submit"
+                                id="saveCustomerBtn"
+                            >
 
-                                <span aria-hidden="true">▣</span>
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
+
                                 Save Customer
 
                             </button>
@@ -444,7 +541,8 @@
                                 <tr>
                                     <th>Customer</th>
                                     <th>Phone</th>
-                                    <th>City</th>
+                                    <th>Location</th>
+                                    <th>Detailed Address</th>
                                     <th>Type</th>
                                     <th>Payment Status</th>
                                     <th>Action</th>
@@ -454,93 +552,6 @@
 
 
                             <tbody id="customerTableBody">
-
-                                <tr>
-
-                                    <td>ABC Traders</td>
-                                    <td>017XXXXXXXX</td>
-                                    <td>Dhaka</td>
-                                    <td>Dealer</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-due">
-                                            Due
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <button class="edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Bhowmik Store</td>
-                                    <td>018XXXXXXXX</td>
-                                    <td>Khulna</td>
-                                    <td>Retailer</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-paid">
-                                            Paid
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <button class="edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Dhaka Foods</td>
-                                    <td>019XXXXXXXX</td>
-                                    <td>Dhaka</td>
-                                    <td>Business</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-paid">
-                                            Paid
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <button class="edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
                             </tbody>
 
                         </table>
@@ -554,8 +565,15 @@
         </main>
 
     </div>
-<script src="../scripts/auth.js"></script>
-<script src="../scripts/customer.js"></script>
+
+
+    <script src="../scripts/auth.js"></script>
+
+    <!-- Same location service used by Delivery -->
+    <script src="../scripts/bangladesh-locations.js"></script>
+
+    <script src="../scripts/customer.js"></script>
+
 </body>
 
 </html>

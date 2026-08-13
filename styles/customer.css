@@ -14,9 +14,6 @@
     gap: 28px;
 }
 
-
-/* Simple Emoji and Text Icons */
-
 .customer-summary-grid .summary-icon {
     font-size: 2rem;
 }
@@ -59,8 +56,10 @@
 .form-field label {
     display: block;
     margin-bottom: 9px;
+
     font-size: 0.9rem;
     font-weight: 500;
+
     color: #171e29;
 }
 
@@ -68,17 +67,24 @@
 .form-field select {
     width: 100%;
     height: 46px;
+
     padding: 0 14px;
+
     font-family: inherit;
     font-size: 0.9rem;
+
     color: #171e29;
     background-color: #ffffff;
+
     border: 1px solid #d7dee4;
     border-radius: 7px;
+
     outline: none;
+
     transition:
         border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .form-field input::placeholder {
@@ -89,15 +95,73 @@
     cursor: pointer;
 }
 
+.form-field select:disabled {
+    cursor: not-allowed;
+
+    color: #89919b;
+    background-color: #f7f9fa;
+}
+
 .form-field input:hover,
-.form-field select:hover {
+.form-field select:not(:disabled):hover {
     border-color: #b9c2ca;
 }
 
 .form-field input:focus,
 .form-field select:focus {
     border-color: #139536;
-    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(19, 149, 54, 0.11);
+}
+
+
+/* =========================================
+   Detailed Address
+   ========================================= */
+
+.customer-address-field {
+    grid-column: span 2;
+}
+
+
+/* =========================================
+   Location Message
+   ========================================= */
+
+.customer-location-message {
+    grid-column: 1 / -1;
+
+    margin-top: -7px;
+    padding: 10px 13px;
+
+    font-size: 0.82rem;
+    line-height: 1.45;
+
+    color: #5e6873;
+    background-color: #f7f9fa;
+
+    border: 1px solid #e2e7ea;
+    border-radius: 6px;
+}
+
+.customer-location-message.success {
+    color: #147333;
+    background-color: #f2faf4;
+    border-color: #cae8d1;
+}
+
+.customer-location-message.info {
+    color: #496170;
+    background-color: #f5f9fb;
+    border-color: #dce6eb;
+}
+
+.customer-location-message.error {
+    color: #a12222;
+    background-color: #fff5f5;
+    border-color: #efcaca;
 }
 
 
@@ -107,28 +171,41 @@
 
 .form-action {
     grid-column: 1 / -1;
+
     display: flex;
     justify-content: center;
+
     margin-top: 15px;
 }
 
 .primary-action-button {
     min-width: 205px;
     height: 48px;
+
     padding: 0 25px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     gap: 8px;
+
     font-family: inherit;
     font-size: 0.95rem;
     font-weight: 600;
+
     color: #ffffff;
     background-color: #129238;
+
     border: none;
     border-radius: 7px;
+
     cursor: pointer;
-    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
+
+    box-shadow:
+        0 6px 14px
+        rgba(18, 146, 56, 0.16);
+
     transition:
         background-color 0.2s ease,
         transform 0.2s ease,
@@ -137,7 +214,11 @@
 
 .primary-action-button:hover {
     background-color: #0e7f30;
-    box-shadow: 0 8px 17px rgba(18, 146, 56, 0.22);
+
+    box-shadow:
+        0 8px 17px
+        rgba(18, 146, 56, 0.22);
+
     transform: translateY(-1px);
 }
 
@@ -157,6 +238,7 @@
 
 .customer-list-card {
     margin-top: 45px;
+
     padding: 23px 21px 10px;
 }
 
@@ -171,26 +253,31 @@
 
 .customer-table {
     width: 100%;
-    min-width: 900px;
+    min-width: 1120px;
+
     border-collapse: separate;
     border-spacing: 0;
+
     font-size: 0.9rem;
 }
 
 .customer-table th,
 .customer-table td {
-    padding: 14px 20px;
+    padding: 14px 18px;
+
     text-align: left;
     vertical-align: middle;
 }
 
 
-/* Rounded Table Header */
+/* Table Header */
 
 .customer-table thead th {
     font-weight: 500;
+
     color: #171e29;
     background-color: #fafcfc;
+
     border-top: 1px solid #d8dee3;
     border-bottom: 1px solid #d8dee3;
 }
@@ -222,29 +309,209 @@
 
 
 /* =========================================
-   Edit Button
+   Location Cell
    ========================================= */
+
+.customer-location-cell {
+    min-width: 180px;
+}
+
+.customer-location-main {
+    display: block;
+
+    font-weight: 600;
+
+    color: #28323c;
+}
+
+.customer-location-secondary {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 0.79rem;
+
+    color: #7b858e;
+}
+
+.legacy-location-label {
+    display: inline-block;
+
+    margin-top: 4px;
+    padding: 2px 6px;
+
+    font-size: 0.7rem;
+    font-weight: 600;
+
+    color: #8a6400;
+    background-color: #fff8df;
+
+    border-radius: 4px;
+}
+
+
+/* =========================================
+   Address Cell
+   ========================================= */
+
+.customer-address-cell {
+    min-width: 180px;
+    max-width: 250px;
+
+    white-space: normal;
+    line-height: 1.4;
+
+    color: #525d67;
+}
+
+
+/* =========================================
+   Action Buttons
+   ========================================= */
+
+.customer-action-group {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
 
 .edit-button {
     min-width: 68px;
     height: 34px;
+
     padding: 0 16px;
+
     font-family: inherit;
     font-size: 0.82rem;
     font-weight: 600;
+
     color: #148d35;
     background-color: #ffffff;
+
     border: 1px solid #148d35;
     border-radius: 6px;
+
     cursor: pointer;
+
     transition:
         color 0.2s ease,
-        background-color 0.2s ease;
+        background-color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .edit-button:hover {
     color: #ffffff;
     background-color: #148d35;
+}
+
+
+/* Delete Button */
+
+.customer-delete-button {
+    color: #c62828;
+    background-color: #fff8f8;
+
+    border-color: #e9b5b5;
+}
+
+.customer-delete-button:hover {
+    color: #ffffff;
+    background-color: #c62828;
+
+    border-color: #c62828;
+}
+
+
+/* =========================================
+   Empty Table
+   ========================================= */
+
+.customer-empty-row td {
+    padding: 35px 20px;
+
+    text-align: center;
+
+    color: #7c868f;
+    background-color: #fafcfc;
+}
+
+
+/* =========================================
+   Toast
+   ========================================= */
+
+.customer-toast {
+    position: fixed;
+
+    top: 25px;
+    right: 25px;
+
+    min-width: 280px;
+    max-width: 390px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 18px;
+
+    color: #17351f;
+    background-color: #ffffff;
+
+    border-left: 5px solid #15913a;
+    border-radius: 8px;
+
+    box-shadow:
+        0 6px 20px
+        rgba(0, 0, 0, 0.15);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    z-index: 9999;
+
+    opacity: 0;
+
+    transform: translateX(30px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+.customer-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.customer-toast .toast-icon {
+    width: 26px;
+    height: 26px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #15913a;
+    background-color: #e7f5eb;
+
+    font-weight: bold;
+}
+
+.customer-toast.error {
+    color: #8f1d1d;
+    border-left-color: #d32f2f;
+}
+
+.customer-toast.error .toast-icon {
+    color: #d32f2f;
+    background-color: #fdeaea;
 }
 
 
@@ -268,7 +535,8 @@
 @media screen and (max-width: 1000px) {
 
     .customer-summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
     .customer-summary-grid .summary-card:last-child {
@@ -276,7 +544,12 @@
     }
 
     .customer-form {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .customer-address-field {
+        grid-column: 1 / -1;
     }
 
 }
@@ -286,6 +559,7 @@
 
     .customer-summary-grid {
         grid-template-columns: 1fr;
+
         gap: 16px;
     }
 
@@ -295,12 +569,22 @@
 
     .customer-form-card {
         margin-top: 25px;
+
         padding: 21px 18px;
     }
 
     .customer-form {
         grid-template-columns: 1fr;
+
         gap: 18px;
+    }
+
+    .customer-address-field {
+        grid-column: auto;
+    }
+
+    .customer-location-message {
+        margin-top: -4px;
     }
 
     .form-action {
@@ -313,6 +597,7 @@
 
     .customer-list-card {
         margin-top: 25px;
+
         padding: 20px 16px 8px;
     }
 
@@ -334,6 +619,14 @@
     .customer-table th,
     .customer-table td {
         padding: 12px 15px;
+    }
+
+    .customer-toast {
+        left: 15px;
+        right: 15px;
+
+        min-width: auto;
+        max-width: none;
     }
 
 }
