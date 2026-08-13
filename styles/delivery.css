@@ -1,494 +1,1249 @@
 /* =========================================
-   Truck & Delivery Management Page
-   ========================================= */
+   DELIVERY PAGE
+========================================= */
+
+.delivery-content {
+    padding: 22px;
+}
 
 
-/* Summary Cards */
+.content-card {
+    background-color: #ffffff;
+
+    border: 1px solid #dfe8e3;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 22px
+        rgba(31, 61, 43, 0.05);
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
 
 .delivery-summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 20px;
 }
 
-.delivery-summary-grid .summary-icon {
-    font-size: 2rem;
-    font-weight: 700;
+
+.summary-card {
+    min-height: 96px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 18px 20px;
+
+    background-color: #ffffff;
+
+    border: 1px solid #dfe8e3;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 22px
+        rgba(31, 61, 43, 0.05);
 }
 
 
-/* Form and Map Layout */
+.summary-icon {
+    width: 54px;
+
+    height: 54px;
+
+    flex: 0 0 54px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 24px;
+}
+
+
+.green-icon {
+    background-color: #e9f6ed;
+}
+
+
+.blue-icon {
+    background-color: #e9f2fb;
+
+    color: #1d69c9;
+}
+
+
+.orange-icon {
+    background-color: #fff3df;
+
+    color: #e88900;
+}
+
+
+.summary-details p {
+    margin: 0 0 6px;
+
+    color: #58675f;
+
+    font-size: 13px;
+}
+
+
+.summary-details h2 {
+    margin: 0;
+
+    font-size: 24px;
+
+    line-height: 1;
+}
+
+
+.green-value {
+    color: #11913a;
+}
+
+
+.blue-value {
+    color: #1d69c9;
+}
+
+
+.orange-value {
+    color: #e88900;
+}
+
+
+/* =========================================
+   WORKSPACE
+========================================= */
 
 .delivery-workspace {
     display: grid;
-    grid-template-columns: 330px minmax(0, 1fr);
-    gap: 22px;
-    margin-top: 36px;
-    align-items: stretch;
+
+    grid-template-columns:
+        minmax(500px, 540px)
+        minmax(0, 1fr);
+
+    gap: 20px;
+
+    /*
+        IMPORTANT:
+        This prevents Map card from stretching
+        to the height of Add Delivery card.
+    */
+
+    align-items: start;
+
+    margin-bottom: 20px;
 }
 
 
-/* Delivery Form */
+.delivery-form-card,
+.delivery-map-card {
+    align-self: start;
+
+    height: auto;
+}
+
 
 .delivery-form-card {
-    padding: 24px 24px 28px;
+    padding: 20px;
 }
 
-.delivery-form-card h2 {
-    margin-bottom: 23px;
+
+.card-heading-row,
+.table-section-heading {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 17px;
 }
+
+
+.card-heading-row h2,
+.table-section-heading h2,
+.delivery-map-header h2 {
+    margin: 0;
+
+    color: #16251d;
+
+    font-size: 18px;
+}
+
+
+.card-heading-row p,
+.table-section-heading p,
+.delivery-map-header p {
+    margin: 5px 0 0;
+
+    color: #748179;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
 
 .delivery-form {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 18px;
-    row-gap: 20px;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
 }
+
 
 .form-field {
     min-width: 0;
 }
 
+
 .form-field label {
     display: block;
-    margin-bottom: 9px;
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: #171e29;
+
+    margin-bottom: 7px;
+
+    color: #2c3a32;
+
+    font-size: 12px;
+
+    font-weight: 600;
 }
+
 
 .form-field input,
 .form-field select {
     width: 100%;
-    height: 46px;
+
+    height: 42px;
+
     padding: 0 12px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    color: #171e29;
-    background-color: #ffffff;
-    border: 1px solid #d7dee4;
+
+    border:
+        1px solid #cfdad4;
+
     border-radius: 7px;
+
     outline: none;
+
+    background-color: #ffffff;
+
+    color: #26352d;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
     transition:
         border-color 0.2s ease,
         box-shadow 0.2s ease;
 }
 
-.form-field input::placeholder {
-    color: #929aa6;
-}
-
-.form-field select {
-    cursor: pointer;
-}
-
-.form-field input:hover,
-.form-field select:hover {
-    border-color: #b9c2ca;
-}
 
 .form-field input:focus,
 .form-field select:focus {
-    border-color: #139536;
-    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+    border-color: #15913a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(21, 145, 58, 0.09);
 }
 
 
-/* Save Button */
+.form-field select:disabled,
+.form-field input[readonly] {
+    background-color: #f3f6f4;
+
+    color: #6c7871;
+}
+
+
+.optional-text {
+    color: #8b9690;
+
+    font-weight: 400;
+}
+
+
+.full-width-field,
+.status-field {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================
+   START LOCATION
+========================================= */
+
+.start-location-card {
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    min-height: 76px;
+
+    padding: 14px;
+
+    border:
+        1px solid #cfe5d5;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f3faf5 0%,
+            #ffffff 100%
+        );
+}
+
+
+.location-badge {
+    width: 34px;
+
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.start-badge {
+    background-color: #15913a;
+}
+
+
+.destination-badge {
+    background-color: #ef8d00;
+}
+
+
+.start-location-copy {
+    min-width: 0;
+
+    display: flex;
+
+    flex: 1;
+
+    flex-direction: column;
+}
+
+
+.location-eyebrow {
+    margin-bottom: 3px;
+
+    color: #6b7971;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+}
+
+
+.start-location-copy strong {
+    color: #1e3026;
+
+    font-size: 14px;
+}
+
+
+.start-location-copy > span:last-child {
+    margin-top: 2px;
+
+    color: #718078;
+
+    font-size: 11px;
+}
+
+
+.fixed-location-label {
+    flex-shrink: 0;
+
+    padding: 6px 9px;
+
+    border:
+        1px solid #b9dcc2;
+
+    border-radius: 20px;
+
+    background-color: #ffffff;
+
+    color: #158238;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   DESTINATION
+========================================= */
+
+.delivery-location-section {
+    grid-column: 1 / -1;
+
+    padding: 15px;
+
+    border:
+        1px solid #e0e8e4;
+
+    border-radius: 9px;
+
+    background-color: #fbfcfb;
+}
+
+
+.location-section-heading {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 13px;
+}
+
+
+.location-section-heading h3 {
+    margin: 0;
+
+    color: #223129;
+
+    font-size: 14px;
+}
+
+
+.location-section-heading p {
+    margin: 3px 0 0;
+
+    color: #7b8780;
+
+    font-size: 11px;
+}
+
+
+.destination-location-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-bottom: 11px;
+}
+
+
+#locationDataMessage {
+    display: block;
+
+    margin-top: 9px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+.location-message-success {
+    color: #15883a;
+}
+
+
+.location-message-info {
+    color: #55748a;
+}
+
+
+.location-message-warning {
+    color: #b36a00;
+}
+
+
+.location-message-error {
+    color: #bf2f2f;
+}
+
+
+/* =========================================
+   FORM ACTION
+========================================= */
 
 .form-action {
     grid-column: 1 / -1;
+
     display: flex;
-    justify-content: center;
-    margin-top: 24px;
+
+    justify-content: flex-end;
+
+    padding-top: 2px;
 }
+
 
 .primary-action-button {
-    width: 205px;
-    height: 48px;
-    padding: 0 24px;
+    min-width: 172px;
+
+    height: 42px;
+
     display: inline-flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 8px;
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #ffffff;
-    background-color: #129238;
+
     border: none;
+
     border-radius: 7px;
+
+    background-color: #12933a;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
     cursor: pointer;
-    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
+
+    box-shadow:
+        0 8px 16px
+        rgba(18, 147, 58, 0.16);
 }
+
 
 .primary-action-button:hover {
-    background-color: #0e7f30;
-    transform: translateY(-1px);
-}
-
-.primary-action-button:active {
-    transform: translateY(0);
+    background-color: #0f7f32;
 }
 
 
-/* Delivery Map Card */
+/* =========================================
+   MAP CARD
+========================================= */
 
 .delivery-map-card {
-    padding: 24px 24px 10px;
-}
+    min-width: 0;
 
-.delivery-map-card h2 {
-    margin-bottom: 22px;
-}
-
-
-/* Simple CSS Map */
-
-.delivery-map {
-    position: relative;
-    width: 100%;
-    height: 380px;
-    overflow: hidden;
-    background-color: #f7fbfd;
-    border: 1px solid #d7e0e5;
-    border-radius: 8px;
-}
-
-.map-background-shape {
-    position: absolute;
-    left: 34%;
-    top: 46%;
-    width: 34%;
-    height: 18%;
-    border: 10px solid #dceaf3;
-    transform: skew(-12deg);
+    padding: 20px;
 }
 
 
-/* Route Lines */
-
-.route-line {
-    position: absolute;
-    height: 4px;
-    border-radius: 10px;
-    transform-origin: left center;
-}
-
-.completed-route {
-    left: 21%;
-    top: 27%;
-    width: 39%;
-    background-color: #139536;
-    transform: rotate(34deg);
-}
-
-.running-route {
-    left: 51%;
-    top: 64%;
-    width: 34%;
-    background-color: #ed9200;
-    transform: rotate(-26deg);
-}
-
-
-/* Map Locations */
-
-.map-location {
-    position: absolute;
+.delivery-map-header {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    z-index: 2;
-}
 
-.dinajpur-location {
-    left: 17%;
-    top: 18%;
-}
+    align-items: flex-start;
 
-.bogura-location {
-    left: 48%;
-    top: 58%;
-}
-
-.dhaka-location {
-    right: 16%;
-    top: 31%;
-}
-
-.location-point {
-    width: 29px;
-    height: 29px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    border-radius: 50%;
-    font-size: 0.9rem;
-}
-
-.completed-point {
-    background-color: #139536;
-}
-
-.current-point {
-    background-color: #ed9200;
-}
-
-.location-name {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #171e29;
-}
-
-
-/* Map Legend */
-
-.map-legend {
-    min-height: 57px;
-    margin-top: 22px;
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 18px;
-    flex-wrap: wrap;
-    border: 1px solid #d7dee4;
-    border-radius: 8px;
+
+    gap: 16px;
+
+    margin-bottom: 14px;
 }
 
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.8rem;
-    color: #252c35;
+
+.map-section-label {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #15913a;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
 }
+
+
+.map-reset-button {
+    flex-shrink: 0;
+
+    padding: 8px 13px;
+
+    border:
+        1px solid #15913a;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    color: #15913a;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.map-reset-button:hover {
+    background-color: #edf8f0;
+}
+
+
+/* =========================================
+   REAL LEAFLET MAP
+========================================= */
+
+.delivery-map-real {
+    display: block;
+
+    width: 100%;
+
+    height: 460px;
+
+    min-height: 460px;
+
+    border:
+        1px solid #d8e2dd;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    background-color: #eef3f1;
+}
+
+
+.delivery-map-real
+.leaflet-control-container {
+    font-family: inherit;
+}
+
+
+/* =========================================
+   ROUTE METRICS
+========================================= */
+
+.route-metrics-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 9px;
+
+    margin-top: 12px;
+}
+
+
+.route-metric-card {
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    min-height: 62px;
+
+    padding: 10px 11px;
+
+    border:
+        1px solid #e0e7e3;
+
+    border-radius: 8px;
+
+    background-color: #fafcfb;
+}
+
+
+.route-highlight-card {
+    border-color: #cde2d3;
+
+    background-color: #f4faf6;
+}
+
+
+.metric-icon {
+    width: 28px;
+
+    height: 28px;
+
+    flex: 0 0 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+.metric-start {
+    background-color: #e6f4ea;
+
+    color: #15883a;
+}
+
+
+.metric-destination {
+    background-color: #fff0d8;
+
+    color: #dc8100;
+}
+
+
+.metric-distance {
+    background-color: #e7f0f8;
+
+    color: #426985;
+}
+
+
+.metric-time {
+    background-color: #f1edfb;
+
+    color: #6952a4;
+}
+
+
+.route-metric-card > div {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.metric-label {
+    margin-bottom: 3px;
+
+    color: #7b8880;
+
+    font-size: 10px;
+}
+
+
+.route-metric-card strong {
+    overflow: hidden;
+
+    color: #2b3931;
+
+    font-size: 11px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   ROUTE LEGEND
+========================================= */
+
+.route-legend {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    flex-wrap: wrap;
+
+    gap: 16px;
+
+    margin-top: 11px;
+
+    color: #6d7972;
+
+    font-size: 10px;
+}
+
+
+.route-legend > div {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
 
 .legend-line {
-    width: 42px;
+    width: 25px;
+
     height: 4px;
-    display: inline-block;
-    border-radius: 5px;
+
+    border-radius: 10px;
 }
 
-.completed-line {
-    background-color: #139536;
+
+.pending-line {
+    background-color: #607d8b;
 }
+
 
 .running-line {
-    background-color: #ed9200;
-}
-
-.legend-circle {
-    width: 19px;
-    height: 19px;
-    display: inline-block;
-    border-radius: 50%;
-}
-
-.completed-circle {
-    background-color: #139536;
-}
-
-.current-circle {
-    background-color: #ed9200;
+    background-color: #f08c00;
 }
 
 
-/* Delivery Records */
+.delivered-line {
+    background-color: #15913a;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
 
 .delivery-list-card {
-    margin-top: 28px;
-    padding: 23px 21px 10px;
-}
-
-.delivery-list-card h2 {
-    margin-bottom: 24px;
+    padding: 18px;
 }
 
 
-/* Delivery Table */
+.table-section-heading {
+    margin-bottom: 13px;
+}
+
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
 
 .delivery-table {
     width: 100%;
-    min-width: 850px;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 0.9rem;
+
+    min-width: 1120px;
+
+    border-collapse: collapse;
 }
 
-.delivery-table th,
-.delivery-table td {
-    padding: 14px 20px;
+
+.delivery-table thead th {
+    padding: 11px 12px;
+
+    border-top:
+        1px solid #dfe7e3;
+
+    border-bottom:
+        1px solid #dfe7e3;
+
+    background-color: #f8faf9;
+
+    color: #526158;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
     text-align: left;
+
+    white-space: nowrap;
+}
+
+
+.delivery-table thead th:first-child {
+    border-left:
+        1px solid #dfe7e3;
+
+    border-radius:
+        7px 0 0 7px;
+}
+
+
+.delivery-table thead th:last-child {
+    border-right:
+        1px solid #dfe7e3;
+
+    border-radius:
+        0 7px 7px 0;
+}
+
+
+.delivery-table tbody td {
+    padding: 12px;
+
+    border-bottom:
+        1px solid #edf1ef;
+
+    color: #29372f;
+
+    font-size: 11px;
+
     vertical-align: middle;
 }
 
-.delivery-table thead th {
-    font-weight: 500;
-    color: #171e29;
-    background-color: #fafcfc;
-    border-top: 1px solid #d8dee3;
-    border-bottom: 1px solid #d8dee3;
-}
 
-.delivery-table thead th:first-child {
-    border-left: 1px solid #d8dee3;
-    border-radius: 8px 0 0 8px;
-}
+.table-primary-text {
+    display: block;
 
-.delivery-table thead th:last-child {
-    border-right: 1px solid #d8dee3;
-    border-radius: 0 8px 8px 0;
-}
+    font-size: 11px;
 
-.delivery-table tbody td {
-    border-bottom: 1px solid #e1e5e8;
-}
-
-.delivery-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.delivery-table tbody tr:hover td {
-    background-color: #fafcfa;
+    font-weight: 600;
 }
 
 
-/* Delivery Status */
+.table-secondary-text {
+    display: block;
 
-.status-on-way {
-    color: #148d35;
-    background-color: #edf8ef;
-    border: 1px solid #148d35;
+    margin-top: 3px;
+
+    color: #7d8982;
+
+    font-size: 9px;
 }
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 78px;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
 
 .status-pending {
-    color: #e28a00;
-    background-color: #fff8ed;
-    border: 1px solid #e9a01b;
-}
+    border:
+        1px solid #d2dbe0;
 
-.status-delivered {
-    color: #176cc8;
-    background-color: #eef5fd;
-    border: 1px solid #176cc8;
+    background-color: #f3f6f7;
+
+    color: #60717a;
 }
 
 
-/* Responsive */
+.status-on-way {
+    border:
+        1px solid #f1bc6e;
 
-@media screen and (max-width: 1200px) {
+    background-color: #fff5e7;
 
-    .delivery-summary-grid {
-        gap: 20px;
-    }
+    color: #d97900;
+}
+
+
+.delivery-status-delivered {
+    border:
+        1px solid #a9d7b5;
+
+    background-color: #eaf7ed;
+
+    color: #14863a;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.table-action-group {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.delivery-edit-button,
+.delivery-delete-button {
+    padding: 6px 10px;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.delivery-edit-button {
+    border:
+        1px solid #15913a;
+
+    color: #15913a;
+}
+
+
+.delivery-edit-button:hover {
+    background-color: #edf8f0;
+}
+
+
+.delivery-delete-button {
+    border:
+        1px solid #efb8b8;
+
+    color: #c62828;
+}
+
+
+.delivery-delete-button:hover {
+    background-color: #fff1f1;
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+.delivery-toast {
+    position: fixed;
+
+    top: 24px;
+
+    right: 24px;
+
+    min-width: 280px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 13px 16px;
+
+    border-left:
+        5px solid #15913a;
+
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    color: #17351f;
+
+    box-shadow:
+        0 8px 24px
+        rgba(0, 0, 0, 0.14);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    z-index: 99999;
+
+    opacity: 0;
+
+    transform:
+        translateX(30px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.delivery-toast.show {
+    opacity: 1;
+
+    transform:
+        translateX(0);
+}
+
+
+.delivery-toast .toast-icon {
+    width: 25px;
+
+    height: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #e7f5eb;
+
+    color: #15913a;
+
+    font-weight: 800;
+}
+
+
+.delivery-toast.error {
+    border-left-color: #d32f2f;
+
+    color: #8f1d1d;
+}
+
+
+.delivery-toast.error
+.toast-icon {
+    background-color: #fdeaea;
+
+    color: #d32f2f;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1320px) {
 
     .delivery-workspace {
-        grid-template-columns: 300px minmax(0, 1fr);
+        grid-template-columns:
+            minmax(450px, 480px)
+            minmax(0, 1fr);
     }
 
-    .map-legend {
-        justify-content: flex-start;
+
+    .route-metrics-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
 }
 
 
-@media screen and (max-width: 1000px) {
-
-    .delivery-summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .delivery-summary-grid .summary-card:last-child {
-        grid-column: 1 / -1;
-    }
+@media (max-width: 1100px) {
 
     .delivery-workspace {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
+
+
+    .delivery-map-real {
+        height: 420px;
+
+        min-height: 420px;
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .delivery-summary-grid {
+        grid-template-columns:
+            1fr;
+    }
+
 
     .delivery-form {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            1fr;
     }
 
-}
 
-
-@media screen and (max-width: 720px) {
-
-    .delivery-summary-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+    .full-width-field,
+    .status-field,
+    .form-action,
+    .start-location-card,
+    .delivery-location-section {
+        grid-column: 1;
     }
 
-    .delivery-summary-grid .summary-card:last-child {
-        grid-column: auto;
+
+    .destination-location-grid {
+        grid-template-columns:
+            1fr;
     }
 
-    .delivery-workspace {
-        margin-top: 25px;
+
+    .route-metrics-grid {
+        grid-template-columns:
+            1fr;
     }
 
-    .delivery-form {
-        grid-template-columns: 1fr;
-    }
 
-    .form-action {
-        margin-top: 8px;
-    }
-
-    .primary-action-button {
-        width: 100%;
-    }
-
-    .delivery-map {
-        height: 320px;
-    }
-
-    .map-legend {
-        align-items: flex-start;
+    .delivery-map-header {
         flex-direction: column;
     }
 
-    .delivery-list-card {
-        margin-top: 25px;
-        padding: 20px 16px 8px;
-    }
 
-}
+    .delivery-map-real {
+        height: 340px;
 
-
-@media screen and (max-width: 440px) {
-
-    .delivery-form-card,
-    .delivery-map-card {
-        padding: 20px 16px;
-    }
-
-    .delivery-map {
-        height: 280px;
-    }
-
-    .location-name {
-        font-size: 0.75rem;
-    }
-
-    .location-point {
-        width: 25px;
-        height: 25px;
-    }
-
-    .delivery-table th,
-    .delivery-table td {
-        padding: 12px 15px;
+        min-height: 340px;
     }
 
 }
