@@ -35,7 +35,6 @@
 
                 </div>
 
-
                 <div class="sidebar-brand">
 
                     <h2>Smart Rice Mill</h2>
@@ -50,11 +49,9 @@
             </div>
 
 
-            <!-- Sidebar Navigation -->
             <nav class="sidebar-navigation"
                  aria-label="Main navigation">
 
-                <!-- Dashboard -->
                 <a class="navigation-link"
                    href="dashboard.html">
 
@@ -65,7 +62,6 @@
                 </a>
 
 
-                <!-- Purchase -->
                 <a class="navigation-link"
                    href="purchase.html">
 
@@ -76,7 +72,6 @@
                 </a>
 
 
-                <!-- Production -->
                 <a class="navigation-link"
                    href="production.html">
 
@@ -87,7 +82,6 @@
                 </a>
 
 
-                <!-- Inventory -->
                 <a class="navigation-link"
                    href="inventory.html">
 
@@ -98,7 +92,6 @@
                 </a>
 
 
-                <!-- Sales -->
                 <a class="navigation-link"
                    href="sales.html">
 
@@ -109,7 +102,6 @@
                 </a>
 
 
-                <!-- Delivery -->
                 <a class="navigation-link"
                    href="delivery.html">
 
@@ -120,7 +112,30 @@
                 </a>
 
 
-                <!-- Reports -->
+                <a class="navigation-link"
+                   href="expense.html">
+
+                    <span class="navigation-icon">৳</span>
+                    <span class="navigation-text">
+                        Expense &amp; Salary
+                    </span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link active"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">🔧</span>
+                    <span class="navigation-text">
+                        Maintenance
+                    </span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
                 <a class="navigation-link"
                    href="reports.html">
 
@@ -131,8 +146,7 @@
                 </a>
 
 
-                <!-- Settings -->
-                <a class="navigation-link active"
+                <a class="navigation-link"
                    href="profile.html">
 
                     <span class="navigation-icon">⚙</span>
@@ -144,7 +158,6 @@
             </nav>
 
 
-            <!-- Logout -->
             <a class="logout-link"
                href="../index.html">
 
@@ -171,9 +184,7 @@
                     <button class="menu-button"
                             type="button"
                             aria-label="Open navigation menu">
-
                         ☰
-
                     </button>
 
                     <h1>Machine Maintenance</h1>
@@ -183,12 +194,13 @@
 
                 <div class="topbar-right">
 
-                    <!-- Notification Link -->
                     <a class="notification-area notification-page-link"
                        href="notifications.html"
                        aria-label="View notifications">
 
-                        <span class="notification-icon">♧</span>
+                        <span class="notification-icon">
+                            ♧
+                        </span>
 
                         <span class="notification-count">
                             3
@@ -197,25 +209,26 @@
                     </a>
 
 
-                    <!-- Profile Link -->
                     <a class="user-profile profile-topbar-link"
                        href="profile.html">
 
                         <div class="user-avatar"
                              aria-hidden="true">
-
                             👤
-
                         </div>
 
 
                         <div class="user-information">
 
-                            <strong>Admin User</strong>
-                            <span>Rice Mill Owner</span>
+                            <strong id="maintenanceTopbarUserName">
+                                Admin User
+                            </strong>
+
+                            <span>
+                                Rice Mill Owner
+                            </span>
 
                         </div>
-
 
                         <span class="profile-arrow">
                             ⌄
@@ -239,20 +252,19 @@
                 <section class="maintenance-summary-grid"
                          aria-label="Machine maintenance summary">
 
-                    <!-- Active Machines -->
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon">
                             ⚙️
                         </div>
 
-
                         <div class="summary-details">
 
                             <p>Active Machines</p>
 
-                            <h2 class="green-value">
-                                6
+                            <h2 class="green-value"
+                                id="activeMachinesValue">
+                                0
                             </h2>
 
                         </div>
@@ -260,20 +272,19 @@
                     </article>
 
 
-                    <!-- Maintenance Due -->
                     <article class="summary-card">
 
                         <div class="summary-icon orange-icon">
                             🔧
                         </div>
 
-
                         <div class="summary-details">
 
                             <p>Maintenance Due</p>
 
-                            <h2 class="orange-value">
-                                2
+                            <h2 class="orange-value"
+                                id="maintenanceDueValue">
+                                0
                             </h2>
 
                         </div>
@@ -281,20 +292,19 @@
                     </article>
 
 
-                    <!-- Last Service -->
                     <article class="summary-card">
 
                         <div class="summary-icon blue-icon">
                             ▣
                         </div>
 
-
                         <div class="summary-details">
 
                             <p>Last Service</p>
 
-                            <h2 class="blue-value last-service-value">
-                                25 Jun 2026
+                            <h2 class="blue-value last-service-value"
+                                id="lastServiceValue">
+                                —
                             </h2>
 
                         </div>
@@ -305,22 +315,49 @@
 
 
                 <!-- =====================================
+                     Reminder Alert
+                ====================================== -->
+                <div class="maintenance-alert-box"
+                     id="maintenanceAlertBox"
+                     hidden>
+
+                    <div class="maintenance-alert-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Maintenance Attention Required
+                        </strong>
+
+                        <p id="maintenanceAlertText">
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =====================================
                      Maintenance Form
                 ====================================== -->
                 <section class="content-card maintenance-form-card">
 
-                    <h2>Add Maintenance Record</h2>
+                    <h2 id="maintenanceFormTitle">
+                        Add Maintenance Record
+                    </h2>
 
 
-                    <form class="maintenance-form">
+                    <form class="maintenance-form"
+                          id="maintenanceForm">
 
-                        <!-- Machine Name -->
+                        <!-- Machine -->
                         <div class="form-field">
 
                             <label for="machine-name">
                                 Machine Name
                             </label>
-
 
                             <select id="machine-name"
                                     name="machineName"
@@ -329,33 +366,7 @@
                                 <option value=""
                                         selected
                                         disabled>
-
-                                    Select machine name
-
-                                </option>
-
-                                <option value="polishing-machine">
-                                    Polishing Machine
-                                </option>
-
-                                <option value="dryer-machine">
-                                    Dryer Machine
-                                </option>
-
-                                <option value="husker-machine">
-                                    Husker Machine
-                                </option>
-
-                                <option value="separator-machine">
-                                    Separator Machine
-                                </option>
-
-                                <option value="grader-machine">
-                                    Grader Machine
-                                </option>
-
-                                <option value="packaging-machine">
-                                    Packaging Machine
+                                    Select machine
                                 </option>
 
                             </select>
@@ -363,13 +374,65 @@
                         </div>
 
 
-                        <!-- Service Type -->
+                        <!-- Component -->
+                        <div class="form-field">
+
+                            <label for="component-name">
+                                Component
+                            </label>
+
+                            <select id="component-name"
+                                    name="componentName"
+                                    required
+                                    disabled>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select machine first
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Maintenance Type -->
+                        <div class="form-field">
+
+                            <label for="maintenance-type">
+                                Maintenance Type
+                            </label>
+
+                            <select id="maintenance-type"
+                                    name="maintenanceType"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select maintenance type
+                                </option>
+
+                                <option value="preventive">
+                                    Preventive
+                                </option>
+
+                                <option value="corrective">
+                                    Corrective
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Service Activity -->
                         <div class="form-field">
 
                             <label for="service-type">
-                                Service Type
+                                Service Activity
                             </label>
-
 
                             <select id="service-type"
                                     name="serviceType"
@@ -378,9 +441,19 @@
                                 <option value=""
                                         selected
                                         disabled>
+                                    Select service activity
+                                </option>
 
-                                    Select service type
+                                <option value="inspection">
+                                    Inspection
+                                </option>
 
+                                <option value="cleaning">
+                                    Cleaning
+                                </option>
+
+                                <option value="lubrication">
+                                    Lubrication
                                 </option>
 
                                 <option value="oil-change">
@@ -389,14 +462,6 @@
 
                                 <option value="repair">
                                     Repair
-                                </option>
-
-                                <option value="cleaning">
-                                    Cleaning
-                                </option>
-
-                                <option value="inspection">
-                                    Inspection
                                 </option>
 
                                 <option value="parts-replacement">
@@ -415,11 +480,30 @@
                                 Last Service Date
                             </label>
 
-
                             <input
                                 type="date"
                                 id="last-service-date"
                                 name="lastServiceDate"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- Interval -->
+                        <div class="form-field">
+
+                            <label for="maintenance-interval">
+                                Maintenance Interval (Days)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="maintenance-interval"
+                                name="maintenanceInterval"
+                                placeholder="Example: 30"
+                                min="1"
+                                step="1"
                                 required
                             >
 
@@ -433,12 +517,148 @@
                                 Next Service Date
                             </label>
 
-
                             <input
                                 type="date"
                                 id="next-service-date"
                                 name="nextServiceDate"
+                                readonly
                                 required
+                            >
+
+                        </div>
+
+
+                        <!-- Machine Status -->
+                        <div class="form-field">
+
+                            <label for="machine-status">
+                                Machine Status
+                            </label>
+
+                            <select id="machine-status"
+                                    name="machineStatus"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select machine status
+                                </option>
+
+                                <option value="operational">
+                                    Operational
+                                </option>
+
+                                <option value="under-maintenance">
+                                    Under Maintenance
+                                </option>
+
+                                <option value="breakdown">
+                                    Breakdown
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Damage Severity -->
+                        <div class="form-field">
+
+                            <label for="damage-severity">
+                                Damage Severity
+                            </label>
+
+                            <select id="damage-severity"
+                                    name="damageSeverity"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select damage severity
+                                </option>
+
+                                <option value="none">
+                                    None
+                                </option>
+
+                                <option value="minor">
+                                    Minor
+                                </option>
+
+                                <option value="moderate">
+                                    Moderate
+                                </option>
+
+                                <option value="major">
+                                    Major
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Downtime -->
+                        <div class="form-field">
+
+                            <label for="downtime-hours">
+                                Downtime (Hours)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="downtime-hours"
+                                name="downtimeHours"
+                                placeholder="Enter downtime"
+                                min="0"
+                                step="0.5"
+                                value="0"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- =================================
+                             Spare Part Dropdown
+                        ================================== -->
+                        <div class="form-field">
+
+                            <label for="spare-part-select">
+                                Spare Part Used
+                            </label>
+
+                            <select id="spare-part-select"
+                                    name="sparePartSelect"
+                                    required
+                                    disabled>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select machine first
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Other Spare Part -->
+                        <div class="form-field conditional-field hidden"
+                             id="otherSparePartField">
+
+                            <label for="other-spare-part">
+                                Other Spare Part
+                            </label>
+
+                            <input
+                                type="text"
+                                id="other-spare-part"
+                                name="otherSparePart"
+                                placeholder="Enter spare part name"
                             >
 
                         </div>
@@ -448,15 +668,14 @@
                         <div class="form-field">
 
                             <label for="maintenance-cost">
-                                Cost
+                                Maintenance Cost
                             </label>
-
 
                             <input
                                 type="number"
                                 id="maintenance-cost"
                                 name="maintenanceCost"
-                                placeholder="Select cost"
+                                placeholder="Enter cost"
                                 min="0"
                                 step="0.01"
                                 required
@@ -465,13 +684,122 @@
                         </div>
 
 
+                        <!-- =================================
+                             Responsible Person
+                        ================================== -->
+                        <div class="form-field">
+
+                            <label for="technician-select">
+                                Technician / Responsible Person
+                            </label>
+
+                            <select id="technician-select"
+                                    name="technicianSelect"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select responsible person
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- External Technician -->
+                        <div class="form-field conditional-field hidden"
+                             id="externalTechnicianField">
+
+                            <label for="external-technician-name">
+                                External Technician Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="external-technician-name"
+                                name="externalTechnicianName"
+                                placeholder="Enter technician name"
+                            >
+
+                        </div>
+
+
+                        <!-- Payment Method -->
+                        <div class="form-field">
+
+                            <label for="maintenance-payment-method">
+                                Payment Method
+                            </label>
+
+                            <select id="maintenance-payment-method"
+                                    name="maintenancePaymentMethod"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select payment method
+                                </option>
+
+                                <option value="cash">
+                                    Cash
+                                </option>
+
+                                <option value="bank">
+                                    Bank Transfer
+                                </option>
+
+                                <option value="mobile-banking">
+                                    Mobile Banking
+                                </option>
+
+                                <option value="cheque">
+                                    Cheque
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Payment Status -->
+                        <div class="form-field">
+
+                            <label for="maintenance-payment-status">
+                                Payment Status
+                            </label>
+
+                            <select id="maintenance-payment-status"
+                                    name="maintenancePaymentStatus"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select payment status
+                                </option>
+
+                                <option value="paid">
+                                    Paid
+                                </option>
+
+                                <option value="due">
+                                    Due
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
                         <!-- Maintenance Status -->
                         <div class="form-field">
 
                             <label for="maintenance-status">
-                                Status
+                                Maintenance Status
                             </label>
-
 
                             <select id="maintenance-status"
                                     name="maintenanceStatus"
@@ -480,17 +808,11 @@
                                 <option value=""
                                         selected
                                         disabled>
-
-                                    Select status
-
+                                    Select maintenance status
                                 </option>
 
                                 <option value="completed">
                                     Completed
-                                </option>
-
-                                <option value="due">
-                                    Due
                                 </option>
 
                                 <option value="pending">
@@ -506,11 +828,31 @@
                         </div>
 
 
-                        <!-- Save Button -->
+                        <!-- Notes -->
+                        <div class="form-field maintenance-notes-field">
+
+                            <label for="maintenance-notes">
+                                Notes
+                            </label>
+
+                            <textarea
+                                id="maintenance-notes"
+                                name="maintenanceNotes"
+                                rows="4"
+                                placeholder="Write maintenance details, observations or recommendations..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- Save -->
                         <div class="form-action">
 
-                            <button class="primary-action-button"
-                                    type="button">
+                            <button
+                                class="primary-action-button"
+                                id="saveMaintenanceButton"
+                                type="submit"
+                            >
 
                                 <span aria-hidden="true">
                                     ▣
@@ -532,7 +874,21 @@
                 ====================================== -->
                 <section class="content-card maintenance-list-card">
 
-                    <h2>Maintenance Records</h2>
+                    <div class="maintenance-list-header">
+
+                        <div>
+
+                            <h2>
+                                Maintenance Records
+                            </h2>
+
+                            <p>
+                                Service history, schedules and machine condition.
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
                     <div class="table-wrapper">
@@ -542,68 +898,21 @@
                             <thead>
 
                                 <tr>
-
-                                    <th>Machine</th>
-                                    <th>Service Type</th>
+                                    <th>Machine / Component</th>
+                                    <th>Maintenance</th>
                                     <th>Last Service</th>
                                     <th>Next Service</th>
                                     <th>Cost</th>
-                                    <th>Status</th>
-
+                                    <th>Responsible</th>
+                                    <th>Machine Status</th>
+                                    <th>Schedule</th>
+                                    <th>Action</th>
                                 </tr>
 
                             </thead>
 
 
-                            <tbody>
-
-                                <!-- First Record -->
-                                <tr>
-
-                                    <td>Polishing Machine</td>
-
-                                    <td>Oil Change</td>
-
-                                    <td>25 Jun 2026</td>
-
-                                    <td>10 Jul 2026</td>
-
-                                    <td>৳5,000</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-due">
-                                            Due
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <!-- Second Record -->
-                                <tr>
-
-                                    <td>Dryer Machine</td>
-
-                                    <td>Repair</td>
-
-                                    <td>20 Jun 2026</td>
-
-                                    <td>05 Jul 2026</td>
-
-                                    <td>৳8,000</td>
-
-                                    <td>
-
-                                        <span class="status-badge status-pending">
-                                            Pending
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
+                            <tbody id="maintenanceTableBody">
                             </tbody>
 
                         </table>
@@ -617,7 +926,14 @@
         </main>
 
     </div>
-<script src="../scripts/auth.js"></script>
+
+
+    <!-- Authentication -->
+    <script src="../scripts/auth.js"></script>
+
+    <!-- Maintenance Logic -->
+    <script src="../scripts/maintenance.js"></script>
+
 </body>
 
 </html>
