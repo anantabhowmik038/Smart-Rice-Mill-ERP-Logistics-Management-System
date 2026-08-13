@@ -9,11 +9,11 @@
 
     <title>Reports & Analytics | Smart Rice Mill ERP</title>
 
-    <!-- Common Dashboard CSS -->
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 
-    <!-- Reports Page CSS -->
-    <link rel="stylesheet" href="../styles/reports.css">
+    <link rel="stylesheet"
+          href="../styles/reports.css">
 </head>
 
 <body>
@@ -27,10 +27,14 @@
 
             <div class="sidebar-header">
 
-                <div class="sidebar-logo" aria-hidden="true">
+                <div class="sidebar-logo"
+                     aria-hidden="true">
+
                     <span class="logo-shape logo-shape-one"></span>
                     <span class="logo-shape logo-shape-two"></span>
+
                 </div>
+
 
                 <div class="sidebar-brand">
 
@@ -109,6 +113,30 @@
                 </a>
 
 
+                <a class="navigation-link"
+                   href="expense.html">
+
+                    <span class="navigation-icon">৳</span>
+                    <span class="navigation-text">
+                        Expense &amp; Salary
+                    </span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">🔧</span>
+                    <span class="navigation-text">
+                        Maintenance
+                    </span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
                 <a class="navigation-link active"
                    href="reports.html">
 
@@ -143,7 +171,7 @@
 
 
         <!-- =====================================
-             Main Area
+             Main
         ====================================== -->
         <main class="main-area">
 
@@ -160,25 +188,32 @@
 
                     </button>
 
-                    <h1>Reports &amp; Analytics</h1>
+                    <h1>
+                        Reports &amp; Analytics
+                    </h1>
 
                 </div>
 
 
                 <div class="topbar-right">
 
-                    <div class="notification-area">
+                    <a class="notification-area reports-topbar-link"
+                       href="notifications.html"
+                       aria-label="View notifications">
 
-                        <span class="notification-icon">♧</span>
+                        <span class="notification-icon">
+                            ♧
+                        </span>
 
                         <span class="notification-count">
                             3
                         </span>
 
-                    </div>
+                    </a>
 
 
-                    <div class="user-profile">
+                    <a class="user-profile reports-topbar-link"
+                       href="profile.html">
 
                         <div class="user-avatar"
                              aria-hidden="true">
@@ -187,16 +222,25 @@
 
                         </div>
 
+
                         <div class="user-information">
 
-                            <strong>Admin User</strong>
-                            <span>Rice Mill Owner</span>
+                            <strong id="reportsTopbarUserName">
+                                Admin User
+                            </strong>
+
+                            <span>
+                                Rice Mill Owner
+                            </span>
 
                         </div>
 
-                        <span class="profile-arrow">⌄</span>
 
-                    </div>
+                        <span class="profile-arrow">
+                            ⌄
+                        </span>
+
+                    </a>
 
                 </div>
 
@@ -208,17 +252,31 @@
             ====================================== -->
             <section class="dashboard-content reports-page">
 
-                <!-- =====================================
-                     Report Filters
-                ====================================== -->
+                <!-- =================================
+                     Filter
+                ================================== -->
                 <section class="content-card reports-filter-card">
 
-                    <h2>Report Filters</h2>
+                    <div class="reports-section-heading">
+
+                        <div>
+
+                            <h2>
+                                Report Filters
+                            </h2>
+
+                            <p>
+                                Generate reports using live system records.
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
-                    <form class="reports-filter-form">
+                    <form class="reports-filter-form"
+                          id="reportsFilterForm">
 
-                        <!-- Report Type -->
                         <div class="reports-field">
 
                             <label for="report-type">
@@ -229,7 +287,7 @@
                                     name="reportType">
 
                                 <option value="all">
-                                    All Reports
+                                    Overall Report
                                 </option>
 
                                 <option value="sales">
@@ -249,7 +307,15 @@
                                 </option>
 
                                 <option value="expense">
-                                    Expense Report
+                                    Expense &amp; Salary Report
+                                </option>
+
+                                <option value="delivery">
+                                    Delivery Report
+                                </option>
+
+                                <option value="maintenance">
+                                    Maintenance Report
                                 </option>
 
                                 <option value="profit-loss">
@@ -261,7 +327,6 @@
                         </div>
 
 
-                        <!-- From Date -->
                         <div class="reports-field">
 
                             <label for="from-date">
@@ -272,13 +337,12 @@
                                 type="date"
                                 id="from-date"
                                 name="fromDate"
-                                value="2026-07-01"
+                                required
                             >
 
                         </div>
 
 
-                        <!-- To Date -->
                         <div class="reports-field">
 
                             <label for="to-date">
@@ -289,19 +353,23 @@
                                 type="date"
                                 id="to-date"
                                 name="toDate"
-                                value="2026-07-31"
+                                required
                             >
 
                         </div>
 
 
-                        <!-- Generate Button -->
                         <div class="reports-filter-action">
 
-                            <button class="reports-generate-button"
-                                    type="button">
+                            <button
+                                class="reports-generate-button"
+                                type="submit"
+                            >
 
-                                <span aria-hidden="true">▣</span>
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
+
                                 Generate Report
 
                             </button>
@@ -310,16 +378,54 @@
 
                     </form>
 
+
+                    
+
+                        <div class="reports-secondary-actions">
+
+                            <button
+                                class="reports-secondary-button"
+                                id="exportReportButton"
+                                type="button"
+    >
+                                Export CSV
+                            </button>
+
+
+                            <button
+                                class="reports-secondary-button"
+                                id="downloadPdfButton"
+                                type="button"
+    >
+                                Download PDF
+                            </button>
+
+
+                            <button
+                                class="reports-secondary-button"
+                                id="printReportButton"
+                                type="button"
+    >
+                            Print Report
+                        </button>
+
+                    </div>
+
+
+                    <p class="reports-current-range"
+                       id="reportMetaText">
+                    </p>
+
                 </section>
 
 
-                <!-- =====================================
-                     Report Summary Cards
-                ====================================== -->
+                <!-- =================================
+                     Summary Cards
+                ================================== -->
                 <section class="reports-summary-grid"
                          aria-label="Reports summary">
 
-                    <!-- Sales Report -->
+                    <!-- Sales -->
                     <article class="summary-card">
 
                         <div class="summary-icon green-icon reports-simple-icon">
@@ -328,18 +434,25 @@
 
                         <div class="summary-details">
 
-                            <p>Sales Report</p>
+                            <p>
+                                Sales Revenue
+                            </p>
 
-                            <h2 class="green-value">
-                                ৳2,45,000
+                            <h2 class="green-value"
+                                id="reportSalesValue">
+                                ৳0
                             </h2>
+
+                            <small id="reportSalesMeta">
+                                0 invoices
+                            </small>
 
                         </div>
 
                     </article>
 
 
-                    <!-- Purchase Report -->
+                    <!-- Purchase -->
                     <article class="summary-card">
 
                         <div class="summary-icon blue-icon reports-simple-icon">
@@ -348,18 +461,25 @@
 
                         <div class="summary-details">
 
-                            <p>Purchase Report</p>
+                            <p>
+                                Paddy Purchases
+                            </p>
 
-                            <h2 class="blue-value">
-                                ৳1,58,000
+                            <h2 class="blue-value"
+                                id="reportPurchaseValue">
+                                ৳0
                             </h2>
+
+                            <small id="reportPurchaseMeta">
+                                0 purchases
+                            </small>
 
                         </div>
 
                     </article>
 
 
-                    <!-- Inventory Report -->
+                    <!-- Inventory -->
                     <article class="summary-card">
 
                         <div class="summary-icon orange-icon reports-simple-icon">
@@ -368,18 +488,25 @@
 
                         <div class="summary-details">
 
-                            <p>Inventory Report</p>
+                            <p>
+                                Current Inventory
+                            </p>
 
-                            <h2 class="orange-value">
-                                1,250 Tons
+                            <h2 class="orange-value"
+                                id="reportInventoryValue">
+                                0 kg
                             </h2>
+
+                            <small id="reportInventoryMeta">
+                                Current stock snapshot
+                            </small>
 
                         </div>
 
                     </article>
 
 
-                    <!-- Profit and Loss -->
+                    <!-- Net -->
                     <article class="summary-card">
 
                         <div class="summary-icon reports-purple-icon reports-simple-icon">
@@ -388,11 +515,18 @@
 
                         <div class="summary-details">
 
-                            <p>Profit &amp; Loss</p>
+                            <p>
+                                Estimated Net Balance
+                            </p>
 
-                            <h2 class="reports-purple-value">
-                                ৳8,70,000
+                            <h2 class="reports-purple-value"
+                                id="reportProfitValue">
+                                ৳0
                             </h2>
+
+                            <small id="reportProfitMeta">
+                                Selected period
+                            </small>
 
                         </div>
 
@@ -401,171 +535,91 @@
                 </section>
 
 
-                <!-- =====================================
+                <!-- Financial Notice -->
+                <div class="reports-information-box">
+
+                    <strong>
+                        Financial calculation:
+                    </strong>
+
+                    Estimated Net Balance =
+                    Sales − Purchases − Operating Expenses − Salaries.
+
+                    This is an operational estimate for the ERP prototype,
+                    not a formal COGS-based accounting statement.
+
+                </div>
+
+
+                <!-- =================================
                      Charts
-                ====================================== -->
+                ================================== -->
                 <section class="reports-chart-grid">
 
-                    <!-- Monthly Sales Trend -->
+                    <!-- Sales Trend -->
                     <section class="content-card reports-chart-card">
 
-                        <h2>Monthly Sales Trend</h2>
+                        <div class="reports-chart-heading">
+
+                            <div>
+
+                                <h2>
+                                    Monthly Sales Trend
+                                </h2>
+
+                                <p>
+                                    Six-month trend ending at the selected
+                                    To Date.
+                                </p>
+
+                            </div>
+
+                        </div>
 
 
                         <div class="reports-line-chart">
 
-                            <svg class="reports-line-svg"
-                                 viewBox="0 0 600 220"
-                                 role="img"
-                                 aria-label="Monthly sales trend chart">
-
-                                <!-- Horizontal Grid Lines -->
-                                <line
-                                    x1="20"
-                                    y1="30"
-                                    x2="580"
-                                    y2="30"
-                                    stroke="#e3e8eb"
-                                    stroke-width="1"
-                                />
-
-                                <line
-                                    x1="20"
-                                    y1="75"
-                                    x2="580"
-                                    y2="75"
-                                    stroke="#e3e8eb"
-                                    stroke-width="1"
-                                />
-
-                                <line
-                                    x1="20"
-                                    y1="120"
-                                    x2="580"
-                                    y2="120"
-                                    stroke="#e3e8eb"
-                                    stroke-width="1"
-                                />
-
-                                <line
-                                    x1="20"
-                                    y1="165"
-                                    x2="580"
-                                    y2="165"
-                                    stroke="#e3e8eb"
-                                    stroke-width="1"
-                                />
-
-                                <line
-                                    x1="20"
-                                    y1="205"
-                                    x2="580"
-                                    y2="205"
-                                    stroke="#e3e8eb"
-                                    stroke-width="1"
-                                />
-
-
-                                <!-- Sales Trend -->
-                                <polyline
-                                    points="
-                                        25,195
-                                        125,168
-                                        225,112
-                                        325,158
-                                        425,78
-                                        555,38
-                                    "
-                                    fill="none"
-                                    stroke="#15913a"
-                                    stroke-width="5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
-
-
-                                <!-- Trend Points -->
-                                <circle
-                                    cx="25"
-                                    cy="195"
-                                    r="6"
-                                    fill="#ffffff"
-                                    stroke="#15913a"
-                                    stroke-width="3"
-                                />
-
-                                <circle
-                                    cx="125"
-                                    cy="168"
-                                    r="6"
-                                    fill="#ffffff"
-                                    stroke="#15913a"
-                                    stroke-width="3"
-                                />
-
-                                <circle
-                                    cx="225"
-                                    cy="112"
-                                    r="6"
-                                    fill="#ffffff"
-                                    stroke="#15913a"
-                                    stroke-width="3"
-                                />
-
-                                <circle
-                                    cx="325"
-                                    cy="158"
-                                    r="6"
-                                    fill="#ffffff"
-                                    stroke="#15913a"
-                                    stroke-width="3"
-                                />
-
-                                <circle
-                                    cx="425"
-                                    cy="78"
-                                    r="6"
-                                    fill="#ffffff"
-                                    stroke="#15913a"
-                                    stroke-width="3"
-                                />
-
-                                <circle
-                                    cx="555"
-                                    cy="38"
-                                    r="6"
-                                    fill="#ffffff"
-                                    stroke="#15913a"
-                                    stroke-width="3"
-                                />
-
+                            <svg
+                                class="reports-line-svg"
+                                id="salesTrendSvg"
+                                viewBox="0 0 600 210"
+                                role="img"
+                                aria-label="Monthly sales trend chart"
+                            >
                             </svg>
 
+                        </div>
+
+
+                        <div class="reports-chart-labels"
+                             id="salesTrendLabels">
                         </div>
 
                     </section>
 
 
-                    <!-- Profit and Loss Overview -->
+                    <!-- Profit / Loss -->
                     <section class="content-card reports-chart-card">
 
-                        <h2>Profit/Loss Overview</h2>
+                        <div class="reports-chart-heading">
+
+                            <div>
+
+                                <h2>
+                                    Profit/Loss Overview
+                                </h2>
+
+                                <p>
+                                    Estimated monthly net balance.
+                                </p>
+
+                            </div>
+
+                        </div>
 
 
-                        <div class="reports-bar-chart">
-
-                            <div class="reports-bar reports-bar-one"></div>
-
-                            <div class="reports-bar reports-bar-two"></div>
-
-                            <div class="reports-bar reports-bar-three"></div>
-
-                            <div class="reports-bar reports-loss-bar"></div>
-
-                            <div class="reports-bar reports-bar-five"></div>
-
-                            <div class="reports-bar reports-bar-six"></div>
-
+                        <div class="reports-dynamic-bar-chart"
+                             id="profitLossChart">
                         </div>
 
                     </section>
@@ -573,12 +627,65 @@
                 </section>
 
 
-                <!-- =====================================
-                     Generated Reports
-                ====================================== -->
+                <!-- =================================
+                     Report Details
+                ================================== -->
+                <section class="content-card reports-details-card">
+
+                    <div class="reports-details-heading">
+
+                        <div>
+
+                            <h2 id="reportDetailsTitle">
+                                Overall Report
+                            </h2>
+
+                            <p id="reportDetailsMeta">
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="reports-table"
+                               id="reportDetailsTable">
+
+                            <thead id="detailsTableHead">
+                            </thead>
+
+                            <tbody id="detailsTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================
+                     Generated Report History
+                ================================== -->
                 <section class="content-card reports-generated-card">
 
-                    <h2>Generated Reports</h2>
+                    <div class="reports-details-heading">
+
+                        <div>
+
+                            <h2>
+                                Generated Reports
+                            </h2>
+
+                            <p>
+                                Recently generated report history.
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
                     <div class="table-wrapper">
@@ -591,47 +698,14 @@
                                     <th>Report Name</th>
                                     <th>Date Range</th>
                                     <th>Generated By</th>
+                                    <th>Generated At</th>
                                     <th>Status</th>
                                 </tr>
 
                             </thead>
 
 
-                            <tbody>
-
-                                <tr>
-
-                                    <td>Sales Report</td>
-                                    <td>01 Jul - 31 Jul</td>
-                                    <td>Admin User</td>
-
-                                    <td>
-
-                                        <span class="status-badge reports-ready-status">
-                                            Ready
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Inventory Report</td>
-                                    <td>Current Month</td>
-                                    <td>Manager User</td>
-
-                                    <td>
-
-                                        <span class="status-badge reports-ready-status">
-                                            Ready
-                                        </span>
-
-                                    </td>
-
-                                </tr>
-
+                            <tbody id="generatedReportsTableBody">
                             </tbody>
 
                         </table>
@@ -645,7 +719,14 @@
         </main>
 
     </div>
-<script src="../scripts/auth.js"></script>
+
+
+    <script src="../scripts/auth.js"></script>
+
+    <script src="../scripts/html2pdf.bundle.min.js"></script>
+
+    <script src="../scripts/reports.js"></script>
+
 </body>
 
 </html>
