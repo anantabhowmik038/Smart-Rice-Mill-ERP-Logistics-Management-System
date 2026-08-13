@@ -5,12 +5,26 @@
 
 
 /* =========================================
+   Topbar Links
+   ========================================= */
+
+.notification-area,
+.user-profile {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================
    Summary Cards
    ========================================= */
 
 .expense-summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
     gap: 28px;
 }
 
@@ -26,13 +40,21 @@
 
 .management-form-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 50px;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 38px;
+
     margin-top: 36px;
+
+    align-items: start;
 }
 
 .expense-form-card,
 .salary-form-card {
+    min-width: 0;
+
     padding: 24px 25px 26px;
 }
 
@@ -49,13 +71,18 @@
 .expense-form,
 .salary-form {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
     column-gap: 28px;
     row-gap: 20px;
 }
 
 
-/* Form Fields */
+/* =========================================
+   Form Fields
+   ========================================= */
 
 .form-field {
     min-width: 0;
@@ -63,9 +90,12 @@
 
 .form-field label {
     display: block;
+
     margin-bottom: 9px;
+
     font-size: 0.9rem;
     font-weight: 500;
+
     color: #171e29;
 }
 
@@ -73,17 +103,24 @@
 .form-field select {
     width: 100%;
     height: 46px;
+
     padding: 0 14px;
+
     font-family: inherit;
     font-size: 0.88rem;
+
     color: #171e29;
     background-color: #ffffff;
+
     border: 1px solid #d7dee4;
     border-radius: 7px;
+
     outline: none;
+
     transition:
         border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
 }
 
 .form-field input::placeholder {
@@ -94,20 +131,45 @@
     cursor: pointer;
 }
 
-.form-field input:hover,
-.form-field select:hover {
+.form-field input:hover:not(:disabled),
+.form-field select:hover:not(:disabled) {
     border-color: #b9c2ca;
 }
 
 .form-field input:focus,
 .form-field select:focus {
     border-color: #139536;
-    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(19, 149, 54, 0.11);
 }
 
-.form-field input[type="date"] {
+.form-field input[type="date"],
+.form-field input[type="month"] {
     cursor: pointer;
-    color: #7e8793;
+
+    color: #626d77;
+}
+
+
+/* =========================================
+   Readonly / Disabled Fields
+   ========================================= */
+
+.form-field input[readonly] {
+    color: #66717b;
+    background-color: #f5f7f8;
+
+    cursor: default;
+}
+
+.form-field input:disabled,
+.form-field select:disabled {
+    color: #8a929b;
+    background-color: #f5f7f8;
+
+    cursor: not-allowed;
 }
 
 
@@ -117,28 +179,41 @@
 
 .form-action {
     grid-column: 1 / -1;
+
     display: flex;
     justify-content: center;
-    margin-top: 22px;
+
+    margin-top: 18px;
 }
 
 .primary-action-button {
     min-width: 205px;
     height: 48px;
+
     padding: 0 25px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     gap: 8px;
+
     font-family: inherit;
     font-size: 0.95rem;
     font-weight: 600;
+
     color: #ffffff;
     background-color: #129238;
+
     border: none;
     border-radius: 7px;
+
     cursor: pointer;
-    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
+
+    box-shadow:
+        0 6px 14px
+        rgba(18, 146, 56, 0.16);
+
     transition:
         background-color 0.2s ease,
         transform 0.2s ease,
@@ -147,7 +222,11 @@
 
 .primary-action-button:hover {
     background-color: #0e7f30;
-    box-shadow: 0 8px 17px rgba(18, 146, 56, 0.22);
+
+    box-shadow:
+        0 8px 17px
+        rgba(18, 146, 56, 0.22);
+
     transform: translateY(-1px);
 }
 
@@ -156,7 +235,10 @@
 }
 
 .primary-action-button:focus-visible {
-    outline: 3px solid rgba(18, 146, 56, 0.24);
+    outline:
+        3px solid
+        rgba(18, 146, 56, 0.24);
+
     outline-offset: 3px;
 }
 
@@ -167,50 +249,214 @@
 
 .records-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
     gap: 30px;
-    margin-top: 68px;
+
+    margin-top: 55px;
+
+    align-items: start;
+
+    transition:
+        grid-template-columns 0.25s ease;
 }
 
 .records-card {
-    padding: 23px 21px 10px;
-}
+    min-width: 0;
 
-.records-card h2 {
-    margin-bottom: 24px;
+    padding: 23px 21px 10px;
+
+    transition:
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
 }
 
 
 /* =========================================
-   Records Tables
+   Records Card Header
+   ========================================= */
+
+.records-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+.records-card-header h2 {
+    margin: 0;
+}
+
+
+/* =========================================
+   Collapse / Expand Controls
+   ========================================= */
+
+.records-card-controls {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.record-window-button {
+    width: 33px;
+    height: 33px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+
+    color: #58636d;
+    background-color: #ffffff;
+
+    border: 1px solid #d4dce2;
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.record-window-button:hover {
+    color: #118a34;
+    background-color: #f3faf5;
+
+    border-color: #15913a;
+}
+
+.record-window-button:active {
+    transform: scale(0.95);
+}
+
+.record-window-button:focus-visible {
+    outline:
+        3px solid
+        rgba(18, 146, 56, 0.18);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================
+   Table Wrapper
+   ========================================= */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-width: thin;
+}
+
+
+/* =========================================
+   Collapse State
+   ========================================= */
+
+.records-card.is-collapsed {
+    padding-bottom: 22px;
+}
+
+.records-card.is-collapsed
+.record-table-content {
+    display: none;
+}
+
+.records-card.is-collapsed
+.records-card-header {
+    margin-bottom: 0;
+}
+
+
+/* =========================================
+   Maximized State
+   ========================================= */
+
+.records-grid.has-maximized-card {
+    grid-template-columns: 1fr;
+}
+
+.records-grid.has-maximized-card
+.records-card:not(.is-maximized) {
+    display: none;
+}
+
+.records-card.is-maximized {
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    box-shadow:
+        0 10px 30px
+        rgba(24, 44, 34, 0.10);
+}
+
+
+/* Table can breathe when maximized */
+
+.records-card.is-maximized
+.expense-table,
+.records-card.is-maximized
+.salary-table {
+    min-width: 900px;
+}
+
+
+/* =========================================
+   Tables
    ========================================= */
 
 .expense-table,
 .salary-table {
     width: 100%;
-    min-width: 520px;
+    min-width: 720px;
+
     border-collapse: separate;
     border-spacing: 0;
-    font-size: 0.87rem;
+
+    font-size: 0.84rem;
 }
 
 .expense-table th,
 .expense-table td,
 .salary-table th,
 .salary-table td {
-    padding: 14px 20px;
+    padding: 14px 15px;
+
     text-align: left;
     vertical-align: middle;
 }
 
 
-/* Rounded Table Headers */
+/* =========================================
+   Table Header
+   ========================================= */
 
 .expense-table thead th,
 .salary-table thead th {
     font-weight: 500;
+
     color: #171e29;
     background-color: #fafcfc;
+
     border-top: 1px solid #d8dee3;
     border-bottom: 1px solid #d8dee3;
 }
@@ -218,17 +464,21 @@
 .expense-table thead th:first-child,
 .salary-table thead th:first-child {
     border-left: 1px solid #d8dee3;
+
     border-radius: 8px 0 0 8px;
 }
 
 .expense-table thead th:last-child,
 .salary-table thead th:last-child {
     border-right: 1px solid #d8dee3;
+
     border-radius: 0 8px 8px 0;
 }
 
 
-/* Table Body */
+/* =========================================
+   Table Body
+   ========================================= */
 
 .expense-table tbody td,
 .salary-table tbody td {
@@ -243,6 +493,224 @@
 .expense-table tbody tr:hover td,
 .salary-table tbody tr:hover td {
     background-color: #fafcfa;
+}
+
+
+/* =========================================
+   Record Text
+   ========================================= */
+
+.record-primary-text {
+    display: block;
+
+    font-weight: 600;
+
+    color: #28323c;
+}
+
+.record-secondary-text {
+    display: block;
+
+    max-width: 190px;
+
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    font-size: 0.76rem;
+
+    color: #7b858e;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   Status Badges
+   ========================================= */
+
+.finance-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 62px;
+
+    padding: 5px 9px;
+
+    font-size: 0.74rem;
+    font-weight: 600;
+
+    border-radius: 20px;
+}
+
+.finance-status-paid {
+    color: #157336;
+    background-color: #eaf7ed;
+}
+
+.finance-status-due {
+    color: #a12626;
+    background-color: #fdecec;
+}
+
+.finance-status-partial {
+    color: #926800;
+    background-color: #fff5d8;
+}
+
+
+/* =========================================
+   Action Buttons
+   ========================================= */
+
+.finance-action-group {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.finance-edit-button,
+.finance-delete-button {
+    min-width: 58px;
+    height: 32px;
+
+    padding: 0 10px;
+
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 600;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.finance-edit-button {
+    color: #148d35;
+    background-color: #ffffff;
+
+    border: 1px solid #148d35;
+}
+
+.finance-edit-button:hover {
+    color: #ffffff;
+    background-color: #148d35;
+}
+
+.finance-delete-button {
+    color: #c62828;
+    background-color: #fff8f8;
+
+    border: 1px solid #e4aaaa;
+}
+
+.finance-delete-button:hover {
+    color: #ffffff;
+    background-color: #c62828;
+
+    border-color: #c62828;
+}
+
+
+/* =========================================
+   Empty Table
+   ========================================= */
+
+.finance-empty-row td {
+    padding: 35px 20px;
+
+    text-align: center;
+
+    color: #7c868f;
+    background-color: #fafcfc;
+}
+
+
+/* =========================================
+   Toast
+   ========================================= */
+
+.finance-toast {
+    position: fixed;
+
+    top: 25px;
+    right: 25px;
+
+    min-width: 290px;
+    max-width: 410px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 18px;
+
+    color: #17351f;
+    background-color: #ffffff;
+
+    border-left: 5px solid #15913a;
+    border-radius: 8px;
+
+    box-shadow:
+        0 6px 20px
+        rgba(0, 0, 0, 0.15);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    z-index: 9999;
+
+    opacity: 0;
+
+    transform: translateX(30px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+.finance-toast.show {
+    opacity: 1;
+
+    transform: translateX(0);
+}
+
+.finance-toast .toast-icon {
+    width: 26px;
+    height: 26px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #15913a;
+    background-color: #e7f5eb;
+
+    border-radius: 50%;
+
+    font-weight: 700;
+}
+
+.finance-toast.error {
+    color: #8f1d1d;
+
+    border-left-color: #d32f2f;
+}
+
+.finance-toast.error .toast-icon {
+    color: #d32f2f;
+    background-color: #fdeaea;
 }
 
 
@@ -271,10 +739,12 @@
 @media screen and (max-width: 1050px) {
 
     .expense-summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
-    .expense-summary-grid .summary-card:last-child {
+    .expense-summary-grid
+    .summary-card:last-child {
         grid-column: 1 / -1;
     }
 
@@ -294,10 +764,12 @@
 
     .expense-summary-grid {
         grid-template-columns: 1fr;
+
         gap: 16px;
     }
 
-    .expense-summary-grid .summary-card:last-child {
+    .expense-summary-grid
+    .summary-card:last-child {
         grid-column: auto;
     }
 
@@ -313,6 +785,7 @@
     .expense-form,
     .salary-form {
         grid-template-columns: 1fr;
+
         gap: 18px;
     }
 
@@ -325,7 +798,12 @@
     }
 
     .records-card {
-        padding: 20px 16px 8px;
+        padding:
+            20px 16px 8px;
+    }
+
+    .records-card-header {
+        margin-bottom: 20px;
     }
 
 }
@@ -348,7 +826,20 @@
     .expense-table td,
     .salary-table th,
     .salary-table td {
-        padding: 12px 15px;
+        padding: 12px 13px;
+    }
+
+    .record-window-button {
+        width: 31px;
+        height: 31px;
+    }
+
+    .finance-toast {
+        left: 15px;
+        right: 15px;
+
+        min-width: auto;
+        max-width: none;
     }
 
 }
