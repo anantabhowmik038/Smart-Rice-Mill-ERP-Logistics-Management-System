@@ -1,374 +1,836 @@
 /* =========================================
-   Smart Rice Mill ERP
-   Quality Inspection Page
-   ========================================= */
+   SMART RICE MILL ERP
+   QUALITY INSPECTION
+========================================= */
 
 
 /* =========================================
-   Summary Cards
-   ========================================= */
+   HIDDEN
+========================================= */
 
-.quality-summary-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
+[hidden] {
+    display: none !important;
 }
 
-.quality-summary-grid .summary-icon {
-    font-size: 2rem;
+
+/* =========================================
+   PAGE
+========================================= */
+
+.quality-content {
+    padding-top: 26px;
+}
+
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.quality-page-heading {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.quality-page-heading h2 {
+    color: #17231c;
+
+    font-size: 1.08rem;
     font-weight: 700;
 }
 
+.quality-page-heading p {
+    margin-top: 5px;
 
-/* Accepted Icon */
+    color: #7b857f;
+
+    font-size: 0.79rem;
+    line-height: 1.45;
+}
+
+.purchase-shortcut {
+    padding: 9px 13px;
+
+    color: #157d34;
+    background-color: #edf7ef;
+
+    border: 1px solid #cce5d2;
+    border-radius: 7px;
+
+    font-size: 0.77rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        background-color 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.purchase-shortcut:hover {
+    background-color: #e2f2e6;
+
+    border-color: #abd5b5;
+}
+
+
+/* =========================================
+   SUMMARY GRID
+========================================= */
+
+.quality-summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+.quality-summary-grid .summary-card {
+    min-height: 108px;
+
+    padding-right: 20px;
+
+    cursor: default;
+}
+
+.quality-summary-grid .summary-card:hover {
+    transform: none;
+}
+
+
+/* =========================================
+   SUMMARY ICONS
+========================================= */
 
 .accepted-icon {
     color: #15913a;
-    background-color: #e9f6ec;
+    background-color: #eaf7ed;
 }
 
-
-/* Rejected Icon */
+.review-icon {
+    color: #c28100;
+    background-color: #fff6dd;
+}
 
 .rejected-icon {
-    color: #d52428;
-    background-color: #fdeaea;
-    border-color: #f1cfd1;
+    color: #d83232;
+    background-color: #fff0f0;
 }
-
-
-/* Moisture Icon */
 
 .moisture-icon {
-    color: #176cc8;
-    background-color: #e8f2fc;
-    border-color: #d3e1f1;
-}
-
-
-/* Red Value */
-
-.red-value {
-    color: #d52428;
+    color: #176dc1;
+    background-color: #eaf3fc;
 }
 
 
 /* =========================================
-   Quality Form Card
-   ========================================= */
+   SUMMARY VALUES
+========================================= */
+
+.accepted-value {
+    color: #15913a;
+}
+
+.review-value {
+    color: #c28100;
+}
+
+.rejected-value {
+    color: #d83232;
+}
+
+.moisture-value {
+    color: #176dc1;
+}
+
+
+/* =========================================
+   FORM CARD
+========================================= */
 
 .quality-form-card {
-    margin-top: 36px;
-    padding: 24px 25px 22px;
+    margin-top: 30px;
+
+    padding: 24px 25px 26px;
 }
 
-.quality-form-card h2 {
-    margin-bottom: 25px;
+.quality-card-heading {
+    margin-bottom: 24px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.quality-card-heading h2 {
+    color: #17231c;
+
+    font-size: 1.14rem;
+}
+
+.quality-card-heading p {
+    margin-top: 5px;
+
+    color: #7d8781;
+
+    font-size: 0.76rem;
+}
+
+.quality-form-note {
+    max-width: 410px;
+
+    padding: 8px 11px;
+
+    color: #526158;
+    background-color: #f3f7f4;
+
+    border: 1px solid #dce6df;
+    border-radius: 7px;
+
+    font-size: 0.71rem;
+    line-height: 1.4;
 }
 
 
 /* =========================================
-   Quality Form Grid
-   ========================================= */
+   FORM GRID
+========================================= */
 
 .quality-form {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 30px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    column-gap: 24px;
     row-gap: 20px;
 }
 
-
-/* =========================================
-   Form Fields
-   ========================================= */
-
-.form-field {
+.quality-form-field {
     min-width: 0;
 }
 
-.form-field label {
-    display: block;
-    margin-bottom: 9px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #171e29;
-}
-
-.form-field input,
-.form-field select {
-    width: 100%;
-    height: 46px;
-    padding: 0 14px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    color: #171e29;
-    background-color: #ffffff;
-    border: 1px solid #d7dee4;
-    border-radius: 7px;
-    outline: none;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.form-field input::placeholder {
-    color: #929aa6;
-}
-
-.form-field select {
-    cursor: pointer;
-}
-
-.form-field input:hover,
-.form-field select:hover {
-    border-color: #b9c2ca;
-}
-
-.form-field input:focus,
-.form-field select:focus {
-    border-color: #139536;
-    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
-}
-
-
-/* Remove Number Input Arrows */
-
-.form-field input[type="number"]::-webkit-inner-spin-button,
-.form-field input[type="number"]::-webkit-outer-spin-button {
-    margin: 0;
+.notes-field {
+    grid-column: span 2;
 }
 
 
 /* =========================================
-   Save Inspection Button
-   ========================================= */
+   LABEL
+========================================= */
 
-.form-action {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
+.quality-form-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #202b24;
+
+    font-size: 0.81rem;
+    font-weight: 600;
 }
 
-.primary-action-button {
-    min-width: 215px;
-    height: 48px;
-    padding: 0 25px;
+
+/* =========================================
+   INPUT / SELECT
+========================================= */
+
+.quality-form-field input,
+.quality-form-field select {
+    width: 100%;
+    height: 44px;
+
+    padding: 0 13px;
+
+    color: #17231c;
+    background-color: #ffffff;
+
+    border: 1px solid #d5ded8;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.quality-form-field input::placeholder {
+    color: #98a29b;
+}
+
+.quality-form-field input:hover,
+.quality-form-field select:hover {
+    border-color: #b9c7be;
+}
+
+.quality-form-field input:focus,
+.quality-form-field select:focus {
+    border-color: #15913a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(21, 145, 58, 0.10);
+}
+
+.quality-form-field input[readonly] {
+    color: #657069;
+
+    background-color: #f4f7f5;
+
+    cursor: default;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.quality-form-action {
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+}
+
+.quality-save-button,
+.quality-cancel-button {
+    min-width: 175px;
+    height: 46px;
+
+    padding: 0 21px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+
+    gap: 7px;
+
+    border-radius: 7px;
+
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.82rem;
     font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.quality-save-button {
     color: #ffffff;
     background-color: #129238;
-    border: none;
-    border-radius: 7px;
-    cursor: pointer;
-    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+
+    box-shadow:
+        0 6px 14px
+        rgba(18, 146, 56, 0.16);
 }
 
-.primary-action-button:hover {
-    background-color: #0e7f30;
-    box-shadow: 0 8px 17px rgba(18, 146, 56, 0.22);
+.quality-save-button:hover {
+    background-color: #0e7e30;
+
     transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(18, 146, 56, 0.21);
 }
 
-.primary-action-button:active {
-    transform: translateY(0);
+.quality-cancel-button {
+    color: #4d5951;
+    background-color: #ffffff;
+
+    border: 1px solid #cfd8d2;
 }
 
-.primary-action-button:focus-visible {
-    outline: 3px solid rgba(18, 146, 56, 0.24);
-    outline-offset: 3px;
+.quality-cancel-button:hover {
+    background-color: #f4f7f5;
 }
 
 
 /* =========================================
-   Quality List Card
-   ========================================= */
+   LIST CARD
+========================================= */
 
 .quality-list-card {
-    margin-top: 45px;
-    padding: 23px 21px 10px;
+    margin-top: 32px;
+
+    padding: 23px 20px 12px;
 }
 
-.quality-list-card h2 {
-    margin-bottom: 24px;
+.quality-list-heading {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.quality-list-heading h2 {
+    color: #17231c;
+
+    font-size: 1.14rem;
+}
+
+.quality-list-heading p {
+    margin-top: 5px;
+
+    color: #7c8780;
+
+    font-size: 0.75rem;
 }
 
 
 /* =========================================
-   Quality Table
-   ========================================= */
+   SEARCH / FILTER
+========================================= */
+
+.quality-list-controls {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.quality-list-controls input {
+    width: 230px;
+    height: 39px;
+
+    padding: 0 12px;
+
+    color: #17231c;
+    background-color: #ffffff;
+
+    border: 1px solid #d4ddd7;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.75rem;
+}
+
+.quality-list-controls select {
+    width: 145px;
+    height: 39px;
+
+    padding: 0 10px;
+
+    color: #17231c;
+    background-color: #ffffff;
+
+    border: 1px solid #d4ddd7;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.75rem;
+}
+
+.quality-list-controls input:focus,
+.quality-list-controls select:focus {
+    border-color: #15913a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(21, 145, 58, 0.09);
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.quality-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
 
 .quality-table {
     width: 100%;
-    min-width: 850px;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 0.9rem;
+    min-width: 1120px;
+
+    border-collapse: collapse;
+
+    font-size: 0.77rem;
+}
+
+.quality-table thead {
+    background-color: #fafcfa;
+
+    border: 1px solid #d8dfda;
 }
 
 .quality-table th,
 .quality-table td {
-    padding: 14px 20px;
+    padding: 12px 13px;
+
     text-align: left;
     vertical-align: middle;
+
+    white-space: nowrap;
 }
 
+.quality-table th {
+    color: #344038;
 
-/* Rounded Table Header */
-
-.quality-table thead th {
-    font-weight: 500;
-    color: #171e29;
-    background-color: #fafcfc;
-    border-top: 1px solid #d8dee3;
-    border-bottom: 1px solid #d8dee3;
+    font-size: 0.73rem;
+    font-weight: 600;
 }
 
-.quality-table thead th:first-child {
-    border-left: 1px solid #d8dee3;
-    border-radius: 8px 0 0 8px;
+.quality-table tbody tr {
+    border-bottom:
+        1px solid #e2e8e4;
+
+    transition:
+        background-color 0.15s ease;
 }
 
-.quality-table thead th:last-child {
-    border-right: 1px solid #d8dee3;
-    border-radius: 0 8px 8px 0;
-}
-
-
-/* Table Body */
-
-.quality-table tbody td {
-    border-bottom: 1px solid #e1e5e8;
-}
-
-.quality-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.quality-table tbody tr:hover td {
-    background-color: #fafcfa;
+.quality-table tbody tr:hover {
+    background-color: #fbfdfb;
 }
 
 
 /* =========================================
-   Decision Badges
-   ========================================= */
+   DECISION BADGES
+========================================= */
 
-.status-accepted {
-    color: #168d38;
+.decision-badge {
+    min-width: 86px;
+
+    padding: 5px 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    font-size: 0.66rem;
+    font-weight: 600;
+}
+
+.decision-accepted {
+    color: #158037;
     background-color: #edf8ef;
-    border: 1px solid #168d38;
+
+    border: 1px solid #59ae6f;
 }
 
-.status-review {
-    color: #e28a00;
-    background-color: #fff8ed;
-    border: 1px solid #e9a01b;
+.decision-review {
+    color: #b47700;
+    background-color: #fff7e5;
+
+    border: 1px solid #dfaa44;
 }
 
-.status-rejected {
-    color: #d52428;
+.decision-rejected {
+    color: #c43232;
     background-color: #fff0f0;
-    border: 1px solid #d52428;
+
+    border: 1px solid #df9f9f;
 }
 
 
 /* =========================================
-   Responsive Design
-   ========================================= */
+   GRADE BADGE
+========================================= */
+
+.grade-badge {
+    min-width: 45px;
+
+    padding: 5px 9px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #325d3e;
+    background-color: #eef5f0;
+
+    border: 1px solid #cadbcf;
+    border-radius: 15px;
+
+    font-size: 0.67rem;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.quality-action-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.quality-edit-button,
+.quality-delete-button {
+    height: 31px;
+
+    padding: 0 12px;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.69rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.quality-edit-button {
+    color: #168438;
+
+    border: 1px solid #32a253;
+}
+
+.quality-edit-button:hover {
+    color: #ffffff;
+
+    background-color: #168f3b;
+}
+
+.quality-delete-button {
+    color: #cf3939;
+
+    border: 1px solid #e4aaaa;
+}
+
+.quality-delete-button:hover {
+    color: #ffffff;
+
+    background-color: #cf3939;
+}
+
+
+/* =========================================
+   EMPTY ROW
+========================================= */
+
+.quality-empty-row td {
+    padding: 30px 15px;
+
+    color: #7e8982;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+.quality-toast {
+    position: fixed;
+
+    top: 94px;
+    right: 24px;
+
+    z-index: 5000;
+
+    max-width: 420px;
+
+    padding: 12px 15px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    color: #24512f;
+    background-color: #f0faf2;
+
+    border: 1px solid #b8dec1;
+    border-radius: 8px;
+
+    box-shadow:
+        0 12px 28px
+        rgba(20, 38, 25, 0.14);
+
+    font-size: 0.78rem;
+    line-height: 1.45;
+
+    opacity: 0;
+
+    transform: translateY(-8px);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.quality-toast.show {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+.quality-toast.error {
+    color: #8d2b2b;
+    background-color: #fff1f1;
+
+    border-color: #e5b0b0;
+}
+
+.quality-toast-icon {
+    flex: 0 0 auto;
+
+    width: 20px;
+    height: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+    background-color: #15913a;
+
+    border-radius: 50%;
+
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.quality-toast.error .quality-toast-icon {
+    background-color: #c83a3a;
+}
+
+
+/* =========================================
+   RESPONSIVE — LAPTOP
+========================================= */
 
 @media screen and (max-width: 1250px) {
 
     .quality-summary-grid {
-        gap: 20px;
-    }
-
-    .quality-form {
-        column-gap: 22px;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
 }
 
+
+/* =========================================
+   RESPONSIVE — TABLET
+========================================= */
 
 @media screen and (max-width: 1000px) {
 
-    .quality-summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .quality-summary-grid .summary-card:last-child {
-        grid-column: 1 / -1;
-    }
-
     .quality-form {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .notes-field {
+        grid-column: span 2;
+    }
+
+    .quality-list-heading {
+        align-items: flex-start;
+
+        flex-direction: column;
     }
 
 }
 
+
+/* =========================================
+   RESPONSIVE — MOBILE
+========================================= */
 
 @media screen and (max-width: 720px) {
 
+    .quality-page-heading,
+    .quality-card-heading {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
     .quality-summary-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+
+        gap: 14px;
     }
 
-    .quality-summary-grid .summary-card:last-child {
-        grid-column: auto;
-    }
-
-    .quality-form-card {
-        margin-top: 25px;
-        padding: 21px 18px;
+    .quality-form-card,
+    .quality-list-card {
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     .quality-form {
         grid-template-columns: 1fr;
-        gap: 18px;
     }
 
-    .form-action {
-        margin-top: 8px;
+    .notes-field {
+        grid-column: auto;
     }
 
-    .primary-action-button {
+    .quality-form-action {
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+    }
+
+    .quality-save-button,
+    .quality-cancel-button {
         width: 100%;
     }
 
-    .quality-list-card {
-        margin-top: 25px;
-        padding: 20px 16px 8px;
+    .quality-list-controls {
+        width: 100%;
+
+        flex-direction: column;
+
+        align-items: stretch;
     }
 
-}
-
-
-@media screen and (max-width: 440px) {
-
-    .quality-form-card h2,
-    .quality-list-card h2 {
-        font-size: 1.15rem;
+    .quality-list-controls input,
+    .quality-list-controls select {
+        width: 100%;
     }
 
-    .form-field input,
-    .form-field select {
-        height: 45px;
-    }
+    .quality-toast {
+        top: 82px;
 
-    .quality-table th,
-    .quality-table td {
-        padding: 12px 15px;
+        left: 14px;
+        right: 14px;
+
+        max-width: none;
     }
 
 }

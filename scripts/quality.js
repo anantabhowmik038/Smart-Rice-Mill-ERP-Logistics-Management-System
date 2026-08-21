@@ -1,26 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ==========================================
-    // ELEMENTS
-    // ==========================================
+    /* =========================================
+       SMART RICE MILL ERP
+       QUALITY INSPECTION
+    ========================================= */
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
 
     const qualityForm =
         document.getElementById("qualityForm");
 
-    const purchaseSelect =
-        document.getElementById("purchase-id");
+    if (!qualityForm) {
+        return;
+    }
+
+
+    const purchaseIdSelect =
+        document.getElementById("purchaseId");
 
     const supplierNameInput =
-        document.getElementById("supplier-name");
+        document.getElementById("supplierName");
 
-    const moistureInput =
-        document.getElementById("moisture");
+    const purchaseMoistureInput =
+        document.getElementById("purchaseMoisture");
+
+    const inspectionMoistureInput =
+        document.getElementById("inspectionMoisture");
 
     const impurityInput =
         document.getElementById("impurity");
 
     const brokenPaddyInput =
-        document.getElementById("broken-paddy");
+        document.getElementById("brokenPaddy");
 
     const gradeSelect =
         document.getElementById("grade");
@@ -28,182 +42,418 @@ document.addEventListener("DOMContentLoaded", function () {
     const decisionSelect =
         document.getElementById("decision");
 
+    const inspectionDateInput =
+        document.getElementById("inspectionDate");
+
+    const inspectionNotesInput =
+        document.getElementById("inspectionNotes");
+
+
+    const inspectionFormTitle =
+        document.getElementById("inspectionFormTitle");
+
     const saveInspectionBtn =
         document.getElementById("saveInspectionBtn");
 
-    const qualityTableBody =
-        document.getElementById("qualityTableBody");
+    const cancelInspectionEditBtn =
+        document.getElementById("cancelInspectionEditBtn");
 
 
-    // Summary Cards
+    const acceptedCountValue =
+        document.getElementById("acceptedCountValue");
 
-    const acceptedBatchesValue =
-        document.getElementById("acceptedBatchesValue");
+    const reviewCountValue =
+        document.getElementById("reviewCountValue");
 
-    const rejectedBatchesValue =
-        document.getElementById("rejectedBatchesValue");
+    const rejectedCountValue =
+        document.getElementById("rejectedCountValue");
 
     const averageMoistureValue =
         document.getElementById("averageMoistureValue");
 
 
-    // ==========================================
-    // EDIT MODE
-    // ==========================================
+    const qualitySearch =
+        document.getElementById("qualitySearch");
 
-    let editingInspectionId = null;
+    const decisionFilter =
+        document.getElementById("decisionFilter");
+
+    const qualityTableBody =
+        document.getElementById("qualityTableBody");
 
 
-    // ==========================================
-    // GET PURCHASES
-    // ==========================================
+    const menuButton =
+        document.getElementById("menuButton");
 
-    function getPurchases() {
+    const sidebar =
+        document.getElementById("sidebar");
 
-        return (
-            JSON.parse(
-                localStorage.getItem("purchases")
-            ) || []
+    const sidebarBackdrop =
+        document.getElementById("sidebarBackdrop");
+
+
+    /* =========================================
+       STATE
+    ========================================= */
+
+    let editingInspectionId =
+        null;
+
+
+    /* =========================================
+       TODAY DATE
+    ========================================= */
+
+    function getTodayDate() {
+
+        const today =
+            new Date();
+
+        const year =
+            today.getFullYear();
+
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+
+    }
+
+
+    /* =========================================
+       SAFE HTML
+    ========================================= */
+
+    function escapeHTML(value) {
+
+        const element =
+            document.createElement("div");
+
+        element.textContent =
+            String(value ?? "");
+
+        return element.innerHTML;
+
+    }
+
+
+    /* =========================================
+       NUMBER FORMAT
+    ========================================= */
+
+    function formatNumber(value) {
+
+        return Number(
+            value || 0
+        ).toLocaleString(
+            "en-US",
+            {
+                maximumFractionDigits: 2
+            }
         );
 
     }
 
 
-    // ==========================================
-    // DEFAULT QUALITY DATA
-    // ==========================================
+    /* =========================================
+       DATE FORMAT
+    ========================================= */
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "—";
+        }
+
+        const date =
+            new Date(
+                `${value}T00:00:00`
+            );
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       PURCHASE DATA
+    ========================================= */
+
+    function getPurchases() {
+
+        try {
+
+            return (
+                JSON.parse(
+                    localStorage.getItem("purchases")
+                ) || []
+            );
+
+        }
+        catch {
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =========================================
+       DEFAULT / LEGACY INSPECTIONS
+    ========================================= */
 
     const defaultInspections = [
 
         {
             id: 1,
 
-            inspectionId: "Q-1001",
+            purchaseId:
+                "P-1024",
 
-            purchaseId: "P-1024",
+            supplierName:
+                "Rahim Farmer",
 
-            supplierName: "Rahim Farmer",
+            moisture:
+                14,
 
-            moisture: 14,
+            impurity:
+                2,
 
-            impurity: 2,
+            brokenPaddy:
+                3,
 
-            brokenPaddy: 3,
+            grade:
+                "A",
 
-            grade: "A",
+            decision:
+                "accepted",
 
-            decision: "accepted",
+            inspectionDate:
+                "2026-07-01",
 
-            date: "2026-07-01"
+            notes:
+                ""
         },
-
 
         {
             id: 2,
 
-            inspectionId: "Q-1002",
+            purchaseId:
+                "P-1023",
 
-            purchaseId: "P-1023",
+            supplierName:
+                "Karim Supplier",
 
-            supplierName: "Karim Supplier",
+            moisture:
+                18,
 
-            moisture: 18,
+            impurity:
+                4,
 
-            impurity: 5,
+            brokenPaddy:
+                6,
 
-            brokenPaddy: 6,
+            grade:
+                "B",
 
-            grade: "B",
+            decision:
+                "review",
 
-            decision: "review",
+            inspectionDate:
+                "2026-07-01",
 
-            date: "2026-07-01"
+            notes:
+                ""
         }
 
     ];
 
 
-    // ==========================================
-    // LOAD QUALITY DATA
-    // ==========================================
+    /* =========================================
+       LOAD INSPECTIONS
+    ========================================= */
 
-    const storedInspections =
-        localStorage.getItem(
-            "qualityInspections"
-        );
+    function loadInspections() {
 
+        const stored =
+            localStorage.getItem(
+                "qualityInspections"
+            );
 
-    let inspections;
-
-
-    if (storedInspections === null) {
-
-        inspections =
-            defaultInspections;
-
-        saveInspections();
-
-    } else {
-
-        inspections =
-            JSON.parse(
-                storedInspections
-            ) || [];
-
-    }
+        let data;
 
 
-    // ==========================================
-    // FIX OLD RECORDS
-    // ==========================================
+        if (stored === null) {
 
-    let dataUpdated = false;
+            data =
+                [...defaultInspections];
 
+        }
+        else {
 
-    inspections =
-        inspections.map(
-            function (inspection, index) {
+            try {
 
-                if (
-                    inspection.id === undefined ||
-                    inspection.id === null
-                ) {
-
-                    inspection.id =
-                        Date.now() + index;
-
-                    dataUpdated = true;
-
-                }
-
-
-                if (!inspection.inspectionId) {
-
-                    inspection.inspectionId =
-                        "Q-" +
-                        (2000 + index);
-
-                    dataUpdated = true;
-
-                }
-
-
-                return inspection;
+                data =
+                    JSON.parse(stored) || [];
 
             }
+            catch {
+
+                data =
+                    [...defaultInspections];
+
+            }
+
+        }
+
+
+        data =
+            data.map(
+                function (inspection, index) {
+
+                    let decision =
+                        String(
+                            inspection.decision ||
+                            ""
+                        ).toLowerCase();
+
+
+                    if (
+                        decision === "under review" ||
+                        decision === "pending"
+                    ) {
+
+                        decision =
+                            "review";
+
+                    }
+
+
+                    if (
+                        ![
+                            "accepted",
+                            "review",
+                            "rejected"
+                        ].includes(decision)
+                    ) {
+
+                        decision =
+                            "review";
+
+                    }
+
+
+                    return {
+
+                        id:
+
+                            inspection.id ??
+
+                            Date.now() + index,
+
+
+                        purchaseId:
+
+                            inspection.purchaseId ||
+                            `P-${2000 + index}`,
+
+
+                        supplierName:
+
+                            inspection.supplierName ||
+                            inspection.supplier ||
+                            "Not Recorded",
+
+
+                        moisture:
+
+                            Number(
+                                inspection.moisture ||
+                                0
+                            ),
+
+
+                        impurity:
+
+                            Number(
+                                inspection.impurity ||
+                                0
+                            ),
+
+
+                        brokenPaddy:
+
+                            Number(
+                                inspection.brokenPaddy ||
+                                inspection.broken ||
+                                0
+                            ),
+
+
+                        grade:
+
+                            String(
+                                inspection.grade ||
+                                "B"
+                            ).toUpperCase(),
+
+
+                        decision:
+                            decision,
+
+
+                        inspectionDate:
+
+                            inspection.inspectionDate ||
+                            inspection.date ||
+                            getTodayDate(),
+
+
+                        notes:
+
+                            inspection.notes ||
+                            inspection.inspectionNotes ||
+                            ""
+
+                    };
+
+                }
+            );
+
+
+        localStorage.setItem(
+            "qualityInspections",
+            JSON.stringify(data)
         );
 
 
-    if (dataUpdated) {
-
-        saveInspections();
+        return data;
 
     }
 
 
-    // ==========================================
-    // SAVE QUALITY DATA
-    // ==========================================
+    let inspections =
+        loadInspections();
+
+
+    /* =========================================
+       SAVE INSPECTIONS
+    ========================================= */
 
     function saveInspections() {
 
@@ -215,89 +465,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ==========================================
-    // SAFE TEXT
-    // ==========================================
+    /* =========================================
+       FIND PURCHASE
+    ========================================= */
 
-    function escapeHTML(value) {
+    function findPurchase(purchaseId) {
 
-        const element =
-            document.createElement("div");
+        return getPurchases().find(
+            function (purchase) {
 
-        element.textContent =
-            String(value);
-
-        return element.innerHTML;
-
-    }
-
-
-    // ==========================================
-    // TODAY DATE
-    // ==========================================
-
-    function getTodayDate() {
-
-        const today =
-            new Date();
-
-
-        const year =
-            today.getFullYear();
-
-
-        const month =
-            String(
-                today.getMonth() + 1
-            ).padStart(2, "0");
-
-
-        const day =
-            String(
-                today.getDate()
-            ).padStart(2, "0");
-
-
-        return (
-            year +
-            "-" +
-            month +
-            "-" +
-            day
-        );
-
-    }
-
-
-    // ==========================================
-    // FORMAT DATE
-    // ==========================================
-
-    function formatDate(dateValue) {
-
-        if (!dateValue) {
-
-            return "";
-
-        }
-
-
-        const date =
-            new Date(
-                dateValue +
-                "T00:00:00"
-            );
-
-
-        return date.toLocaleDateString(
-            "en-GB",
-            {
-
-                day: "2-digit",
-
-                month: "short",
-
-                year: "numeric"
+                return (
+                    String(
+                        purchase.purchaseId
+                    ) ===
+                    String(purchaseId)
+                );
 
             }
         );
@@ -305,73 +487,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ==========================================
-    // GENERATE INSPECTION ID
-    // ==========================================
+    /* =========================================
+       LOAD PURCHASE DROPDOWN
+    ========================================= */
 
-    function generateInspectionId() {
-
-        let highestNumber = 1000;
-
-
-        inspections.forEach(
-            function (inspection) {
-
-                if (!inspection.inspectionId) {
-                    return;
-                }
-
-
-                const number =
-                    Number(
-                        inspection.inspectionId
-                            .replace(
-                                "Q-",
-                                ""
-                            )
-                    );
-
-
-                if (
-                    !isNaN(number) &&
-                    number > highestNumber
-                ) {
-
-                    highestNumber =
-                        number;
-
-                }
-
-            }
-        );
-
-
-        return (
-            "Q-" +
-            (highestNumber + 1)
-        );
-
-    }
-
-
-    // ==========================================
-    // LOAD PURCHASE DROPDOWN
-    // ==========================================
-
-    function loadPurchaseDropdown() {
+    function loadPurchaseDropdown(
+        selectedPurchaseId = ""
+    ) {
 
         const purchases =
             getPurchases();
 
 
-        purchaseSelect.innerHTML = `
+        purchaseIdSelect.innerHTML = `
 
-            <option value=""
-                    selected
-                    disabled>
-
-                Select purchase id
-
+            <option
+                value=""
+                disabled
+            >
+                Select purchase ID
             </option>
 
         `;
@@ -379,6 +513,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
         purchases.forEach(
             function (purchase) {
+
+                const alreadyInspected =
+                    inspections.some(
+                        function (inspection) {
+
+                            return (
+                                inspection.purchaseId ===
+                                    purchase.purchaseId
+
+                                &&
+
+                                Number(
+                                    inspection.id
+                                ) !==
+
+                                Number(
+                                    editingInspectionId
+                                )
+                            );
+
+                        }
+                    );
+
+
+                /*
+                    Do not offer a purchase that
+                    already has an inspection,
+                    unless this is the record
+                    currently being edited.
+                */
+
+                if (
+                    alreadyInspected &&
+                    purchase.purchaseId !==
+                        selectedPurchaseId
+                ) {
+
+                    return;
+
+                }
+
 
                 const option =
                     document.createElement(
@@ -391,12 +566,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 option.textContent =
-                    purchase.purchaseId +
-                    " — " +
-                    purchase.supplierName;
+
+                    `${purchase.purchaseId} — ${purchase.supplierName}`;
 
 
-                purchaseSelect.appendChild(
+                purchaseIdSelect.appendChild(
                     option
                 );
 
@@ -404,7 +578,9 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        if (purchases.length === 0) {
+        if (
+            purchases.length === 0
+        ) {
 
             const option =
                 document.createElement(
@@ -412,135 +588,655 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            option.disabled = true;
+            option.value =
+                "";
 
+            option.disabled =
+                true;
 
             option.textContent =
-                "No purchase available";
+                "No purchase records available";
 
-
-            purchaseSelect.appendChild(
+            purchaseIdSelect.appendChild(
                 option
             );
 
         }
 
+
+        purchaseIdSelect.value =
+            selectedPurchaseId || "";
+
     }
 
 
-    // ==========================================
-    // PURCHASE SELECT
-    // ==========================================
+    /* =========================================
+       LOAD PURCHASE DETAILS
+    ========================================= */
 
-    purchaseSelect.addEventListener(
-        "change",
-        function () {
+    function loadSelectedPurchaseDetails() {
 
-            loadSelectedPurchase();
-
-        }
-    );
-
-
-    function loadSelectedPurchase() {
-
-        const purchases =
-            getPurchases();
-
-
-        const selectedPurchase =
-            purchases.find(
-                function (purchase) {
-
-                    return (
-                        purchase.purchaseId ===
-                        purchaseSelect.value
-                    );
-
-                }
+        const purchase =
+            findPurchase(
+                purchaseIdSelect.value
             );
 
 
-        if (!selectedPurchase) {
+        if (!purchase) {
 
-            supplierNameInput.value = "";
+            supplierNameInput.value =
+                "";
 
-            moistureInput.value = "";
+            purchaseMoistureInput.value =
+                "";
+
+            if (
+                editingInspectionId === null
+            ) {
+
+                inspectionMoistureInput.value =
+                    "";
+
+            }
 
             return;
 
         }
 
 
-        // Supplier automatically
-
         supplierNameInput.value =
-            selectedPurchase.supplierName;
+            purchase.supplierName ||
+            "";
 
 
-        // Purchase moisture automatically
+        const purchaseMoisture =
+            Number(
+                purchase.moisture || 0
+            );
 
-        moistureInput.value =
-            selectedPurchase.moisture;
+
+        purchaseMoistureInput.value =
+            `${formatNumber(purchaseMoisture)}%`;
+
+
+        /*
+            Auto-fill inspection moisture
+            as a starting value.
+            User can still change it if the
+            inspection reading differs.
+        */
+
+        if (
+            editingInspectionId === null ||
+            !inspectionMoistureInput.value
+        ) {
+
+            inspectionMoistureInput.value =
+                purchaseMoisture;
+
+        }
 
     }
 
 
-    // ==========================================
-    // DECISION TEXT
-    // ==========================================
+    /* =========================================
+       SUMMARY CARDS
+    ========================================= */
+
+    function updateSummaryCards() {
+
+        const accepted =
+            inspections.filter(
+                function (inspection) {
+
+                    return (
+                        inspection.decision ===
+                        "accepted"
+                    );
+
+                }
+            ).length;
+
+
+        const review =
+            inspections.filter(
+                function (inspection) {
+
+                    return (
+                        inspection.decision ===
+                        "review"
+                    );
+
+                }
+            ).length;
+
+
+        const rejected =
+            inspections.filter(
+                function (inspection) {
+
+                    return (
+                        inspection.decision ===
+                        "rejected"
+                    );
+
+                }
+            ).length;
+
+
+        const moistureValues =
+            inspections
+                .map(
+                    function (inspection) {
+
+                        return Number(
+                            inspection.moisture
+                        );
+
+                    }
+                )
+                .filter(
+                    function (value) {
+
+                        return Number.isFinite(value);
+
+                    }
+                );
+
+
+        const averageMoisture =
+
+            moistureValues.length > 0
+
+                ?
+
+                moistureValues.reduce(
+                    function (sum, value) {
+
+                        return sum + value;
+
+                    },
+                    0
+                ) /
+                moistureValues.length
+
+                :
+
+                0;
+
+
+        acceptedCountValue.textContent =
+            accepted;
+
+
+        reviewCountValue.textContent =
+            review;
+
+
+        rejectedCountValue.textContent =
+            rejected;
+
+
+        averageMoistureValue.textContent =
+            `${formatNumber(averageMoisture)}%`;
+
+    }
+
+
+    /* =========================================
+       DECISION TEXT
+    ========================================= */
 
     function getDecisionText(decision) {
 
-        if (decision === "accepted") {
+        if (
+            decision === "accepted"
+        ) {
 
             return "Accepted";
 
         }
 
 
-        if (decision === "review") {
-
-            return "Review";
-
-        }
-
-
-        if (decision === "rejected") {
+        if (
+            decision === "rejected"
+        ) {
 
             return "Rejected";
 
         }
 
 
-        return decision;
+        return "Under Review";
 
     }
 
 
-    // ==========================================
-    // DECISION CLASS
-    // ==========================================
+    /* =========================================
+       DECISION CLASS
+    ========================================= */
 
     function getDecisionClass(decision) {
 
-        if (decision === "accepted") {
+        if (
+            decision === "accepted"
+        ) {
 
-            return "status-accepted";
-
-        }
-
-
-        if (decision === "review") {
-
-            return "status-review";
+            return "decision-accepted";
 
         }
 
 
-        if (decision === "rejected") {
+        if (
+            decision === "rejected"
+        ) {
 
-            return "quality-status-rejected";
+            return "decision-rejected";
+
+        }
+
+
+        return "decision-review";
+
+    }
+
+
+    /* =========================================
+       DISPLAY TABLE
+    ========================================= */
+
+    function displayInspections() {
+
+        const searchText =
+            qualitySearch.value
+                .trim()
+                .toLowerCase();
+
+
+        const filter =
+            decisionFilter.value;
+
+
+        const filtered =
+            inspections.filter(
+                function (inspection) {
+
+                    const searchable =
+
+                        `${inspection.purchaseId}
+                         ${inspection.supplierName}
+                         ${inspection.grade}`
+                            .toLowerCase();
+
+
+                    const matchesSearch =
+                        searchable.includes(
+                            searchText
+                        );
+
+
+                    const matchesDecision =
+
+                        filter === "all" ||
+
+                        inspection.decision ===
+                        filter;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesDecision
+                    );
+
+                }
+            );
+
+
+        qualityTableBody.innerHTML =
+            "";
+
+
+        if (
+            filtered.length ===
+            0
+        ) {
+
+            qualityTableBody.innerHTML = `
+
+                <tr class="quality-empty-row">
+
+                    <td colspan="9">
+
+                        No quality inspection records
+                        match the current filter.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        [...filtered]
+
+            .sort(
+                function (a, b) {
+
+                    return (
+
+                        String(
+                            b.inspectionDate
+                        ).localeCompare(
+                            String(
+                                a.inspectionDate
+                            )
+                        )
+
+                        ||
+
+                        Number(b.id) -
+                        Number(a.id)
+
+                    );
+
+                }
+            )
+
+            .forEach(
+                function (inspection) {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            <strong>
+                                ${escapeHTML(
+                                    inspection.purchaseId
+                                )}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                inspection.supplierName
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatNumber(
+                                inspection.moisture
+                            )}%
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatNumber(
+                                inspection.impurity
+                            )}%
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatNumber(
+                                inspection.brokenPaddy
+                            )}%
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="grade-badge">
+
+                                ${escapeHTML(
+                                    inspection.grade
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    decision-badge
+                                    ${getDecisionClass(
+                                        inspection.decision
+                                    )}
+                                "
+                            >
+
+                                ${getDecisionText(
+                                    inspection.decision
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatDate(
+                                inspection.inspectionDate
+                            )}
+
+                        </td>
+
+
+                        <td class="quality-action-cell">
+
+                            <button
+                                type="button"
+                                class="quality-edit-button"
+                                data-action="edit"
+                                data-id="${inspection.id}"
+                            >
+                                Edit
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="quality-delete-button"
+                                data-action="delete"
+                                data-id="${inspection.id}"
+                            >
+                                Delete
+                            </button>
+
+                        </td>
+
+                    `;
+
+
+                    qualityTableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       VALIDATE PERCENTAGE
+    ========================================= */
+
+    function isValidPercentage(value) {
+
+        return (
+            Number.isFinite(value) &&
+            value >= 0 &&
+            value <= 100
+        );
+
+    }
+
+
+    /* =========================================
+       VALIDATION
+    ========================================= */
+
+    function validateForm() {
+
+        if (
+            !purchaseIdSelect.value
+        ) {
+
+            return (
+                "Please select a purchase ID."
+            );
+
+        }
+
+
+        const moisture =
+            Number(
+                inspectionMoistureInput.value
+            );
+
+
+        const impurity =
+            Number(
+                impurityInput.value
+            );
+
+
+        const broken =
+            Number(
+                brokenPaddyInput.value
+            );
+
+
+        if (
+            !isValidPercentage(
+                moisture
+            )
+        ) {
+
+            return (
+                "Moisture percentage must be between 0 and 100."
+            );
+
+        }
+
+
+        if (
+            !isValidPercentage(
+                impurity
+            )
+        ) {
+
+            return (
+                "Impurity percentage must be between 0 and 100."
+            );
+
+        }
+
+
+        if (
+            !isValidPercentage(
+                broken
+            )
+        ) {
+
+            return (
+                "Broken paddy percentage must be between 0 and 100."
+            );
+
+        }
+
+
+        if (
+            !gradeSelect.value
+        ) {
+
+            return (
+                "Please select a quality grade."
+            );
+
+        }
+
+
+        if (
+            !decisionSelect.value
+        ) {
+
+            return (
+                "Please select an inspection decision."
+            );
+
+        }
+
+
+        if (
+            !inspectionDateInput.value
+        ) {
+
+            return (
+                "Please select the inspection date."
+            );
+
+        }
+
+
+        /*
+            One inspection per purchase batch.
+        */
+
+        const duplicate =
+            inspections.some(
+                function (inspection) {
+
+                    return (
+                        inspection.purchaseId ===
+                            purchaseIdSelect.value
+
+                        &&
+
+                        Number(
+                            inspection.id
+                        ) !==
+
+                        Number(
+                            editingInspectionId
+                        )
+                    );
+
+                }
+            );
+
+
+        if (duplicate) {
+
+            return (
+                "This purchase batch already has a quality inspection record."
+            );
 
         }
 
@@ -550,9 +1246,369 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ==========================================
-    // TOAST
-    // ==========================================
+    /* =========================================
+       BUILD INSPECTION RECORD
+    ========================================= */
+
+    function buildInspectionRecord(
+        existingInspection = null
+    ) {
+
+        const purchase =
+            findPurchase(
+                purchaseIdSelect.value
+            );
+
+
+        return {
+
+            id:
+
+                existingInspection
+
+                    ?
+
+                    existingInspection.id
+
+                    :
+
+                    Date.now(),
+
+
+            purchaseId:
+                purchaseIdSelect.value,
+
+
+            supplierName:
+
+                purchase
+
+                    ?
+
+                    purchase.supplierName
+
+                    :
+
+                    supplierNameInput.value,
+
+
+            moisture:
+                Number(
+                    inspectionMoistureInput.value
+                ),
+
+
+            impurity:
+                Number(
+                    impurityInput.value
+                ),
+
+
+            brokenPaddy:
+                Number(
+                    brokenPaddyInput.value
+                ),
+
+
+            grade:
+                gradeSelect.value,
+
+
+            decision:
+                decisionSelect.value,
+
+
+            inspectionDate:
+                inspectionDateInput.value,
+
+
+            notes:
+                inspectionNotesInput.value
+                    .trim()
+
+        };
+
+    }
+
+
+    /* =========================================
+       ADD MODE
+    ========================================= */
+
+    function setAddMode() {
+
+        editingInspectionId =
+            null;
+
+
+        inspectionFormTitle.textContent =
+            "Record Quality Inspection";
+
+
+        saveInspectionBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ▣
+            </span>
+
+            Save Inspection
+
+        `;
+
+
+        cancelInspectionEditBtn.hidden =
+            true;
+
+
+        purchaseIdSelect.disabled =
+            false;
+
+    }
+
+
+    /* =========================================
+       DEFAULT DATE
+    ========================================= */
+
+    function setDefaultDate() {
+
+        if (
+            !inspectionDateInput.value
+        ) {
+
+            inspectionDateInput.value =
+                getTodayDate();
+
+        }
+
+    }
+
+
+    /* =========================================
+       RESET FORM
+    ========================================= */
+
+    function resetInspectionForm() {
+
+        qualityForm.reset();
+
+
+        supplierNameInput.value =
+            "";
+
+
+        purchaseMoistureInput.value =
+            "";
+
+
+        setAddMode();
+
+        setDefaultDate();
+
+        loadPurchaseDropdown();
+
+    }
+
+
+    /* =========================================
+       EDIT
+    ========================================= */
+
+    function editInspection(id) {
+
+        const inspection =
+            inspections.find(
+                function (item) {
+
+                    return (
+                        Number(item.id) ===
+                        Number(id)
+                    );
+
+                }
+            );
+
+
+        if (!inspection) {
+
+            showToast(
+                "Inspection record not found.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        editingInspectionId =
+            inspection.id;
+
+
+        loadPurchaseDropdown(
+            inspection.purchaseId
+        );
+
+
+        purchaseIdSelect.value =
+            inspection.purchaseId;
+
+
+        loadSelectedPurchaseDetails();
+
+
+        supplierNameInput.value =
+            inspection.supplierName;
+
+
+        inspectionMoistureInput.value =
+            inspection.moisture;
+
+
+        impurityInput.value =
+            inspection.impurity;
+
+
+        brokenPaddyInput.value =
+            inspection.brokenPaddy;
+
+
+        gradeSelect.value =
+            inspection.grade;
+
+
+        decisionSelect.value =
+            inspection.decision;
+
+
+        inspectionDateInput.value =
+            inspection.inspectionDate;
+
+
+        inspectionNotesInput.value =
+            inspection.notes || "";
+
+
+        /*
+            Purchase relation should not be
+            changed while editing.
+        */
+
+        purchaseIdSelect.disabled =
+            true;
+
+
+        inspectionFormTitle.textContent =
+            "Edit Quality Inspection";
+
+
+        saveInspectionBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ✓
+            </span>
+
+            Update Inspection
+
+        `;
+
+
+        cancelInspectionEditBtn.hidden =
+            false;
+
+
+        qualityForm.scrollIntoView(
+            {
+                behavior: "smooth",
+                block: "center"
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       DELETE
+    ========================================= */
+
+    function deleteInspection(id) {
+
+        const inspection =
+            inspections.find(
+                function (item) {
+
+                    return (
+                        Number(item.id) ===
+                        Number(id)
+                    );
+
+                }
+            );
+
+
+        if (!inspection) {
+            return;
+        }
+
+
+        const confirmed =
+            window.confirm(
+
+                `Delete quality inspection for ${inspection.purchaseId}?`
+
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        inspections =
+            inspections.filter(
+                function (item) {
+
+                    return (
+                        Number(item.id) !==
+                        Number(id)
+                    );
+
+                }
+            );
+
+
+        saveInspections();
+
+        updateSummaryCards();
+
+        displayInspections();
+
+
+        if (
+            Number(editingInspectionId) ===
+            Number(id)
+        ) {
+
+            resetInspectionForm();
+
+        }
+        else {
+
+            loadPurchaseDropdown();
+
+        }
+
+
+        showToast(
+            "Quality inspection deleted successfully."
+        );
+
+    }
+
+
+    /* =========================================
+       TOAST
+    ========================================= */
 
     function showToast(
         message,
@@ -579,23 +1635,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         toast.className =
-            "quality-toast " + type;
+            `quality-toast ${type}`;
 
 
         toast.innerHTML = `
 
-            <span class="toast-icon">
+            <span class="quality-toast-icon">
 
                 ${
-                    type === "success"
-                        ? "✓"
-                        : "!"
+                    type === "error"
+                        ? "!"
+                        : "✓"
                 }
 
             </span>
 
+
             <span>
+
                 ${escapeHTML(message)}
+
             </span>
 
         `;
@@ -606,15 +1665,14 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        setTimeout(
+        requestAnimationFrame(
             function () {
 
                 toast.classList.add(
                     "show"
                 );
 
-            },
-            50
+            }
         );
 
 
@@ -632,216 +1690,29 @@ document.addEventListener("DOMContentLoaded", function () {
                         toast.remove();
 
                     },
-                    300
+                    250
                 );
 
             },
-            2500
+            2800
         );
 
     }
 
 
-    // ==========================================
-    // SUMMARY CARDS
-    // ==========================================
-
-    function updateSummaryCards() {
-
-        let acceptedCount = 0;
-
-        let rejectedCount = 0;
-
-        let totalMoisture = 0;
-
-
-        inspections.forEach(
-            function (inspection) {
-
-                if (
-                    inspection.decision ===
-                    "accepted"
-                ) {
-
-                    acceptedCount++;
-
-                }
-
-
-                if (
-                    inspection.decision ===
-                    "rejected"
-                ) {
-
-                    rejectedCount++;
-
-                }
-
-
-                totalMoisture +=
-                    Number(
-                        inspection.moisture || 0
-                    );
-
-            }
-        );
-
-
-        let averageMoisture = 0;
-
-
-        if (inspections.length > 0) {
-
-            averageMoisture =
-                totalMoisture /
-                inspections.length;
-
-        }
-
-
-        acceptedBatchesValue.textContent =
-            acceptedCount;
-
-
-        rejectedBatchesValue.textContent =
-            rejectedCount;
-
-
-        averageMoistureValue.textContent =
-            averageMoisture
-                .toFixed(1)
-                .replace(".0", "") +
-            "%";
-
-    }
-
-
-    // ==========================================
-    // DISPLAY TABLE
-    // ==========================================
-
-    function displayInspections() {
-
-        qualityTableBody.innerHTML = "";
-
-
-        inspections.forEach(
-            function (inspection) {
-
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                row.innerHTML = `
-
-                    <td>
-
-                        ${escapeHTML(
-                            inspection.purchaseId
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHTML(
-                            inspection.supplierName
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHTML(
-                            inspection.moisture
-                        )}%
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHTML(
-                            inspection.grade
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        <span
-                            class="status-badge
-                            ${getDecisionClass(
-                                inspection.decision
-                            )}"
-                        >
-
-                            ${getDecisionText(
-                                inspection.decision
-                            )}
-
-                        </span>
-
-                    </td>
-
-
-                    <td>
-
-                        ${formatDate(
-                            inspection.date
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        <button
-                            class="quality-edit-button"
-                            type="button"
-                            data-action="edit"
-                            data-id="${inspection.id}"
-                        >
-
-                            Edit
-
-                        </button>
-
-
-                        <button
-                            class="quality-delete-button"
-                            type="button"
-                            data-action="delete"
-                            data-id="${inspection.id}"
-                        >
-
-                            Delete
-
-                        </button>
-
-                    </td>
-
-                `;
-
-
-                qualityTableBody.appendChild(
-                    row
-                );
-
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // SAVE / UPDATE
-    // ==========================================
+    /* =========================================
+       PURCHASE CHANGE
+    ========================================= */
+
+    purchaseIdSelect.addEventListener(
+        "change",
+        loadSelectedPurchaseDetails
+    );
+
+
+    /* =========================================
+       FORM SUBMIT
+    ========================================= */
 
     qualityForm.addEventListener(
         "submit",
@@ -850,60 +1721,14 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
 
 
-            const purchaseId =
-                purchaseSelect.value;
+            const validationMessage =
+                validateForm();
 
 
-            const supplierName =
-                supplierNameInput.value.trim();
-
-
-            const moisture =
-                Number(
-                    moistureInput.value
-                );
-
-
-            const impurity =
-                Number(
-                    impurityInput.value
-                );
-
-
-            const brokenPaddy =
-                Number(
-                    brokenPaddyInput.value
-                );
-
-
-            const grade =
-                gradeSelect.value;
-
-
-            const decision =
-                decisionSelect.value;
-
-
-            // ==================================
-            // VALIDATION
-            // ==================================
-
-            if (!purchaseId) {
+            if (validationMessage) {
 
                 showToast(
-                    "Please select a purchase ID.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if (!supplierName) {
-
-                showToast(
-                    "Supplier information was not found.",
+                    validationMessage,
                     "error"
                 );
 
@@ -913,114 +1738,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (
-                moistureInput.value === "" ||
-                moisture < 0 ||
-                moisture > 100
-            ) {
-
-                showToast(
-                    "Enter a valid moisture percentage.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if (
-                impurityInput.value === "" ||
-                impurity < 0 ||
-                impurity > 100
-            ) {
-
-                showToast(
-                    "Enter a valid impurity percentage.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if (
-                brokenPaddyInput.value === "" ||
-                brokenPaddy < 0 ||
-                brokenPaddy > 100
-            ) {
-
-                showToast(
-                    "Enter a valid broken paddy percentage.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if (!grade) {
-
-                showToast(
-                    "Please select a grade.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if (!decision) {
-
-                showToast(
-                    "Please select a decision.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            // ==================================
-            // PREVENT DUPLICATE INSPECTION
-            // ==================================
-
-            const duplicateInspection =
-                inspections.some(
-                    function (inspection) {
-
-                        return (
-                            inspection.purchaseId ===
-                                purchaseId &&
-                            inspection.id !==
-                                editingInspectionId
-                        );
-
-                    }
-                );
-
-
-            if (duplicateInspection) {
-
-                showToast(
-                    "This purchase already has a quality inspection.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            // ==================================
-            // UPDATE
-            // ==================================
-
-            if (
-                editingInspectionId !== null
+                editingInspectionId !==
+                null
             ) {
 
                 const index =
@@ -1028,139 +1747,107 @@ document.addEventListener("DOMContentLoaded", function () {
                         function (inspection) {
 
                             return (
-                                inspection.id ===
-                                editingInspectionId
+                                Number(
+                                    inspection.id
+                                ) ===
+
+                                Number(
+                                    editingInspectionId
+                                )
                             );
 
                         }
                     );
 
 
-                if (index !== -1) {
+                if (
+                    index === -1
+                ) {
 
-                    const oldInspection =
-                        inspections[index];
+                    showToast(
+                        "Inspection record not found.",
+                        "error"
+                    );
 
-
-                    inspections[index] = {
-
-                        id:
-                            oldInspection.id,
-
-                        inspectionId:
-                            oldInspection.inspectionId,
-
-                        purchaseId:
-                            purchaseId,
-
-                        supplierName:
-                            supplierName,
-
-                        moisture:
-                            moisture,
-
-                        impurity:
-                            impurity,
-
-                        brokenPaddy:
-                            brokenPaddy,
-
-                        grade:
-                            grade,
-
-                        decision:
-                            decision,
-
-                        date:
-                            oldInspection.date
-
-                    };
+                    return;
 
                 }
 
 
-                saveInspections();
-
-                displayInspections();
-
-                updateSummaryCards();
-
-                resetQualityForm();
+                inspections[index] =
+                    buildInspectionRecord(
+                        inspections[index]
+                    );
 
 
                 showToast(
-                    "Inspection updated successfully!"
+                    "Quality inspection updated successfully."
                 );
 
-                return;
+            }
+            else {
+
+                inspections.push(
+                    buildInspectionRecord()
+                );
+
+
+                showToast(
+                    "Quality inspection saved successfully."
+                );
 
             }
 
 
-            // ==================================
-            // NEW INSPECTION
-            // ==================================
-
-            const newInspection = {
-
-                id:
-                    Date.now(),
-
-                inspectionId:
-                    generateInspectionId(),
-
-                purchaseId:
-                    purchaseId,
-
-                supplierName:
-                    supplierName,
-
-                moisture:
-                    moisture,
-
-                impurity:
-                    impurity,
-
-                brokenPaddy:
-                    brokenPaddy,
-
-                grade:
-                    grade,
-
-                decision:
-                    decision,
-
-                date:
-                    getTodayDate()
-
-            };
-
-
-            inspections.push(
-                newInspection
-            );
-
-
             saveInspections();
-
-            displayInspections();
 
             updateSummaryCards();
 
-            resetQualityForm();
+            displayInspections();
 
+            resetInspectionForm();
+
+        }
+    );
+
+
+    /* =========================================
+       CANCEL EDIT
+    ========================================= */
+
+    cancelInspectionEditBtn.addEventListener(
+        "click",
+        function () {
+
+            resetInspectionForm();
 
             showToast(
-                "Inspection saved successfully!"
+                "Edit cancelled."
             );
 
         }
     );
 
 
-    // ==========================================
-    // TABLE BUTTON EVENTS
-    // ==========================================
+    /* =========================================
+       SEARCH
+    ========================================= */
+
+    qualitySearch.addEventListener(
+        "input",
+        displayInspections
+    );
+
+
+    decisionFilter.addEventListener(
+        "change",
+        displayInspections
+    );
+
+
+    /* =========================================
+       TABLE ACTIONS
+    ========================================= */
 
     qualityTableBody.addEventListener(
         "click",
@@ -1168,14 +1855,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const button =
                 event.target.closest(
-                    "button"
+                    "button[data-action]"
                 );
 
 
             if (!button) {
-
                 return;
-
             }
 
 
@@ -1185,9 +1870,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
+            const action =
+                button.dataset.action;
+
+
             if (
-                button.dataset.action ===
-                "edit"
+                action === "edit"
             ) {
 
                 editInspection(id);
@@ -1196,8 +1884,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (
-                button.dataset.action ===
-                "delete"
+                action === "delete"
             ) {
 
                 deleteInspection(id);
@@ -1208,442 +1895,166 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    // ==========================================
-    // EDIT
-    // ==========================================
+    /* =========================================
+       MOBILE SIDEBAR
+    ========================================= */
 
-    function editInspection(id) {
+    function openSidebar() {
 
-        const inspection =
-            inspections.find(
-                function (item) {
-
-                    return (
-                        item.id === id
-                    );
-
-                }
-            );
-
-
-        if (!inspection) {
-
-            showToast(
-                "Inspection record not found.",
-                "error"
-            );
-
+        if (!sidebar) {
             return;
-
         }
 
 
-        // ======================================
-        // Historical purchase may be deleted
-        // ======================================
-
-        const optionExists =
-            Array.from(
-                purchaseSelect.options
-            ).some(
-                function (option) {
-
-                    return (
-                        option.value ===
-                        inspection.purchaseId
-                    );
-
-                }
-            );
+        sidebar.classList.add(
+            "open"
+        );
 
 
-        if (!optionExists) {
+        if (sidebarBackdrop) {
 
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                inspection.purchaseId;
-
-
-            option.textContent =
-                inspection.purchaseId +
-                " — " +
-                inspection.supplierName;
-
-
-            purchaseSelect.appendChild(
-                option
+            sidebarBackdrop.classList.add(
+                "show"
             );
 
         }
 
 
-        purchaseSelect.value =
-            inspection.purchaseId;
+        if (menuButton) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
 
 
-        supplierNameInput.value =
-            inspection.supplierName;
-
-
-        moistureInput.value =
-            inspection.moisture;
-
-
-        impurityInput.value =
-            inspection.impurity;
-
-
-        brokenPaddyInput.value =
-            inspection.brokenPaddy;
-
-
-        gradeSelect.value =
-            inspection.grade;
-
-
-        decisionSelect.value =
-            inspection.decision;
-
-
-        editingInspectionId =
-            inspection.id;
-
-
-        saveInspectionBtn.innerHTML = `
-
-            <span aria-hidden="true">
-                ▣
-            </span>
-
-            Update Inspection
-
-        `;
-
-
-        purchaseSelect.focus();
-
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth"
-
-        });
+        document.body.style.overflow =
+            "hidden";
 
     }
 
 
-    // ==========================================
-    // DELETE
-    // ==========================================
+    function closeSidebar() {
 
-    function deleteInspection(id) {
-
-        const exists =
-            inspections.some(
-                function (inspection) {
-
-                    return (
-                        inspection.id === id
-                    );
-
-                }
-            );
-
-
-        if (!exists) {
-
-            showToast(
-                "Inspection record not found.",
-                "error"
-            );
-
+        if (!sidebar) {
             return;
-
         }
 
 
-        inspections =
-            inspections.filter(
-                function (inspection) {
+        sidebar.classList.remove(
+            "open"
+        );
 
-                    return (
-                        inspection.id !== id
-                    );
 
-                }
+        if (sidebarBackdrop) {
+
+            sidebarBackdrop.classList.remove(
+                "show"
             );
 
-
-        saveInspections();
-
-        displayInspections();
-
-        updateSummaryCards();
+        }
 
 
-        if (
-            editingInspectionId === id
-        ) {
+        if (menuButton) {
 
-            resetQualityForm();
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
 
         }
 
 
-        showToast(
-            "Inspection deleted successfully!"
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    if (menuButton) {
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "open"
+                    )
+                ) {
+
+                    closeSidebar();
+
+                }
+                else {
+
+                    openSidebar();
+
+                }
+
+            }
         );
 
     }
 
 
-    // ==========================================
-    // RESET
-    // ==========================================
+    if (sidebarBackdrop) {
 
-    function resetQualityForm() {
-
-        qualityForm.reset();
-
-
-        supplierNameInput.value =
-            "";
-
-
-        moistureInput.value =
-            "";
-
-
-        editingInspectionId =
-            null;
-
-
-        saveInspectionBtn.innerHTML = `
-
-            <span aria-hidden="true">
-                ▣
-            </span>
-
-            Save Inspection
-
-        `;
+        sidebarBackdrop.addEventListener(
+            "click",
+            closeSidebar
+        );
 
     }
 
 
-    // ==========================================
-    // EXTRA UI DESIGN
-    // ==========================================
+    document.addEventListener(
+        "keydown",
+        function (event) {
 
-    const style =
-        document.createElement(
-            "style"
-        );
+            if (
+                event.key === "Escape"
+            ) {
 
+                closeSidebar();
 
-    style.textContent = `
-
-        /* READ ONLY SUPPLIER */
-
-        #supplier-name[readonly] {
-
-            background-color: #f5f8f6;
-
-            cursor: not-allowed;
+            }
 
         }
-
-
-        /* EDIT BUTTON */
-
-        .quality-edit-button {
-
-            padding: 7px 15px;
-
-            border: 1px solid #15913a;
-
-            border-radius: 6px;
-
-            background-color: #ffffff;
-
-            color: #15913a;
-
-            font-weight: 600;
-
-            cursor: pointer;
-
-        }
-
-
-        .quality-edit-button:hover {
-
-            background-color: #edf8f0;
-
-        }
-
-
-        /* DELETE */
-
-        .quality-delete-button {
-
-            margin-left: 6px;
-
-            padding: 7px 15px;
-
-            border: 1px solid #efb8b8;
-
-            border-radius: 6px;
-
-            background-color: #fff5f5;
-
-            color: #c62828;
-
-            font-weight: 600;
-
-            cursor: pointer;
-
-        }
-
-
-        .quality-delete-button:hover {
-
-            background-color: #fdeaea;
-
-        }
-
-
-        /* REJECTED STATUS */
-
-        .quality-status-rejected {
-
-            background-color: #fdeaea;
-
-            color: #c62828;
-
-            border: 1px solid #efb8b8;
-
-        }
-
-
-        /* TOAST */
-
-        .quality-toast {
-
-            position: fixed;
-
-            top: 25px;
-
-            right: 25px;
-
-            min-width: 280px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            padding: 14px 18px;
-
-            background-color: #ffffff;
-
-            color: #17351f;
-
-            border-left: 5px solid #15913a;
-
-            border-radius: 8px;
-
-            box-shadow:
-                0 6px 20px
-                rgba(0, 0, 0, 0.15);
-
-            font-size: 14px;
-
-            font-weight: 600;
-
-            z-index: 9999;
-
-            opacity: 0;
-
-            transform: translateX(30px);
-
-            transition:
-                opacity 0.3s ease,
-                transform 0.3s ease;
-
-        }
-
-
-        .quality-toast.show {
-
-            opacity: 1;
-
-            transform: translateX(0);
-
-        }
-
-
-        .quality-toast .toast-icon {
-
-            width: 26px;
-
-            height: 26px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background-color: #e7f5eb;
-
-            color: #15913a;
-
-            font-weight: bold;
-
-        }
-
-
-        .quality-toast.error {
-
-            border-left-color: #d32f2f;
-
-            color: #8f1d1d;
-
-        }
-
-
-        .quality-toast.error .toast-icon {
-
-            background-color: #fdeaea;
-
-            color: #d32f2f;
-
-        }
-
-    `;
-
-
-    document.head.appendChild(
-        style
     );
 
-    
-    // INITIAL LOAD
-    
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (
+                window.innerWidth > 1000
+            ) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
+
+    setAddMode();
+
+    setDefaultDate();
+
     loadPurchaseDropdown();
 
-    displayInspections();
-
     updateSummaryCards();
+
+    displayInspections();
 
 });
