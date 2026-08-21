@@ -1,339 +1,1178 @@
 /* =========================================
-   Smart Rice Mill ERP
-   Farmer & Supplier Management Page
-   ========================================= */
+   SMART RICE MILL ERP
+   FARMER & SUPPLIER MANAGEMENT
+========================================= */
 
 
 /* =========================================
-   Summary Cards
-   ========================================= */
+   HIDDEN
+========================================= */
+
+[hidden] {
+    display: none !important;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.supplier-content {
+    padding-top: 26px;
+}
+
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.supplier-page-heading {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.supplier-page-heading h2 {
+    color: #17231c;
+
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+.supplier-page-heading p {
+    margin-top: 5px;
+
+    color: #7b857f;
+
+    font-size: 0.79rem;
+    line-height: 1.45;
+}
+
+.purchase-shortcut {
+    padding: 9px 13px;
+
+    color: #157d34;
+    background-color: #edf7ef;
+
+    border: 1px solid #cce5d2;
+    border-radius: 7px;
+
+    font-size: 0.77rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        background-color 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.purchase-shortcut:hover {
+    background-color: #e2f2e6;
+
+    border-color: #abd5b5;
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
 
 .supplier-summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 25px;
 }
 
+.supplier-summary-grid .summary-card {
+    min-height: 112px;
 
-/* Simple Emoji and Text Icons */
+    padding-right: 22px;
 
-.supplier-summary-grid .summary-icon {
-    font-size: 2rem;
+    cursor: default;
+}
+
+.supplier-summary-grid .summary-card:hover {
+    transform: none;
 }
 
 
 /* =========================================
-   Supplier Form Card
-   ========================================= */
+   FORM CARD
+========================================= */
 
 .supplier-form-card {
-    margin-top: 36px;
-    padding: 24px 25px 22px;
+    margin-top: 30px;
+
+    padding: 24px 25px 26px;
 }
 
-.supplier-form-card h2 {
-    margin-bottom: 25px;
+.supplier-card-heading {
+    margin-bottom: 24px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.supplier-card-heading h2 {
+    color: #17231c;
+
+    font-size: 1.14rem;
+}
+
+.supplier-card-heading p {
+    margin-top: 5px;
+
+    color: #7d8781;
+
+    font-size: 0.76rem;
+}
+
+.supplier-form-note {
+    max-width: 390px;
+
+    padding: 8px 11px;
+
+    color: #526158;
+    background-color: #f3f7f4;
+
+    border: 1px solid #dce6df;
+    border-radius: 7px;
+
+    font-size: 0.71rem;
+    line-height: 1.4;
 }
 
 
 /* =========================================
-   Supplier Form Grid
-   ========================================= */
+   FORM GRID
+========================================= */
 
 .supplier-form {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 30px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    column-gap: 24px;
     row-gap: 20px;
 }
 
-
-/* =========================================
-   Form Fields
-   ========================================= */
-
-.form-field {
+.supplier-form-field {
     min-width: 0;
 }
 
-.form-field label {
+
+/* =========================================
+   LABELS
+========================================= */
+
+.supplier-form-field label {
     display: block;
-    margin-bottom: 9px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #171e29;
-}
 
-.form-field input,
-.form-field select {
-    width: 100%;
-    height: 46px;
-    padding: 0 14px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    color: #171e29;
-    background-color: #ffffff;
-    border: 1px solid #d7dee4;
-    border-radius: 7px;
-    outline: none;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
+    margin-bottom: 8px;
 
-.form-field input::placeholder {
-    color: #929aa6;
-}
+    color: #202b24;
 
-.form-field select {
-    cursor: pointer;
-}
-
-.form-field input:hover,
-.form-field select:hover {
-    border-color: #b9c2ca;
-}
-
-.form-field input:focus,
-.form-field select:focus {
-    border-color: #139536;
-    box-shadow: 0 0 0 3px rgba(19, 149, 54, 0.11);
+    font-size: 0.81rem;
+    font-weight: 600;
 }
 
 
 /* =========================================
-   Save Supplier Button
-   ========================================= */
+   INPUT / SELECT
+========================================= */
 
-.form-action {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
+.supplier-form-field input,
+.supplier-form-field select {
+    width: 100%;
+    height: 44px;
+
+    padding: 0 13px;
+
+    color: #17231c;
+    background-color: #ffffff;
+
+    border: 1px solid #d5ded8;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease;
 }
 
-.primary-action-button {
-    min-width: 205px;
-    height: 48px;
-    padding: 0 25px;
+.supplier-form-field input::placeholder {
+    color: #98a29b;
+}
+
+.supplier-form-field input:hover,
+.supplier-form-field select:hover {
+    border-color: #b9c7be;
+}
+
+.supplier-form-field input:focus,
+.supplier-form-field select:focus {
+    border-color: #15913a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(21, 145, 58, 0.10);
+}
+
+.supplier-form-field select:disabled {
+    color: #8b958f;
+
+    background-color: #f4f7f5;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   LOCATION SECTION
+========================================= */
+
+.location-section-heading {
+    grid-column: 1 / -1;
+
+    margin-top: 4px;
+    margin-bottom: -4px;
+
+    padding:
+        13px
+        15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    background-color: #f7faf8;
+
+    border:
+        1px solid
+        #dce6df;
+
+    border-radius: 8px;
+}
+
+.location-section-heading h3 {
+    color: #243128;
+
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.location-section-heading p {
+    margin-top: 4px;
+
+    color: #7b857e;
+
+    font-size: 0.69rem;
+}
+
+.location-load-status {
+    padding: 6px 9px;
+
+    color: #526158;
+    background-color: #ffffff;
+
+    border:
+        1px solid
+        #dce4df;
+
+    border-radius: 6px;
+
+    font-size: 0.66rem;
+
+    white-space: nowrap;
+}
+
+.location-load-status.ready {
+    color: #157c35;
+    background-color: #ecf8ef;
+
+    border-color: #b9dfc2;
+}
+
+.location-load-status.error {
+    color: #a86e00;
+    background-color: #fff7e7;
+
+    border-color: #ebcb87;
+}
+
+
+/* =========================================
+   MANUAL CITY / THANA
+========================================= */
+
+.manual-area-field {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================
+   OFFLINE FALLBACK
+========================================= */
+
+.manual-location-grid {
+    grid-column: 1 / -1;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 24px;
+}
+
+
+/* =========================================
+   FULL ADDRESS
+========================================= */
+
+.full-address-field {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================
+   LOCATION CREDIT
+========================================= */
+
+.location-credit {
+    grid-column: 1 / -1;
+
+    margin-top: -9px;
+
+    color: #919a94;
+
+    font-size: 0.62rem;
+    line-height: 1.4;
+}
+
+
+/* =========================================
+   FORM ACTIONS
+========================================= */
+
+.supplier-form-action {
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+}
+
+.supplier-save-button,
+.supplier-cancel-button {
+    min-width: 170px;
+    height: 46px;
+
+    padding: 0 20px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #ffffff;
-    background-color: #129238;
-    border: none;
+
+    gap: 7px;
+
     border-radius: 7px;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+
     cursor: pointer;
-    box-shadow: 0 6px 14px rgba(18, 146, 56, 0.16);
+
     transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        background-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
-.primary-action-button:hover {
-    background-color: #0e7f30;
-    box-shadow: 0 8px 17px rgba(18, 146, 56, 0.22);
+.supplier-save-button {
+    color: #ffffff;
+
+    background-color: #129238;
+
+    box-shadow:
+        0 6px 14px
+        rgba(18, 146, 56, 0.16);
+}
+
+.supplier-save-button:hover {
+    background-color: #0e7e30;
+
     transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(18, 146, 56, 0.21);
 }
 
-.primary-action-button:active {
-    transform: translateY(0);
+.supplier-cancel-button {
+    color: #4d5951;
+    background-color: #ffffff;
+
+    border: 1px solid #cfd8d2;
 }
 
-.primary-action-button:focus-visible {
-    outline: 3px solid rgba(18, 146, 56, 0.24);
-    outline-offset: 3px;
+.supplier-cancel-button:hover {
+    background-color: #f4f7f5;
 }
 
 
 /* =========================================
-   Supplier List Card
-   ========================================= */
+   LIST CARD
+========================================= */
 
 .supplier-list-card {
-    margin-top: 45px;
-    padding: 23px 21px 10px;
+    margin-top: 32px;
+
+    padding:
+        23px
+        20px
+        12px;
 }
 
-.supplier-list-card h2 {
-    margin-bottom: 24px;
+.supplier-list-heading {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.supplier-list-heading h2 {
+    color: #17231c;
+
+    font-size: 1.14rem;
+}
+
+.supplier-list-heading p {
+    margin-top: 5px;
+
+    color: #7c8780;
+
+    font-size: 0.75rem;
 }
 
 
 /* =========================================
-   Supplier Table
-   ========================================= */
+   SEARCH / FILTER
+========================================= */
+
+.supplier-list-controls {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.supplier-list-controls input {
+    width: 250px;
+    height: 39px;
+
+    padding: 0 12px;
+
+    color: #17231c;
+    background-color: #ffffff;
+
+    border: 1px solid #d4ddd7;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.75rem;
+}
+
+.supplier-list-controls select {
+    width: 125px;
+    height: 39px;
+
+    padding: 0 10px;
+
+    color: #17231c;
+    background-color: #ffffff;
+
+    border: 1px solid #d4ddd7;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.75rem;
+}
+
+.supplier-list-controls input:focus,
+.supplier-list-controls select:focus {
+    border-color: #15913a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(21, 145, 58, 0.09);
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.supplier-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
 
 .supplier-table {
     width: 100%;
-    min-width: 900px;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 0.9rem;
+    min-width: 1350px;
+
+    border-collapse: collapse;
+
+    font-size: 0.77rem;
+}
+
+.supplier-table thead {
+    background-color: #fafcfa;
+
+    border: 1px solid #d8dfda;
 }
 
 .supplier-table th,
 .supplier-table td {
-    padding: 14px 20px;
+    padding: 12px 13px;
+
     text-align: left;
     vertical-align: middle;
+
+    white-space: nowrap;
 }
 
+.supplier-table th {
+    color: #344038;
 
-/* Rounded Table Header */
-
-.supplier-table thead th {
-    font-weight: 500;
-    color: #171e29;
-    background-color: #fafcfc;
-    border-top: 1px solid #d8dee3;
-    border-bottom: 1px solid #d8dee3;
-}
-
-.supplier-table thead th:first-child {
-    border-left: 1px solid #d8dee3;
-    border-radius: 8px 0 0 8px;
-}
-
-.supplier-table thead th:last-child {
-    border-right: 1px solid #d8dee3;
-    border-radius: 0 8px 8px 0;
-}
-
-
-/* Table Body */
-
-.supplier-table tbody td {
-    border-bottom: 1px solid #e1e5e8;
-}
-
-.supplier-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.supplier-table tbody tr:hover td {
-    background-color: #fafcfa;
-}
-
-
-/* =========================================
-   Edit Button
-   ========================================= */
-
-.edit-button {
-    min-width: 68px;
-    height: 34px;
-    padding: 0 16px;
-    font-family: inherit;
-    font-size: 0.82rem;
+    font-size: 0.73rem;
     font-weight: 600;
-    color: #148d35;
-    background-color: #ffffff;
-    border: 1px solid #148d35;
-    border-radius: 6px;
-    cursor: pointer;
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease;
 }
 
-.edit-button:hover {
-    color: #ffffff;
-    background-color: #148d35;
+.supplier-table tbody tr {
+    border-bottom:
+        1px solid
+        #e2e8e4;
+
+    transition:
+        background-color
+        0.15s ease;
+}
+
+.supplier-table tbody tr:hover {
+    background-color: #fbfdfb;
 }
 
 
 /* =========================================
-   Responsive Design
-   ========================================= */
+   PARTNER NAME
+========================================= */
+
+.partner-name {
+    display: block;
+
+    color: #17231c;
+
+    font-weight: 600;
+}
+
+.partner-address {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #89928c;
+
+    font-size: 0.65rem;
+}
+
+
+/* =========================================
+   LOCATION CELL
+========================================= */
+
+.location-primary {
+    display: block;
+
+    color: #253229;
+
+    font-weight: 600;
+}
+
+.location-secondary,
+.location-address {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #89928c;
+
+    font-size: 0.65rem;
+}
+
+.location-address {
+    max-width: 210px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   TYPE BADGES
+========================================= */
+
+.partner-type-badge {
+    min-width: 70px;
+
+    padding: 5px 9px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    font-size: 0.66rem;
+    font-weight: 600;
+}
+
+.partner-farmer {
+    color: #167b34;
+    background-color: #edf8ef;
+
+    border: 1px solid #65b578;
+}
+
+.partner-supplier {
+    color: #1c639f;
+    background-color: #edf5fc;
+
+    border: 1px solid #75a8d2;
+}
+
+
+/* =========================================
+   PAYMENT STATUS
+========================================= */
+
+.partner-payment-status {
+    min-width: 74px;
+
+    padding: 5px 9px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    font-size: 0.66rem;
+    font-weight: 600;
+}
+
+.partner-clear {
+    color: #168538;
+    background-color: #edf8ef;
+
+    border: 1px solid #61ad73;
+}
+
+.partner-due {
+    color: #c57500;
+    background-color: #fff6e7;
+
+    border: 1px solid #e7a13b;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.supplier-action-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.partner-history-button,
+.partner-edit-button,
+.partner-delete-button {
+    height: 31px;
+
+    padding: 0 10px;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.68rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.partner-history-button {
+    color: #17699f;
+
+    border: 1px solid #6ca6ca;
+}
+
+.partner-history-button:hover {
+    color: #ffffff;
+
+    background-color: #17699f;
+}
+
+.partner-edit-button {
+    color: #168438;
+
+    border: 1px solid #32a253;
+}
+
+.partner-edit-button:hover {
+    color: #ffffff;
+
+    background-color: #168f3b;
+}
+
+.partner-delete-button {
+    color: #cf3939;
+
+    border: 1px solid #e4aaaa;
+}
+
+.partner-delete-button:hover {
+    color: #ffffff;
+
+    background-color: #cf3939;
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.supplier-empty-row td {
+    padding: 30px 15px;
+
+    color: #7e8982;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   MODAL BACKDROP
+========================================= */
+
+.history-modal-backdrop {
+    position: fixed;
+
+    inset: 0;
+
+    padding: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color:
+        rgba(8, 27, 16, 0.55);
+
+    z-index: 5000;
+}
+
+
+/* =========================================
+   HISTORY MODAL
+========================================= */
+
+.history-modal {
+    width: min(980px, 100%);
+    max-height: 88vh;
+
+    padding: 23px;
+
+    overflow-y: auto;
+
+    color: #17231c;
+    background-color: #ffffff;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 22px 55px
+        rgba(0, 0, 0, 0.24);
+}
+
+.history-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.history-modal-header h2 {
+    font-size: 1.18rem;
+}
+
+.history-modal-header p {
+    margin-top: 5px;
+
+    color: #7d8780;
+
+    font-size: 0.75rem;
+}
+
+.history-close-button {
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #5f6a63;
+    background-color: #f1f5f2;
+
+    border-radius: 50%;
+
+    font-size: 1.35rem;
+
+    cursor: pointer;
+}
+
+.history-close-button:hover {
+    background-color: #e4ebe6;
+}
+
+
+/* =========================================
+   HISTORY SUMMARY
+========================================= */
+
+.history-summary-grid {
+    margin-top: 21px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 13px;
+}
+
+.history-summary-item {
+    padding: 14px;
+
+    background-color: #f7faf8;
+
+    border: 1px solid #dce5df;
+    border-radius: 8px;
+}
+
+.history-summary-item span {
+    display: block;
+
+    color: #7a857e;
+
+    font-size: 0.69rem;
+}
+
+.history-summary-item strong {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #167d35;
+
+    font-size: 1.08rem;
+}
+
+
+/* =========================================
+   HISTORY TABLE
+========================================= */
+
+.history-table-wrapper {
+    margin-top: 21px;
+
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    min-width: 730px;
+
+    border-collapse: collapse;
+
+    font-size: 0.74rem;
+}
+
+.history-table thead {
+    background-color: #fafcfa;
+
+    border: 1px solid #d8dfda;
+}
+
+.history-table th,
+.history-table td {
+    padding: 11px 12px;
+
+    text-align: left;
+
+    white-space: nowrap;
+}
+
+.history-table tbody tr {
+    border-bottom:
+        1px solid
+        #e3e8e4;
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+.supplier-toast {
+    position: fixed;
+
+    top: 94px;
+    right: 24px;
+
+    z-index: 6000;
+
+    max-width: 430px;
+
+    padding: 12px 15px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    color: #24512f;
+    background-color: #f0faf2;
+
+    border: 1px solid #b8dec1;
+    border-radius: 8px;
+
+    box-shadow:
+        0 12px 28px
+        rgba(20, 38, 25, 0.14);
+
+    font-size: 0.78rem;
+    line-height: 1.45;
+
+    opacity: 0;
+
+    transform:
+        translateY(-8px);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.supplier-toast.show {
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+.supplier-toast.error {
+    color: #8d2b2b;
+    background-color: #fff1f1;
+
+    border-color: #e5b0b0;
+}
+
+.supplier-toast-icon {
+    flex: 0 0 auto;
+
+    width: 20px;
+    height: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+    background-color: #15913a;
+
+    border-radius: 50%;
+
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.supplier-toast.error
+.supplier-toast-icon {
+    background-color: #c83a3a;
+}
+
+
+/* =========================================
+   RESPONSIVE LAPTOP
+========================================= */
 
 @media screen and (max-width: 1250px) {
 
-    .supplier-summary-grid {
-        gap: 20px;
+    .supplier-form {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
-    .supplier-form {
-        column-gap: 22px;
+    .manual-location-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .supplier-list-heading {
+        align-items: flex-start;
+
+        flex-direction: column;
     }
 
 }
 
+
+/* =========================================
+   RESPONSIVE TABLET
+========================================= */
 
 @media screen and (max-width: 1000px) {
 
     .supplier-summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .supplier-summary-grid .summary-card:last-child {
-        grid-column: 1 / -1;
-    }
-
-    .supplier-form {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
 }
 
+
+/* =========================================
+   RESPONSIVE MOBILE
+========================================= */
 
 @media screen and (max-width: 720px) {
 
+    .supplier-page-heading,
+    .supplier-card-heading,
+    .location-section-heading {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
     .supplier-summary-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+
+        gap: 14px;
     }
 
-    .supplier-summary-grid .summary-card:last-child {
-        grid-column: auto;
-    }
-
-    .supplier-form-card {
-        margin-top: 25px;
-        padding: 21px 18px;
+    .supplier-form-card,
+    .supplier-list-card {
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     .supplier-form {
         grid-template-columns: 1fr;
-        gap: 18px;
     }
 
-    .form-action {
-        margin-top: 8px;
+    .manual-location-grid {
+        grid-template-columns: 1fr;
     }
 
-    .primary-action-button {
+    .supplier-form-action {
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+    }
+
+    .supplier-save-button,
+    .supplier-cancel-button {
         width: 100%;
     }
 
-    .supplier-list-card {
-        margin-top: 25px;
-        padding: 20px 16px 8px;
+    .supplier-list-controls {
+        width: 100%;
+
+        flex-direction: column;
+
+        align-items: stretch;
     }
 
-}
-
-
-@media screen and (max-width: 440px) {
-
-    .supplier-form-card h2,
-    .supplier-list-card h2 {
-        font-size: 1.15rem;
+    .supplier-list-controls input,
+    .supplier-list-controls select {
+        width: 100%;
     }
 
-    .form-field input,
-    .form-field select {
-        height: 45px;
+    .history-modal-backdrop {
+        padding: 12px;
     }
 
-    .supplier-table th,
-    .supplier-table td {
-        padding: 12px 15px;
+    .history-modal {
+        padding: 17px;
+    }
+
+    .history-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .supplier-toast {
+        top: 82px;
+
+        left: 14px;
+        right: 14px;
+
+        max-width: none;
     }
 
 }
