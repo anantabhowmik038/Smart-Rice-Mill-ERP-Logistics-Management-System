@@ -2,39 +2,54 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Customer Management - Smart Rice Mill ERP & Logistics Management System">
+
     <title>Customer Management | Smart Rice Mill ERP</title>
 
-    <!-- Common Dashboard CSS -->
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 
-    <!-- Customer Page CSS -->
-    <link rel="stylesheet" href="../styles/customer.css">
+    <link rel="stylesheet"
+          href="../styles/customer.css">
+
 </head>
+
 
 <body>
 
     <div class="dashboard-layout">
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
-        <aside class="sidebar">
+
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+
+        <aside class="sidebar"
+               id="sidebar">
 
             <div class="sidebar-header">
 
-                <div class="sidebar-logo" aria-hidden="true">
+                <div class="sidebar-logo"
+                     aria-hidden="true">
+
                     <span class="logo-shape logo-shape-one"></span>
                     <span class="logo-shape logo-shape-two"></span>
+
                 </div>
+
 
                 <div class="sidebar-brand">
 
-                    <h2>Smart Rice Mill</h2>
+                    <h2>
+                        Smart Rice Mill
+                    </h2>
 
                     <p>
                         ERP &amp; Logistics<br>
@@ -49,11 +64,30 @@
             <nav class="sidebar-navigation"
                  aria-label="Main navigation">
 
+
                 <a class="navigation-link"
                    href="dashboard.html">
 
                     <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
+
+                    <span class="navigation-text">
+                        Dashboard
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="notifications.html">
+
+                    <span class="navigation-icon">🔔</span>
+
+                    <span class="navigation-text">
+                        Notifications
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -63,7 +97,39 @@
                    href="purchase.html">
 
                     <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
+
+                    <span class="navigation-text">
+                        Purchase
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="supplier.html">
+
+                    <span class="navigation-icon">👥</span>
+
+                    <span class="navigation-text">
+                        Farmer &amp; Supplier
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="quality.html">
+
+                    <span class="navigation-icon">✓</span>
+
+                    <span class="navigation-text">
+                        Quality Inspection
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -73,7 +139,11 @@
                    href="production.html">
 
                     <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
+
+                    <span class="navigation-text">
+                        Production
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -83,17 +153,39 @@
                    href="inventory.html">
 
                     <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
+
+                    <span class="navigation-text">
+                        Inventory
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
 
 
-                <a class="navigation-link active"
+                <a class="navigation-link"
                    href="sales.html">
 
                     <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
+
+                    <span class="navigation-text">
+                        Sales
+                    </span>
+
+                    <span class="navigation-arrow">⌄</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link active"
+                   href="customer.html">
+
+                    <span class="navigation-icon">👤</span>
+
+                    <span class="navigation-text">
+                        Customers
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -103,7 +195,11 @@
                    href="delivery.html">
 
                     <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
+
+                    <span class="navigation-text">
+                        Delivery
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -113,7 +209,25 @@
                    href="reports.html">
 
                     <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
+
+                    <span class="navigation-text">
+                        Reports
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="expense.html">
+
+                    <span class="navigation-icon">৳</span>
+
+                    <span class="navigation-text">
+                        Expense &amp; Salary
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -123,7 +237,39 @@
                    href="profile.html">
 
                     <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
+
+                    <span class="navigation-text">
+                        Settings
+                    </span>
+
+                    <span class="navigation-arrow">⌄</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="users.html">
+
+                    <span class="navigation-icon">👥</span>
+
+                    <span class="navigation-text">
+                        User Roles
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">🔧</span>
+
+                    <span class="navigation-text">
+                        Maintenance
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -132,83 +278,151 @@
 
 
             <a class="logout-link"
-               href="../index.html">
+               href="#"
+               id="logoutBtn">
 
                 <span class="logout-icon">↪</span>
-                <span>Logout</span>
+
+                <span>
+                    Logout
+                </span>
 
             </a>
 
         </aside>
 
 
-        <!-- =====================================
-             Main Area
-        ====================================== -->
+        <div class="sidebar-backdrop"
+             id="sidebarBackdrop">
+        </div>
+
+
+        <!-- =========================================
+             MAIN
+        ========================================== -->
+
         <main class="main-area">
 
-            <!-- Topbar -->
+
+            <!-- =========================================
+                 TOPBAR
+            ========================================== -->
+
             <header class="topbar">
 
                 <div class="topbar-left">
 
                     <button class="menu-button"
+                            id="menuButton"
                             type="button"
-                            aria-label="Open navigation menu">
+                            aria-label="Open navigation menu"
+                            aria-expanded="false">
+
                         ☰
+
                     </button>
 
-                    <h1>Customer Management</h1>
+
+                    <h1>
+                        Customer Management
+                    </h1>
 
                 </div>
 
 
                 <div class="topbar-right">
 
-                    <div class="notification-area">
+                    <a class="notification-area"
+                       href="notifications.html"
+                       aria-label="Open notifications">
 
-                        <span class="notification-icon">♧</span>
+                        <span class="notification-icon">
+                            ♧
+                        </span>
 
                         <span class="notification-count">
                             3
                         </span>
 
-                    </div>
+                    </a>
 
 
-                    <div class="user-profile">
+                    <a class="user-profile"
+                       href="profile.html">
 
-                        <div class="user-avatar"
-                             aria-hidden="true">
+                        <div class="user-avatar">
                             👤
                         </div>
 
+
                         <div class="user-information">
 
-                            <strong>Admin User</strong>
-                            <span>Rice Mill Owner</span>
+                            <strong>
+                                Admin User
+                            </strong>
+
+                            <span>
+                                Rice Mill Owner
+                            </span>
 
                         </div>
 
-                        <span class="profile-arrow">⌄</span>
 
-                    </div>
+                        <span class="profile-arrow">
+                            ⌄
+                        </span>
+
+                    </a>
 
                 </div>
 
             </header>
 
 
-            <!-- =====================================
-                 Customer Content
-            ====================================== -->
+            <!-- =========================================
+                 CONTENT
+            ========================================== -->
+
             <section class="dashboard-content customer-content">
 
-                <!-- =====================================
-                     Summary Cards
-                ====================================== -->
-                <section class="customer-summary-grid"
-                         aria-label="Customer summary">
+
+                <!-- =========================================
+                     PAGE HEADING
+                ========================================== -->
+
+                <div class="customer-page-heading">
+
+                    <div>
+
+                        <h2>
+                            Customer Relationship Records
+                        </h2>
+
+                        <p>
+                            Maintain customer contact and delivery information
+                            while sales performance and outstanding dues are
+                            calculated automatically from invoices.
+                        </p>
+
+                    </div>
+
+
+                    <a class="sales-shortcut"
+                       href="sales.html">
+
+                        Sales &amp; Invoices →
+
+                    </a>
+
+                </div>
+
+
+                <!-- =========================================
+                     SUMMARY
+                ========================================== -->
+
+                <section class="customer-summary-grid">
+
 
                     <article class="summary-card">
 
@@ -216,13 +430,18 @@
                             👥
                         </div>
 
+
                         <div class="summary-details">
 
-                            <p>Total Customers</p>
+                            <p>
+                                Total Customers
+                            </p>
 
                             <h2 class="green-value"
                                 id="totalCustomersValue">
+
                                 0
+
                             </h2>
 
                         </div>
@@ -232,16 +451,22 @@
 
                     <article class="summary-card">
 
-                        <div class="summary-icon green-icon">
+                        <div class="summary-icon blue-icon">
                             👤
                         </div>
 
+
                         <div class="summary-details">
 
-                            <p>Active Buyers</p>
+                            <p>
+                                Active Buyers
+                            </p>
 
-                            <h2 class="green-value">
-                                31
+                            <h2 class="blue-value"
+                                id="activeBuyersValue">
+
+                                0
+
                             </h2>
 
                         </div>
@@ -251,16 +476,22 @@
 
                     <article class="summary-card">
 
-                        <div class="summary-icon green-icon">
+                        <div class="summary-icon due-icon">
                             ৳
                         </div>
 
+
                         <div class="summary-details">
 
-                            <p>Due Amount</p>
+                            <p>
+                                Outstanding Customer Due
+                            </p>
 
-                            <h2 class="green-value">
-                                ৳1,20,000
+                            <h2 class="due-value"
+                                id="totalCustomerDueValue">
+
+                                ৳0
+
                             </h2>
 
                         </div>
@@ -270,30 +501,53 @@
                 </section>
 
 
-                <!-- =====================================
-                     Customer Form
-                ====================================== -->
+                <!-- =========================================
+                     CUSTOMER FORM
+                ========================================== -->
+
                 <section class="content-card customer-form-card">
 
-                    <h2 id="customerFormTitle">
-                        Save Customer
-                    </h2>
+
+                    <div class="customer-card-heading">
+
+                        <div>
+
+                            <h2 id="customerFormTitle">
+                                Add Customer
+                            </h2>
+
+                            <p>
+                                Create a customer master record for
+                                sales and delivery operations.
+                            </p>
+
+                        </div>
 
 
-                    <form class="customer-form"
-                          id="customerForm">
+                        <span class="customer-form-badge">
+                            Sales-Linked Profile
+                        </span>
 
-                        <!-- Customer Name -->
-                        <div class="form-field">
+                    </div>
 
-                            <label for="customer-name">
-                                Customer Name
+
+                    <form id="customerForm"
+                          class="customer-form"
+                          novalidate>
+
+
+                        <!-- Name -->
+
+                        <div class="customer-form-field">
+
+                            <label for="customerName">
+                                Customer Name *
                             </label>
 
                             <input
                                 type="text"
-                                id="customer-name"
-                                name="customerName"
+                                id="customerName"
+                                maxlength="80"
                                 placeholder="Enter customer name"
                                 required
                             >
@@ -301,59 +555,59 @@
                         </div>
 
 
-                        <!-- Phone Number -->
-                        <div class="form-field">
+                        <!-- Phone -->
 
-                            <label for="phone-number">
-                                Phone Number
+                        <div class="customer-form-field">
+
+                            <label for="customerPhone">
+                                Phone Number *
                             </label>
 
                             <input
                                 type="tel"
-                                id="phone-number"
-                                name="phoneNumber"
-                                placeholder="Enter 11-digit phone number"
-                                pattern="[0-9]{11}"
+                                id="customerPhone"
                                 maxlength="11"
+                                inputmode="numeric"
+                                placeholder="e.g. 01712345678"
                                 required
                             >
 
                         </div>
 
 
-                        <!-- Customer Type -->
-                        <div class="form-field">
+                        <!-- Type -->
 
-                            <label for="customer-type">
-                                Customer Type
+                        <div class="customer-form-field">
+
+                            <label for="customerType">
+                                Customer Type *
                             </label>
 
-                            <select
-                                id="customer-type"
-                                name="customerType"
-                                required
-                            >
+                            <select id="customerType"
+                                    required>
 
                                 <option value=""
                                         selected
                                         disabled>
+
                                     Select customer type
+
                                 </option>
 
-                                <option value="dealer">
+                                <option value="Dealer">
                                     Dealer
                                 </option>
 
-                                <option value="retailer">
+                                <option value="Wholesaler">
+                                    Wholesaler
+                                </option>
+
+                                <option value="Retailer">
                                     Retailer
                                 </option>
 
-                                <option value="business">
+                                <option value="Business">
                                     Business
-                                </option>
-
-                                <option value="wholesaler">
-                                    Wholesaler
                                 </option>
 
                             </select>
@@ -362,23 +616,22 @@
 
 
                         <!-- Division -->
-                        <div class="form-field">
 
-                            <label for="customer-division">
-                                Division
+                        <div class="customer-form-field">
+
+                            <label for="customerDivision">
+                                Division *
                             </label>
 
-                            <select
-                                id="customer-division"
-                                name="customerDivision"
-                                required
-                                disabled
-                            >
+                            <select id="customerDivision"
+                                    required>
 
                                 <option value=""
                                         selected
                                         disabled>
-                                    Loading divisions...
+
+                                    Select division
+
                                 </option>
 
                             </select>
@@ -387,23 +640,22 @@
 
 
                         <!-- District -->
-                        <div class="form-field">
 
-                            <label for="customer-district">
-                                District
+                        <div class="customer-form-field">
+
+                            <label for="customerDistrict">
+                                District *
                             </label>
 
-                            <select
-                                id="customer-district"
-                                name="customerDistrict"
-                                required
-                                disabled
-                            >
+                            <select id="customerDistrict"
+                                    disabled
+                                    required>
 
                                 <option value=""
-                                        selected
-                                        disabled>
+                                        selected>
+
                                     Select district
+
                                 </option>
 
                             </select>
@@ -412,23 +664,22 @@
 
 
                         <!-- Upazila -->
-                        <div class="form-field">
 
-                            <label for="customer-upazila">
-                                Upazila
+                        <div class="customer-form-field">
+
+                            <label for="customerUpazila">
+                                Upazila *
                             </label>
 
-                            <select
-                                id="customer-upazila"
-                                name="customerUpazila"
-                                required
-                                disabled
-                            >
+                            <select id="customerUpazila"
+                                    disabled
+                                    required>
 
                                 <option value=""
-                                        selected
-                                        disabled>
+                                        selected>
+
                                     Select upazila
+
                                 </option>
 
                             </select>
@@ -436,78 +687,46 @@
                         </div>
 
 
-                        <!-- Location Message -->
-                        <div
-                            class="customer-location-message"
-                            id="customerLocationMessage"
-                            aria-live="polite"
-                        >
-                            Loading Bangladesh location data...
-                        </div>
+                        <!-- Address -->
 
+                        <div class="customer-form-field customer-address-field">
 
-                        <!-- Detailed Address -->
-                        <div class="form-field customer-address-field">
-
-                            <label for="customer-address">
-                                Detailed Address
+                            <label for="customerAddress">
+                                Detailed Address *
                             </label>
 
                             <input
                                 type="text"
-                                id="customer-address"
-                                name="customerAddress"
+                                id="customerAddress"
+                                maxlength="180"
                                 placeholder="Village / Road / Market / House details"
                                 required
                             >
 
-                        </div>
-
-
-                        <!-- Payment Status -->
-                        <div class="form-field">
-
-                            <label for="payment-status">
-                                Payment Status
-                            </label>
-
-                            <select
-                                id="payment-status"
-                                name="paymentStatus"
-                                required
-                            >
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select payment status
-                                </option>
-
-                                <option value="paid">
-                                    Paid
-                                </option>
-
-                                <option value="due">
-                                    Due
-                                </option>
-
-                                <option value="partial">
-                                    Partially Paid
-                                </option>
-
-                            </select>
+                            <small>
+                                This address can be reused in the Delivery module.
+                            </small>
 
                         </div>
 
 
-                        <!-- Save Button -->
-                        <div class="form-action">
+                        <!-- Actions -->
 
-                            <button
-                                class="primary-action-button"
-                                type="submit"
-                                id="saveCustomerBtn"
-                            >
+                        <div class="customer-form-action">
+
+                            <button class="customer-cancel-button"
+                                    id="cancelCustomerEditBtn"
+                                    type="button"
+                                    hidden>
+
+                                Cancel Edit
+
+                            </button>
+
+
+                            <button class="customer-save-button"
+                                    id="saveCustomerBtn"
+                                    type="submit">
 
                                 <span aria-hidden="true">
                                     ▣
@@ -524,28 +743,116 @@
                 </section>
 
 
-                <!-- =====================================
-                     Customer List
-                ====================================== -->
+                <!-- =========================================
+                     CUSTOMER LIST
+                ========================================== -->
+
                 <section class="content-card customer-list-card">
 
-                    <h2>Customer List</h2>
+
+                    <div class="customer-list-heading">
+
+                        <div>
+
+                            <h2>
+                                Customer Directory
+                            </h2>
+
+                            <p>
+                                Sales values and dues are calculated
+                                from active invoice records.
+                            </p>
+
+                        </div>
 
 
-                    <div class="table-wrapper">
+                        <div class="customer-list-controls">
+
+                            <input
+                                type="search"
+                                id="customerSearch"
+                                placeholder="Search customer, ID or phone"
+                                aria-label="Search customers"
+                            >
+
+
+                            <select id="customerTypeFilter">
+
+                                <option value="all">
+                                    All Types
+                                </option>
+
+                                <option value="Dealer">
+                                    Dealer
+                                </option>
+
+                                <option value="Wholesaler">
+                                    Wholesaler
+                                </option>
+
+                                <option value="Retailer">
+                                    Retailer
+                                </option>
+
+                                <option value="Business">
+                                    Business
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="customer-table-wrapper">
 
                         <table class="customer-table">
 
                             <thead>
 
                                 <tr>
-                                    <th>Customer</th>
-                                    <th>Phone</th>
-                                    <th>Location</th>
-                                    <th>Detailed Address</th>
-                                    <th>Type</th>
-                                    <th>Payment Status</th>
-                                    <th>Action</th>
+
+                                    <th>
+                                        Customer ID
+                                    </th>
+
+                                    <th>
+                                        Customer
+                                    </th>
+
+                                    <th>
+                                        Phone
+                                    </th>
+
+                                    <th>
+                                        Location
+                                    </th>
+
+                                    <th>
+                                        Type
+                                    </th>
+
+                                    <th>
+                                        Invoices
+                                    </th>
+
+                                    <th>
+                                        Purchase Value
+                                    </th>
+
+                                    <th>
+                                        Outstanding Due
+                                    </th>
+
+                                    <th>
+                                        Last Purchase
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+
                                 </tr>
 
                             </thead>
@@ -560,6 +867,7 @@
 
                 </section>
 
+
             </section>
 
         </main>
@@ -568,9 +876,6 @@
 
 
     <script src="../scripts/auth.js"></script>
-
-    <!-- Same location service used by Delivery -->
-    <script src="../scripts/bangladesh-locations.js"></script>
 
     <script src="../scripts/customer.js"></script>
 

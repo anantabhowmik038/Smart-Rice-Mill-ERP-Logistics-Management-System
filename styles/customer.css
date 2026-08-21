@@ -1,555 +1,823 @@
 /* =========================================
-   Smart Rice Mill ERP
-   Customer Management Page
-   ========================================= */
+   SMART RICE MILL ERP
+   CUSTOMER MANAGEMENT
+========================================= */
+
+
+[hidden] {
+    display: none !important;
+}
 
 
 /* =========================================
-   Customer Summary Cards
-   ========================================= */
+   PAGE
+========================================= */
+
+.customer-content {
+    padding-top: 26px;
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.customer-page-heading {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.customer-page-heading h2 {
+    color: #17231c;
+
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+
+.customer-page-heading p {
+    margin-top: 5px;
+
+    max-width: 720px;
+
+    color: #7b857f;
+
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+
+.sales-shortcut {
+    padding: 9px 13px;
+
+    color: #157d34;
+    background: #edf7ef;
+
+    border: 1px solid #cce5d2;
+    border-radius: 7px;
+
+    font-size: 0.74rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+.sales-shortcut:hover {
+    background: #e2f2e6;
+
+    border-color: #abd5b5;
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
 
 .customer-summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 22px;
 }
 
-.customer-summary-grid .summary-icon {
-    font-size: 2rem;
+
+.customer-summary-grid .summary-card {
+    min-height: 108px;
+
+    cursor: default;
+}
+
+
+.customer-summary-grid .summary-card:hover {
+    transform: none;
+}
+
+
+.due-icon {
+    color: #ca7800;
+
+    background: #fff4e1;
+}
+
+
+.due-value {
+    color: #ca7800;
 }
 
 
 /* =========================================
-   Customer Form Card
-   ========================================= */
+   FORM CARD
+========================================= */
 
 .customer-form-card {
-    margin-top: 36px;
-    padding: 24px 25px 22px;
+    margin-top: 30px;
+
+    padding: 24px 25px 27px;
 }
 
-.customer-form-card h2 {
-    margin-bottom: 25px;
+
+.customer-card-heading {
+    margin-bottom: 24px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.customer-card-heading h2 {
+    color: #17231c;
+
+    font-size: 1.13rem;
+}
+
+
+.customer-card-heading p {
+    margin-top: 5px;
+
+    color: #7d8781;
+
+    font-size: 0.74rem;
+}
+
+
+.customer-form-badge {
+    padding: 7px 10px;
+
+    color: #167d37;
+    background: #edf8ef;
+
+    border: 1px solid #bfdfc7;
+    border-radius: 15px;
+
+    font-size: 0.63rem;
+    font-weight: 600;
+
+    white-space: nowrap;
 }
 
 
 /* =========================================
-   Customer Form Grid
-   ========================================= */
+   FORM
+========================================= */
 
 .customer-form {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 30px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    column-gap: 22px;
     row-gap: 20px;
 }
 
 
-/* =========================================
-   Form Fields
-   ========================================= */
-
-.form-field {
+.customer-form-field {
     min-width: 0;
 }
 
-.form-field label {
-    display: block;
-    margin-bottom: 9px;
 
-    font-size: 0.9rem;
-    font-weight: 500;
-
-    color: #171e29;
+.customer-address-field {
+    grid-column: 1 / -1;
 }
 
-.form-field input,
-.form-field select {
+
+.customer-form-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #202b24;
+
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+
+.customer-form-field input,
+.customer-form-field select {
     width: 100%;
-    height: 46px;
+    height: 44px;
 
-    padding: 0 14px;
+    padding: 0 13px;
 
-    font-family: inherit;
-    font-size: 0.9rem;
+    color: #17231c;
+    background: #ffffff;
 
-    color: #171e29;
-    background-color: #ffffff;
-
-    border: 1px solid #d7dee4;
+    border: 1px solid #d5ded8;
     border-radius: 7px;
 
     outline: none;
 
+    font-family: inherit;
+    font-size: 0.79rem;
+
     transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background-color 0.2s ease;
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease;
 }
 
-.form-field input::placeholder {
-    color: #929aa6;
+
+.customer-form-field input::placeholder {
+    color: #98a29b;
 }
 
-.form-field select {
-    cursor: pointer;
+
+.customer-form-field input:hover,
+.customer-form-field select:hover {
+    border-color: #b9c7be;
 }
 
-.form-field select:disabled {
-    cursor: not-allowed;
 
-    color: #89919b;
-    background-color: #f7f9fa;
-}
-
-.form-field input:hover,
-.form-field select:not(:disabled):hover {
-    border-color: #b9c2ca;
-}
-
-.form-field input:focus,
-.form-field select:focus {
-    border-color: #139536;
+.customer-form-field input:focus,
+.customer-form-field select:focus {
+    border-color: #15913a;
 
     box-shadow:
         0 0 0 3px
-        rgba(19, 149, 54, 0.11);
+        rgba(21, 145, 58, 0.10);
+}
+
+
+.customer-form-field select:disabled {
+    color: #949e98;
+    background: #f4f7f5;
+
+    cursor: not-allowed;
+}
+
+
+.customer-form-field small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #7d8881;
+
+    font-size: 0.65rem;
 }
 
 
 /* =========================================
-   Detailed Address
-   ========================================= */
+   FORM ACTION
+========================================= */
 
-.customer-address-field {
-    grid-column: span 2;
-}
-
-
-/* =========================================
-   Location Message
-   ========================================= */
-
-.customer-location-message {
+.customer-form-action {
     grid-column: 1 / -1;
 
-    margin-top: -7px;
-    padding: 10px 13px;
-
-    font-size: 0.82rem;
-    line-height: 1.45;
-
-    color: #5e6873;
-    background-color: #f7f9fa;
-
-    border: 1px solid #e2e7ea;
-    border-radius: 6px;
-}
-
-.customer-location-message.success {
-    color: #147333;
-    background-color: #f2faf4;
-    border-color: #cae8d1;
-}
-
-.customer-location-message.info {
-    color: #496170;
-    background-color: #f5f9fb;
-    border-color: #dce6eb;
-}
-
-.customer-location-message.error {
-    color: #a12222;
-    background-color: #fff5f5;
-    border-color: #efcaca;
-}
-
-
-/* =========================================
-   Save Customer Button
-   ========================================= */
-
-.form-action {
-    grid-column: 1 / -1;
+    margin-top: 5px;
 
     display: flex;
+    align-items: center;
     justify-content: center;
 
-    margin-top: 15px;
+    gap: 12px;
 }
 
-.primary-action-button {
-    min-width: 205px;
-    height: 48px;
 
-    padding: 0 25px;
+.customer-save-button,
+.customer-cancel-button {
+    min-width: 170px;
+    height: 45px;
+
+    padding: 0 20px;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    gap: 8px;
+    gap: 7px;
 
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-
-    color: #ffffff;
-    background-color: #129238;
-
-    border: none;
     border-radius: 7px;
 
+    font-family: inherit;
+    font-size: 0.79rem;
+    font-weight: 600;
+
     cursor: pointer;
+}
+
+
+.customer-save-button {
+    color: #ffffff;
+    background: #129238;
 
     box-shadow:
         0 6px 14px
         rgba(18, 146, 56, 0.16);
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
 }
 
-.primary-action-button:hover {
-    background-color: #0e7f30;
 
-    box-shadow:
-        0 8px 17px
-        rgba(18, 146, 56, 0.22);
-
-    transform: translateY(-1px);
+.customer-save-button:hover {
+    background: #0e7e30;
 }
 
-.primary-action-button:active {
-    transform: translateY(0);
+
+.customer-cancel-button {
+    color: #4f5a53;
+    background: #ffffff;
+
+    border: 1px solid #ccd6cf;
 }
 
-.primary-action-button:focus-visible {
-    outline: 3px solid rgba(18, 146, 56, 0.24);
-    outline-offset: 3px;
+
+.customer-cancel-button:hover {
+    background: #f4f7f5;
 }
 
 
 /* =========================================
-   Customer List Card
-   ========================================= */
+   LIST CARD
+========================================= */
 
 .customer-list-card {
-    margin-top: 45px;
+    margin-top: 32px;
 
-    padding: 23px 21px 10px;
-}
-
-.customer-list-card h2 {
-    margin-bottom: 24px;
+    padding: 23px 20px 13px;
 }
 
 
-/* =========================================
-   Customer Table
-   ========================================= */
+.customer-list-heading {
+    margin-bottom: 20px;
 
-.customer-table {
-    width: 100%;
-    min-width: 1120px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
 
-    border-collapse: separate;
-    border-spacing: 0;
-
-    font-size: 0.9rem;
-}
-
-.customer-table th,
-.customer-table td {
-    padding: 14px 18px;
-
-    text-align: left;
-    vertical-align: middle;
+    gap: 20px;
 }
 
 
-/* Table Header */
+.customer-list-heading h2 {
+    color: #17231c;
 
-.customer-table thead th {
-    font-weight: 500;
-
-    color: #171e29;
-    background-color: #fafcfc;
-
-    border-top: 1px solid #d8dee3;
-    border-bottom: 1px solid #d8dee3;
-}
-
-.customer-table thead th:first-child {
-    border-left: 1px solid #d8dee3;
-    border-radius: 8px 0 0 8px;
-}
-
-.customer-table thead th:last-child {
-    border-right: 1px solid #d8dee3;
-    border-radius: 0 8px 8px 0;
+    font-size: 1.08rem;
 }
 
 
-/* Table Body */
+.customer-list-heading p {
+    margin-top: 5px;
 
-.customer-table tbody td {
-    border-bottom: 1px solid #e1e5e8;
-}
+    color: #7c8780;
 
-.customer-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.customer-table tbody tr:hover td {
-    background-color: #fafcfa;
+    font-size: 0.72rem;
 }
 
 
-/* =========================================
-   Location Cell
-   ========================================= */
-
-.customer-location-cell {
-    min-width: 180px;
-}
-
-.customer-location-main {
-    display: block;
-
-    font-weight: 600;
-
-    color: #28323c;
-}
-
-.customer-location-secondary {
-    display: block;
-
-    margin-top: 3px;
-
-    font-size: 0.79rem;
-
-    color: #7b858e;
-}
-
-.legacy-location-label {
-    display: inline-block;
-
-    margin-top: 4px;
-    padding: 2px 6px;
-
-    font-size: 0.7rem;
-    font-weight: 600;
-
-    color: #8a6400;
-    background-color: #fff8df;
-
-    border-radius: 4px;
-}
-
-
-/* =========================================
-   Address Cell
-   ========================================= */
-
-.customer-address-cell {
-    min-width: 180px;
-    max-width: 250px;
-
-    white-space: normal;
-    line-height: 1.4;
-
-    color: #525d67;
-}
-
-
-/* =========================================
-   Action Buttons
-   ========================================= */
-
-.customer-action-group {
+.customer-list-controls {
     display: flex;
     align-items: center;
 
-    gap: 7px;
+    gap: 9px;
 }
 
-.edit-button {
-    min-width: 68px;
-    height: 34px;
 
-    padding: 0 16px;
+.customer-list-controls input {
+    width: 235px;
+    height: 38px;
+
+    padding: 0 11px;
+
+    color: #17231c;
+    background: #ffffff;
+
+    border: 1px solid #d4ddd7;
+    border-radius: 7px;
+
+    outline: none;
 
     font-family: inherit;
-    font-size: 0.82rem;
+    font-size: 0.71rem;
+}
+
+
+.customer-list-controls select {
+    width: 140px;
+    height: 38px;
+
+    padding: 0 9px;
+
+    color: #17231c;
+    background: #ffffff;
+
+    border: 1px solid #d4ddd7;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.71rem;
+}
+
+
+.customer-list-controls input:focus,
+.customer-list-controls select:focus {
+    border-color: #15913a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(21, 145, 58, 0.09);
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.customer-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+.customer-table {
+    width: 100%;
+    min-width: 1450px;
+
+    border-collapse: collapse;
+
+    font-size: 0.73rem;
+}
+
+
+.customer-table thead {
+    background: #fafcfa;
+
+    border: 1px solid #d8dfda;
+}
+
+
+.customer-table th,
+.customer-table td {
+    padding: 12px 13px;
+
+    text-align: left;
+    vertical-align: middle;
+
+    white-space: nowrap;
+}
+
+
+.customer-table th {
+    color: #344038;
+
+    font-size: 0.69rem;
     font-weight: 600;
+}
 
-    color: #148d35;
-    background-color: #ffffff;
 
-    border: 1px solid #148d35;
+.customer-table tbody tr {
+    border-bottom: 1px solid #e2e8e4;
+}
+
+
+.customer-table tbody tr:hover {
+    background: #fbfdfb;
+}
+
+
+.customer-code {
+    color: #176fa5;
+
+    font-weight: 700;
+}
+
+
+.customer-name {
+    color: #1d2921;
+
+    font-weight: 600;
+}
+
+
+.customer-location {
+    line-height: 1.5;
+}
+
+
+.customer-location small {
+    display: block;
+
+    color: #818c85;
+
+    font-size: 0.62rem;
+}
+
+
+.customer-financial-value {
+    font-weight: 600;
+}
+
+
+.customer-due-zero {
+    color: #168039;
+}
+
+
+.customer-due-active {
+    color: #c27600;
+
+    font-weight: 700;
+}
+
+
+.customer-no-purchase {
+    color: #879189;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.customer-action-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.customer-edit-button,
+.customer-delete-button,
+.customer-confirm-delete-button,
+.customer-cancel-delete-button {
+    height: 31px;
+
+    padding: 0 11px;
+
     border-radius: 6px;
 
+    background: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.66rem;
+    font-weight: 600;
+
     cursor: pointer;
-
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease,
-        border-color 0.2s ease;
 }
 
-.edit-button:hover {
+
+/* =========================================
+   EDIT
+========================================= */
+
+.customer-edit-button {
+    color: #168438;
+
+    border: 1px solid #32a253;
+}
+
+
+.customer-edit-button:hover {
     color: #ffffff;
-    background-color: #148d35;
+
+    background: #168f3b;
 }
 
 
-/* Delete Button */
+/* =========================================
+   DELETE
+========================================= */
 
 .customer-delete-button {
-    color: #c62828;
-    background-color: #fff8f8;
+    color: #cb3838;
 
-    border-color: #e9b5b5;
+    border: 1px solid #e0a4a4;
 }
+
 
 .customer-delete-button:hover {
     color: #ffffff;
-    background-color: #c62828;
 
-    border-color: #c62828;
+    background: #ca3b3b;
+}
+
+
+.customer-confirm-delete-button {
+    color: #ffffff;
+    background: #ca3b3b;
+
+    border: 1px solid #ca3b3b;
+}
+
+
+.customer-confirm-delete-button:hover {
+    background: #b42f2f;
+}
+
+
+.customer-cancel-delete-button {
+    color: #536058;
+    background: #ffffff;
+
+    border: 1px solid #c9d3cc;
+}
+
+
+.customer-cancel-delete-button:hover {
+    background: #f2f5f3;
+}
+
+
+.customer-delete-question {
+    color: #af3636;
+
+    font-size: 0.64rem;
+    font-weight: 600;
 }
 
 
 /* =========================================
-   Empty Table
-   ========================================= */
+   PROTECTED CUSTOMER
+
+   Customers with invoice history cannot
+   be deleted because sales records depend
+   on the customer master record.
+========================================= */
+
+.customer-protected-badge {
+    height: 31px;
+
+    padding: 0 11px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    color: #77601d;
+    background: #fff9e9;
+
+    border: 1px solid #dcc888;
+    border-radius: 6px;
+
+    font-size: 0.64rem;
+    font-weight: 600;
+
+    cursor: default;
+}
+
+
+.customer-protected-badge::before {
+    content: "🔒";
+
+    font-size: 0.62rem;
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
 
 .customer-empty-row td {
-    padding: 35px 20px;
+    padding: 30px 15px;
+
+    color: #7e8982;
 
     text-align: center;
-
-    color: #7c868f;
-    background-color: #fafcfc;
 }
 
 
 /* =========================================
-   Toast
-   ========================================= */
+   TOAST
+========================================= */
 
 .customer-toast {
     position: fixed;
 
-    top: 25px;
-    right: 25px;
+    top: 94px;
+    right: 24px;
 
-    min-width: 280px;
-    max-width: 390px;
+    z-index: 5000;
+
+    max-width: 440px;
+
+    padding: 12px 15px;
 
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
-    gap: 12px;
+    gap: 10px;
 
-    padding: 14px 18px;
+    color: #24512f;
+    background: #f0faf2;
 
-    color: #17351f;
-    background-color: #ffffff;
-
-    border-left: 5px solid #15913a;
+    border: 1px solid #b8dec1;
     border-radius: 8px;
 
     box-shadow:
-        0 6px 20px
-        rgba(0, 0, 0, 0.15);
+        0 12px 28px
+        rgba(20, 38, 25, 0.14);
 
-    font-size: 14px;
-    font-weight: 600;
-
-    z-index: 9999;
+    font-size: 0.77rem;
+    line-height: 1.45;
 
     opacity: 0;
 
-    transform: translateX(30px);
+    transform: translateY(-8px);
+
+    pointer-events: none;
 
     transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
+        opacity 0.2s ease,
+        transform 0.2s ease;
 }
+
 
 .customer-toast.show {
     opacity: 1;
-    transform: translateX(0);
+
+    transform: translateY(0);
 }
 
-.customer-toast .toast-icon {
-    width: 26px;
-    height: 26px;
 
-    flex-shrink: 0;
+.customer-toast.error {
+    color: #8d2b2b;
+    background: #fff1f1;
 
-    display: flex;
+    border-color: #e5b0b0;
+}
+
+
+.customer-toast-icon {
+    flex: 0 0 auto;
+
+    width: 20px;
+    height: 20px;
+
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    color: #ffffff;
+    background: #15913a;
+
     border-radius: 50%;
 
-    color: #15913a;
-    background-color: #e7f5eb;
-
-    font-weight: bold;
+    font-size: 0.68rem;
+    font-weight: 700;
 }
 
-.customer-toast.error {
-    color: #8f1d1d;
-    border-left-color: #d32f2f;
-}
 
-.customer-toast.error .toast-icon {
-    color: #d32f2f;
-    background-color: #fdeaea;
+.customer-toast.error
+.customer-toast-icon {
+    background: #c83a3a;
 }
 
 
 /* =========================================
-   Responsive Design
-   ========================================= */
+   RESPONSIVE
+========================================= */
 
-@media screen and (max-width: 1250px) {
-
-    .customer-summary-grid {
-        gap: 20px;
-    }
+@media screen and (max-width: 1050px) {
 
     .customer-form {
-        column-gap: 22px;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .customer-summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
 }
 
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 800px) {
 
-    .customer-summary-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+    .customer-list-heading {
+        flex-direction: column;
+
+        align-items: flex-start;
     }
 
-    .customer-summary-grid .summary-card:last-child {
-        grid-column: 1 / -1;
+
+    .customer-list-controls {
+        width: 100%;
     }
 
-    .customer-form {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
 
-    .customer-address-field {
-        grid-column: 1 / -1;
+    .customer-list-controls input {
+        flex: 1;
+
+        width: auto;
     }
 
 }
@@ -557,75 +825,64 @@
 
 @media screen and (max-width: 720px) {
 
+    .customer-page-heading,
+    .customer-card-heading {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
     .customer-summary-grid {
         grid-template-columns: 1fr;
 
-        gap: 16px;
+        gap: 14px;
     }
 
-    .customer-summary-grid .summary-card:last-child {
-        grid-column: auto;
-    }
-
-    .customer-form-card {
-        margin-top: 25px;
-
-        padding: 21px 18px;
-    }
 
     .customer-form {
         grid-template-columns: 1fr;
-
-        gap: 18px;
     }
 
-    .customer-address-field {
+
+    .customer-address-field,
+    .customer-form-action {
         grid-column: auto;
     }
 
-    .customer-location-message {
-        margin-top: -4px;
+
+    .customer-form-action {
+        flex-direction: column-reverse;
+
+        align-items: stretch;
     }
 
-    .form-action {
-        margin-top: 8px;
-    }
 
-    .primary-action-button {
+    .customer-save-button,
+    .customer-cancel-button {
         width: 100%;
     }
 
-    .customer-list-card {
-        margin-top: 25px;
 
-        padding: 20px 16px 8px;
+    .customer-list-controls {
+        flex-direction: column;
+
+        align-items: stretch;
     }
 
-}
 
-
-@media screen and (max-width: 440px) {
-
-    .customer-form-card h2,
-    .customer-list-card h2 {
-        font-size: 1.15rem;
+    .customer-list-controls input,
+    .customer-list-controls select {
+        width: 100%;
     }
 
-    .form-field input,
-    .form-field select {
-        height: 45px;
-    }
-
-    .customer-table th,
-    .customer-table td {
-        padding: 12px 15px;
-    }
 
     .customer-toast {
-        left: 15px;
-        right: 15px;
+        top: 82px;
 
-        min-width: auto;
+        left: 14px;
+        right: 14px;
+
         max-width: none;
     }
 

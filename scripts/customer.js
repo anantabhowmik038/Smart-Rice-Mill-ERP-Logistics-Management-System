@@ -1,2152 +1,3184 @@
-document.addEventListener(
-    "DOMContentLoaded",
-    async function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        // ==========================================
-        // FORM ELEMENTS
-        // ==========================================
+    /* =========================================
+       SMART RICE MILL ERP
+       CUSTOMER MANAGEMENT
 
-        const customerForm =
-            document.getElementById(
-                "customerForm"
-            );
+       CUSTOMER MASTER
+       ----------------
+       Stores:
+       - Customer ID
+       - Name
+       - Phone
+       - Buyer type
+       - Division
+       - District
+       - Upazila
+       - Detailed address
 
-        const customerFormTitle =
-            document.getElementById(
-                "customerFormTitle"
-            );
+       SALES INTEGRATION
+       -----------------
+       Sales records automatically calculate:
+       - Active buyers
+       - Invoice count
+       - Purchase value
+       - Outstanding due
+       - Last purchase date
 
-        const customerName =
-            document.getElementById(
-                "customer-name"
-            );
+       REFERENTIAL INTEGRITY
+       ---------------------
+       Customers linked to invoice history
+       cannot be deleted.
 
-        const phoneNumber =
-            document.getElementById(
-                "phone-number"
-            );
-
-        const customerType =
-            document.getElementById(
-                "customer-type"
-            );
-
-        const paymentStatus =
-            document.getElementById(
-                "payment-status"
-            );
-
-        const customerAddress =
-            document.getElementById(
-                "customer-address"
-            );
-
-        const customerDivisionSelect =
-            document.getElementById(
-                "customer-division"
-            );
-
-        const customerDistrictSelect =
-            document.getElementById(
-                "customer-district"
-            );
-
-        const customerUpazilaSelect =
-            document.getElementById(
-                "customer-upazila"
-            );
-
-        const customerLocationMessage =
-            document.getElementById(
-                "customerLocationMessage"
-            );
-
-        const saveCustomerBtn =
-            document.getElementById(
-                "saveCustomerBtn"
-            );
+       LEGACY DATA MIGRATION
+       ---------------------
+       The original seeded customer types are
+       restored one time so normalization does
+       not accidentally convert all legacy
+       customers to "Business".
+    ========================================= */
 
 
-        // ==========================================
-        // TABLE / SUMMARY
-        // ==========================================
+    /* =========================================
+       BD LOCATION API
+    ========================================= */
 
-        const customerTableBody =
-            document.getElementById(
-                "customerTableBody"
-            );
-
-        const totalCustomersValue =
-            document.getElementById(
-                "totalCustomersValue"
-            );
+    const BD_API_BASE =
+        "https://bdapis.com/api/v1.2";
 
 
-        // ==========================================
-        // STATE
-        // ==========================================
+    const BANGLADESH_DIVISIONS = [
 
-        let editingCustomerId =
-            null;
+        "Barishal",
+        "Chattogram",
+        "Dhaka",
+        "Khulna",
+        "Mymensingh",
+        "Rajshahi",
+        "Rangpur",
+        "Sylhet"
 
-        let locationServiceReady =
-            false;
-
-
-        // ==========================================
-        // DEFAULT LEGACY DATA
-        // ==========================================
-
-        const defaultCustomers = [
-
-            {
-                id: 1,
-                name: "ABC Traders",
-                phone: "01700000011",
-                city: "Dhaka",
-                type: "dealer",
-                payment: "due"
-            },
-
-            {
-                id: 2,
-                name: "Bhowmik Store",
-                phone: "01800000012",
-                city: "Khulna",
-                type: "retailer",
-                payment: "paid"
-            },
-
-            {
-                id: 3,
-                name: "Dhaka Foods",
-                phone: "01900000013",
-                city: "Dhaka",
-                type: "business",
-                payment: "paid"
-            }
-
-        ];
+    ];
 
 
-        // ==========================================
-        // LOAD CUSTOMER DATA
-        // ==========================================
+    /* =========================================
+       LEGACY TYPE MIGRATION
 
-        function loadCustomers() {
+       One-time recovery for the original
+       prototype seed customers.
 
-            const storedCustomers =
+       After this migration completes,
+       later manual user edits are respected.
+    ========================================= */
+
+    const CUSTOMER_TYPE_MIGRATION_KEY =
+        "customerTypeMigrationV2Completed";
+
+
+    const LEGACY_CUSTOMER_TYPE_RECOVERY = {
+
+        "CUS-001":
+            "Dealer",
+
+        "CUS-002":
+            "Retailer",
+
+        "CUS-003":
+            "Business"
+
+    };
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const customerForm =
+        document.getElementById(
+            "customerForm"
+        );
+
+
+    if (!customerForm) {
+        return;
+    }
+
+
+    const customerNameInput =
+        document.getElementById(
+            "customerName"
+        );
+
+
+    const customerPhoneInput =
+        document.getElementById(
+            "customerPhone"
+        );
+
+
+    const customerTypeSelect =
+        document.getElementById(
+            "customerType"
+        );
+
+
+    const customerDivisionSelect =
+        document.getElementById(
+            "customerDivision"
+        );
+
+
+    const customerDistrictSelect =
+        document.getElementById(
+            "customerDistrict"
+        );
+
+
+    const customerUpazilaSelect =
+        document.getElementById(
+            "customerUpazila"
+        );
+
+
+    const customerAddressInput =
+        document.getElementById(
+            "customerAddress"
+        );
+
+
+    const customerFormTitle =
+        document.getElementById(
+            "customerFormTitle"
+        );
+
+
+    const saveCustomerBtn =
+        document.getElementById(
+            "saveCustomerBtn"
+        );
+
+
+    const cancelCustomerEditBtn =
+        document.getElementById(
+            "cancelCustomerEditBtn"
+        );
+
+
+    const totalCustomersValue =
+        document.getElementById(
+            "totalCustomersValue"
+        );
+
+
+    const activeBuyersValue =
+        document.getElementById(
+            "activeBuyersValue"
+        );
+
+
+    const totalCustomerDueValue =
+        document.getElementById(
+            "totalCustomerDueValue"
+        );
+
+
+    const customerSearch =
+        document.getElementById(
+            "customerSearch"
+        );
+
+
+    const customerTypeFilter =
+        document.getElementById(
+            "customerTypeFilter"
+        );
+
+
+    const customerTableBody =
+        document.getElementById(
+            "customerTableBody"
+        );
+
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+
+    const sidebarBackdrop =
+        document.getElementById(
+            "sidebarBackdrop"
+        );
+
+
+    /* =========================================
+       STATE
+    ========================================= */
+
+    let editingCustomerInternalId =
+        null;
+
+
+    let pendingDeleteCustomerInternalId =
+        null;
+
+
+    let currentDivisionDistricts =
+        [];
+
+
+    /* =========================================
+       STORAGE
+    ========================================= */
+
+    function safeParseStorage(
+        key,
+        fallback = []
+    ) {
+
+        try {
+
+            const stored =
                 localStorage.getItem(
-                    "customers"
+                    key
                 );
 
 
             if (
-                storedCustomers === null
+                stored === null
             ) {
 
-                return defaultCustomers.map(
-                    function (customer) {
-
-                        return {
-                            ...customer
-                        };
-
-                    }
-                );
+                return fallback;
 
             }
 
 
-            try {
+            return (
+                JSON.parse(
+                    stored
+                ) ??
+                fallback
+            );
 
-                const parsedCustomers =
-                    JSON.parse(
-                        storedCustomers
-                    );
+        }
+        catch {
+
+            return fallback;
+
+        }
+
+    }
 
 
-                if (
-                    Array.isArray(
-                        parsedCustomers
-                    )
-                ) {
+    /* =========================================
+       SAFE HTML
+    ========================================= */
 
-                    return parsedCustomers;
+    function escapeHTML(value) {
 
+        const element =
+            document.createElement(
+                "div"
+            );
+
+
+        element.textContent =
+            String(
+                value ?? ""
+            );
+
+
+        return element.innerHTML;
+
+    }
+
+
+    /* =========================================
+       MONEY
+    ========================================= */
+
+    function formatMoney(value) {
+
+        return (
+
+            `৳${Number(
+                value || 0
+            ).toLocaleString(
+                "en-US",
+                {
+                    maximumFractionDigits:
+                        2
                 }
+            )}`
 
-            } catch (error) {
+        );
 
-                console.error(
-                    "Customer data could not be parsed:",
-                    error
-                );
-
-            }
+    }
 
 
-            return [];
+    /* =========================================
+       DATE
+    ========================================= */
+
+    function formatDate(value) {
+
+        if (!value) {
+
+            return "—";
 
         }
 
 
-        let customers =
-            loadCustomers();
+        const date =
+            new Date(
+                `${value}T00:00:00`
+            );
 
 
-        // ==========================================
-        // FIX LEGACY RECORDS WITHOUT ID
-        // ==========================================
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day:
+                    "2-digit",
 
-        let oldDataUpdated =
-            false;
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+            }
+        );
+
+    }
 
 
-        customers =
-            customers.map(
+    /* =========================================
+       CUSTOMER TYPE
+    ========================================= */
+
+    function normalizeCustomerType(
+        value
+    ) {
+
+        const type =
+            String(
+                value || ""
+            ).trim();
+
+
+        const allowed = [
+
+            "Dealer",
+            "Wholesaler",
+            "Retailer",
+            "Business"
+
+        ];
+
+
+        if (
+            allowed.includes(
+                type
+            )
+        ) {
+
+            return type;
+
+        }
+
+
+        return "Business";
+
+    }
+
+
+    /* =========================================
+       RAW CUSTOMERS
+    ========================================= */
+
+    function loadRawCustomers() {
+
+        let data =
+            safeParseStorage(
+                "customers",
+                null
+            );
+
+
+        if (
+            !Array.isArray(data)
+        ) {
+
+            data =
+                safeParseStorage(
+                    "customerRecords",
+                    []
+                );
+
+        }
+
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    }
+
+
+    /* =========================================
+       CUSTOMER NORMALIZATION
+    ========================================= */
+
+    function normalizeCustomers() {
+
+        const raw =
+            loadRawCustomers();
+
+
+        const existingCodes =
+            raw
+                .map(
+                    function (
+                        customer
+                    ) {
+
+                        return (
+
+                            customer.customerId ||
+                            customer.customerCode ||
+                            ""
+
+                        );
+
+                    }
+                )
+                .filter(Boolean);
+
+
+        let highestCode =
+            existingCodes
+                .map(
+                    function (
+                        code
+                    ) {
+
+                        const match =
+                            String(
+                                code
+                            ).match(
+                                /^CUS-(\d+)$/i
+                            );
+
+
+                        return (
+                            match
+                                ? Number(
+                                    match[1]
+                                )
+                                : 0
+                        );
+
+                    }
+                )
+                .reduce(
+                    function (
+                        max,
+                        number
+                    ) {
+
+                        return Math.max(
+                            max,
+                            number
+                        );
+
+                    },
+                    0
+                );
+
+
+        let normalized =
+            raw.map(
                 function (
                     customer,
                     index
                 ) {
 
-                    if (
-                        customer.id ===
-                        undefined ||
-                        customer.id ===
-                        null
-                    ) {
+                    let customerId =
 
-                        customer.id =
-                            Date.now() +
-                            index;
+                        customer.customerId ||
+                        customer.customerCode ||
+                        "";
 
-                        oldDataUpdated =
-                            true;
+
+                    if (!customerId) {
+
+                        highestCode +=
+                            1;
+
+
+                        customerId =
+
+                            `CUS-${String(
+                                highestCode
+                            ).padStart(
+                                3,
+                                "0"
+                            )}`;
 
                     }
 
 
-                    return customer;
+                    return {
+
+                        id:
+
+                            customer.id ??
+                            Date.now() +
+                            index,
+
+
+                        customerId:
+                            customerId,
+
+
+                        name:
+
+                            customer.name ||
+                            customer.customerName ||
+                            `Customer ${index + 1}`,
+
+
+                        phone:
+
+                            customer.phone ||
+                            customer.phoneNumber ||
+                            "",
+
+
+                        type:
+
+                            normalizeCustomerType(
+
+                                customer.type ||
+                                customer.customerType
+
+                            ),
+
+
+                        division:
+
+                            customer.division ||
+                            "",
+
+
+                        district:
+
+                            customer.district ||
+                            customer.location ||
+                            "",
+
+
+                        upazila:
+
+                            customer.upazila ||
+                            customer.subDistrict ||
+                            "",
+
+
+                        address:
+
+                            customer.address ||
+                            customer.detailedAddress ||
+                            "",
+
+
+                        createdAt:
+
+                            customer.createdAt ||
+                            customer.id ||
+                            Date.now() +
+                            index
+
+                    };
 
                 }
             );
 
 
-        // ==========================================
-        // LOCAL STORAGE
-        // ==========================================
+        /* =====================================
+           ONE-TIME LEGACY TYPE RECOVERY
+        ====================================== */
 
-        function saveCustomersToLocalStorage() {
+        const migrationCompleted =
 
-            localStorage.setItem(
-                "customers",
-                JSON.stringify(
-                    customers
-                )
-            );
+            localStorage.getItem(
+                CUSTOMER_TYPE_MIGRATION_KEY
+            )
 
-        }
+            ===
+
+            "true";
 
 
         if (
-            localStorage.getItem(
-                "customers"
-            ) === null ||
-            oldDataUpdated
+            !migrationCompleted
         ) {
 
-            saveCustomersToLocalStorage();
-
-        }
-
-
-        // ==========================================
-        // SAFE TEXT
-        // ==========================================
-
-        function escapeHTML(
-            value
-        ) {
-
-            const element =
-                document.createElement(
-                    "div"
-                );
-
-
-            element.textContent =
-                String(
-                    value ?? ""
-                );
-
-
-            return element.innerHTML;
-
-        }
-
-
-        // ==========================================
-        // CUSTOMER TYPE TEXT
-        // ==========================================
-
-        function getCustomerTypeText(
-            type
-        ) {
-
-            if (
-                type === "dealer"
-            ) {
-
-                return "Dealer";
-
-            }
-
-
-            if (
-                type === "retailer"
-            ) {
-
-                return "Retailer";
-
-            }
-
-
-            if (
-                type === "business"
-            ) {
-
-                return "Business";
-
-            }
-
-
-            if (
-                type === "wholesaler"
-            ) {
-
-                return "Wholesaler";
-
-            }
-
-
-            return type || "—";
-
-        }
-
-
-        // ==========================================
-        // PAYMENT TEXT
-        // ==========================================
-
-        function getPaymentText(
-            payment
-        ) {
-
-            if (
-                payment === "paid"
-            ) {
-
-                return "Paid";
-
-            }
-
-
-            if (
-                payment === "due"
-            ) {
-
-                return "Due";
-
-            }
-
-
-            if (
-                payment === "partial"
-            ) {
-
-                return "Partially Paid";
-
-            }
-
-
-            return payment || "—";
-
-        }
-
-
-        // ==========================================
-        // PAYMENT CLASS
-        // ==========================================
-
-        function getPaymentClass(
-            payment
-        ) {
-
-            if (
-                payment === "paid"
-            ) {
-
-                return "status-paid";
-
-            }
-
-
-            if (
-                payment === "due" ||
-                payment === "partial"
-            ) {
-
-                return "status-due";
-
-            }
-
-
-            return "";
-
-        }
-
-
-        // ==========================================
-        // TOAST
-        // ==========================================
-
-        function showToast(
-            message,
-            type = "success"
-        ) {
-
-            const oldToast =
-                document.querySelector(
-                    ".customer-toast"
-                );
-
-
-            if (
-                oldToast
-            ) {
-
-                oldToast.remove();
-
-            }
-
-
-            const toast =
-                document.createElement(
-                    "div"
-                );
-
-
-            toast.className =
-                "customer-toast " +
-                type;
-
-
-            toast.innerHTML = `
-
-                <span class="toast-icon">
-
-                    ${
-                        type ===
-                        "success"
-                            ? "✓"
-                            : "!"
-                    }
-
-                </span>
-
-                <span>
-
-                    ${escapeHTML(
-                        message
-                    )}
-
-                </span>
-
-            `;
-
-
-            document.body
-                .appendChild(
-                    toast
-                );
-
-
-            setTimeout(
-                function () {
-
-                    toast.classList
-                        .add(
-                            "show"
-                        );
-
-                },
-                50
-            );
-
-
-            setTimeout(
-                function () {
-
-                    toast.classList
-                        .remove(
-                            "show"
-                        );
-
-
-                    setTimeout(
-                        function () {
-
-                            toast.remove();
-
-                        },
-                        300
-                    );
-
-                },
-                2500
-            );
-
-        }
-
-
-        // ==========================================
-        // LOCATION MESSAGE
-        // ==========================================
-
-        function setLocationMessage(
-            message,
-            type = "info"
-        ) {
-
-            customerLocationMessage
-                .textContent =
-                message;
-
-
-            customerLocationMessage
-                .className =
-                "customer-location-message " +
-                type;
-
-        }
-
-
-        // ==========================================
-        // SORT LOCATION RECORDS
-        // ==========================================
-
-        function sortLocations(
-            items
-        ) {
-
-            return [
-                ...items
-            ].sort(
-                function (
-                    first,
-                    second
-                ) {
-
-                    const firstName =
-                        window
-                            .BDLocations
-                            .getName(
-                                first
-                            );
-
-                    const secondName =
-                        window
-                            .BDLocations
-                            .getName(
-                                second
-                            );
-
-
-                    return firstName
-                        .localeCompare(
-                            secondName
-                        );
-
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // LOAD DIVISION
-        // ==========================================
-
-        function loadDivisionDropdown(
-            selectedId = ""
-        ) {
-
-            customerDivisionSelect
-                .innerHTML = `
-
-                    <option
-                        value=""
-                        disabled
-                        ${
-                            selectedId
-                                ? ""
-                                : "selected"
-                        }
-                    >
-                        Select division
-                    </option>
-
-                `;
-
-
-            const divisions =
-                sortLocations(
-                    window
-                        .BDLocations
-                        .getDivisions()
-                );
-
-
-            divisions.forEach(
-                function (
-                    division
-                ) {
-
-                    const option =
-                        document
-                            .createElement(
-                                "option"
-                            );
-
-
-                    option.value =
-                        division.id;
-
-
-                    option.textContent =
-                        window
-                            .BDLocations
-                            .getName(
-                                division
-                            );
-
-
-                    if (
-                        String(
-                            division.id
-                        ) ===
-                        String(
-                            selectedId
-                        )
+            normalized =
+                normalized.map(
+                    function (
+                        customer
                     ) {
 
-                        option.selected =
-                            true;
-
-                    }
-
-
-                    customerDivisionSelect
-                        .appendChild(
-                            option
-                        );
-
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // LOAD DISTRICT
-        // ==========================================
-
-        function loadDistrictDropdown(
-            divisionId,
-            selectedId = ""
-        ) {
-
-            customerDistrictSelect
-                .innerHTML = `
-
-                    <option
-                        value=""
-                        disabled
-                        ${
-                            selectedId
-                                ? ""
-                                : "selected"
-                        }
-                    >
-                        Select district
-                    </option>
-
-                `;
-
-
-            customerUpazilaSelect
-                .innerHTML = `
-
-                    <option
-                        value=""
-                        selected
-                        disabled
-                    >
-                        Select upazila
-                    </option>
-
-                `;
-
-
-            customerUpazilaSelect
-                .disabled =
-                true;
-
-
-            if (
-                !divisionId
-            ) {
-
-                customerDistrictSelect
-                    .disabled =
-                    true;
-
-                return;
-
-            }
-
-
-            const districts =
-                sortLocations(
-                    window
-                        .BDLocations
-                        .getDistrictsByDivision(
-                            divisionId
-                        )
-                );
-
-
-            districts.forEach(
-                function (
-                    district
-                ) {
-
-                    const option =
-                        document
-                            .createElement(
-                                "option"
-                            );
-
-
-                    option.value =
-                        district.id;
-
-
-                    option.textContent =
-                        window
-                            .BDLocations
-                            .getName(
-                                district
-                            );
-
-
-                    if (
-                        String(
-                            district.id
-                        ) ===
-                        String(
-                            selectedId
-                        )
-                    ) {
-
-                        option.selected =
-                            true;
-
-                    }
-
-
-                    customerDistrictSelect
-                        .appendChild(
-                            option
-                        );
-
-                }
-            );
-
-
-            customerDistrictSelect
-                .disabled =
-                false;
-
-        }
-
-
-        // ==========================================
-        // LOAD UPAZILA
-        // ==========================================
-
-        function loadUpazilaDropdown(
-            districtId,
-            selectedId = ""
-        ) {
-
-            customerUpazilaSelect
-                .innerHTML = `
-
-                    <option
-                        value=""
-                        disabled
-                        ${
-                            selectedId
-                                ? ""
-                                : "selected"
-                        }
-                    >
-                        Select upazila
-                    </option>
-
-                `;
-
-
-            if (
-                !districtId
-            ) {
-
-                customerUpazilaSelect
-                    .disabled =
-                    true;
-
-                return;
-
-            }
-
-
-            const upazilas =
-                sortLocations(
-                    window
-                        .BDLocations
-                        .getUpazilasByDistrict(
-                            districtId
-                        )
-                );
-
-
-            upazilas.forEach(
-                function (
-                    upazila
-                ) {
-
-                    const option =
-                        document
-                            .createElement(
-                                "option"
-                            );
-
-
-                    option.value =
-                        upazila.id;
-
-
-                    option.textContent =
-                        window
-                            .BDLocations
-                            .getName(
-                                upazila
-                            );
-
-
-                    if (
-                        String(
-                            upazila.id
-                        ) ===
-                        String(
-                            selectedId
-                        )
-                    ) {
-
-                        option.selected =
-                            true;
-
-                    }
-
-
-                    customerUpazilaSelect
-                        .appendChild(
-                            option
-                        );
-
-                }
-            );
-
-
-            customerUpazilaSelect
-                .disabled =
-                false;
-
-        }
-
-
-        // ==========================================
-        // INITIALIZE LOCATION SERVICE
-        // ==========================================
-
-        async function
-            initializeLocationService() {
-
-            customerDivisionSelect
-                .disabled =
-                true;
-
-            customerDistrictSelect
-                .disabled =
-                true;
-
-            customerUpazilaSelect
-                .disabled =
-                true;
-
-
-            setLocationMessage(
-                "Loading Bangladesh location data...",
-                "info"
-            );
-
-
-            if (
-                !window.BDLocations
-            ) {
-
-                setLocationMessage(
-                    "Bangladesh location service could not be loaded.",
-                    "error"
-                );
-
-
-                showToast(
-                    "Location service could not be loaded.",
-                    "error"
-                );
-
-
-                return;
-
-            }
-
-
-            try {
-
-                await window
-                    .BDLocations
-                    .init();
-
-
-                locationServiceReady =
-                    true;
-
-
-                loadDivisionDropdown();
-
-
-                customerDivisionSelect
-                    .disabled =
-                    false;
-
-
-                setLocationMessage(
-                    "Bangladesh location data ready. Select Division, District and Upazila.",
-                    "success"
-                );
-
-            } catch (
-                error
-            ) {
-
-                console.error(
-                    "Location service error:",
-                    error
-                );
-
-
-                setLocationMessage(
-                    "Bangladesh location data could not be loaded.",
-                    "error"
-                );
-
-
-                showToast(
-                    "Bangladesh location data could not be loaded.",
-                    "error"
-                );
-
-            }
-
-        }
-
-
-        // ==========================================
-        // DIVISION CHANGE
-        // ==========================================
-
-        customerDivisionSelect
-            .addEventListener(
-                "change",
-                function () {
-
-                    loadDistrictDropdown(
-                        customerDivisionSelect
-                            .value
-                    );
-
-
-                    setLocationMessage(
-                        "Division selected. Now select the district.",
-                        "info"
-                    );
-
-                }
-            );
-
-
-        // ==========================================
-        // DISTRICT CHANGE
-        // ==========================================
-
-        customerDistrictSelect
-            .addEventListener(
-                "change",
-                function () {
-
-                    loadUpazilaDropdown(
-                        customerDistrictSelect
-                            .value
-                    );
-
-
-                    setLocationMessage(
-                        "District selected. Now select the upazila.",
-                        "info"
-                    );
-
-                }
-            );
-
-
-        // ==========================================
-        // GET SELECTED LOCATION
-        // ==========================================
-
-        function getSelectedLocation() {
-
-            if (
-                !locationServiceReady
-            ) {
-
-                return null;
-
-            }
-
-
-            const division =
-                window
-                    .BDLocations
-                    .findDivisionById(
-                        customerDivisionSelect
-                            .value
-                    );
-
-
-            const district =
-                window
-                    .BDLocations
-                    .findDistrictById(
-                        customerDistrictSelect
-                            .value
-                    );
-
-
-            const upazila =
-                window
-                    .BDLocations
-                    .findUpazilaById(
-                        customerUpazilaSelect
-                            .value
-                    );
-
-
-            if (
-                !division ||
-                !district ||
-                !upazila
-            ) {
-
-                return null;
-
-            }
-
-
-            return {
-
-                divisionId:
-                    division.id,
-
-                divisionName:
-                    window
-                        .BDLocations
-                        .getName(
-                            division
-                        ),
-
-                districtId:
-                    district.id,
-
-                districtName:
-                    window
-                        .BDLocations
-                        .getName(
-                            district
-                        ),
-
-                upazilaId:
-                    upazila.id,
-
-                upazilaName:
-                    window
-                        .BDLocations
-                        .getName(
-                            upazila
-                        )
-
-            };
-
-        }
-
-
-        // ==========================================
-        // UPAZILA CHANGE
-        // ==========================================
-
-        customerUpazilaSelect
-            .addEventListener(
-                "change",
-                function () {
-
-                    const location =
-                        getSelectedLocation();
-
-
-                    if (
-                        !location
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    setLocationMessage(
-                        location.upazilaName +
-                        ", " +
-                        location.districtName +
-                        ", " +
-                        location.divisionName +
-                        " selected.",
-                        "success"
-                    );
-
-                }
-            );
-
-
-        // ==========================================
-        // EDIT LOCATION
-        // ==========================================
-
-        function populateCustomerLocation(
-            customer
-        ) {
-
-            if (
-                !locationServiceReady
-            ) {
-
-                return;
-
-            }
-
-
-            // New structured record
-            if (
-                customer.divisionId &&
-                customer.districtId &&
-                customer.upazilaId
-            ) {
-
-                loadDivisionDropdown(
-                    customer.divisionId
-                );
-
-
-                customerDivisionSelect
-                    .disabled =
-                    false;
-
-
-                loadDistrictDropdown(
-                    customer.divisionId,
-                    customer.districtId
-                );
-
-
-                loadUpazilaDropdown(
-                    customer.districtId,
-                    customer.upazilaId
-                );
-
-
-                setLocationMessage(
-                    (
-                        customer.upazilaName ||
-                        "Selected Upazila"
-                    ) +
-                    ", " +
-                    (
-                        customer.districtName ||
-                        "Selected District"
-                    ) +
-                    " loaded.",
-                    "success"
-                );
-
-
-                return;
-
-            }
-
-
-            // ======================================
-            // OLD CUSTOMER: CITY ONLY
-            // ======================================
-
-            if (
-                customer.city
-            ) {
-
-                const district =
-                    window
-                        .BDLocations
-                        .findDistrictByName(
-                            customer.city
-                        );
-
-
-                if (
-                    district
-                ) {
-
-                    const division =
-                        window
-                            .BDLocations
-                            .getDivisionForDistrict(
-                                district
-                            );
-
-
-                    if (
-                        division
-                    ) {
-
-                        loadDivisionDropdown(
-                            division.id
-                        );
-
-
-                        customerDivisionSelect
-                            .disabled =
-                            false;
-
-
-                        loadDistrictDropdown(
-                            division.id,
-                            district.id
-                        );
-
-
-                        loadUpazilaDropdown(
-                            district.id
-                        );
-
-
-                        setLocationMessage(
-                            "Old city matched to " +
-                            window
-                                .BDLocations
-                                .getName(
-                                    district
-                                ) +
-                            ". Select the correct Upazila before updating.",
-                            "info"
-                        );
-
-
-                        return;
-
-                    }
-
-                }
-
-            }
-
-
-            // Could not migrate automatically
-            loadDivisionDropdown();
-
-
-            customerDivisionSelect
-                .disabled =
-                false;
-
-
-            loadDistrictDropdown(
-                null
-            );
-
-
-            setLocationMessage(
-                "This customer has no structured location. Select Division, District and Upazila.",
-                "info"
-            );
-
-        }
-
-
-        // ==========================================
-        // LOCATION DISPLAY
-        // ==========================================
-
-        function getCustomerLocationHTML(
-            customer
-        ) {
-
-            if (
-                customer.upazilaName &&
-                customer.districtName
-            ) {
-
-                return `
-
-                    <div class="customer-location-cell">
-
-                        <span class="customer-location-main">
-
-                            ${escapeHTML(
-                                customer.upazilaName
-                            )},
-                            ${escapeHTML(
-                                customer.districtName
-                            )}
-
-                        </span>
-
-                        <span class="customer-location-secondary">
-
-                            ${escapeHTML(
-                                customer.divisionName ||
-                                ""
-                            )}
-
-                        </span>
-
-                    </div>
-
-                `;
-
-            }
-
-
-            if (
-                customer.city
-            ) {
-
-                return `
-
-                    <div class="customer-location-cell">
-
-                        <span class="customer-location-main">
-
-                            ${escapeHTML(
-                                customer.city
-                            )}
-
-                        </span>
-
-                        <span class="legacy-location-label">
-                            Legacy location
-                        </span>
-
-                    </div>
-
-                `;
-
-            }
-
-
-            return `
-
-                <div class="customer-location-cell">
-
-                    <span class="customer-location-main">
-                        Not Set
-                    </span>
-
-                    <span class="legacy-location-label">
-                        Update required
-                    </span>
-
-                </div>
-
-            `;
-
-        }
-
-
-        // ==========================================
-        // SUMMARY
-        // ==========================================
-
-        function updateCustomerSummary() {
-
-            totalCustomersValue
-                .textContent =
-                customers.length;
-
-        }
-
-
-        // ==========================================
-        // DISPLAY CUSTOMERS
-        // ==========================================
-
-        function displayCustomers() {
-
-            customerTableBody
-                .innerHTML =
-                "";
-
-
-            if (
-                customers.length ===
-                0
-            ) {
-
-                customerTableBody
-                    .innerHTML = `
-
-                        <tr class="customer-empty-row">
-
-                            <td colspan="7">
-                                No customer records found.
-                            </td>
-
-                        </tr>
-
-                    `;
-
-
-                updateCustomerSummary();
-
-                return;
-
-            }
-
-
-            customers.forEach(
-                function (
-                    customer
-                ) {
-
-                    const row =
-                        document
-                            .createElement(
-                                "tr"
-                            );
-
-
-                    row.innerHTML = `
-
-                        <td>
-                            ${escapeHTML(
-                                customer.name
-                            )}
-                        </td>
-
-                        <td>
-                            ${escapeHTML(
-                                customer.phone
-                            )}
-                        </td>
-
-                        <td>
-                            ${getCustomerLocationHTML(
-                                customer
-                            )}
-                        </td>
-
-                        <td class="customer-address-cell">
-
-                            ${escapeHTML(
-                                customer.address ||
-                                "—"
-                            )}
-
-                        </td>
-
-                        <td>
-
-                            ${escapeHTML(
-                                getCustomerTypeText(
-                                    customer.type
-                                )
-                            )}
-
-                        </td>
-
-                        <td>
-
-                            <span
-                                class="
-                                    status-badge
-                                    ${getPaymentClass(
-                                        customer.payment
-                                    )}
-                                "
-                            >
-
-                                ${escapeHTML(
-                                    getPaymentText(
-                                        customer.payment
-                                    )
-                                )}
-
-                            </span>
-
-                        </td>
-
-                        <td>
-
-                            <div class="customer-action-group">
-
-                                <button
-                                    class="edit-button"
-                                    type="button"
-                                    data-action="edit"
-                                    data-id="${customer.id}"
-                                >
-                                    Edit
-                                </button>
-
-                                <button
-                                    class="
-                                        edit-button
-                                        customer-delete-button
-                                    "
-                                    type="button"
-                                    data-action="delete"
-                                    data-id="${customer.id}"
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    `;
-
-
-                    customerTableBody
-                        .appendChild(
-                            row
-                        );
-
-                }
-            );
-
-
-            updateCustomerSummary();
-
-        }
-
-
-        // ==========================================
-        // SAVE / UPDATE CUSTOMER
-        // ==========================================
-
-        customerForm
-            .addEventListener(
-                "submit",
-                function (
-                    event
-                ) {
-
-                    event
-                        .preventDefault();
-
-
-                    const name =
-                        customerName
-                            .value
-                            .trim();
-
-
-                    const phone =
-                        phoneNumber
-                            .value
-                            .trim();
-
-
-                    const type =
-                        customerType
-                            .value;
-
-
-                    const payment =
-                        paymentStatus
-                            .value;
-
-
-                    const address =
-                        customerAddress
-                            .value
-                            .trim();
-
-
-                    // ==================================
-                    // LOCATION VALIDATION
-                    // ==================================
-
-                    if (
-                        !locationServiceReady
-                    ) {
-
-                        showToast(
-                            "Location data is not ready yet.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    const location =
-                        getSelectedLocation();
-
-
-                    if (
-                        !location
-                    ) {
-
-                        showToast(
-                            "Please select Division, District and Upazila.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    // ==================================
-                    // DUPLICATE PHONE
-                    // ==================================
-
-                    const duplicatePhone =
-                        customers.some(
-                            function (
-                                customer
-                            ) {
-
-                                return (
-                                    customer.phone ===
-                                    phone &&
-                                    customer.id !==
-                                    editingCustomerId
-                                );
-
-                            }
-                        );
-
-
-                    if (
-                        duplicatePhone
-                    ) {
-
-                        showToast(
-                            "This phone number already exists.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    // ==================================
-                    // UPDATE CUSTOMER
-                    // ==================================
-
-                    if (
-                        editingCustomerId !==
-                        null
-                    ) {
-
-                        const customerIndex =
-                            customers
-                                .findIndex(
-                                    function (
-                                        customer
-                                    ) {
-
-                                        return (
-                                            customer.id ===
-                                            editingCustomerId
-                                        );
-
-                                    }
-                                );
+                        const recoveredType =
+
+                            LEGACY_CUSTOMER_TYPE_RECOVERY[
+                                customer.customerId
+                            ];
 
 
                         if (
-                            customerIndex !==
-                            -1
+                            recoveredType
                         ) {
 
-                            customers[
-                                customerIndex
-                            ] = {
+                            return {
 
-                                id:
-                                    editingCustomerId,
-
-                                name:
-                                    name,
-
-                                phone:
-                                    phone,
-
-
-                                // Old code compatibility
-                                city:
-                                    location
-                                        .districtName,
-
-
-                                // Structured location
-                                divisionId:
-                                    location
-                                        .divisionId,
-
-                                divisionName:
-                                    location
-                                        .divisionName,
-
-                                districtId:
-                                    location
-                                        .districtId,
-
-                                districtName:
-                                    location
-                                        .districtName,
-
-                                upazilaId:
-                                    location
-                                        .upazilaId,
-
-                                upazilaName:
-                                    location
-                                        .upazilaName,
-
-
-                                address:
-                                    address,
+                                ...customer,
 
                                 type:
-                                    type,
-
-                                payment:
-                                    payment
+                                    recoveredType
 
                             };
 
                         }
 
 
-                        saveCustomersToLocalStorage();
-
-                        displayCustomers();
-
-                        resetForm();
-
-
-                        showToast(
-                            "Customer updated successfully!"
-                        );
-
-
-                        return;
+                        return customer;
 
                     }
+                );
 
 
-                    // ==================================
-                    // NEW CUSTOMER
-                    // ==================================
-
-                    const newCustomer = {
-
-                        id:
-                            Date.now(),
-
-                        name:
-                            name,
-
-                        phone:
-                            phone,
-
-
-                        // Backward compatibility
-                        city:
-                            location
-                                .districtName,
-
-
-                        // Structured location
-                        divisionId:
-                            location
-                                .divisionId,
-
-                        divisionName:
-                            location
-                                .divisionName,
-
-                        districtId:
-                            location
-                                .districtId,
-
-                        districtName:
-                            location
-                                .districtName,
-
-                        upazilaId:
-                            location
-                                .upazilaId,
-
-                        upazilaName:
-                            location
-                                .upazilaName,
-
-
-                        address:
-                            address,
-
-                        type:
-                            type,
-
-                        payment:
-                            payment
-
-                    };
-
-
-                    customers.push(
-                        newCustomer
-                    );
-
-
-                    saveCustomersToLocalStorage();
-
-                    displayCustomers();
-
-                    resetForm();
-
-
-                    showToast(
-                        "Customer saved successfully!"
-                    );
-
-                }
+            localStorage.setItem(
+                CUSTOMER_TYPE_MIGRATION_KEY,
+                "true"
             );
 
-
-        // ==========================================
-        // TABLE BUTTON EVENT
-        // ==========================================
-
-        customerTableBody
-            .addEventListener(
-                "click",
-                function (
-                    event
-                ) {
-
-                    const button =
-                        event.target
-                            .closest(
-                                "button"
-                            );
+        }
 
 
-                    if (
-                        !button
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    const customerId =
-                        Number(
-                            button
-                                .dataset
-                                .id
-                        );
+        localStorage.setItem(
+            "customers",
+            JSON.stringify(
+                normalized
+            )
+        );
 
 
-                    const action =
-                        button
-                            .dataset
-                            .action;
+        return normalized;
+
+    }
 
 
-                    if (
-                        action ===
-                        "edit"
-                    ) {
-
-                        editCustomer(
-                            customerId
-                        );
-
-                    }
+    let customers =
+        normalizeCustomers();
 
 
-                    if (
-                        action ===
-                        "delete"
-                    ) {
+    function saveCustomers() {
 
-                        deleteCustomer(
-                            customerId
-                        );
+        localStorage.setItem(
+            "customers",
+            JSON.stringify(
+                customers
+            )
+        );
 
-                    }
-
-                }
-            );
+    }
 
 
-        // ==========================================
-        // EDIT CUSTOMER
-        // ==========================================
+    /* =========================================
+       CUSTOMER ID
+    ========================================= */
 
-        function editCustomer(
-            id
-        ) {
+    function generateCustomerId() {
 
-            const customer =
-                customers.find(
+        const numbers =
+            customers
+                .map(
                     function (
                         customer
                     ) {
 
+                        const match =
+                            String(
+                                customer.customerId ||
+                                ""
+                            ).match(
+                                /^CUS-(\d+)$/i
+                            );
+
+
                         return (
-                            customer.id ===
-                            id
+                            match
+                                ? Number(
+                                    match[1]
+                                )
+                                : 0
+                        );
+
+                    }
+                )
+                .filter(Boolean);
+
+
+        const nextNumber =
+
+            numbers.length > 0
+
+                ?
+
+                Math.max(
+                    ...numbers
+                ) + 1
+
+                :
+
+                1;
+
+
+        return (
+
+            `CUS-${String(
+                nextNumber
+            ).padStart(
+                3,
+                "0"
+            )}`
+
+        );
+
+    }
+
+
+    /* =========================================
+       SALES
+    ========================================= */
+
+    function getSalesRecords() {
+
+        let sales =
+            safeParseStorage(
+                "salesRecords",
+                null
+            );
+
+
+        if (
+            !Array.isArray(sales)
+        ) {
+
+            sales =
+                safeParseStorage(
+                    "sales",
+                    []
+                );
+
+        }
+
+
+        return Array.isArray(sales)
+            ? sales
+            : [];
+
+    }
+
+
+    /* =========================================
+       CUSTOMER ↔ SALES MATCH
+    ========================================= */
+
+    function saleBelongsToCustomer(
+        sale,
+        customer
+    ) {
+
+        const saleCustomerId =
+            sale.customerId;
+
+
+        /*
+            Current sales module stores
+            the internal customer ID.
+        */
+
+        if (
+            saleCustomerId !==
+            undefined &&
+            saleCustomerId !==
+            null &&
+            String(
+                saleCustomerId
+            ) ===
+            String(
+                customer.id
+            )
+        ) {
+
+            return true;
+
+        }
+
+
+        /*
+            Support customer code linkage.
+        */
+
+        const saleCustomerCode =
+
+            sale.customerCode ||
+            sale.customerReference;
+
+
+        if (
+            saleCustomerCode &&
+            String(
+                saleCustomerCode
+            ) ===
+            String(
+                customer.customerId
+            )
+        ) {
+
+            return true;
+
+        }
+
+
+        /*
+            Legacy invoice fallback:
+            customer name matching.
+        */
+
+        const saleName =
+            String(
+
+                sale.customerName ||
+                sale.customer ||
+                ""
+
+            )
+            .trim()
+            .toLowerCase();
+
+
+        return (
+
+            saleName !== ""
+
+            &&
+
+            saleName ===
+            String(
+                customer.name
+            )
+            .trim()
+            .toLowerCase()
+
+        );
+
+    }
+
+
+    /* =========================================
+       CUSTOMER SALES STATS
+    ========================================= */
+
+    function getCustomerSalesStats(
+        customer
+    ) {
+
+        const allSales =
+            getSalesRecords()
+                .filter(
+                    function (
+                        sale
+                    ) {
+
+                        return saleBelongsToCustomer(
+                            sale,
+                            customer
                         );
 
                     }
                 );
 
 
-            if (
-                !customer
-            ) {
+        const activeSales =
+            allSales.filter(
+                function (
+                    sale
+                ) {
 
-                showToast(
-                    "Customer record not found.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            customerName.value =
-                customer.name ||
-                "";
-
-
-            phoneNumber.value =
-                customer.phone ||
-                "";
-
-
-            customerType.value =
-                customer.type ||
-                "";
-
-
-            paymentStatus.value =
-                customer.payment ||
-                "";
-
-
-            customerAddress.value =
-                customer.address ||
-                "";
-
-
-            populateCustomerLocation(
-                customer
-            );
-
-
-            editingCustomerId =
-                customer.id;
-
-
-            customerFormTitle
-                .textContent =
-                "Update Customer";
-
-
-            saveCustomerBtn
-                .innerHTML = `
-
-                    <span aria-hidden="true">
-                        ▣
-                    </span>
-
-                    Update Customer
-
-                `;
-
-
-            customerName.focus();
-
-
-            window.scrollTo(
-                {
-
-                    top:
-                        0,
-
-                    behavior:
-                        "smooth"
+                    return (
+                        sale.status !==
+                        "voided"
+                    );
 
                 }
             );
 
+
+        let purchaseValue =
+            0;
+
+
+        let outstandingDue =
+            0;
+
+
+        let lastPurchase =
+            "";
+
+
+        activeSales.forEach(
+            function (
+                sale
+            ) {
+
+                const total =
+
+                    Number(
+                        sale.totalAmount ||
+                        sale.total ||
+                        0
+                    );
+
+
+                const paid =
+
+                    Number(
+                        sale.amountPaid ||
+                        0
+                    );
+
+
+                purchaseValue +=
+                    total;
+
+
+                outstandingDue +=
+                    Number(
+
+                        sale.dueAmount ??
+
+                        Math.max(
+                            total -
+                            paid,
+                            0
+                        )
+
+                    );
+
+
+                const saleDate =
+
+                    sale.saleDate ||
+                    sale.invoiceDate ||
+                    sale.date ||
+                    "";
+
+
+                if (
+                    saleDate &&
+                    (
+                        !lastPurchase ||
+                        saleDate >
+                        lastPurchase
+                    )
+                ) {
+
+                    lastPurchase =
+                        saleDate;
+
+                }
+
+            }
+        );
+
+
+        return {
+
+            /*
+                Includes voided invoices because
+                historical invoice linkage still
+                exists and must protect the
+                customer master record.
+            */
+
+            totalInvoiceHistory:
+                allSales.length,
+
+
+            /*
+                Only non-voided invoices count
+                as current customer purchases.
+            */
+
+            activeInvoiceCount:
+                activeSales.length,
+
+
+            purchaseValue:
+                purchaseValue,
+
+
+            outstandingDue:
+                outstandingDue,
+
+
+            lastPurchase:
+                lastPurchase
+
+        };
+
+    }
+
+
+    /* =========================================
+       SUMMARY
+    ========================================= */
+
+    function updateSummaryCards() {
+
+        let activeBuyers =
+            0;
+
+
+        let totalDue =
+            0;
+
+
+        customers.forEach(
+            function (
+                customer
+            ) {
+
+                const stats =
+                    getCustomerSalesStats(
+                        customer
+                    );
+
+
+                if (
+                    stats.activeInvoiceCount >
+                    0
+                ) {
+
+                    activeBuyers +=
+                        1;
+
+                }
+
+
+                totalDue +=
+                    stats.outstandingDue;
+
+            }
+        );
+
+
+        totalCustomersValue.textContent =
+            customers.length;
+
+
+        activeBuyersValue.textContent =
+            activeBuyers;
+
+
+        totalCustomerDueValue.textContent =
+            formatMoney(
+                totalDue
+            );
+
+    }
+
+
+    /* =========================================
+       LOCATION CACHE
+    ========================================= */
+
+    function getDivisionCacheKey(
+        division
+    ) {
+
+        return (
+
+            `bdLocationDivision_${String(
+                division
+            ).toLowerCase()}`
+
+        );
+
+    }
+
+
+    /* =========================================
+       DIVISION DROPDOWN
+    ========================================= */
+
+    function populateDivisionDropdown() {
+
+        customerDivisionSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select division
+
+            </option>
+
+        `;
+
+
+        BANGLADESH_DIVISIONS.forEach(
+            function (
+                division
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    division;
+
+
+                option.textContent =
+                    division;
+
+
+                customerDivisionSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       LOAD DISTRICTS / UPAZILAS
+    ========================================= */
+
+    async function loadDivisionData(
+        division
+    ) {
+
+        if (!division) {
+
+            return [];
+
         }
 
 
-        // ==========================================
-        // DELETE CUSTOMER
-        // ==========================================
+        const cacheKey =
+            getDivisionCacheKey(
+                division
+            );
 
-        // ==========================================
-// DELETE CUSTOMER
-// ==========================================
 
-function deleteCustomer(
-    id
-) {
+        const cached =
+            safeParseStorage(
+                cacheKey,
+                null
+            );
 
-    const customer =
-        customers.find(
-            function (
-                customer
-            ) {
 
-                return (
-                    customer.id ===
-                    id
+        if (
+            Array.isArray(cached) &&
+            cached.length >
+            0
+        ) {
+
+            currentDivisionDistricts =
+                cached;
+
+
+            return cached;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+
+                    `${BD_API_BASE}/division/${encodeURIComponent(
+                        division.toLowerCase()
+                    )}`
+
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Location service unavailable"
                 );
 
             }
-        );
 
 
-    if (
-        !customer
-    ) {
-
-        showToast(
-            "Customer record not found.",
-            "error"
-        );
-
-        return;
-
-    }
+            const result =
+                await response.json();
 
 
-    // ======================================
-    // DELETE DIRECTLY
-    // ======================================
+            const data =
+                Array.isArray(
+                    result.data
+                )
 
-    customers =
-        customers.filter(
-            function (
-                customer
-            ) {
+                    ?
 
-                return (
-                    customer.id !==
-                    id
-                );
+                    result.data
 
-            }
-        );
+                    :
 
+                    [];
 
-    // Save updated data
-    saveCustomersToLocalStorage();
-
-
-    // Refresh customer table
-    displayCustomers();
-
-
-    // If currently editing this customer
-    if (
-        editingCustomerId ===
-        id
-    ) {
-
-        resetForm();
-
-    }
-
-
-    // Success message
-    showToast(
-        "Customer deleted successfully!"
-    );
-
-}
-
-        // ==========================================
-        // RESET LOCATION
-        // ==========================================
-
-        function resetLocationFields() {
 
             if (
-                !locationServiceReady
+                data.length ===
+                0
+            ) {
+
+                throw new Error(
+                    "No district data returned"
+                );
+
+            }
+
+
+            localStorage.setItem(
+                cacheKey,
+                JSON.stringify(
+                    data
+                )
+            );
+
+
+            currentDivisionDistricts =
+                data;
+
+
+            return data;
+
+        }
+        catch {
+
+            currentDivisionDistricts =
+                [];
+
+
+            showToast(
+                "District data could not be loaded. Check the internet connection and try again.",
+                "error"
+            );
+
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =========================================
+       RESET LOCATION DROPDOWNS
+    ========================================= */
+
+    function resetDistrictDropdown() {
+
+        customerDistrictSelect.innerHTML = `
+
+            <option value=""
+                    selected>
+
+                Select district
+
+            </option>
+
+        `;
+
+
+        customerDistrictSelect.disabled =
+            true;
+
+    }
+
+
+    function resetUpazilaDropdown() {
+
+        customerUpazilaSelect.innerHTML = `
+
+            <option value=""
+                    selected>
+
+                Select upazila
+
+            </option>
+
+        `;
+
+
+        customerUpazilaSelect.disabled =
+            true;
+
+    }
+
+
+    /* =========================================
+       DISTRICTS
+    ========================================= */
+
+    function populateDistrictDropdown(
+        districts,
+        selectedDistrict = ""
+    ) {
+
+        resetDistrictDropdown();
+
+        resetUpazilaDropdown();
+
+
+        if (
+            !Array.isArray(
+                districts
+            ) ||
+            districts.length ===
+            0
+        ) {
+
+            return;
+
+        }
+
+
+        districts.forEach(
+            function (
+                district
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    district.district;
+
+
+                option.textContent =
+                    district.district;
+
+
+                customerDistrictSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        customerDistrictSelect.disabled =
+            false;
+
+
+        if (
+            selectedDistrict
+        ) {
+
+            customerDistrictSelect.value =
+                selectedDistrict;
+
+        }
+
+    }
+
+
+    /* =========================================
+       UPAZILAS
+    ========================================= */
+
+    function populateUpazilaDropdown(
+        districtName,
+        selectedUpazila = ""
+    ) {
+
+        resetUpazilaDropdown();
+
+
+        const district =
+            currentDivisionDistricts.find(
+                function (
+                    item
+                ) {
+
+                    return (
+
+                        String(
+                            item.district
+                        ).toLowerCase()
+
+                        ===
+
+                        String(
+                            districtName
+                        ).toLowerCase()
+
+                    );
+
+                }
+            );
+
+
+        if (
+            !district ||
+            !Array.isArray(
+                district.upazilla
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        district.upazilla.forEach(
+            function (
+                upazila
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    upazila;
+
+
+                option.textContent =
+                    upazila;
+
+
+                customerUpazilaSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        customerUpazilaSelect.disabled =
+            false;
+
+
+        if (
+            selectedUpazila
+        ) {
+
+            customerUpazilaSelect.value =
+                selectedUpazila;
+
+        }
+
+    }
+
+
+    /* =========================================
+       LOCATION EVENTS
+    ========================================= */
+
+    customerDivisionSelect.addEventListener(
+        "change",
+        async function () {
+
+            resetDistrictDropdown();
+
+            resetUpazilaDropdown();
+
+
+            const districts =
+                await loadDivisionData(
+                    customerDivisionSelect.value
+                );
+
+
+            populateDistrictDropdown(
+                districts
+            );
+
+        }
+    );
+
+
+    customerDistrictSelect.addEventListener(
+        "change",
+        function () {
+
+            populateUpazilaDropdown(
+                customerDistrictSelect.value
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       PHONE INPUT
+    ========================================= */
+
+    customerPhoneInput.addEventListener(
+        "input",
+        function () {
+
+            customerPhoneInput.value =
+                customerPhoneInput.value
+                    .replace(
+                        /\D/g,
+                        ""
+                    )
+                    .slice(
+                        0,
+                        11
+                    );
+
+        }
+    );
+
+
+    /* =========================================
+       VALIDATION
+    ========================================= */
+
+    function validateCustomerForm() {
+
+        const name =
+            customerNameInput.value
+                .trim();
+
+
+        const phone =
+            customerPhoneInput.value
+                .trim();
+
+
+        const type =
+            customerTypeSelect.value;
+
+
+        const division =
+            customerDivisionSelect.value;
+
+
+        const district =
+            customerDistrictSelect.value;
+
+
+        const upazila =
+            customerUpazilaSelect.value;
+
+
+        const address =
+            customerAddressInput.value
+                .trim();
+
+
+        if (
+            name.length <
+            2
+        ) {
+
+            return (
+                "Customer name must contain at least 2 characters."
+            );
+
+        }
+
+
+        const phonePattern =
+            /^01[3-9]\d{8}$/;
+
+
+        if (
+            !phonePattern.test(
+                phone
+            )
+        ) {
+
+            return (
+                "Enter a valid 11-digit Bangladesh mobile number."
+            );
+
+        }
+
+
+        const duplicatePhone =
+            customers.some(
+                function (
+                    customer
+                ) {
+
+                    return (
+
+                        customer.phone ===
+                        phone
+
+                        &&
+
+                        Number(
+                            customer.id
+                        )
+
+                        !==
+
+                        Number(
+                            editingCustomerInternalId
+                        )
+
+                    );
+
+                }
+            );
+
+
+        if (
+            duplicatePhone
+        ) {
+
+            return (
+                "A customer with this phone number already exists."
+            );
+
+        }
+
+
+        if (!type) {
+
+            return (
+                "Please select a customer type."
+            );
+
+        }
+
+
+        if (!division) {
+
+            return (
+                "Please select a division."
+            );
+
+        }
+
+
+        if (!district) {
+
+            return (
+                "Please select a district."
+            );
+
+        }
+
+
+        if (!upazila) {
+
+            return (
+                "Please select an upazila."
+            );
+
+        }
+
+
+        if (
+            address.length <
+            3
+        ) {
+
+            return (
+                "Please enter the detailed delivery address."
+            );
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================================
+       ADD MODE
+    ========================================= */
+
+    function setAddMode() {
+
+        editingCustomerInternalId =
+            null;
+
+
+        customerFormTitle.textContent =
+            "Add Customer";
+
+
+        saveCustomerBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ▣
+            </span>
+
+            Save Customer
+
+        `;
+
+
+        cancelCustomerEditBtn.hidden =
+            true;
+
+    }
+
+
+    /* =========================================
+       RESET FORM
+    ========================================= */
+
+    function resetCustomerForm() {
+
+        customerForm.reset();
+
+
+        resetDistrictDropdown();
+
+        resetUpazilaDropdown();
+
+
+        setAddMode();
+
+    }
+
+
+    /* =========================================
+       BUILD CUSTOMER
+    ========================================= */
+
+    function buildCustomer(
+        existingCustomer = null
+    ) {
+
+        return {
+
+            id:
+
+                existingCustomer
+
+                    ?
+
+                    existingCustomer.id
+
+                    :
+
+                    Date.now(),
+
+
+            customerId:
+
+                existingCustomer
+
+                    ?
+
+                    existingCustomer.customerId
+
+                    :
+
+                    generateCustomerId(),
+
+
+            name:
+
+                customerNameInput.value
+                    .trim(),
+
+
+            phone:
+
+                customerPhoneInput.value
+                    .trim(),
+
+
+            type:
+
+                customerTypeSelect.value,
+
+
+            division:
+
+                customerDivisionSelect.value,
+
+
+            district:
+
+                customerDistrictSelect.value,
+
+
+            upazila:
+
+                customerUpazilaSelect.value,
+
+
+            address:
+
+                customerAddressInput.value
+                    .trim(),
+
+
+            createdAt:
+
+                existingCustomer
+
+                    ?
+
+                    existingCustomer.createdAt
+
+                    :
+
+                    Date.now()
+
+        };
+
+    }
+
+
+    /* =========================================
+       SAVE / UPDATE CUSTOMER
+    ========================================= */
+
+    customerForm.addEventListener(
+        "submit",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+
+            pendingDeleteCustomerInternalId =
+                null;
+
+
+            const error =
+                validateCustomerForm();
+
+
+            if (error) {
+
+                showToast(
+                    error,
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                editingCustomerInternalId !==
+                null
+            ) {
+
+                const index =
+                    customers.findIndex(
+                        function (
+                            customer
+                        ) {
+
+                            return (
+
+                                Number(
+                                    customer.id
+                                )
+
+                                ===
+
+                                Number(
+                                    editingCustomerInternalId
+                                )
+
+                            );
+
+                        }
+                    );
+
+
+                if (
+                    index ===
+                    -1
+                ) {
+
+                    showToast(
+                        "Customer record not found.",
+                        "error"
+                    );
+
+
+                    return;
+
+                }
+
+
+                customers[index] =
+                    buildCustomer(
+                        customers[index]
+                    );
+
+
+                showToast(
+                    `${customers[index].customerId} updated successfully.`
+                );
+
+            }
+            else {
+
+                const newCustomer =
+                    buildCustomer();
+
+
+                customers.push(
+                    newCustomer
+                );
+
+
+                showToast(
+                    `${newCustomer.customerId} saved successfully.`
+                );
+
+            }
+
+
+            saveCustomers();
+
+
+            updateSummaryCards();
+
+            displayCustomers();
+
+            resetCustomerForm();
+
+        }
+    );
+
+
+    /* =========================================
+       EDIT CUSTOMER
+    ========================================= */
+
+    async function editCustomer(
+        internalId
+    ) {
+
+        pendingDeleteCustomerInternalId =
+            null;
+
+
+        const customer =
+            customers.find(
+                function (
+                    item
+                ) {
+
+                    return (
+
+                        Number(
+                            item.id
+                        )
+
+                        ===
+
+                        Number(
+                            internalId
+                        )
+
+                    );
+
+                }
+            );
+
+
+        if (!customer) {
+
+            showToast(
+                "Customer record not found.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        editingCustomerInternalId =
+            customer.id;
+
+
+        customerNameInput.value =
+            customer.name;
+
+
+        customerPhoneInput.value =
+            customer.phone;
+
+
+        customerTypeSelect.value =
+            customer.type;
+
+
+        customerAddressInput.value =
+            customer.address;
+
+
+        customerDivisionSelect.value =
+            customer.division ||
+            "";
+
+
+        if (
+            customer.division
+        ) {
+
+            const districts =
+                await loadDivisionData(
+                    customer.division
+                );
+
+
+            populateDistrictDropdown(
+                districts,
+                customer.district
+            );
+
+
+            if (
+                customer.district
+            ) {
+
+                populateUpazilaDropdown(
+                    customer.district,
+                    customer.upazila
+                );
+
+            }
+
+        }
+        else {
+
+            resetDistrictDropdown();
+
+            resetUpazilaDropdown();
+
+        }
+
+
+        customerFormTitle.textContent =
+
+            `Edit Customer — ${customer.customerId}`;
+
+
+        saveCustomerBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ✓
+            </span>
+
+            Update Customer
+
+        `;
+
+
+        cancelCustomerEditBtn.hidden =
+            false;
+
+
+        displayCustomers();
+
+
+        customerForm.scrollIntoView(
+            {
+                behavior:
+                    "smooth",
+
+                block:
+                    "center"
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       CANCEL EDIT
+    ========================================= */
+
+    cancelCustomerEditBtn.addEventListener(
+        "click",
+        function () {
+
+            resetCustomerForm();
+
+
+            showToast(
+                "Edit cancelled."
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       DELETE REQUEST
+
+       Extra safeguard remains even though
+       Protected customers do not display
+       the Delete button.
+    ========================================= */
+
+    function requestDeleteCustomer(
+        internalId
+    ) {
+
+        const customer =
+            customers.find(
+                function (
+                    item
+                ) {
+
+                    return (
+
+                        Number(
+                            item.id
+                        )
+
+                        ===
+
+                        Number(
+                            internalId
+                        )
+
+                    );
+
+                }
+            );
+
+
+        if (!customer) {
+
+            return;
+
+        }
+
+
+        const stats =
+            getCustomerSalesStats(
+                customer
+            );
+
+
+        if (
+            stats.totalInvoiceHistory >
+            0
+        ) {
+
+            showToast(
+
+                `${customer.customerId} is protected because invoice history is linked to this customer.`,
+
+                "error"
+
+            );
+
+
+            return;
+
+        }
+
+
+        pendingDeleteCustomerInternalId =
+            internalId;
+
+
+        displayCustomers();
+
+    }
+
+
+    /* =========================================
+       CANCEL DELETE
+    ========================================= */
+
+    function cancelDeleteCustomer() {
+
+        pendingDeleteCustomerInternalId =
+            null;
+
+
+        displayCustomers();
+
+    }
+
+
+    /* =========================================
+       CONFIRM DELETE
+    ========================================= */
+
+    function confirmDeleteCustomer(
+        internalId
+    ) {
+
+        const customer =
+            customers.find(
+                function (
+                    item
+                ) {
+
+                    return (
+
+                        Number(
+                            item.id
+                        )
+
+                        ===
+
+                        Number(
+                            internalId
+                        )
+
+                    );
+
+                }
+            );
+
+
+        if (!customer) {
+
+            pendingDeleteCustomerInternalId =
+                null;
+
+
+            displayCustomers();
+
+
+            return;
+
+        }
+
+
+        /*
+            Final referential-integrity check.
+        */
+
+        const stats =
+            getCustomerSalesStats(
+                customer
+            );
+
+
+        if (
+            stats.totalInvoiceHistory >
+            0
+        ) {
+
+            pendingDeleteCustomerInternalId =
+                null;
+
+
+            displayCustomers();
+
+
+            showToast(
+                "Customer has invoice history and cannot be deleted.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        customers =
+            customers.filter(
+                function (
+                    item
+                ) {
+
+                    return (
+
+                        Number(
+                            item.id
+                        )
+
+                        !==
+
+                        Number(
+                            internalId
+                        )
+
+                    );
+
+                }
+            );
+
+
+        pendingDeleteCustomerInternalId =
+            null;
+
+
+        saveCustomers();
+
+
+        if (
+            Number(
+                editingCustomerInternalId
+            )
+
+            ===
+
+            Number(
+                internalId
+            )
+        ) {
+
+            resetCustomerForm();
+
+        }
+
+
+        updateSummaryCards();
+
+        displayCustomers();
+
+
+        showToast(
+            `${customer.customerId} deleted successfully.`
+        );
+
+    }
+
+
+    /* =========================================
+       ACTION COLUMN
+
+       No invoice history:
+       Edit | Delete
+
+       Has invoice history:
+       Edit | Protected
+    ========================================= */
+
+    function getCustomerActionHTML(
+        customer
+    ) {
+
+        const stats =
+            getCustomerSalesStats(
+                customer
+            );
+
+
+        /*
+            Existing invoice relationship means
+            the customer master record should
+            remain available for traceability.
+        */
+
+        if (
+            stats.totalInvoiceHistory >
+            0
+        ) {
+
+            return `
+
+                <button
+                    class="customer-edit-button"
+                    type="button"
+                    data-action="edit"
+                    data-id="${customer.id}"
+                >
+                    Edit
+                </button>
+
+
+                <span
+                    class="customer-protected-badge"
+                    title="This customer has linked invoice history and cannot be deleted."
+                >
+                    Protected
+                </span>
+
+            `;
+
+        }
+
+
+        const waiting =
+
+            Number(
+                pendingDeleteCustomerInternalId
+            )
+
+            ===
+
+            Number(
+                customer.id
+            );
+
+
+        if (waiting) {
+
+            return `
+
+                <span class="customer-delete-question">
+                    Delete?
+                </span>
+
+
+                <button
+                    class="customer-confirm-delete-button"
+                    type="button"
+                    data-action="confirm-delete"
+                    data-id="${customer.id}"
+                >
+                    Confirm
+                </button>
+
+
+                <button
+                    class="customer-cancel-delete-button"
+                    type="button"
+                    data-action="cancel-delete"
+                    data-id="${customer.id}"
+                >
+                    Cancel
+                </button>
+
+            `;
+
+        }
+
+
+        return `
+
+            <button
+                class="customer-edit-button"
+                type="button"
+                data-action="edit"
+                data-id="${customer.id}"
+            >
+                Edit
+            </button>
+
+
+            <button
+                class="customer-delete-button"
+                type="button"
+                data-action="request-delete"
+                data-id="${customer.id}"
+            >
+                Delete
+            </button>
+
+        `;
+
+    }
+
+
+    /* =========================================
+       DISPLAY CUSTOMERS
+    ========================================= */
+
+    function displayCustomers() {
+
+        const searchText =
+            customerSearch.value
+                .trim()
+                .toLowerCase();
+
+
+        const typeFilter =
+            customerTypeFilter.value;
+
+
+        const filtered =
+            customers.filter(
+                function (
+                    customer
+                ) {
+
+                    const searchable = `
+
+                        ${customer.customerId}
+                        ${customer.name}
+                        ${customer.phone}
+                        ${customer.type}
+                        ${customer.division}
+                        ${customer.district}
+                        ${customer.upazila}
+                        ${customer.address}
+
+                    `.toLowerCase();
+
+
+                    const matchesSearch =
+                        searchable.includes(
+                            searchText
+                        );
+
+
+                    const matchesType =
+
+                        typeFilter ===
+                        "all"
+
+                        ||
+
+                        customer.type ===
+                        typeFilter;
+
+
+                    return (
+
+                        matchesSearch &&
+                        matchesType
+
+                    );
+
+                }
+            );
+
+
+        customerTableBody.innerHTML =
+            "";
+
+
+        if (
+            filtered.length ===
+            0
+        ) {
+
+            customerTableBody.innerHTML = `
+
+                <tr class="customer-empty-row">
+
+                    <td colspan="10">
+
+                        No customers match the current filter.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        filtered.forEach(
+            function (
+                customer
+            ) {
+
+                const stats =
+                    getCustomerSalesStats(
+                        customer
+                    );
+
+
+                const locationPrimary =
+
+                    customer.upazila
+
+                        ?
+
+                        `${customer.upazila}, ${customer.district}`
+
+                        :
+
+                        customer.district ||
+                        "Location not updated";
+
+
+                const locationSecondary =
+
+                    customer.division
+
+                        ?
+
+                        `${customer.division} Division`
+
+                        :
+
+                        "Legacy customer record";
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+
+                        <span class="customer-code">
+
+                            ${escapeHTML(
+                                customer.customerId
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="customer-name">
+
+                            ${escapeHTML(
+                                customer.name
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHTML(
+                            customer.phone ||
+                            "—"
+                        )}
+
+                    </td>
+
+
+                    <td class="customer-location">
+
+                        ${escapeHTML(
+                            locationPrimary
+                        )}
+
+                        <small>
+
+                            ${escapeHTML(
+                                locationSecondary
+                            )}
+
+                        </small>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHTML(
+                            customer.type
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${stats.activeInvoiceCount}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="customer-financial-value">
+
+                            ${formatMoney(
+                                stats.purchaseValue
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                ${
+                                    stats.outstandingDue >
+                                    0
+
+                                        ?
+
+                                        "customer-due-active"
+
+                                        :
+
+                                        "customer-due-zero"
+                                }
+                            "
+                        >
+
+                            ${formatMoney(
+                                stats.outstandingDue
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${
+                            stats.lastPurchase
+
+                                ?
+
+                                formatDate(
+                                    stats.lastPurchase
+                                )
+
+                                :
+
+                                `<span class="customer-no-purchase">
+                                    No purchase
+                                </span>`
+                        }
+
+                    </td>
+
+
+                    <td class="customer-action-cell">
+
+                        ${getCustomerActionHTML(
+                            customer
+                        )}
+
+                    </td>
+
+                `;
+
+
+                customerTableBody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       TABLE ACTIONS
+    ========================================= */
+
+    customerTableBody.addEventListener(
+        "click",
+        async function (
+            event
+        ) {
+
+            const button =
+                event.target.closest(
+                    "button[data-action]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            const id =
+                Number(
+                    button.dataset.id
+                );
+
+
+            const action =
+                button.dataset.action;
+
+
+            if (
+                action ===
+                "edit"
+            ) {
+
+                await editCustomer(
+                    id
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "request-delete"
+            ) {
+
+                requestDeleteCustomer(
+                    id
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "confirm-delete"
+            ) {
+
+                confirmDeleteCustomer(
+                    id
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "cancel-delete"
+            ) {
+
+                cancelDeleteCustomer();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       SEARCH / FILTER
+    ========================================= */
+
+    customerSearch.addEventListener(
+        "input",
+        function () {
+
+            pendingDeleteCustomerInternalId =
+                null;
+
+
+            displayCustomers();
+
+        }
+    );
+
+
+    customerTypeFilter.addEventListener(
+        "change",
+        function () {
+
+            pendingDeleteCustomerInternalId =
+                null;
+
+
+            displayCustomers();
+
+        }
+    );
+
+
+    /* =========================================
+       TOAST
+    ========================================= */
+
+    function showToast(
+        message,
+        type = "success"
+    ) {
+
+        const oldToast =
+            document.querySelector(
+                ".customer-toast"
+            );
+
+
+        if (oldToast) {
+
+            oldToast.remove();
+
+        }
+
+
+        const toast =
+            document.createElement(
+                "div"
+            );
+
+
+        toast.className =
+            `customer-toast ${type}`;
+
+
+        toast.innerHTML = `
+
+            <span class="customer-toast-icon">
+
+                ${
+                    type ===
+                    "error"
+
+                        ?
+
+                        "!"
+
+                        :
+
+                        "✓"
+                }
+
+            </span>
+
+
+            <span>
+
+                ${escapeHTML(
+                    message
+                )}
+
+            </span>
+
+        `;
+
+
+        document.body.appendChild(
+            toast
+        );
+
+
+        requestAnimationFrame(
+            function () {
+
+                toast.classList.add(
+                    "show"
+                );
+
+            }
+        );
+
+
+        setTimeout(
+            function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        toast.remove();
+
+                    },
+                    250
+                );
+
+            },
+            2800
+        );
+
+    }
+
+
+    /* =========================================
+       SIDEBAR
+    ========================================= */
+
+    function openSidebar() {
+
+        if (!sidebar) {
+
+            return;
+
+        }
+
+
+        sidebar.classList.add(
+            "open"
+        );
+
+
+        if (
+            sidebarBackdrop
+        ) {
+
+            sidebarBackdrop.classList.add(
+                "show"
+            );
+
+        }
+
+
+        if (
+            menuButton
+        ) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeSidebar() {
+
+        if (!sidebar) {
+
+            return;
+
+        }
+
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        if (
+            sidebarBackdrop
+        ) {
+
+            sidebarBackdrop.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        if (
+            menuButton
+        ) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    if (
+        menuButton
+    ) {
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "open"
+                    )
+                ) {
+
+                    closeSidebar();
+
+                }
+                else {
+
+                    openSidebar();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    if (
+        sidebarBackdrop
+    ) {
+
+        sidebarBackdrop.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    }
+
+
+    /* =========================================
+       ESCAPE KEY
+    ========================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (
+            event
+        ) {
+
+            if (
+                event.key !==
+                "Escape"
             ) {
 
                 return;
@@ -2154,108 +3186,77 @@ function deleteCustomer(
             }
 
 
-            loadDivisionDropdown();
+            if (
+                pendingDeleteCustomerInternalId !==
+                null
+            ) {
+
+                pendingDeleteCustomerInternalId =
+                    null;
 
 
-            customerDivisionSelect
-                .disabled =
-                false;
+                displayCustomers();
 
 
-            customerDistrictSelect
-                .innerHTML = `
+                return;
 
-                    <option
-                        value=""
-                        selected
-                        disabled
-                    >
-                        Select district
-                    </option>
-
-                `;
+            }
 
 
-            customerUpazilaSelect
-                .innerHTML = `
+            if (
+                editingCustomerInternalId !==
+                null
+            ) {
 
-                    <option
-                        value=""
-                        selected
-                        disabled
-                    >
-                        Select upazila
-                    </option>
-
-                `;
+                resetCustomerForm();
 
 
-            customerDistrictSelect
-                .disabled =
-                true;
+                return;
+
+            }
 
 
-            customerUpazilaSelect
-                .disabled =
-                true;
-
-
-            setLocationMessage(
-                "Select Division, District and Upazila.",
-                "success"
-            );
+            closeSidebar();
 
         }
+    );
 
 
-        // ==========================================
-        // RESET FORM
-        // ==========================================
+    /* =========================================
+       RESIZE
+    ========================================= */
 
-        function resetForm() {
+    window.addEventListener(
+        "resize",
+        function () {
 
-            customerForm
-                .reset();
+            if (
+                window.innerWidth >
+                1000
+            ) {
 
+                closeSidebar();
 
-            editingCustomerId =
-                null;
-
-
-            customerFormTitle
-                .textContent =
-                "Save Customer";
-
-
-            saveCustomerBtn
-                .innerHTML = `
-
-                    <span aria-hidden="true">
-                        ▣
-                    </span>
-
-                    Save Customer
-
-                `;
-
-
-            resetLocationFields();
+            }
 
         }
+    );
 
 
-        // ==========================================
-        // INITIAL DISPLAY
-        // ==========================================
+    /* =========================================
+       INITIALIZE
+    ========================================= */
 
-        displayCustomers();
+    populateDivisionDropdown();
 
+    resetDistrictDropdown();
 
-        // ==========================================
-        // INITIAL LOCATION SERVICE
-        // ==========================================
+    resetUpazilaDropdown();
 
-        await initializeLocationService();
+    setAddMode();
 
-    }
-);
+    updateSummaryCards();
+
+    displayCustomers();
+
+});
