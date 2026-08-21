@@ -1,532 +1,230 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-    /* =========================================
-       SMART RICE MILL ERP
-       REPORTS & ANALYTICS
-
-       RESEARCH-SUPPORTED DESIGN
-       -------------------------
-
-       Verdouw, Robbemond & Wolfert (2015)
-       - ERP integration
-       - sector-specific business processes
-       - integrated management information
-
-       Alfazah et al. (2020)
-       - rice procurement monitoring dashboard
-       - indicators
-       - historical monitoring
-       - web-based monitoring system
-
-       Chopra et al. (2017)
-       - agri-food supply-chain performance
-         indicators
-       - stakeholder/process performance
-
-       Azis, Irjayanti & Murti (2026)
-       - integrated rice information system
-       - real-time reporting
-       - inventory visibility
-       - distribution monitoring
-       - decision support and traceability
-
-       IMPORTANT FINANCIAL RULE
-       ------------------------
-       Estimated Operating Balance is:
-
-       Sales Revenue
-       - Paddy Procurement Cost
-       - Operating Expenses
-       - Salary Expense
-
-       This is NOT formal accounting profit.
-       No claim of COGS-based net profit is made.
-    ========================================= */
-
-
-    /* =========================================
-       REPORT LABELS
-    ========================================= */
-
     const REPORT_LABELS = {
-
-        overall:
-            "Overall Management Report",
-
-        procurement:
-            "Procurement Report",
-
-        quality:
-            "Quality Report",
-
-        production:
-            "Production Report",
-
-        inventory:
-            "Inventory Report",
-
-        sales:
-            "Sales Report",
-
-        delivery:
-            "Delivery Report",
-
-        financial:
-            "Financial Operations Report",
-
-        maintenance:
-            "Maintenance Report"
-
+        overall: "Overall Management Report",
+        procurement: "Procurement Report",
+        quality: "Quality Report",
+        production: "Production Report",
+        inventory: "Inventory Report",
+        sales: "Sales Report",
+        delivery: "Delivery Report",
+        financial: "Financial Operations Report",
+        maintenance: "Maintenance Report"
     };
-
-
-    /* =========================================
-       INVENTORY PRODUCTS
-    ========================================= */
 
     const INVENTORY_PRODUCTS = {
-
-        paddy: {
-            label:
-                "Accepted Paddy"
-        },
-
-        wholeRice: {
-            label:
-                "Whole Rice"
-        },
-
-        khud: {
-            label:
-                "Khud / Broken Rice"
-        },
-
-        tush: {
-            label:
-                "Tush / Husk"
-        },
-
-        bran: {
-            label:
-                "Rice Bran"
-        }
-
+        paddy: "Accepted Paddy",
+        wholeRice: "Whole Rice",
+        khud: "Khud / Broken Rice",
+        tush: "Tush / Husk",
+        bran: "Rice Bran"
     };
-
 
     const DEFAULT_SAFETY_STOCK = {
-
-        paddy:
-            500,
-
-        wholeRice:
-            300,
-
-        khud:
-            50,
-
-        tush:
-            100,
-
-        bran:
-            50
-
+        paddy: 500,
+        wholeRice: 300,
+        khud: 50,
+        tush: 100,
+        bran: 50
     };
 
+    const $ = (id) => document.getElementById(id);
 
-    /* =========================================
-       ELEMENTS
-    ========================================= */
-
-    const reportFilterForm =
-        document.getElementById(
-            "reportFilterForm"
-        );
-
+    const reportFilterForm = $("reportFilterForm");
 
     if (!reportFilterForm) {
         return;
     }
 
+    const reportTypeSelect = $("reportType");
+    const reportFromDateInput = $("reportFromDate");
+    const reportToDateInput = $("reportToDate");
+    const selectedReportRange = $("selectedReportRange");
 
-    const reportTypeSelect =
-        document.getElementById(
-            "reportType"
-        );
+    const exportCsvBtn = $("exportCsvBtn");
+    const savePdfBtn = $("savePdfBtn");
 
+    const salesRevenueValue = $("salesRevenueValue");
+    const salesInvoiceCount = $("salesInvoiceCount");
 
-    const reportFromDateInput =
-        document.getElementById(
-            "reportFromDate"
-        );
+    const procurementCostValue = $("procurementCostValue");
+    const purchaseCountValue = $("purchaseCountValue");
 
+    const operatingBalanceValue = $("operatingBalanceValue");
 
-    const reportToDateInput =
-        document.getElementById(
-            "reportToDate"
-        );
+    const currentInventoryValue = $("currentInventoryValue");
+    const lowStockSummary = $("lowStockSummary");
 
+    const recoveryRateValue = $("recoveryRateValue");
+    const productionQuantityValue = $("productionQuantityValue");
 
-    const selectedReportRange =
-        document.getElementById(
-            "selectedReportRange"
-        );
+    const qualityAcceptanceValue = $("qualityAcceptanceValue");
+    const qualityInspectionValue = $("qualityInspectionValue");
 
+    const customerDueValue = $("customerDueValue");
+    const supplierDueValue = $("supplierDueValue");
 
-    const exportCsvBtn =
-        document.getElementById(
-            "exportCsvBtn"
-        );
+    const deliveryCompletionValue = $("deliveryCompletionValue");
+    const deliveryCountValue = $("deliveryCountValue");
 
+    const maintenanceCountValue = $("maintenanceCountValue");
+    const maintenanceCostValue = $("maintenanceCostValue");
 
-    const savePdfBtn =
-        document.getElementById(
-            "savePdfBtn"
-        );
+    const reportResultTitle = $("reportResultTitle");
+    const reportResultRange = $("reportResultRange");
 
+    const reportTableBody = $("reportTableBody");
+    const reportHistoryBody = $("reportHistoryBody");
 
-    const salesRevenueValue =
-        document.getElementById(
-            "salesRevenueValue"
-        );
+    const salesTrendCanvas = $("salesTrendCanvas");
+    const cashFlowCanvas = $("cashFlowCanvas");
 
+    const menuButton = $("menuButton");
+    const sidebar = $("sidebar");
+    const sidebarBackdrop = $("sidebarBackdrop");
 
-    const salesInvoiceCount =
-        document.getElementById(
-            "salesInvoiceCount"
-        );
-
-
-    const procurementCostValue =
-        document.getElementById(
-            "procurementCostValue"
-        );
-
-
-    const purchaseCountValue =
-        document.getElementById(
-            "purchaseCountValue"
-        );
-
-
-    const operatingBalanceValue =
-        document.getElementById(
-            "operatingBalanceValue"
-        );
-
-
-    const currentInventoryValue =
-        document.getElementById(
-            "currentInventoryValue"
-        );
-
-
-    const lowStockSummary =
-        document.getElementById(
-            "lowStockSummary"
-        );
-
-
-    const recoveryRateValue =
-        document.getElementById(
-            "recoveryRateValue"
-        );
-
-
-    const productionQuantityValue =
-        document.getElementById(
-            "productionQuantityValue"
-        );
-
-
-    const qualityAcceptanceValue =
-        document.getElementById(
-            "qualityAcceptanceValue"
-        );
-
-
-    const qualityInspectionValue =
-        document.getElementById(
-            "qualityInspectionValue"
-        );
-
-
-    const customerDueValue =
-        document.getElementById(
-            "customerDueValue"
-        );
-
-
-    const supplierDueValue =
-        document.getElementById(
-            "supplierDueValue"
-        );
-
-
-    const deliveryCompletionValue =
-        document.getElementById(
-            "deliveryCompletionValue"
-        );
-
-
-    const deliveryCountValue =
-        document.getElementById(
-            "deliveryCountValue"
-        );
-
-
-    const maintenanceCountValue =
-        document.getElementById(
-            "maintenanceCountValue"
-        );
-
-
-    const maintenanceCostValue =
-        document.getElementById(
-            "maintenanceCostValue"
-        );
-
-
-    const reportResultTitle =
-        document.getElementById(
-            "reportResultTitle"
-        );
-
-
-    const reportResultRange =
-        document.getElementById(
-            "reportResultRange"
-        );
-
-
-    const reportTableBody =
-        document.getElementById(
-            "reportTableBody"
-        );
-
-
-    const reportHistoryBody =
-        document.getElementById(
-            "reportHistoryBody"
-        );
-
-
-    const salesTrendCanvas =
-        document.getElementById(
-            "salesTrendCanvas"
-        );
-
-
-    const cashFlowCanvas =
-        document.getElementById(
-            "cashFlowCanvas"
-        );
-
-
-    const menuButton =
-        document.getElementById(
-            "menuButton"
-        );
-
-
-    const sidebar =
-        document.getElementById(
-            "sidebar"
-        );
-
-
-    const sidebarBackdrop =
-        document.getElementById(
-            "sidebarBackdrop"
-        );
+    let currentReportRows = [];
+    let currentMetrics = null;
 
 
     /* =========================================
-       REPORT STATE
-    ========================================= */
-
-    let currentReportRows =
-        [];
-
-
-    let currentMetrics =
-        null;
-
-
-    /* =========================================
-       STORAGE
-    ========================================= */
+       STORAGE HELPERS
+    ========================================== */
 
     function safeParseStorage(
         key,
         fallback = []
     ) {
-
         try {
-
-            const value =
+            const raw =
                 localStorage.getItem(
                     key
                 );
 
-
-            if (
-                value === null
-            ) {
-
-                return fallback;
-
-            }
-
-
-            return (
-                JSON.parse(value) ??
-                fallback
-            );
-
+            return raw === null
+                ? fallback
+                : (
+                    JSON.parse(
+                        raw
+                    )
+                    ??
+                    fallback
+                );
         }
         catch {
-
             return fallback;
-
         }
-
     }
 
 
-    function firstArrayFromKeys(
+    function firstNonEmptyArray(
         keys
     ) {
+        let lastEmpty = [];
 
         for (
-            const key of
-            keys
+            const key of keys
         ) {
-
             const value =
                 safeParseStorage(
                     key,
                     null
                 );
 
-
             if (
-                Array.isArray(value)
+                Array.isArray(
+                    value
+                )
             ) {
+                if (
+                    value.length
+                ) {
+                    return value;
+                }
 
-                return value;
-
+                lastEmpty =
+                    value;
             }
-
         }
 
-
-        return [];
-
+        return lastEmpty;
     }
 
 
-    /* =========================================
-       DATA SOURCES
-    ========================================= */
-
-    function getPurchases() {
-
-        return firstArrayFromKeys(
-            [
-                "purchases",
-                "purchaseRecords"
-            ]
-        );
-
-    }
+    const getPurchases =
+        () =>
+            firstNonEmptyArray(
+                [
+                    "purchases",
+                    "purchaseRecords"
+                ]
+            );
 
 
-    function getQualityInspections() {
-
-        return firstArrayFromKeys(
-            [
-                "qualityInspections",
-                "inspectionRecords"
-            ]
-        );
-
-    }
+    const getQualityInspections =
+        () =>
+            firstNonEmptyArray(
+                [
+                    "qualityInspections",
+                    "inspectionRecords"
+                ]
+            );
 
 
-    function getProductions() {
-
-        return firstArrayFromKeys(
-            [
-                "productionRecords",
-                "productions"
-            ]
-        );
-
-    }
+    const getProductions =
+        () =>
+            firstNonEmptyArray(
+                [
+                    "productionRecords",
+                    "productions"
+                ]
+            );
 
 
-    function getSales() {
-
-        return firstArrayFromKeys(
-            [
-                "salesRecords",
-                "sales"
-            ]
-        );
-
-    }
+    const getSales =
+        () =>
+            firstNonEmptyArray(
+                [
+                    "salesRecords",
+                    "sales"
+                ]
+            );
 
 
-    function getDeliveries() {
-
-        return firstArrayFromKeys(
-            [
-                "deliveryRecords",
-                "deliveries"
-            ]
-        );
-
-    }
+    const getDeliveries =
+        () =>
+            firstNonEmptyArray(
+                [
+                    "deliveryRecords",
+                    "deliveries"
+                ]
+            );
 
 
-    function getMaintenanceRecords() {
-
-        return firstArrayFromKeys(
-            [
-                "maintenanceRecords",
-                "maintenance"
-            ]
-        );
-
-    }
-
-
-    function getAdjustments() {
-
-        return firstArrayFromKeys(
-            [
-                "inventoryAdjustments"
-            ]
-        );
-
-    }
+    const getMaintenanceRecords =
+        () =>
+            firstNonEmptyArray(
+                [
+                    "maintenanceRecords",
+                    "machineMaintenanceRecords",
+                    "maintenance"
+                ]
+            );
 
 
-    /* =========================================
-       EXPENSE / SALARY SOURCES
+    const getAdjustments =
+        () =>
+            firstNonEmptyArray(
+                [
+                    "inventoryAdjustments"
+                ]
+            );
 
-       Supports separate or combined prototype
-       storage structures.
-    ========================================= */
 
     function getExpenseRecords() {
-
-        const result =
-            [];
+        const result = [];
 
 
-        firstArrayFromKeys(
+        firstNonEmptyArray(
             [
                 "expenseRecords",
                 "expenses"
@@ -536,7 +234,6 @@ document.addEventListener("DOMContentLoaded", function () {
             function (
                 record
             ) {
-
                 result.push(
                     {
                         ...record,
@@ -544,12 +241,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             "expense"
                     }
                 );
-
             }
         );
 
 
-        firstArrayFromKeys(
+        firstNonEmptyArray(
             [
                 "expenseSalaryRecords",
                 "financeRecords"
@@ -559,11 +255,12 @@ document.addEventListener("DOMContentLoaded", function () {
             function (
                 record
             ) {
-
                 const type =
                     String(
-                        record.type ||
-                        record.category ||
+                        record.type
+                        ||
+                        record.category
+                        ||
                         ""
                     )
                     .toLowerCase();
@@ -574,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         "salary"
                     )
                 ) {
-
                     result.push(
                         {
                             ...record,
@@ -582,25 +278,20 @@ document.addEventListener("DOMContentLoaded", function () {
                                 "expense"
                         }
                     );
-
                 }
-
             }
         );
 
 
         return result;
-
     }
 
 
     function getSalaryRecords() {
-
-        const result =
-            [];
+        const result = [];
 
 
-        firstArrayFromKeys(
+        firstNonEmptyArray(
             [
                 "salaryRecords",
                 "salaries"
@@ -610,7 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
             function (
                 record
             ) {
-
                 result.push(
                     {
                         ...record,
@@ -618,12 +308,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             "salary"
                     }
                 );
-
             }
         );
 
 
-        firstArrayFromKeys(
+        firstNonEmptyArray(
             [
                 "expenseSalaryRecords",
                 "financeRecords"
@@ -633,11 +322,12 @@ document.addEventListener("DOMContentLoaded", function () {
             function (
                 record
             ) {
-
                 const type =
                     String(
-                        record.type ||
-                        record.category ||
+                        record.type
+                        ||
+                        record.category
+                        ||
                         ""
                     )
                     .toLowerCase();
@@ -648,7 +338,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         "salary"
                     )
                 ) {
-
                     result.push(
                         {
                             ...record,
@@ -656,101 +345,169 @@ document.addEventListener("DOMContentLoaded", function () {
                                 "salary"
                         }
                     );
-
                 }
-
             }
         );
 
 
         return result;
-
     }
 
 
     /* =========================================
-       DATE HELPERS
-    ========================================= */
+       DATE / FORMAT HELPERS
+    ========================================== */
 
-    function getTodayDate() {
-
-        const date =
-            new Date();
-
-
+    function localISODate(
+        date = new Date()
+    ) {
         const year =
             date.getFullYear();
-
 
         const month =
             String(
                 date.getMonth() + 1
-            ).padStart(
+            )
+            .padStart(
                 2,
                 "0"
             );
-
 
         const day =
             String(
                 date.getDate()
-            ).padStart(
+            )
+            .padStart(
                 2,
                 "0"
             );
-
 
         return (
             `${year}-${month}-${day}`
         );
+    }
 
+
+    function getTodayDate() {
+        return localISODate(
+            new Date()
+        );
     }
 
 
     function getMonthStartDate() {
-
-        const date =
+        const now =
             new Date();
 
-
-        const year =
-            date.getFullYear();
-
-
-        const month =
-            String(
-                date.getMonth() + 1
-            ).padStart(
+        return (
+            `${now.getFullYear()}-`
+            +
+            `${String(
+                now.getMonth() + 1
+            )
+            .padStart(
                 2,
                 "0"
+            )}-01`
+        );
+    }
+
+
+    function normalizeDateValue(
+        value
+    ) {
+        if (!value) {
+            return "";
+        }
+
+
+        const text =
+            String(
+                value
             );
 
 
-        return (
-            `${year}-${month}-01`
-        );
+        if (
+            /^\d{4}-\d{2}-\d{2}/
+                .test(
+                    text
+                )
+        ) {
+            return text.slice(
+                0,
+                10
+            );
+        }
 
+
+        const parsed =
+            new Date(
+                value
+            );
+
+
+        if (
+            Number.isNaN(
+                parsed.getTime()
+            )
+        ) {
+            return "";
+        }
+
+
+        return localISODate(
+            parsed
+        );
+    }
+
+
+    function recordDate(
+        record,
+        candidates
+    ) {
+        for (
+            const key of candidates
+        ) {
+            if (
+                record[key]
+            ) {
+                return normalizeDateValue(
+                    record[key]
+                );
+            }
+        }
+
+        return "";
+    }
+
+
+    function dateIsWithinRange(
+        date,
+        fromDate,
+        toDate
+    ) {
+        return Boolean(
+            date
+            &&
+            date >= fromDate
+            &&
+            date <= toDate
+        );
     }
 
 
     function formatDate(
         value
     ) {
-
         if (!value) {
-
             return "—";
-
         }
 
 
-        const date =
-            new Date(
-                `${value}T00:00:00`
-            );
-
-
-        return date.toLocaleDateString(
+        return new Date(
+            `${value}T00:00:00`
+        )
+        .toLocaleDateString(
             "en-GB",
             {
                 day:
@@ -763,24 +520,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     "numeric"
             }
         );
-
     }
 
 
     function formatDateTime(
         value
     ) {
-
         if (!value) {
-
             return "—";
-
         }
 
 
         return new Date(
             value
-        ).toLocaleString(
+        )
+        .toLocaleString(
             "en-GB",
             {
                 day:
@@ -799,161 +553,71 @@ document.addEventListener("DOMContentLoaded", function () {
                     "2-digit"
             }
         );
-
     }
 
 
-    function normalizeDateValue(
-        value
+    function numberValue(
+        ...values
     ) {
-
-        if (!value) {
-
-            return "";
-
-        }
-
-
-        const text =
-            String(
-                value
-            );
-
-
-        if (
-            /^\d{4}-\d{2}-\d{2}/.test(
-                text
-            )
-        ) {
-
-            return text.slice(
-                0,
-                10
-            );
-
-        }
-
-
-        const parsed =
-            new Date(
-                value
-            );
-
-
-        if (
-            Number.isNaN(
-                parsed.getTime()
-            )
-        ) {
-
-            return "";
-
-        }
-
-
-        const year =
-            parsed.getFullYear();
-
-
-        const month =
-            String(
-                parsed.getMonth() + 1
-            ).padStart(
-                2,
-                "0"
-            );
-
-
-        const day =
-            String(
-                parsed.getDate()
-            ).padStart(
-                2,
-                "0"
-            );
-
-
-        return (
-            `${year}-${month}-${day}`
-        );
-
-    }
-
-
-    function recordDate(
-        record,
-        candidates
-    ) {
-
         for (
-            const key of
-            candidates
+            const value of values
         ) {
-
             if (
-                record[key]
+                value === null
+                ||
+                value === undefined
+                ||
+                value === ""
             ) {
-
-                return normalizeDateValue(
-                    record[key]
-                );
-
+                continue;
             }
 
+
+            const number =
+                Number(
+                    String(
+                        value
+                    )
+                    .replace(
+                        /[৳,\s]/g,
+                        ""
+                    )
+                );
+
+
+            if (
+                Number.isFinite(
+                    number
+                )
+            ) {
+                return number;
+            }
         }
 
 
-        return "";
-
+        return 0;
     }
 
-
-    function dateIsWithinRange(
-        date,
-        fromDate,
-        toDate
-    ) {
-
-        if (!date) {
-
-            return false;
-
-        }
-
-
-        return (
-            date >= fromDate &&
-            date <= toDate
-        );
-
-    }
-
-
-    /* =========================================
-       FORMAT
-    ========================================= */
 
     function formatNumber(
         value
     ) {
-
         return Number(
             value || 0
-        ).toLocaleString(
+        )
+        .toLocaleString(
             "en-US",
             {
                 maximumFractionDigits:
                     2
             }
         );
-
     }
 
 
     function formatMoney(
         value
     ) {
-
         const number =
             Number(
                 value || 0
@@ -967,58 +631,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         return (
-
-            `${sign}৳${Math.abs(
+            `${sign}৳`
+            +
+            Math.abs(
                 number
-            ).toLocaleString(
+            )
+            .toLocaleString(
                 "en-US",
                 {
                     maximumFractionDigits:
                         2
                 }
-            )}`
-
+            )
         );
-
     }
 
 
     function formatPercentage(
         value
     ) {
-
         if (
-            value === null ||
-            value === undefined ||
+            value === null
+            ||
+            value === undefined
+            ||
             !Number.isFinite(
-                Number(value)
+                Number(
+                    value
+                )
             )
         ) {
-
             return "—";
-
         }
 
 
         return (
             `${Number(
                 value
-            ).toFixed(
+            )
+            .toFixed(
                 2
             )}%`
         );
-
     }
 
-
-    /* =========================================
-       SAFE HTML
-    ========================================= */
 
     function escapeHTML(
         value
     ) {
-
         const element =
             document.createElement(
                 "div"
@@ -1032,297 +692,386 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         return element.innerHTML;
-
     }
 
 
     /* =========================================
-       PURCHASE NORMALIZATION
-    ========================================= */
+       PURCHASE
+    ========================================== */
 
     function getPurchaseAmount(
         purchase
     ) {
-
         const stored =
-
-            Number(
-                purchase.totalPurchaseAmount ??
-                purchase.totalAmount ??
-                purchase.amount ??
-                purchase.total ??
-                0
+            numberValue(
+                purchase.totalPurchaseAmount,
+                purchase.totalAmount,
+                purchase.purchaseAmount,
+                purchase.amount,
+                purchase.total
             );
 
 
         if (
             stored > 0
         ) {
-
             return stored;
-
         }
 
 
-        const weight =
-            Number(
-                purchase.weight ??
-                purchase.paddyWeight ??
-                purchase.quantityKg ??
-                0
-            );
-
-
-        const price =
-            Number(
-                purchase.pricePerKg ??
-                purchase.price ??
-                0
-            );
-
-
         return (
-            weight *
-            price
+            numberValue(
+                purchase.weight,
+                purchase.paddyWeight,
+                purchase.quantityKg,
+                purchase.quantity
+            )
+            *
+            numberValue(
+                purchase.pricePerKg,
+                purchase.price
+            )
         );
-
     }
 
 
     function getPurchaseWeight(
         purchase
     ) {
-
-        return Number(
-
-            purchase.weight ??
-            purchase.paddyWeight ??
-            purchase.quantityKg ??
-            purchase.quantity ??
-            0
-
+        return numberValue(
+            purchase.weight,
+            purchase.paddyWeight,
+            purchase.quantityKg,
+            purchase.quantity
         );
-
     }
 
 
     function getPurchaseDue(
         purchase
     ) {
+        const explicit =
+            numberValue(
+                purchase.remainingDue,
+                purchase.dueAmount,
+                purchase.due,
+                purchase.balanceDue
+            );
+
+
+        if (
+            explicit > 0
+        ) {
+            return explicit;
+        }
+
+
+        const status =
+            String(
+                purchase.paymentStatus
+                ||
+                ""
+            )
+            .toLowerCase();
+
+
+        if (
+            status.includes(
+                "paid"
+            )
+            &&
+            !status.includes(
+                "partial"
+            )
+        ) {
+            return 0;
+        }
+
 
         return Math.max(
+            0,
 
-            Number(
-                purchase.remainingDue ??
-                purchase.dueAmount ??
-                purchase.due ??
-                0
-            ),
-            0
-
+            getPurchaseAmount(
+                purchase
+            )
+            -
+            numberValue(
+                purchase.paidAmount,
+                purchase.amountPaid
+            )
         );
-
     }
 
 
     /* =========================================
-       PRODUCTION NORMALIZATION
-    ========================================= */
+       PRODUCTION
+    ========================================== */
 
     function getProductionInput(
         record
     ) {
-
-        return Number(
-
-            record.inputPaddy ??
-            record.paddyInput ??
-            record.inputPaddyQuantity ??
-            0
-
+        return numberValue(
+            record.inputPaddy,
+            record.paddyInput,
+            record.inputPaddyQuantity
         );
-
     }
 
 
     function getWholeRiceOutput(
         record
     ) {
-
-        return Number(
-
-            record.riceProduced ??
-            record.rice ??
-            record.wholeRice ??
-            0
-
+        return numberValue(
+            record.riceProduced,
+            record.wholeRiceProduced,
+            record.rice,
+            record.wholeRice
         );
-
     }
 
 
     function getKhudOutput(
         record
     ) {
-
-        return Number(
-
-            record.khudProduced ??
-            record.khud ??
-            record.brokenRice ??
-            0
-
+        return numberValue(
+            record.khudProduced,
+            record.khud,
+            record.brokenRice
         );
-
     }
 
 
     function getTushOutput(
         record
     ) {
-
-        return Number(
-
-            record.tushProduced ??
-            record.tush ??
-            record.husk ??
-            0
-
+        return numberValue(
+            record.tushProduced,
+            record.tush,
+            record.husk
         );
-
     }
 
 
     function getBranOutput(
         record
     ) {
-
-        return Number(
-
-            record.branProduced ??
-            record.bran ??
-            0
-
+        return numberValue(
+            record.branProduced,
+            record.riceBranProduced,
+            record.bran
         );
-
     }
 
 
     /* =========================================
-       SALES NORMALIZATION
-    ========================================= */
+       SALES
+    ========================================== */
 
     function saleIsActive(
         sale
     ) {
+        const status =
+            String(
+                sale.status
+                ||
+                ""
+            )
+            .toLowerCase();
 
-        return (
-            sale.status !==
-            "voided"
+
+        return ![
+            "voided",
+            "void",
+            "cancelled"
+        ]
+        .includes(
+            status
         );
-
     }
 
 
     function getSaleAmount(
         sale
     ) {
-
-        return Number(
-
-            sale.totalAmount ??
-            sale.total ??
-            0
-
+        return numberValue(
+            sale.totalAmount,
+            sale.invoiceAmount,
+            sale.salesAmount,
+            sale.amount,
+            sale.total
         );
-
     }
 
 
     function getSaleDue(
         sale
     ) {
-
-        const total =
-            getSaleAmount(
-                sale
+        const explicit =
+            numberValue(
+                sale.remainingDue,
+                sale.dueAmount,
+                sale.due,
+                sale.balanceDue
             );
 
 
-        const paid =
-            Number(
-                sale.amountPaid ??
-                0
-            );
+        if (
+            explicit > 0
+        ) {
+            return explicit;
+        }
+
+
+        const status =
+            String(
+                sale.paymentStatus
+                ||
+                ""
+            )
+            .toLowerCase();
+
+
+        if (
+            status.includes(
+                "paid"
+            )
+            &&
+            !status.includes(
+                "partial"
+            )
+        ) {
+            return 0;
+        }
 
 
         return Math.max(
+            0,
 
-            Number(
-                sale.dueAmount ??
-                (
-                    total -
-                    paid
-                )
-            ),
-            0
-
+            getSaleAmount(
+                sale
+            )
+            -
+            numberValue(
+                sale.amountPaid,
+                sale.paidAmount
+            )
         );
+    }
 
+
+    function getSaleQuantityKg(
+        sale
+    ) {
+        let quantity =
+            numberValue(
+                sale.quantityKg,
+                sale.weightKg
+            );
+
+
+        if (
+            quantity > 0
+        ) {
+            return quantity;
+        }
+
+
+        const unit =
+            String(
+                sale.unit
+                ||
+                ""
+            )
+            .toLowerCase();
+
+
+        if (
+            [
+                "kg",
+                "kilogram",
+                "kilograms"
+            ]
+            .includes(
+                unit
+            )
+        ) {
+            quantity =
+                numberValue(
+                    sale.quantity,
+                    sale.weight
+                );
+
+
+            if (
+                quantity > 0
+            ) {
+                return quantity;
+            }
+        }
+
+
+        const bagWeight =
+            numberValue(
+                sale.bagWeightKg
+            );
+
+
+        if (
+            bagWeight > 0
+        ) {
+            return (
+                bagWeight
+                *
+                numberValue(
+                    sale.quantity,
+                    sale.bags
+                )
+            );
+        }
+
+
+        return numberValue(
+            sale.quantity
+        );
     }
 
 
     /* =========================================
-       EXPENSE NORMALIZATION
-    ========================================= */
+       EXPENSE / MAINTENANCE
+    ========================================== */
 
     function getFinancialRecordAmount(
         record
     ) {
-
-        return Number(
-
-            record.amount ??
-            record.totalAmount ??
-            record.cost ??
-            record.salary ??
-            record.netSalary ??
-            0
-
+        return numberValue(
+            record.amount,
+            record.totalAmount,
+            record.cost,
+            record.salary,
+            record.netSalary
         );
-
     }
 
-
-    /* =========================================
-       MAINTENANCE COST
-    ========================================= */
 
     function getMaintenanceCost(
         record
     ) {
-
-        return Number(
-
-            record.cost ??
-            record.maintenanceCost ??
-            record.totalCost ??
-            record.amount ??
-            0
-
+        return numberValue(
+            record.cost,
+            record.maintenanceCost,
+            record.totalCost,
+            record.amount
         );
-
     }
 
 
     /* =========================================
-       NORMALIZE PRODUCT
-    ========================================= */
+       PRODUCT NORMALIZATION
+    ========================================== */
 
     function normalizeProductKey(
         value
     ) {
-
         const normalized =
             String(
                 value || ""
@@ -1340,13 +1089,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 "paddy",
                 "acceptedpaddy",
                 "rawpaddy"
-            ].includes(
+            ]
+            .includes(
                 normalized
             )
         ) {
-
             return "paddy";
-
         }
 
 
@@ -1356,13 +1104,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 "wholerice",
                 "finishedrice",
                 "milledrice"
-            ].includes(
+            ]
+            .includes(
                 normalized
             )
         ) {
-
             return "wholeRice";
-
         }
 
 
@@ -1371,13 +1118,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 "khud",
                 "brokenrice",
                 "khudbrokenrice"
-            ].includes(
+            ]
+            .includes(
                 normalized
             )
         ) {
-
             return "khud";
-
         }
 
 
@@ -1387,13 +1133,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 "husk",
                 "ricehusk",
                 "tushhusk"
-            ].includes(
+            ]
+            .includes(
                 normalized
             )
         ) {
-
             return "tush";
-
         }
 
 
@@ -1401,32 +1146,25 @@ document.addEventListener("DOMContentLoaded", function () {
             [
                 "bran",
                 "ricebran"
-            ].includes(
+            ]
+            .includes(
                 normalized
             )
         ) {
-
             return "bran";
-
         }
 
 
         return null;
-
     }
 
 
     /* =========================================
-       CURRENT INVENTORY
-
-       Mirrors the transaction-driven inventory
-       logic used by Inventory Management.
-    ========================================= */
+       INVENTORY
+    ========================================== */
 
     function calculateCurrentInventory() {
-
         const state = {
-
             paddy:
                 0,
 
@@ -1441,119 +1179,98 @@ document.addEventListener("DOMContentLoaded", function () {
 
             bran:
                 0
-
         };
-
-
-        const purchases =
-            getPurchases();
-
-
-        const inspections =
-            getQualityInspections();
 
 
         const acceptedIds =
             new Set(
-
-                inspections
-
+                getQualityInspections()
                     .filter(
                         function (
-                            inspection
+                            item
                         ) {
-
                             return (
-
                                 String(
-                                    inspection.decision ||
+                                    item.decision
+                                    ||
+                                    item.status
+                                    ||
                                     ""
-                                ).toLowerCase()
-
+                                )
+                                .toLowerCase()
                                 ===
-
                                 "accepted"
-
                             );
-
                         }
                     )
-
                     .map(
                         function (
-                            inspection
+                            item
                         ) {
-
                             return String(
-                                inspection.purchaseId
+                                item.purchaseId
                             );
-
                         }
                     )
-
             );
 
 
-        purchases.forEach(
-            function (
-                purchase
-            ) {
-
-                if (
-                    acceptedIds.has(
-                        String(
-                            purchase.purchaseId
-                        )
-                    )
+        getPurchases()
+            .forEach(
+                function (
+                    purchase
                 ) {
+                    if (
+                        acceptedIds.has(
+                            String(
+                                purchase.purchaseId
+                            )
+                        )
+                    ) {
+                        state.paddy +=
+                            getPurchaseWeight(
+                                purchase
+                            );
+                    }
+                }
+            );
 
-                    state.paddy +=
-                        getPurchaseWeight(
-                            purchase
+
+        getProductions()
+            .forEach(
+                function (
+                    production
+                ) {
+                    state.paddy -=
+                        getProductionInput(
+                            production
                         );
 
+
+                    state.wholeRice +=
+                        getWholeRiceOutput(
+                            production
+                        );
+
+
+                    state.khud +=
+                        getKhudOutput(
+                            production
+                        );
+
+
+                    state.tush +=
+                        getTushOutput(
+                            production
+                        );
+
+
+                    state.bran +=
+                        getBranOutput(
+                            production
+                        );
                 }
-
-            }
-        );
-
-
-        getProductions().forEach(
-            function (
-                production
-            ) {
-
-                state.paddy -=
-                    getProductionInput(
-                        production
-                    );
-
-
-                state.wholeRice +=
-                    getWholeRiceOutput(
-                        production
-                    );
-
-
-                state.khud +=
-                    getKhudOutput(
-                        production
-                    );
-
-
-                state.tush +=
-                    getTushOutput(
-                        production
-                    );
-
-
-                state.bran +=
-                    getBranOutput(
-                        production
-                    );
-
-            }
-        );
+            );
 
 
         getSales()
@@ -1564,97 +1281,82 @@ document.addEventListener("DOMContentLoaded", function () {
                 function (
                     sale
                 ) {
-
                     const product =
                         normalizeProductKey(
-
-                            sale.productKey ||
-                            sale.product ||
+                            sale.productKey
+                            ||
+                            sale.product
+                            ||
                             sale.productType
-
+                            ||
+                            sale.item
+                            ||
+                            sale.riceType
                         );
 
 
                     if (
-                        !product ||
+                        !product
+                        ||
                         product ===
                         "paddy"
                     ) {
-
                         return;
-
                     }
 
 
                     state[product] -=
-                        Number(
-
-                            sale.quantityKg ??
-                            sale.quantity ??
-                            0
-
+                        getSaleQuantityKg(
+                            sale
                         );
-
                 }
             );
 
 
-        getAdjustments().forEach(
-            function (
-                adjustment
-            ) {
-
-                const product =
-                    normalizeProductKey(
-                        adjustment.product
-                    );
-
-
-                if (!product) {
-
-                    return;
-
-                }
-
-
-                const quantity =
-                    Number(
-                        adjustment.quantity ||
-                        0
-                    );
-
-
-                if (
-                    adjustment.type ===
-                    "out"
+        getAdjustments()
+            .forEach(
+                function (
+                    adjustment
                 ) {
+                    const product =
+                        normalizeProductKey(
+                            adjustment.product
+                        );
 
-                    state[product] -=
-                        quantity;
 
-                }
-                else {
+                    if (
+                        !product
+                    ) {
+                        return;
+                    }
+
+
+                    const quantity =
+                        numberValue(
+                            adjustment.quantity
+                        );
+
 
                     state[product] +=
-                        quantity;
+                        adjustment.type ===
+                        "out"
 
+                            ?
+
+                            -quantity
+
+                            :
+
+                            quantity;
                 }
-
-            }
-        );
+            );
 
 
         return state;
-
     }
 
 
-    /* =========================================
-       SAFETY STOCK
-    ========================================= */
-
     function getSafetyStock() {
-
         const stored =
             safeParseStorage(
                 "inventorySafetyStock",
@@ -1663,24 +1365,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         return {
-
             ...DEFAULT_SAFETY_STOCK,
-            ...stored
 
+            ...(
+                stored
+                &&
+                typeof stored ===
+                "object"
+                &&
+                !Array.isArray(
+                    stored
+                )
+
+                    ?
+
+                    stored
+
+                    :
+
+                    {}
+            )
         };
-
     }
 
 
     /* =========================================
-       BUILD METRICS
-    ========================================= */
+       CALCULATE METRICS
+    ========================================== */
 
     function calculateMetrics(
         fromDate,
         toDate
     ) {
-
         const purchases =
             getPurchases();
 
@@ -1690,7 +1406,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 function (
                     purchase
                 ) {
-
                     return dateIsWithinRange(
 
                         recordDate(
@@ -1703,9 +1418,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         fromDate,
                         toDate
-
                     );
-
                 }
             );
 
@@ -1713,17 +1426,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const purchaseCost =
             periodPurchases.reduce(
                 function (
-                    total,
-                    purchase
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getPurchaseAmount(
-                            purchase
+                            item
                         )
                     );
-
                 },
                 0
             );
@@ -1732,17 +1444,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const purchaseWeight =
             periodPurchases.reduce(
                 function (
-                    total,
-                    purchase
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getPurchaseWeight(
-                            purchase
+                            item
                         )
                     );
-
                 },
                 0
             );
@@ -1751,25 +1462,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const supplierDue =
             purchases.reduce(
                 function (
-                    total,
-                    purchase
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getPurchaseDue(
-                            purchase
+                            item
                         )
                     );
-
                 },
                 0
             );
 
-
-        /* =====================================
-           SALES
-        ====================================== */
 
         const activeSales =
             getSales()
@@ -1783,7 +1489,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 function (
                     sale
                 ) {
-
                     return dateIsWithinRange(
 
                         recordDate(
@@ -1797,9 +1502,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         fromDate,
                         toDate
-
                     );
-
                 }
             );
 
@@ -1807,17 +1510,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const salesRevenue =
             periodSales.reduce(
                 function (
-                    total,
-                    sale
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getSaleAmount(
-                            sale
+                            item
                         )
                     );
-
                 },
                 0
             );
@@ -1826,37 +1528,31 @@ document.addEventListener("DOMContentLoaded", function () {
         const customerDue =
             activeSales.reduce(
                 function (
-                    total,
-                    sale
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getSaleDue(
-                            sale
+                            item
                         )
                     );
-
                 },
                 0
             );
 
 
-        /* =====================================
-           QUALITY
-        ====================================== */
-
         const periodInspections =
             getQualityInspections()
                 .filter(
                     function (
-                        inspection
+                        item
                     ) {
-
                         return dateIsWithinRange(
 
                             recordDate(
-                                inspection,
+                                item,
                                 [
                                     "inspectionDate",
                                     "date"
@@ -1865,9 +1561,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             fromDate,
                             toDate
-
                         );
-
                     }
                 );
 
@@ -1875,60 +1569,54 @@ document.addEventListener("DOMContentLoaded", function () {
         const acceptedInspections =
             periodInspections.filter(
                 function (
-                    inspection
+                    item
                 ) {
-
                     return (
-
                         String(
-                            inspection.decision ||
+                            item.decision
+                            ||
                             ""
-                        ).toLowerCase()
-
+                        )
+                        .toLowerCase()
                         ===
-
                         "accepted"
-
                     );
-
                 }
-            ).length;
+            )
+            .length;
 
 
         const rejectedInspections =
             periodInspections.filter(
                 function (
-                    inspection
+                    item
                 ) {
-
                     return (
-
                         String(
-                            inspection.decision ||
+                            item.decision
+                            ||
                             ""
-                        ).toLowerCase()
-
+                        )
+                        .toLowerCase()
                         ===
-
                         "rejected"
-
                     );
-
                 }
-            ).length;
+            )
+            .length;
 
 
         const qualityAcceptanceRate =
-
-            periodInspections.length >
-            0
+            periodInspections.length
 
                 ?
 
                 (
-                    acceptedInspections /
+                    acceptedInspections
+                    /
                     periodInspections.length
-                ) *
+                )
+                *
                 100
 
                 :
@@ -1936,21 +1624,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 null;
 
 
-        /* =====================================
-           PRODUCTION
-        ====================================== */
-
         const periodProductions =
             getProductions()
                 .filter(
                     function (
-                        production
+                        item
                     ) {
-
                         return dateIsWithinRange(
 
                             recordDate(
-                                production,
+                                item,
                                 [
                                     "productionDate",
                                     "date"
@@ -1959,9 +1642,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             fromDate,
                             toDate
-
                         );
-
                     }
                 );
 
@@ -1969,17 +1650,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const productionInput =
             periodProductions.reduce(
                 function (
-                    total,
-                    record
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getProductionInput(
-                            record
+                            item
                         )
                     );
-
                 },
                 0
             );
@@ -1988,17 +1668,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const wholeRiceProduced =
             periodProductions.reduce(
                 function (
-                    total,
-                    record
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getWholeRiceOutput(
-                            record
+                            item
                         )
                     );
-
                 },
                 0
             );
@@ -2007,17 +1686,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const khudProduced =
             periodProductions.reduce(
                 function (
-                    total,
-                    record
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getKhudOutput(
-                            record
+                            item
                         )
                     );
-
                 },
                 0
             );
@@ -2026,17 +1704,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const tushProduced =
             periodProductions.reduce(
                 function (
-                    total,
-                    record
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getTushOutput(
-                            record
+                            item
                         )
                     );
-
                 },
                 0
             );
@@ -2045,33 +1722,32 @@ document.addEventListener("DOMContentLoaded", function () {
         const branProduced =
             periodProductions.reduce(
                 function (
-                    total,
-                    record
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getBranOutput(
-                            record
+                            item
                         )
                     );
-
                 },
                 0
             );
 
 
         const recoveryRate =
-
-            productionInput >
-            0
+            productionInput
 
                 ?
 
                 (
-                    wholeRiceProduced /
+                    wholeRiceProduced
+                    /
                     productionInput
-                ) *
+                )
+                *
                 100
 
                 :
@@ -2079,21 +1755,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 null;
 
 
-        /* =====================================
-           EXPENSE
-        ====================================== */
-
         const periodExpenses =
             getExpenseRecords()
                 .filter(
                     function (
-                        record
+                        item
                     ) {
-
                         return dateIsWithinRange(
 
                             recordDate(
-                                record,
+                                item,
                                 [
                                     "expenseDate",
                                     "paymentDate",
@@ -2103,9 +1774,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             fromDate,
                             toDate
-
                         );
-
                     }
                 );
 
@@ -2113,37 +1782,31 @@ document.addEventListener("DOMContentLoaded", function () {
         const operatingExpense =
             periodExpenses.reduce(
                 function (
-                    total,
-                    record
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getFinancialRecordAmount(
-                            record
+                            item
                         )
                     );
-
                 },
                 0
             );
 
 
-        /* =====================================
-           SALARY
-        ====================================== */
-
         const periodSalaries =
             getSalaryRecords()
                 .filter(
                     function (
-                        record
+                        item
                     ) {
-
                         return dateIsWithinRange(
 
                             recordDate(
-                                record,
+                                item,
                                 [
                                     "salaryDate",
                                     "paymentDate",
@@ -2153,9 +1816,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             fromDate,
                             toDate
-
                         );
-
                     }
                 );
 
@@ -2163,24 +1824,22 @@ document.addEventListener("DOMContentLoaded", function () {
         const salaryExpense =
             periodSalaries.reduce(
                 function (
-                    total,
-                    record
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getFinancialRecordAmount(
-                            record
+                            item
                         )
                     );
-
                 },
                 0
             );
 
 
         const operatingBalance =
-
             salesRevenue
             -
             purchaseCost
@@ -2190,21 +1849,16 @@ document.addEventListener("DOMContentLoaded", function () {
             salaryExpense;
 
 
-        /* =====================================
-           DELIVERY
-        ====================================== */
-
         const periodDeliveries =
             getDeliveries()
                 .filter(
                     function (
-                        delivery
+                        item
                     ) {
-
                         return dateIsWithinRange(
 
                             recordDate(
-                                delivery,
+                                item,
                                 [
                                     "deliveryDate",
                                     "date"
@@ -2213,9 +1867,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             fromDate,
                             toDate
-
                         );
-
                     }
                 );
 
@@ -2223,51 +1875,64 @@ document.addEventListener("DOMContentLoaded", function () {
         const deliveredCount =
             periodDeliveries.filter(
                 function (
-                    delivery
+                    item
                 ) {
-
                     return (
-                        delivery.status ===
+                        String(
+                            item.status
+                            ||
+                            item.deliveryStatus
+                            ||
+                            ""
+                        )
+                        .toLowerCase()
+                        ===
                         "delivered"
                     );
-
                 }
-            ).length;
+            )
+            .length;
 
 
         const cancelledDeliveries =
             periodDeliveries.filter(
                 function (
-                    delivery
+                    item
                 ) {
-
                     return (
-                        delivery.status ===
+                        String(
+                            item.status
+                            ||
+                            item.deliveryStatus
+                            ||
+                            ""
+                        )
+                        .toLowerCase()
+                        ===
                         "cancelled"
                     );
-
                 }
-            ).length;
+            )
+            .length;
 
 
         const validDeliveryCount =
-
             periodDeliveries.length
             -
             cancelledDeliveries;
 
 
         const deliveryCompletionRate =
-
-            validDeliveryCount >
-            0
+            validDeliveryCount
 
                 ?
 
                 (
-                    deliveredCount /
+                    deliveredCount
+                    /
                     validDeliveryCount
-                ) *
+                )
+                *
                 100
 
                 :
@@ -2278,50 +1943,43 @@ document.addEventListener("DOMContentLoaded", function () {
         const totalRoadDistance =
             periodDeliveries.reduce(
                 function (
-                    total,
-                    delivery
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
-                        Number(
-                            delivery.distanceKm ||
-                            0
+                        sum
+                        +
+                        numberValue(
+                            item.distanceKm,
+                            item.roadDistance
                         )
                     );
-
                 },
                 0
             );
 
 
-        /* =====================================
-           MAINTENANCE
-        ====================================== */
-
         const periodMaintenance =
             getMaintenanceRecords()
                 .filter(
                     function (
-                        record
+                        item
                     ) {
-
                         return dateIsWithinRange(
 
                             recordDate(
-                                record,
+                                item,
                                 [
                                     "maintenanceDate",
                                     "serviceDate",
+                                    "lastServiceDate",
                                     "date"
                                 ]
                             ),
 
                             fromDate,
                             toDate
-
                         );
-
                     }
                 );
 
@@ -2329,25 +1987,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const maintenanceCost =
             periodMaintenance.reduce(
                 function (
-                    total,
-                    record
+                    sum,
+                    item
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         getMaintenanceCost(
-                            record
+                            item
                         )
                     );
-
                 },
                 0
             );
 
-
-        /* =====================================
-           INVENTORY CURRENT SNAPSHOT
-        ====================================== */
 
         const inventory =
             calculateCurrentInventory();
@@ -2357,27 +2010,22 @@ document.addEventListener("DOMContentLoaded", function () {
             getSafetyStock();
 
 
-        const inventoryValues =
+        const currentInventoryTotal =
             Object.values(
                 inventory
-            );
-
-
-        const currentInventoryTotal =
-            inventoryValues.reduce(
+            )
+            .reduce(
                 function (
-                    total,
+                    sum,
                     quantity
                 ) {
-
                     return (
-                        total +
+                        sum
+                        +
                         Number(
-                            quantity ||
-                            0
+                            quantity || 0
                         )
                     );
-
                 },
                 0
             );
@@ -2394,32 +2042,26 @@ document.addEventListener("DOMContentLoaded", function () {
             function (
                 key
             ) {
-
                 if (
                     Number(
-                        inventory[key] ||
+                        inventory[key]
+                        ||
                         0
                     )
-
                     <=
-
                     Number(
-                        safetyStock[key] ||
+                        safetyStock[key]
+                        ||
                         0
                     )
                 ) {
-
-                    lowStockCount +=
-                        1;
-
+                    lowStockCount++;
                 }
-
             }
         );
 
 
         return {
-
             fromDate,
             toDate,
 
@@ -2474,20 +2116,17 @@ document.addEventListener("DOMContentLoaded", function () {
             safetyStock,
             currentInventoryTotal,
             lowStockCount
-
         };
-
     }
 
 
     /* =========================================
        UPDATE KPI CARDS
-    ========================================= */
+    ========================================== */
 
     function updateKpis(
         metrics
     ) {
-
         salesRevenueValue.textContent =
             formatMoney(
                 metrics.salesRevenue
@@ -2495,7 +2134,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         salesInvoiceCount.textContent =
-
             `${metrics.salesCount} active ${
                 metrics.salesCount ===
                 1
@@ -2511,7 +2149,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         purchaseCountValue.textContent =
-
             `${metrics.purchaseCount} ${
                 metrics.purchaseCount ===
                 1
@@ -2527,28 +2164,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         operatingBalanceValue.style.color =
-
-            metrics.operatingBalance <
-            0
-
-                ?
-
-                "#c23939"
-
-                :
-
-                "#16833a";
+            metrics.operatingBalance < 0
+                ? "#c23939"
+                : "#16833a";
 
 
         currentInventoryValue.textContent =
-
             `${formatNumber(
                 metrics.currentInventoryTotal
             )} kg`;
 
 
         lowStockSummary.textContent =
-
             `${metrics.lowStockCount} low-stock ${
                 metrics.lowStockCount ===
                 1
@@ -2564,9 +2191,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         productionQuantityValue.textContent =
-
-            metrics.productionCount >
-            0
+            metrics.productionCount
 
                 ?
 
@@ -2588,7 +2213,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         qualityInspectionValue.textContent =
-
             `${metrics.inspectionCount} ${
                 metrics.inspectionCount ===
                 1
@@ -2616,7 +2240,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         deliveryCountValue.textContent =
-
             `${metrics.deliveredCount} delivered from ${metrics.deliveryCount} records`;
 
 
@@ -2625,17 +2248,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         maintenanceCostValue.textContent =
-
             `${formatMoney(
                 metrics.maintenanceCost
             )} maintenance cost`;
-
     }
 
 
     /* =========================================
-       REPORT ROW
-    ========================================= */
+       REPORT ROWS
+    ========================================== */
 
     function createReportRow(
         module,
@@ -2644,36 +2265,25 @@ document.addEventListener("DOMContentLoaded", function () {
         interpretation,
         tone = ""
     ) {
-
         return {
-
             module,
             metric,
             value,
             interpretation,
             tone
-
         };
-
     }
 
-
-    /* =========================================
-       BUILD REPORT ROWS
-    ========================================= */
 
     function buildReportRows(
         type,
         metrics
     ) {
-
-        const rows =
-            [];
+        const rows = [];
 
 
-        const addProcurementRows =
+        const addProcurement =
             function () {
-
                 rows.push(
 
                     createReportRow(
@@ -2714,13 +2324,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     )
 
                 );
-
             };
 
 
-        const addQualityRows =
+        const addQuality =
             function () {
-
                 rows.push(
 
                     createReportRow(
@@ -2753,17 +2361,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         formatPercentage(
                             metrics.qualityAcceptanceRate
                         ),
-                        "Accepted inspections ÷ total inspections × 100."
+                        "Accepted inspections / total inspections x 100."
                     )
 
                 );
-
             };
 
 
-        const addProductionRows =
+        const addProduction =
             function () {
-
                 rows.push(
 
                     createReportRow(
@@ -2824,17 +2430,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         formatPercentage(
                             metrics.recoveryRate
                         ),
-                        "Whole rice output ÷ paddy input × 100."
+                        "Whole rice output / paddy input x 100."
                     )
 
                 );
-
             };
 
 
-        const addInventoryRows =
+        const addInventory =
             function () {
-
                 Object.keys(
                     INVENTORY_PRODUCTS
                 )
@@ -2842,17 +2446,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     function (
                         key
                     ) {
-
                         const quantity =
                             Number(
-                                metrics.inventory[key] ||
+                                metrics.inventory[key]
+                                ||
                                 0
                             );
 
 
                         const threshold =
                             Number(
-                                metrics.safetyStock[key] ||
+                                metrics.safetyStock[key]
+                                ||
                                 0
                             );
 
@@ -2866,34 +2471,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             createReportRow(
                                 "Inventory",
-                                INVENTORY_PRODUCTS[key]
-                                    .label,
+
+                                INVENTORY_PRODUCTS[key],
+
                                 `${formatNumber(
                                     quantity
                                 )} kg`,
+
                                 `Safety stock: ${formatNumber(
                                     threshold
-                                )} kg · ${
+                                )} kg - ${
                                     isLow
                                         ? "Low-stock attention required."
                                         : "Stock is above configured safety level."
                                 }`,
+
                                 isLow
                                     ? "warning"
                                     : "positive"
                             )
 
                         );
-
                     }
                 );
-
             };
 
 
-        const addSalesRows =
+        const addSales =
             function () {
-
                 rows.push(
 
                     createReportRow(
@@ -2925,13 +2530,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     )
 
                 );
-
             };
 
 
-        const addDeliveryRows =
+        const addDelivery =
             function () {
-
                 rows.push(
 
                     createReportRow(
@@ -2964,7 +2567,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         formatPercentage(
                             metrics.deliveryCompletionRate
                         ),
-                        "Delivered ÷ non-cancelled delivery records × 100."
+                        "Delivered / non-cancelled delivery records x 100."
                     ),
 
                     createReportRow(
@@ -2977,13 +2580,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     )
 
                 );
-
             };
 
 
-        const addFinancialRows =
+        const addFinancial =
             function () {
-
                 rows.push(
 
                     createReportRow(
@@ -3028,20 +2629,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         formatMoney(
                             metrics.operatingBalance
                         ),
-                        "Sales − Procurement − Operating Expenses − Salary. Operational estimate only; not formal accounting profit.",
+                        "Sales - Procurement - Operating Expenses - Salary. Operational estimate only; not formal accounting profit.",
                         metrics.operatingBalance < 0
                             ? "negative"
                             : "positive"
                     )
 
                 );
-
             };
 
 
-        const addMaintenanceRows =
+        const addMaintenance =
             function () {
-
                 rows.push(
 
                     createReportRow(
@@ -3061,125 +2660,83 @@ document.addEventListener("DOMContentLoaded", function () {
                     )
 
                 );
-
             };
+
+
+        const reportFunctions = {
+            procurement:
+                addProcurement,
+
+            quality:
+                addQuality,
+
+            production:
+                addProduction,
+
+            inventory:
+                addInventory,
+
+            sales:
+                addSales,
+
+            delivery:
+                addDelivery,
+
+            financial:
+                addFinancial,
+
+            maintenance:
+                addMaintenance
+        };
 
 
         if (
             type ===
-            "procurement"
+            "overall"
         ) {
+            addProcurement();
 
-            addProcurementRows();
+            addQuality();
 
+            addProduction();
+
+            addInventory();
+
+            addSales();
+
+            addDelivery();
+
+            addFinancial();
+
+            addMaintenance();
         }
         else if (
-            type ===
-            "quality"
+            reportFunctions[type]
         ) {
-
-            addQualityRows();
-
-        }
-        else if (
-            type ===
-            "production"
-        ) {
-
-            addProductionRows();
-
-        }
-        else if (
-            type ===
-            "inventory"
-        ) {
-
-            addInventoryRows();
-
-        }
-        else if (
-            type ===
-            "sales"
-        ) {
-
-            addSalesRows();
-
-        }
-        else if (
-            type ===
-            "delivery"
-        ) {
-
-            addDeliveryRows();
-
-        }
-        else if (
-            type ===
-            "financial"
-        ) {
-
-            addFinancialRows();
-
-        }
-        else if (
-            type ===
-            "maintenance"
-        ) {
-
-            addMaintenanceRows();
-
-        }
-        else {
-
-            addProcurementRows();
-
-            addQualityRows();
-
-            addProductionRows();
-
-            addInventoryRows();
-
-            addSalesRows();
-
-            addDeliveryRows();
-
-            addFinancialRows();
-
-            addMaintenanceRows();
-
+            reportFunctions[type]();
         }
 
 
         return rows;
-
     }
 
-
-    /* =========================================
-       DISPLAY REPORT
-    ========================================= */
 
     function displayReportRows(
         rows
     ) {
-
         reportTableBody.innerHTML =
             "";
 
 
         if (
-            rows.length ===
-            0
+            !rows.length
         ) {
-
             reportTableBody.innerHTML = `
 
                 <tr class="report-empty-row">
 
                     <td colspan="4">
-
                         No report metrics are available.
-
                     </td>
 
                 </tr>
@@ -3188,7 +2745,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             return;
-
         }
 
 
@@ -3196,8 +2752,7 @@ document.addEventListener("DOMContentLoaded", function () {
             function (
                 row
             ) {
-
-                const tr =
+                const tableRow =
                     document.createElement(
                         "tr"
                     );
@@ -3211,50 +2766,42 @@ document.addEventListener("DOMContentLoaded", function () {
                     row.tone ===
                     "positive"
                 ) {
-
                     valueClass +=
                         " report-positive-value";
-
                 }
-                else if (
+
+
+                if (
                     row.tone ===
                     "warning"
                 ) {
-
                     valueClass +=
                         " report-warning-value";
-
                 }
-                else if (
+
+
+                if (
                     row.tone ===
                     "negative"
                 ) {
-
                     valueClass +=
                         " report-negative-value";
-
                 }
 
 
-                tr.innerHTML = `
+                tableRow.innerHTML = `
 
                     <td>
-
                         ${escapeHTML(
                             row.module
                         )}
-
                     </td>
 
-
                     <td>
-
                         ${escapeHTML(
                             row.metric
                         )}
-
                     </td>
-
 
                     <td>
 
@@ -3268,34 +2815,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     </td>
 
-
                     <td>
-
                         ${escapeHTML(
                             row.interpretation
                         )}
-
                     </td>
 
                 `;
 
 
-                reportTableBody.appendChild(
-                    tr
-                );
-
+                reportTableBody
+                    .appendChild(
+                        tableRow
+                    );
             }
         );
-
     }
 
 
     /* =========================================
-       VALIDATE FILTER
-    ========================================= */
+       REPORT RENDERING
+    ========================================== */
 
     function validateFilter() {
-
         const fromDate =
             reportFromDateInput.value;
 
@@ -3305,14 +2847,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (
-            !fromDate ||
+            !fromDate
+            ||
             !toDate
         ) {
-
             return (
                 "Please select both From Date and To Date."
             );
-
         }
 
 
@@ -3320,31 +2861,24 @@ document.addEventListener("DOMContentLoaded", function () {
             fromDate >
             toDate
         ) {
-
             return (
                 "From Date cannot be later than To Date."
             );
-
         }
 
 
         return "";
-
     }
 
 
-    /* =========================================
-       RENDER REPORT
-    ========================================= */
-
     function renderCurrentReport() {
-
         const error =
             validateFilter();
 
 
-        if (error) {
-
+        if (
+            error
+        ) {
             showToast(
                 error,
                 "error"
@@ -3352,7 +2886,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             return false;
-
         }
 
 
@@ -3383,11 +2916,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const title =
-            REPORT_LABELS[type];
+            REPORT_LABELS[type]
+            ||
+            REPORT_LABELS.overall;
 
 
-        const formattedRange =
-
+        const range =
             `${formatDate(
                 fromDate
             )} – ${formatDate(
@@ -3396,8 +2930,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         selectedReportRange.textContent =
-
-            `${title} · ${formattedRange}`;
+            `${title} · ${range}`;
 
 
         reportResultTitle.textContent =
@@ -3405,7 +2938,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         reportResultRange.textContent =
-            formattedRange;
+            range;
 
 
         updateKpis(
@@ -3422,54 +2955,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         return true;
-
     }
 
 
-    /* =========================================
-       GENERATE REPORT
-    ========================================= */
-
-    reportFilterForm.addEventListener(
-        "submit",
-        function (
-            event
-        ) {
-
-            event.preventDefault();
-
-
-            if (
-                !renderCurrentReport()
+    reportFilterForm
+        .addEventListener(
+            "submit",
+            function (
+                event
             ) {
+                event.preventDefault();
 
-                return;
 
+                if (
+                    !renderCurrentReport()
+                ) {
+                    return;
+                }
+
+
+                saveReportHistory();
+
+
+                displayReportHistory();
+
+
+                showToast(
+                    `${
+                        REPORT_LABELS[
+                            reportTypeSelect.value
+                        ]
+                    } generated successfully.`
+                );
             }
-
-
-            saveReportHistory();
-
-
-            displayReportHistory();
-
-
-            showToast(
-                `${REPORT_LABELS[
-                    reportTypeSelect.value
-                ]} generated successfully.`
-            );
-
-        }
-    );
+        );
 
 
     /* =========================================
        REPORT HISTORY
-    ========================================= */
+    ========================================== */
 
     function loadReportHistory() {
-
         const data =
             safeParseStorage(
                 "generatedReportHistory",
@@ -3482,7 +3008,6 @@ document.addEventListener("DOMContentLoaded", function () {
         )
             ? data
             : [];
-
     }
 
 
@@ -3491,49 +3016,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function saveReportHistory() {
-
-        const entry = {
-
-            id:
-                Date.now(),
-
-
-            reportType:
-                reportTypeSelect.value,
-
-
-            reportName:
-
-                REPORT_LABELS[
-                    reportTypeSelect.value
-                ],
-
-
-            fromDate:
-                reportFromDateInput.value,
-
-
-            toDate:
-                reportToDateInput.value,
-
-
-            generatedBy:
-                "Admin User",
-
-
-            generatedAt:
-                new Date()
-                    .toISOString(),
-
-
-            status:
-                "Generated"
-
-        };
-
-
         reportHistory.unshift(
-            entry
+            {
+                id:
+                    Date.now(),
+
+                reportType:
+                    reportTypeSelect.value,
+
+                reportName:
+                    REPORT_LABELS[
+                        reportTypeSelect.value
+                    ],
+
+                fromDate:
+                    reportFromDateInput.value,
+
+                toDate:
+                    reportToDateInput.value,
+
+                generatedBy:
+                    "Admin User",
+
+                generatedAt:
+                    new Date()
+                        .toISOString(),
+
+                status:
+                    "Generated"
+            }
         );
 
 
@@ -3550,29 +3061,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 reportHistory
             )
         );
-
     }
 
 
     function displayReportHistory() {
-
         reportHistoryBody.innerHTML =
             "";
 
 
         if (
-            reportHistory.length ===
-            0
+            !reportHistory.length
         ) {
-
             reportHistoryBody.innerHTML = `
 
                 <tr class="report-empty-row">
 
                     <td colspan="6">
-
                         No report has been generated yet.
-
                     </td>
 
                 </tr>
@@ -3581,7 +3086,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             return;
-
         }
 
 
@@ -3589,7 +3093,6 @@ document.addEventListener("DOMContentLoaded", function () {
             function (
                 report
             ) {
-
                 const row =
                     document.createElement(
                         "tr"
@@ -3599,64 +3102,69 @@ document.addEventListener("DOMContentLoaded", function () {
                 row.innerHTML = `
 
                     <td>
-
                         ${escapeHTML(
                             report.reportName
                         )}
-
                     </td>
-
-
-                    <td>
-
-                        ${formatDate(
-                            report.fromDate
-                        )}
-                        –
-                        ${formatDate(
-                            report.toDate
-                        )}
-
-                    </td>
-
 
                     <td>
 
                         ${escapeHTML(
+                            formatDate(
+                                report.fromDate
+                            )
+                        )}
+
+                        –
+
+                        ${escapeHTML(
+                            formatDate(
+                                report.toDate
+                            )
+                        )}
+
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
                             report.generatedBy
+                            ||
+                            "Admin User"
                         )}
-
                     </td>
 
+                    <td>
+                        ${escapeHTML(
+                            formatDateTime(
+                                report.generatedAt
+                            )
+                        )}
+                    </td>
 
                     <td>
 
-                        ${formatDateTime(
-                            report.generatedAt
-                        )}
+                        <span class="report-history-status">
 
-                    </td>
-
-
-                    <td>
-
-                        <span class="generated-status-badge">
-
-                            Generated
+                            ${escapeHTML(
+                                report.status
+                                ||
+                                "Generated"
+                            )}
 
                         </span>
 
                     </td>
 
-
                     <td>
 
                         <button
-                            class="report-load-button"
                             type="button"
-                            data-report-id="${report.id}"
+                            class="report-history-view-button"
+                            data-report-id="${escapeHTML(
+                                report.id
+                            )}"
                         >
-                            Load
+                            View
                         </button>
 
                     </td>
@@ -3664,355 +3172,425 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
 
 
-                reportHistoryBody.appendChild(
-                    row
-                );
-
+                reportHistoryBody
+                    .appendChild(
+                        row
+                    );
             }
         );
-
     }
 
 
-    reportHistoryBody.addEventListener(
-        "click",
-        function (
-            event
-        ) {
-
-            const button =
-                event.target.closest(
-                    "button[data-report-id]"
-                );
-
-
-            if (!button) {
-
-                return;
-
-            }
+    reportHistoryBody
+        .addEventListener(
+            "click",
+            function (
+                event
+            ) {
+                const button =
+                    event.target.closest(
+                        "[data-report-id]"
+                    );
 
 
-            const id =
-                Number(
-                    button.dataset.reportId
-                );
+                if (
+                    !button
+                ) {
+                    return;
+                }
 
 
-            const report =
-                reportHistory.find(
-                    function (
-                        item
-                    ) {
+                const report =
+                    reportHistory.find(
+                        function (
+                            item
+                        ) {
+                            return (
+                                Number(
+                                    item.id
+                                )
+                                ===
+                                Number(
+                                    button.dataset.reportId
+                                )
+                            );
+                        }
+                    );
 
-                        return (
-                            Number(
-                                item.id
-                            )
 
-                            ===
+                if (
+                    !report
+                ) {
+                    return;
+                }
 
-                            id
-                        );
 
+                reportTypeSelect.value =
+                    report.reportType
+                    ||
+                    "overall";
+
+
+                reportFromDateInput.value =
+                    report.fromDate;
+
+
+                reportToDateInput.value =
+                    report.toDate;
+
+
+                renderCurrentReport();
+
+
+                window.scrollTo(
+                    {
+                        top:
+                            0,
+
+                        behavior:
+                            "smooth"
                     }
                 );
-
-
-            if (!report) {
-
-                return;
-
             }
-
-
-            reportTypeSelect.value =
-                report.reportType;
-
-
-            reportFromDateInput.value =
-                report.fromDate;
-
-
-            reportToDateInput.value =
-                report.toDate;
-
-
-            renderCurrentReport();
-
-
-            window.scrollTo(
-                {
-                    top:
-                        0,
-
-                    behavior:
-                        "smooth"
-                }
-            );
-
-        }
-    );
+        );
 
 
     /* =========================================
-       MONTH HELPERS
-    ========================================= */
+       CSV EXPORT
+    ========================================== */
 
-    function getSixMonthPeriods(
-        endDateValue
+    function csvEscape(
+        value
     ) {
+        return (
+            `"${String(
+                value ?? ""
+            )
+            .replace(
+                /"/g,
+                '""'
+            )}"`
+        );
+    }
 
+
+    function downloadBlob(
+        content,
+        mimeType,
+        fileName
+    ) {
+        const blob =
+            new Blob(
+                [
+                    content
+                ],
+                {
+                    type:
+                        mimeType
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+
+        link.href =
+            url;
+
+
+        link.download =
+            fileName;
+
+
+        document.body.appendChild(
+            link
+        );
+
+
+        link.click();
+
+
+        link.remove();
+
+
+        setTimeout(
+            function () {
+                URL.revokeObjectURL(
+                    url
+                );
+            },
+            500
+        );
+    }
+
+
+    exportCsvBtn
+        .addEventListener(
+            "click",
+            function () {
+                if (
+                    !renderCurrentReport()
+                ) {
+                    return;
+                }
+
+
+                if (
+                    !currentReportRows.length
+                ) {
+                    showToast(
+                        "Generate a report before exporting.",
+                        "error"
+                    );
+
+
+                    return;
+                }
+
+
+                const rows = [
+
+                    [
+                        "Module",
+                        "Metric",
+                        "Value",
+                        "Interpretation"
+                    ],
+
+                    ...currentReportRows.map(
+                        function (
+                            row
+                        ) {
+                            return [
+                                row.module,
+                                row.metric,
+                                row.value,
+                                row.interpretation
+                            ];
+                        }
+                    )
+
+                ];
+
+
+                const csv =
+                    "\uFEFF"
+                    +
+                    rows
+                        .map(
+                            function (
+                                row
+                            ) {
+                                return row
+                                    .map(
+                                        csvEscape
+                                    )
+                                    .join(
+                                        ","
+                                    );
+                            }
+                        )
+                        .join(
+                            "\r\n"
+                        );
+
+
+                const fileName =
+                    `${reportTypeSelect.value}-report-${reportFromDateInput.value}-to-${reportToDateInput.value}.csv`;
+
+
+                downloadBlob(
+                    csv,
+                    "text/csv;charset=utf-8",
+                    fileName
+                );
+
+
+                showToast(
+                    "CSV report exported successfully."
+                );
+            }
+        );
+
+
+    /* =========================================
+       CHART DATA
+    ========================================== */
+
+    function getLastMonths(
+        endDateValue,
+        count = 6
+    ) {
         const end =
             new Date(
                 `${endDateValue}T00:00:00`
             );
 
 
-        const result =
-            [];
+        const months = [];
 
 
         for (
-            let offset = 5;
-            offset >= 0;
-            offset--
-        ) {
+            let index =
+                count - 1;
 
+            index >= 0;
+
+            index--
+        ) {
             const date =
                 new Date(
                     end.getFullYear(),
-                    end.getMonth() - offset,
+                    end.getMonth() - index,
                     1
                 );
 
 
-            const year =
-                date.getFullYear();
-
-
-            const month =
-                date.getMonth() + 1;
-
-
-            const key =
-
-                `${year}-${String(
-                    month
-                ).padStart(
-                    2,
-                    "0"
-                )}`;
-
-
-            const label =
-                date.toLocaleDateString(
-                    "en-US",
-                    {
-                        month:
-                            "short"
-                    }
+            const last =
+                new Date(
+                    date.getFullYear(),
+                    date.getMonth() + 1,
+                    0
                 );
 
 
-            result.push(
+            months.push(
                 {
-                    key,
-                    label
+                    label:
+                        date.toLocaleDateString(
+                            "en-US",
+                            {
+                                month:
+                                    "short"
+                            }
+                        ),
+
+                    start:
+                        localISODate(
+                            date
+                        ),
+
+                    end:
+                        localISODate(
+                            last
+                        )
                 }
             );
-
         }
 
 
-        return result;
-
+        return months;
     }
 
 
-    function getMonthlyTrendData() {
-
-        const periods =
-            getSixMonthPeriods(
-                reportToDateInput.value
-            );
-
-
-        const salesValues =
-            periods.map(
-                function (
-                    period
-                ) {
-
-                    return getSales()
-
-                        .filter(
-                            saleIsActive
-                        )
-
-                        .filter(
-                            function (
-                                sale
-                            ) {
-
-                                const date =
-                                    recordDate(
-                                        sale,
-                                        [
-                                            "saleDate",
-                                            "invoiceDate",
-                                            "date"
-                                        ]
-                                    );
-
-
-                                return (
-                                    date.slice(
-                                        0,
-                                        7
-                                    )
-
-                                    ===
-
-                                    period.key
-                                );
-
-                            }
-                        )
-
-                        .reduce(
-                            function (
-                                total,
-                                sale
-                            ) {
-
-                                return (
-                                    total +
-                                    getSaleAmount(
-                                        sale
-                                    )
-                                );
-
-                            },
-                            0
-                        );
-
-                }
-            );
-
-
-        const purchaseValues =
-            periods.map(
-                function (
-                    period
-                ) {
-
-                    return getPurchases()
-
-                        .filter(
-                            function (
-                                purchase
-                            ) {
-
-                                const date =
-                                    recordDate(
-                                        purchase,
-                                        [
-                                            "purchaseDate",
-                                            "date"
-                                        ]
-                                    );
-
-
-                                return (
-                                    date.slice(
-                                        0,
-                                        7
-                                    )
-
-                                    ===
-
-                                    period.key
-                                );
-
-                            }
-                        )
-
-                        .reduce(
-                            function (
-                                total,
-                                purchase
-                            ) {
-
-                                return (
-                                    total +
-                                    getPurchaseAmount(
-                                        purchase
-                                    )
-                                );
-
-                            },
-                            0
-                        );
-
-                }
-            );
-
-
-        return {
-
-            labels:
-
-                periods.map(
-                    function (
-                        period
-                    ) {
-
-                        return period.label;
-
-                    }
-                ),
-
-
-            salesValues,
-            purchaseValues
-
-        };
-
-    }
-
-
-    /* =========================================
-       CANVAS
-    ========================================= */
-
-    function prepareCanvas(
-        canvas
+    function monthlyAmount(
+        records,
+        month,
+        dateFields,
+        amountGetter,
+        filterFunction =
+            function () {
+                return true;
+            }
     ) {
+        return records
+            .filter(
+                filterFunction
+            )
+            .reduce(
+                function (
+                    sum,
+                    record
+                ) {
+                    const date =
+                        recordDate(
+                            record,
+                            dateFields
+                        );
 
-        const rect =
-            canvas.getBoundingClientRect();
+
+                    return dateIsWithinRange(
+                        date,
+                        month.start,
+                        month.end
+                    )
+
+                        ?
+
+                        sum
+                        +
+                        amountGetter(
+                            record
+                        )
+
+                        :
+
+                        sum;
+                },
+                0
+            );
+    }
+
+
+    function resizeCanvas(
+        canvas,
+        height = 220
+    ) {
+        if (
+            !canvas
+        ) {
+            return null;
+        }
 
 
         const ratio =
-            window.devicePixelRatio ||
+            window.devicePixelRatio
+            ||
             1;
 
 
-        canvas.width =
+        const width =
             Math.max(
-                rect.width,
-                300
-            ) *
-            ratio;
+                320,
+
+                canvas.parentElement
+                    ?.clientWidth
+                ||
+                600
+            );
+
+
+        canvas.width =
+            Math.floor(
+                width
+                *
+                ratio
+            );
 
 
         canvas.height =
-            Math.max(
-                rect.height,
-                220
-            ) *
-            ratio;
+            Math.floor(
+                height
+                *
+                ratio
+            );
+
+
+        canvas.style.width =
+            `${width}px`;
+
+
+        canvas.style.height =
+            `${height}px`;
 
 
         const context =
@@ -4031,297 +3609,228 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        context.clearRect(
-            0,
-            0,
-            rect.width,
-            rect.height
-        );
-
-
         return {
+            ctx:
+                context,
 
-            context,
-            width:
-                rect.width,
+            width,
 
-            height:
-                rect.height
-
+            height
         };
-
     }
 
 
-    function compactMoney(
-        value
-    ) {
-
-        const number =
-            Number(
-                value ||
-                0
-            );
-
-
-        if (
-            Math.abs(number) >=
-            1000000
-        ) {
-
-            return (
-                `৳${(
-                    number /
-                    1000000
-                ).toFixed(
-                    1
-                )}M`
-            );
-
-        }
-
-
-        if (
-            Math.abs(number) >=
-            1000
-        ) {
-
-            return (
-                `৳${(
-                    number /
-                    1000
-                ).toFixed(
-                    1
-                )}K`
-            );
-
-        }
-
-
-        return (
-            `৳${Math.round(
-                number
-            )}`
-        );
-
-    }
-
-
-    /* =========================================
-       LINE CHART
-    ========================================= */
-
-    function drawSalesTrend(
+    function drawLineChart(
+        canvas,
         labels,
         values
     ) {
-
-        const {
-            context,
-            width,
-            height
-        } =
-            prepareCanvas(
-                salesTrendCanvas
+        const setup =
+            resizeCanvas(
+                canvas
             );
 
 
-        const padding = {
+        if (
+            !setup
+        ) {
+            return;
+        }
 
+
+        const {
+            ctx,
+            width,
+            height
+        } = setup;
+
+
+        const padding = {
             left:
-                58,
+                52,
 
             right:
-                24,
+                18,
 
             top:
-                28,
+                20,
 
             bottom:
-                42
-
+                38
         };
 
 
         const chartWidth =
-
-            width -
-            padding.left -
+            width
+            -
+            padding.left
+            -
             padding.right;
 
 
         const chartHeight =
-
-            height -
-            padding.top -
+            height
+            -
+            padding.top
+            -
             padding.bottom;
 
 
-        const maxValue =
-
+        const maximum =
             Math.max(
                 ...values,
                 1
             );
 
 
-        context.font =
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        ctx.font =
             "11px Arial";
 
 
-        context.strokeStyle =
-            "#e2e8e4";
+        ctx.fillStyle =
+            "#66726a";
 
 
-        context.fillStyle =
-            "#7d8981";
+        ctx.strokeStyle =
+            "#dfe6e2";
 
 
-        context.lineWidth =
+        ctx.lineWidth =
             1;
 
 
-        const gridCount =
-            4;
-
-
         for (
-            let i = 0;
-            i <= gridCount;
-            i++
+            let index =
+                0;
+
+            index <=
+                4;
+
+            index++
         ) {
-
             const y =
-
-                padding.top +
+                padding.top
+                +
                 (
-                    chartHeight /
-                    gridCount
-                ) *
-                i;
+                    chartHeight
+                    /
+                    4
+                )
+                *
+                index;
 
 
-            context.beginPath();
+            const value =
+                maximum
+                -
+                (
+                    maximum
+                    /
+                    4
+                )
+                *
+                index;
 
-            context.moveTo(
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
                 padding.left,
                 y
             );
 
-            context.lineTo(
-                width -
+
+            ctx.lineTo(
+                width
+                -
                 padding.right,
                 y
             );
 
-            context.stroke();
+
+            ctx.stroke();
 
 
-            const gridValue =
-
-                maxValue *
-                (
-                    1 -
-                    i /
-                    gridCount
-                );
-
-
-            context.fillText(
-                compactMoney(
-                    gridValue
+            ctx.fillText(
+                formatNumber(
+                    value
                 ),
-                5,
+                4,
                 y + 4
             );
-
         }
 
 
         const points =
-            [];
-
-
-        labels.forEach(
-            function (
-                label,
-                index
-            ) {
-
-                const x =
-
-                    labels.length ===
-                    1
-
-                        ?
-
-                        padding.left +
-                        chartWidth /
-                        2
-
-                        :
-
-                        padding.left +
-                        (
-                            chartWidth /
+            values.map(
+                function (
+                    value,
+                    index
+                ) {
+                    return {
+                        x:
+                            padding.left
+                            +
                             (
-                                labels.length -
+                                labels.length ===
                                 1
+
+                                    ?
+
+                                    chartWidth
+                                    /
+                                    2
+
+                                    :
+
+                                    (
+                                        chartWidth
+                                        /
+                                        (
+                                            labels.length
+                                            -
+                                            1
+                                        )
+                                    )
+                                    *
+                                    index
+                            ),
+
+                        y:
+                            padding.top
+                            +
+                            chartHeight
+                            -
+                            (
+                                value
+                                /
+                                maximum
                             )
-                        ) *
-                        index;
+                            *
+                            chartHeight
+                    };
+                }
+            );
 
 
-                const value =
-                    values[index];
+        ctx.strokeStyle =
+            "#16833a";
 
 
-                const y =
-
-                    padding.top +
-                    chartHeight -
-                    (
-                        value /
-                        maxValue
-                    ) *
-                    chartHeight;
+        ctx.lineWidth =
+            2.5;
 
 
-                points.push(
-                    {
-                        x,
-                        y
-                    }
-                );
-
-
-                context.fillStyle =
-                    "#78847c";
-
-
-                context.textAlign =
-                    "center";
-
-
-                context.fillText(
-                    label,
-                    x,
-                    height - 15
-                );
-
-            }
-        );
-
-
-        context.strokeStyle =
-            "#15913a";
-
-
-        context.lineWidth =
-            3;
-
-
-        context.beginPath();
+        ctx.beginPath();
 
 
         points.forEach(
@@ -4329,31 +3838,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 point,
                 index
             ) {
-
                 if (
-                    index === 0
+                    index ===
+                    0
                 ) {
-
-                    context.moveTo(
+                    ctx.moveTo(
                         point.x,
                         point.y
                     );
-
                 }
                 else {
-
-                    context.lineTo(
+                    ctx.lineTo(
                         point.x,
                         point.y
                     );
-
                 }
-
             }
         );
 
 
-        context.stroke();
+        ctx.stroke();
 
 
         points.forEach(
@@ -4361,118 +3865,105 @@ document.addEventListener("DOMContentLoaded", function () {
                 point,
                 index
             ) {
+                ctx.fillStyle =
+                    "#16833a";
 
-                context.beginPath();
 
-                context.arc(
+                ctx.beginPath();
+
+
+                ctx.arc(
                     point.x,
                     point.y,
-                    4.5,
+                    4,
                     0,
                     Math.PI * 2
                 );
 
 
-                context.fillStyle =
-                    "#ffffff";
+                ctx.fill();
 
 
-                context.fill();
+                ctx.fillStyle =
+                    "#66726a";
 
 
-                context.lineWidth =
-                    2.5;
+                ctx.textAlign =
+                    "center";
 
 
-                context.strokeStyle =
-                    "#15913a";
-
-
-                context.stroke();
-
-
-                if (
-                    values[index] >
-                    0
-                ) {
-
-                    context.fillStyle =
-                        "#435047";
-
-
-                    context.font =
-                        "10px Arial";
-
-
-                    context.fillText(
-                        compactMoney(
-                            values[index]
-                        ),
-                        point.x,
-                        point.y - 10
-                    );
-
-                }
-
+                ctx.fillText(
+                    labels[index],
+                    point.x,
+                    height - 12
+                );
             }
         );
 
+
+        ctx.textAlign =
+            "start";
     }
 
 
-    /* =========================================
-       GROUPED BAR CHART
-    ========================================= */
-
-    function drawCashFlowChart(
+    function drawComparisonChart(
+        canvas,
         labels,
         salesValues,
         purchaseValues
     ) {
-
-        const {
-            context,
-            width,
-            height
-        } =
-            prepareCanvas(
-                cashFlowCanvas
+        const setup =
+            resizeCanvas(
+                canvas
             );
 
 
-        const padding = {
+        if (
+            !setup
+        ) {
+            return;
+        }
 
+
+        const {
+            ctx,
+            width,
+            height
+        } = setup;
+
+
+        const padding = {
             left:
-                58,
+                52,
 
             right:
-                20,
+                18,
 
             top:
-                28,
+                20,
 
             bottom:
-                42
-
+                38
         };
 
 
         const chartWidth =
-
-            width -
-            padding.left -
+            width
+            -
+            padding.left
+            -
             padding.right;
 
 
         const chartHeight =
-
-            height -
-            padding.top -
+            height
+            -
+            padding.top
+            -
             padding.bottom;
 
 
-        const maxValue =
-
+        const maximum =
             Math.max(
                 ...salesValues,
                 ...purchaseValues,
@@ -4480,95 +3971,80 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        const gridCount =
-            4;
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
 
 
-        context.font =
+        ctx.font =
             "11px Arial";
 
 
+        ctx.fillStyle =
+            "#66726a";
+
+
+        ctx.strokeStyle =
+            "#dfe6e2";
+
+
         for (
-            let i = 0;
-            i <= gridCount;
-            i++
+            let index =
+                0;
+
+            index <=
+                4;
+
+            index++
         ) {
-
             const y =
-
-                padding.top +
+                padding.top
+                +
                 (
-                    chartHeight /
-                    gridCount
-                ) *
-                i;
+                    chartHeight
+                    /
+                    4
+                )
+                *
+                index;
 
 
-            context.strokeStyle =
-                "#e2e8e4";
+            ctx.beginPath();
 
 
-            context.lineWidth =
-                1;
-
-
-            context.beginPath();
-
-            context.moveTo(
+            ctx.moveTo(
                 padding.left,
                 y
             );
 
-            context.lineTo(
-                width -
+
+            ctx.lineTo(
+                width
+                -
                 padding.right,
                 y
             );
 
-            context.stroke();
 
-
-            context.fillStyle =
-                "#7c8780";
-
-
-            context.textAlign =
-                "left";
-
-
-            context.fillText(
-
-                compactMoney(
-
-                    maxValue *
-                    (
-                        1 -
-                        i /
-                        gridCount
-                    )
-
-                ),
-
-                5,
-                y + 4
-
-            );
-
+            ctx.stroke();
         }
 
 
         const groupWidth =
-
-            chartWidth /
+            chartWidth
+            /
             labels.length;
 
 
         const barWidth =
-
             Math.min(
                 22,
-                groupWidth *
-                0.26
+                groupWidth
+                *
+                0.25
             );
 
 
@@ -4577,677 +4053,1817 @@ document.addEventListener("DOMContentLoaded", function () {
                 label,
                 index
             ) {
-
-                const centerX =
-
-                    padding.left +
-                    groupWidth *
-                    index +
-                    groupWidth /
+                const center =
+                    padding.left
+                    +
+                    groupWidth
+                    *
+                    index
+                    +
+                    groupWidth
+                    /
                     2;
 
 
-                const saleHeight =
-
+                const salesHeight =
                     (
-                        salesValues[index] /
-                        maxValue
-                    ) *
+                        salesValues[index]
+                        /
+                        maximum
+                    )
+                    *
                     chartHeight;
 
 
                 const purchaseHeight =
-
                     (
-                        purchaseValues[index] /
-                        maxValue
-                    ) *
+                        purchaseValues[index]
+                        /
+                        maximum
+                    )
+                    *
                     chartHeight;
 
 
-                context.fillStyle =
-                    "#15913a";
+                ctx.fillStyle =
+                    "#16833a";
 
 
-                context.fillRect(
-
-                    centerX -
-                    barWidth -
+                ctx.fillRect(
+                    center
+                    -
+                    barWidth
+                    -
                     2,
 
-                    padding.top +
-                    chartHeight -
-                    saleHeight,
+                    padding.top
+                    +
+                    chartHeight
+                    -
+                    salesHeight,
 
                     barWidth,
-                    saleHeight
 
+                    salesHeight
                 );
 
 
-                context.fillStyle =
-                    "#2c73b8";
+                ctx.fillStyle =
+                    "#2f76b7";
 
 
-                context.fillRect(
-
-                    centerX +
+                ctx.fillRect(
+                    center
+                    +
                     2,
 
-                    padding.top +
-                    chartHeight -
+                    padding.top
+                    +
+                    chartHeight
+                    -
                     purchaseHeight,
 
                     barWidth,
-                    purchaseHeight
 
+                    purchaseHeight
                 );
 
 
-                context.fillStyle =
-                    "#78847c";
+                ctx.fillStyle =
+                    "#66726a";
 
 
-                context.font =
-                    "11px Arial";
-
-
-                context.textAlign =
+                ctx.textAlign =
                     "center";
 
 
-                context.fillText(
+                ctx.fillText(
                     label,
-                    centerX,
-                    height - 15
+                    center,
+                    height - 12
                 );
-
             }
         );
 
+
+        ctx.textAlign =
+            "start";
     }
 
-
-    /* =========================================
-       DRAW CHARTS
-    ========================================= */
 
     function drawCharts() {
-
-        const data =
-            getMonthlyTrendData();
-
-
-        drawSalesTrend(
-            data.labels,
-            data.salesValues
-        );
+        if (
+            !reportToDateInput.value
+        ) {
+            return;
+        }
 
 
-        drawCashFlowChart(
-            data.labels,
-            data.salesValues,
-            data.purchaseValues
-        );
-
-    }
-
-
-    /* =========================================
-       CSV EXPORT
-    ========================================= */
-
-    function csvEscape(
-        value
-    ) {
-
-        const text =
-            String(
-                value ??
-                ""
+        const months =
+            getLastMonths(
+                reportToDateInput.value,
+                6
             );
 
 
-        return (
-
-            `"${text.replace(
-                /"/g,
-                '""'
-            )}"`
-
-        );
-
-    }
-
-
-    exportCsvBtn.addEventListener(
-        "click",
-        function () {
-
-            if (
-                !currentReportRows.length
-            ) {
-
-                showToast(
-                    "Generate a report before exporting.",
-                    "error"
-                );
-
-
-                return;
-
-            }
-
-
-            const lines = [
-
-                [
-                    "Module",
-                    "Metric",
-                    "Value",
-                    "Interpretation"
-                ]
-
-            ];
-
-
-            currentReportRows.forEach(
+        const salesValues =
+            months.map(
                 function (
-                    row
+                    month
                 ) {
-
-                    lines.push(
+                    return monthlyAmount(
+                        getSales(),
+                        month,
                         [
-                            row.module,
-                            row.metric,
-                            row.value,
-                            row.interpretation
-                        ]
+                            "saleDate",
+                            "invoiceDate",
+                            "date"
+                        ],
+                        getSaleAmount,
+                        saleIsActive
                     );
-
                 }
             );
 
 
-            const csv =
-                lines
+        const purchaseValues =
+            months.map(
+                function (
+                    month
+                ) {
+                    return monthlyAmount(
+                        getPurchases(),
+                        month,
+                        [
+                            "purchaseDate",
+                            "date"
+                        ],
+                        getPurchaseAmount
+                    );
+                }
+            );
 
-                    .map(
-                        function (
-                            line
-                        ) {
 
-                            return line
-                                .map(
-                                    csvEscape
-                                )
-                                .join(
-                                    ","
-                                );
+        const labels =
+            months.map(
+                function (
+                    month
+                ) {
+                    return month.label;
+                }
+            );
 
-                        }
-                    )
 
-                    .join(
-                        "\n"
+        drawLineChart(
+            salesTrendCanvas,
+            labels,
+            salesValues
+        );
+
+
+        drawComparisonChart(
+            cashFlowCanvas,
+            labels,
+            salesValues,
+            purchaseValues
+        );
+    }
+
+
+    /* =========================================
+       DIRECT PDF EXPORT
+       jsPDF 2.5.1
+       NO PRINT DIALOG
+       NO html2pdf
+       NO hidden HTML capture
+    ========================================== */
+
+    let jsPdfLoadingPromise =
+        null;
+
+
+    function loadExternalScript(
+        src
+    ) {
+        return new Promise(
+            function (
+                resolve,
+                reject
+            ) {
+                const existing =
+                    document.querySelector(
+                        `script[src="${src}"]`
                     );
 
 
-            const blob =
-                new Blob(
-                    [
-                        "\uFEFF" +
-                        csv
-                    ],
+                if (
+                    existing
+                ) {
+                    if (
+                        existing.dataset.loaded ===
+                        "true"
+                    ) {
+                        resolve();
+
+                        return;
+                    }
+
+
+                    if (
+                        window.jspdf
+                        &&
+                        typeof window.jspdf.jsPDF ===
+                        "function"
+                    ) {
+                        resolve();
+
+                        return;
+                    }
+
+
+                    existing.addEventListener(
+                        "load",
+                        resolve,
+                        {
+                            once:
+                                true
+                        }
+                    );
+
+
+                    existing.addEventListener(
+                        "error",
+                        reject,
+                        {
+                            once:
+                                true
+                        }
+                    );
+
+
+                    return;
+                }
+
+
+                const script =
+                    document.createElement(
+                        "script"
+                    );
+
+
+                script.src =
+                    src;
+
+
+                script.async =
+                    true;
+
+
+                script.addEventListener(
+                    "load",
+                    function () {
+                        script.dataset.loaded =
+                            "true";
+
+
+                        resolve();
+                    },
                     {
-                        type:
-                            "text/csv;charset=utf-8;"
+                        once:
+                            true
                     }
                 );
 
 
-            const url =
-                URL.createObjectURL(
-                    blob
+                script.addEventListener(
+                    "error",
+                    reject,
+                    {
+                        once:
+                            true
+                    }
                 );
 
 
-            const link =
-                document.createElement(
-                    "a"
+                document.head.appendChild(
+                    script
                 );
+            }
+        );
+    }
 
 
-            link.href =
-                url;
-
-
-            link.download =
-
-                `${reportTypeSelect.value}-report-${reportFromDateInput.value}-to-${reportToDateInput.value}.csv`;
-
-
-            document.body.appendChild(
-                link
-            );
-
-
-            link.click();
-
-
-            link.remove();
-
-
-            URL.revokeObjectURL(
-                url
-            );
-
-
-            showToast(
-                "CSV report exported successfully."
-            );
-
+    async function ensureJsPdfLoaded() {
+        if (
+            window.jspdf
+            &&
+            typeof window.jspdf.jsPDF ===
+            "function"
+        ) {
+            return;
         }
-    );
 
 
-    /* =========================================
-       PRINT / SAVE PDF
-
-       Uses browser print engine so user can
-       choose "Save as PDF" without an extra
-       paid library or backend.
-    ========================================= */
-
-    savePdfBtn.addEventListener(
-        "click",
-        function () {
-
-            if (
-                !currentReportRows.length
-            ) {
-
-                showToast(
-                    "Generate a report before printing.",
-                    "error"
+        if (
+            !jsPdfLoadingPromise
+        ) {
+            jsPdfLoadingPromise =
+                loadExternalScript(
+                    "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+                )
+                .then(
+                    function () {
+                        if (
+                            !window.jspdf
+                            ||
+                            typeof window.jspdf.jsPDF !==
+                            "function"
+                        ) {
+                            throw new Error(
+                                "jsPDF failed to initialize."
+                            );
+                        }
+                    }
                 );
+        }
 
 
-                return;
+        await jsPdfLoadingPromise;
+    }
 
+
+    function toPdfText(
+        value
+    ) {
+        return String(
+            value ?? ""
+        )
+        .replace(
+            /৳/g,
+            "BDT "
+        )
+        .replace(
+            /[–—−]/g,
+            "-"
+        )
+        .replace(
+            /÷/g,
+            "/"
+        )
+        .replace(
+            /×/g,
+            "x"
+        )
+        .replace(
+            /[“”]/g,
+            "\""
+        )
+        .replace(
+            /[‘’]/g,
+            "'"
+        )
+        .replace(
+            /·/g,
+            "-"
+        );
+    }
+
+
+    function addPdfPageHeader(
+        doc,
+        title,
+        range,
+        continuation =
+            false
+    ) {
+        doc.setTextColor(
+            23,
+            35,
+            28
+        );
+
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+
+        doc.setFontSize(
+            continuation
+                ? 13
+                : 18
+        );
+
+
+        doc.text(
+            toPdfText(
+                title
+            ),
+            14,
+            continuation
+                ? 15
+                : 17
+        );
+
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+
+        doc.setTextColor(
+            22,
+            131,
+            58
+        );
+
+
+        doc.setFontSize(
+            9.5
+        );
+
+
+        doc.text(
+            "Smart Rice Mill ERP & Logistics Management System",
+            14,
+            continuation
+                ? 21
+                : 24
+        );
+
+
+        doc.setTextColor(
+            100,
+            114,
+            106
+        );
+
+
+        doc.setFontSize(
+            8.5
+        );
+
+
+        doc.text(
+            toPdfText(
+                range
+            ),
+            14,
+            continuation
+                ? 27
+                : 30
+        );
+
+
+        doc.setDrawColor(
+            220,
+            228,
+            223
+        );
+
+
+        doc.line(
+            14,
+            continuation
+                ? 31
+                : 34,
+
+            196,
+
+            continuation
+                ? 31
+                : 34
+        );
+
+
+        return continuation
+            ? 37
+            : 40;
+    }
+
+
+    function drawPdfCard(
+        doc,
+        x,
+        y,
+        width,
+        height,
+        label,
+        value,
+        valueColor =
+            [
+                23,
+                35,
+                28
+            ]
+    ) {
+        doc.setFillColor(
+            249,
+            252,
+            250
+        );
+
+
+        doc.setDrawColor(
+            220,
+            228,
+            223
+        );
+
+
+        doc.roundedRect(
+            x,
+            y,
+            width,
+            height,
+            2,
+            2,
+            "FD"
+        );
+
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+
+        doc.setTextColor(
+            105,
+            118,
+            110
+        );
+
+
+        doc.setFontSize(
+            7.5
+        );
+
+
+        doc.text(
+            toPdfText(
+                label
+            ),
+            x + 3,
+            y + 5
+        );
+
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+
+        doc.setTextColor(
+            ...valueColor
+        );
+
+
+        doc.setFontSize(
+            10.5
+        );
+
+
+        doc.text(
+            toPdfText(
+                value
+            ),
+            x + 3,
+            y + 12
+        );
+    }
+
+
+    function canvasToDataUrl(
+        canvas
+    ) {
+        try {
+            if (
+                !canvas
+                ||
+                !canvas.width
+                ||
+                !canvas.height
+            ) {
+                return "";
             }
 
 
-            openPrintableReport();
-
+            return canvas.toDataURL(
+                "image/png",
+                1
+            );
         }
-    );
+        catch {
+            return "";
+        }
+    }
 
 
-    function openPrintableReport() {
+    /* =========================================
+       FIXED PDF TABLE HEADER
 
-        const printWindow =
-            window.open(
-                "",
-                "_blank",
-                "width=1000,height=800"
+       White background is used intentionally.
+       Each cell resets drawing/text state so
+       Metric / Value / Interpretation can never
+       inherit a dark fill from another PDF item.
+    ========================================== */
+
+    function drawPdfTableHeader(
+        doc,
+        y,
+        widths
+    ) {
+        const startX =
+            14;
+
+
+        const rowHeight =
+            9;
+
+
+        const headers = [
+            "Module",
+            "Metric",
+            "Value",
+            "Interpretation"
+        ];
+
+
+        let cursorX =
+            startX;
+
+
+        headers.forEach(
+            function (
+                header,
+                index
+            ) {
+                /*
+                   Explicit white background.
+                   Do not inherit any previous fill state.
+                */
+
+                doc.setFillColor(
+                    255,
+                    255,
+                    255
+                );
+
+
+                doc.setDrawColor(
+                    185,
+                    199,
+                    191
+                );
+
+
+                doc.setLineWidth(
+                    0.25
+                );
+
+
+                doc.rect(
+                    cursorX,
+                    y,
+                    widths[index],
+                    rowHeight,
+                    "FD"
+                );
+
+
+                /*
+                   Reset font and text color for
+                   every single header cell.
+                */
+
+                doc.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+
+                doc.setFontSize(
+                    7.8
+                );
+
+
+                doc.setTextColor(
+                    23,
+                    35,
+                    28
+                );
+
+
+                doc.text(
+                    header,
+                    cursorX + 2.2,
+                    y + 5.7
+                );
+
+
+                cursorX +=
+                    widths[index];
+            }
+        );
+
+
+        /*
+           Green accent line underneath the header.
+        */
+
+        doc.setDrawColor(
+            22,
+            131,
+            58
+        );
+
+
+        doc.setLineWidth(
+            0.45
+        );
+
+
+        doc.line(
+            startX,
+            y + rowHeight,
+            startX
+            +
+            widths.reduce(
+                function (
+                    total,
+                    width
+                ) {
+                    return (
+                        total
+                        +
+                        width
+                    );
+                },
+                0
+            ),
+            y + rowHeight
+        );
+
+
+        return (
+            y
+            +
+            rowHeight
+        );
+    }
+
+
+    function drawPdfTableRow(
+        doc,
+        y,
+        row,
+        widths
+    ) {
+        const x =
+            14;
+
+
+        const padding =
+            2;
+
+
+        const lineHeight =
+            3.6;
+
+
+        const values = [
+
+            toPdfText(
+                row.module
+            ),
+
+            toPdfText(
+                row.metric
+            ),
+
+            toPdfText(
+                row.value
+            ),
+
+            toPdfText(
+                row.interpretation
+            )
+
+        ];
+
+
+        doc.setFont(
+            "helvetica",
+            "normal"
+        );
+
+
+        doc.setFontSize(
+            7.2
+        );
+
+
+        const wrapped =
+            values.map(
+                function (
+                    value,
+                    index
+                ) {
+                    return doc.splitTextToSize(
+                        value,
+
+                        widths[index]
+                        -
+                        padding * 2
+                    );
+                }
             );
 
 
-        if (!printWindow) {
+        const maximumLines =
+            Math.max(
+                ...wrapped.map(
+                    function (
+                        lines
+                    ) {
+                        return lines.length;
+                    }
+                )
+            );
 
+
+        const rowHeight =
+            Math.max(
+                9,
+
+                maximumLines
+                *
+                lineHeight
+                +
+                padding * 2
+            );
+
+
+        let cursorX =
+            x;
+
+
+        wrapped.forEach(
+            function (
+                lines,
+                index
+            ) {
+                /*
+                   Reset white fill and border for every cell.
+                   This also prevents header styling from
+                   leaking into data rows.
+                */
+
+                doc.setFillColor(
+                    255,
+                    255,
+                    255
+                );
+
+
+                doc.setDrawColor(
+                    220,
+                    227,
+                    223
+                );
+
+
+                doc.setLineWidth(
+                    0.2
+                );
+
+
+                doc.rect(
+                    cursorX,
+                    y,
+                    widths[index],
+                    rowHeight,
+                    "FD"
+                );
+
+
+                doc.setFont(
+                    "helvetica",
+                    "normal"
+                );
+
+
+                doc.setFontSize(
+                    7.2
+                );
+
+
+                doc.setTextColor(
+                    45,
+                    55,
+                    49
+                );
+
+
+                doc.text(
+                    lines,
+                    cursorX + padding,
+                    y + padding + 2.8,
+                    {
+                        lineHeightFactor:
+                            1.15
+                    }
+                );
+
+
+                cursorX +=
+                    widths[index];
+            }
+        );
+
+
+        return (
+            y
+            +
+            rowHeight
+        );
+    }
+
+
+    async function downloadPdfReport() {
+        if (
+            !renderCurrentReport()
+        ) {
+            return;
+        }
+
+
+        if (
+            !currentReportRows.length
+            ||
+            !currentMetrics
+        ) {
             showToast(
-                "The print window was blocked by the browser.",
+                "Generate a report before downloading PDF.",
                 "error"
             );
 
 
             return;
-
         }
 
 
-        const title =
-            REPORT_LABELS[
-                reportTypeSelect.value
-            ];
+        const originalButtonText =
+            savePdfBtn.textContent;
 
 
-        const range =
-
-            `${formatDate(
-                reportFromDateInput.value
-            )} – ${formatDate(
-                reportToDateInput.value
-            )}`;
+        savePdfBtn.disabled =
+            true;
 
 
-        const tableRows =
-            currentReportRows
-                .map(
-                    function (
-                        row
-                    ) {
+        savePdfBtn.textContent =
+            "Generating PDF...";
 
-                        return `
 
-                            <tr>
+        try {
+            await ensureJsPdfLoaded();
 
-                                <td>
-                                    ${escapeHTML(
-                                        row.module
-                                    )}
-                                </td>
 
-                                <td>
-                                    ${escapeHTML(
-                                        row.metric
-                                    )}
-                                </td>
+            const {
+                jsPDF
+            } =
+                window.jspdf;
 
-                                <td>
-                                    ${escapeHTML(
-                                        row.value
-                                    )}
-                                </td>
 
-                                <td>
-                                    ${escapeHTML(
-                                        row.interpretation
-                                    )}
-                                </td>
+            const doc =
+                new jsPDF(
+                    {
+                        orientation:
+                            "portrait",
 
-                            </tr>
+                        unit:
+                            "mm",
 
-                        `;
+                        format:
+                            "a4",
 
+                        compress:
+                            true
                     }
-                )
-                .join(
-                    ""
                 );
 
 
-        printWindow.document.write(`
+            const type =
+                reportTypeSelect.value;
 
-            <!DOCTYPE html>
 
-            <html>
+            const title =
+                REPORT_LABELS[type]
+                ||
+                REPORT_LABELS.overall;
 
-            <head>
 
-                <title>${escapeHTML(
-                    title
-                )}</title>
+            const range =
+                `${formatDate(
+                    reportFromDateInput.value
+                )} - ${formatDate(
+                    reportToDateInput.value
+                )}`;
 
-                <style>
 
-                    body {
-                        font-family: Arial, sans-serif;
-                        padding: 32px;
-                        color: #17231c;
-                    }
+            let y =
+                addPdfPageHeader(
+                    doc,
+                    title,
+                    range,
+                    false
+                );
 
-                    h1 {
-                        margin: 0;
-                        font-size: 24px;
-                    }
 
-                    .subtitle {
-                        margin-top: 5px;
-                        color: #66726a;
-                        font-size: 13px;
-                    }
+            /* =====================================
+               MAIN KPI CARDS
+            ====================================== */
 
-                    .system-name {
-                        margin-top: 4px;
-                        color: #148039;
-                        font-size: 13px;
-                        font-weight: 700;
-                    }
+            const cardGap =
+                3;
 
-                    .summary {
-                        margin-top: 24px;
-                        display: grid;
-                        grid-template-columns:
-                            repeat(4, 1fr);
-                        gap: 10px;
-                    }
 
-                    .summary div {
-                        border: 1px solid #d9e1dc;
-                        border-radius: 7px;
-                        padding: 12px;
-                    }
+            const cardWidth =
+                (
+                    182
+                    -
+                    cardGap * 3
+                )
+                /
+                4;
 
-                    .summary span {
-                        display: block;
-                        color: #6e7972;
-                        font-size: 11px;
-                    }
 
-                    .summary strong {
-                        display: block;
-                        margin-top: 5px;
-                        font-size: 15px;
-                    }
+            const cardHeight =
+                18;
 
-                    .notice {
-                        margin-top: 16px;
-                        padding: 10px;
-                        border: 1px solid #dce4df;
-                        background: #f7faf8;
-                        font-size: 11px;
-                        line-height: 1.5;
-                    }
 
-                    table {
-                        width: 100%;
-                        margin-top: 24px;
-                        border-collapse: collapse;
-                        font-size: 11px;
-                    }
+            const cardXs = [
 
-                    th,
-                    td {
-                        border: 1px solid #d9e0dc;
-                        padding: 9px;
-                        text-align: left;
-                        vertical-align: top;
-                    }
+                14,
 
-                    th {
-                        background: #f5f8f6;
-                    }
+                14
+                +
+                cardWidth
+                +
+                cardGap,
 
-                    footer {
-                        margin-top: 25px;
-                        color: #7b857f;
-                        font-size: 10px;
-                    }
+                14
+                +
+                (
+                    cardWidth
+                    +
+                    cardGap
+                )
+                *
+                2,
 
-                    @media print {
+                14
+                +
+                (
+                    cardWidth
+                    +
+                    cardGap
+                )
+                *
+                3
 
-                        body {
-                            padding: 10px;
+            ];
+
+
+            drawPdfCard(
+                doc,
+                cardXs[0],
+                y,
+                cardWidth,
+                cardHeight,
+                "Sales Revenue",
+                formatMoney(
+                    currentMetrics.salesRevenue
+                )
+            );
+
+
+            drawPdfCard(
+                doc,
+                cardXs[1],
+                y,
+                cardWidth,
+                cardHeight,
+                "Paddy Procurement",
+                formatMoney(
+                    currentMetrics.purchaseCost
+                )
+            );
+
+
+            drawPdfCard(
+                doc,
+                cardXs[2],
+                y,
+                cardWidth,
+                cardHeight,
+                "Operating Balance",
+                formatMoney(
+                    currentMetrics.operatingBalance
+                ),
+
+                currentMetrics.operatingBalance < 0
+
+                    ?
+
+                    [
+                        194,
+                        57,
+                        57
+                    ]
+
+                    :
+
+                    [
+                        22,
+                        131,
+                        58
+                    ]
+            );
+
+
+            drawPdfCard(
+                doc,
+                cardXs[3],
+                y,
+                cardWidth,
+                cardHeight,
+                "Current Inventory",
+                `${formatNumber(
+                    currentMetrics.currentInventoryTotal
+                )} kg`
+            );
+
+
+            y +=
+                cardHeight
+                +
+                5;
+
+
+            /* =====================================
+               OPERATIONAL CARDS
+            ====================================== */
+
+            const smallGap =
+                3;
+
+
+            const smallWidth =
+                (
+                    182
+                    -
+                    smallGap * 2
+                )
+                /
+                3;
+
+
+            const operationalRows = [
+
+                [
+                    [
+                        "Whole Rice Recovery",
+                        formatPercentage(
+                            currentMetrics.recoveryRate
+                        )
+                    ],
+
+                    [
+                        "Quality Acceptance",
+                        formatPercentage(
+                            currentMetrics.qualityAcceptanceRate
+                        )
+                    ],
+
+                    [
+                        "Low-stock Items",
+                        currentMetrics.lowStockCount
+                    ]
+                ],
+
+                [
+                    [
+                        "Customer Receivables",
+                        formatMoney(
+                            currentMetrics.customerDue
+                        )
+                    ],
+
+                    [
+                        "Supplier Payables",
+                        formatMoney(
+                            currentMetrics.supplierDue
+                        )
+                    ],
+
+                    [
+                        "Delivery Completion",
+                        formatPercentage(
+                            currentMetrics.deliveryCompletionRate
+                        )
+                    ]
+                ]
+
+            ];
+
+
+            operationalRows.forEach(
+                function (
+                    row
+                ) {
+                    row.forEach(
+                        function (
+                            item,
+                            index
+                        ) {
+                            drawPdfCard(
+                                doc,
+
+                                14
+                                +
+                                index
+                                *
+                                (
+                                    smallWidth
+                                    +
+                                    smallGap
+                                ),
+
+                                y,
+
+                                smallWidth,
+
+                                15,
+
+                                item[0],
+
+                                item[1]
+                            );
                         }
-
-                    }
-
-                </style>
-
-            </head>
+                    );
 
 
-            <body>
-
-                <h1>
-                    ${escapeHTML(
-                        title
-                    )}
-                </h1>
+                    y +=
+                        18;
+                }
+            );
 
 
-                <div class="system-name">
-                    Smart Rice Mill ERP &amp; Logistics Management System
-                </div>
+            /* =====================================
+               FINANCIAL NOTICE
+            ====================================== */
+
+            doc.setFillColor(
+                248,
+                250,
+                249
+            );
 
 
-                <div class="subtitle">
-                    ${escapeHTML(
-                        range
-                    )}
-                </div>
+            doc.setDrawColor(
+                220,
+                228,
+                223
+            );
 
 
-                <div class="summary">
-
-                    <div>
-                        <span>Sales Revenue</span>
-                        <strong>
-                            ${escapeHTML(
-                                formatMoney(
-                                    currentMetrics.salesRevenue
-                                )
-                            )}
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>Procurement Cost</span>
-                        <strong>
-                            ${escapeHTML(
-                                formatMoney(
-                                    currentMetrics.purchaseCost
-                                )
-                            )}
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>Operating Balance</span>
-                        <strong>
-                            ${escapeHTML(
-                                formatMoney(
-                                    currentMetrics.operatingBalance
-                                )
-                            )}
-                        </strong>
-                    </div>
-
-                    <div>
-                        <span>Current Inventory</span>
-                        <strong>
-                            ${escapeHTML(
-                                formatNumber(
-                                    currentMetrics.currentInventoryTotal
-                                )
-                            )} kg
-                        </strong>
-                    </div>
-
-                </div>
+            doc.roundedRect(
+                14,
+                y,
+                182,
+                15,
+                2,
+                2,
+                "FD"
+            );
 
 
-                <div class="notice">
-
-                    Estimated Operating Balance =
-                    Sales Revenue − Paddy Procurement Cost −
-                    Operating Expenses − Salary Expense.
-
-                    This is an operational ERP prototype indicator,
-                    not a formal accounting profit or COGS statement.
-
-                </div>
+            doc.setFont(
+                "helvetica",
+                "bold"
+            );
 
 
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Module</th>
-
-                            <th>Metric</th>
-
-                            <th>Value</th>
-
-                            <th>Interpretation</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        ${tableRows}
-
-                    </tbody>
-
-                </table>
+            doc.setFontSize(
+                7.5
+            );
 
 
-                <footer>
+            doc.setTextColor(
+                23,
+                35,
+                28
+            );
 
-                    Generated:
-                    ${escapeHTML(
+
+            doc.text(
+                "Financial interpretation:",
+                17,
+                y + 5
+            );
+
+
+            doc.setFont(
+                "helvetica",
+                "normal"
+            );
+
+
+            doc.setTextColor(
+                75,
+                86,
+                80
+            );
+
+
+            doc.text(
+
+                doc.splitTextToSize(
+
+                    "Estimated Operating Balance = Sales Revenue - Paddy Procurement Cost - Operating Expenses - Salary Expense. This is an operational ERP prototype indicator, not formal accounting profit.",
+
+                    150
+
+                ),
+
+                17,
+
+                y + 9,
+
+                {
+                    lineHeightFactor:
+                        1.1
+                }
+
+            );
+
+
+            y +=
+                20;
+
+
+            /* =====================================
+               CHARTS
+            ====================================== */
+
+            const salesChart =
+                canvasToDataUrl(
+                    salesTrendCanvas
+                );
+
+
+            const comparisonChart =
+                canvasToDataUrl(
+                    cashFlowCanvas
+                );
+
+
+            if (
+                salesChart
+                ||
+                comparisonChart
+            ) {
+                doc.setFont(
+                    "helvetica",
+                    "bold"
+                );
+
+
+                doc.setTextColor(
+                    23,
+                    35,
+                    28
+                );
+
+
+                doc.setFontSize(
+                    10
+                );
+
+
+                doc.text(
+                    "Management Charts",
+                    14,
+                    y
+                );
+
+
+                y +=
+                    4;
+
+
+                const chartWidth =
+                    88;
+
+
+                const chartHeight =
+                    40;
+
+
+                if (
+                    salesChart
+                ) {
+                    doc.setDrawColor(
+                        220,
+                        228,
+                        223
+                    );
+
+
+                    doc.rect(
+                        14,
+                        y,
+                        chartWidth,
+                        chartHeight
+                    );
+
+
+                    doc.addImage(
+                        salesChart,
+                        "PNG",
+                        16,
+                        y + 2,
+                        chartWidth - 4,
+                        chartHeight - 4,
+                        undefined,
+                        "FAST"
+                    );
+                }
+
+
+                if (
+                    comparisonChart
+                ) {
+                    doc.setDrawColor(
+                        220,
+                        228,
+                        223
+                    );
+
+
+                    doc.rect(
+                        108,
+                        y,
+                        chartWidth,
+                        chartHeight
+                    );
+
+
+                    doc.addImage(
+                        comparisonChart,
+                        "PNG",
+                        110,
+                        y + 2,
+                        chartWidth - 4,
+                        chartHeight - 4,
+                        undefined,
+                        "FAST"
+                    );
+                }
+
+
+                y +=
+                    chartHeight
+                    +
+                    8;
+            }
+
+
+            /* =====================================
+               DETAILS TABLE
+            ====================================== */
+
+            if (
+                y >
+                245
+            ) {
+                doc.addPage();
+
+
+                y =
+                    addPdfPageHeader(
+                        doc,
+                        title,
+                        range,
+                        true
+                    );
+            }
+
+
+            doc.setFont(
+                "helvetica",
+                "bold"
+            );
+
+
+            doc.setTextColor(
+                23,
+                35,
+                28
+            );
+
+
+            doc.setFontSize(
+                10
+            );
+
+
+            doc.text(
+                `${toPdfText(
+                    title
+                )} Details`,
+                14,
+                y
+            );
+
+
+            y +=
+                4;
+
+
+            const widths = [
+                24,
+                41,
+                31,
+                86
+            ];
+
+
+            y =
+                drawPdfTableHeader(
+                    doc,
+                    y,
+                    widths
+                );
+
+
+            for (
+                const row of currentReportRows
+            ) {
+                doc.setFont(
+                    "helvetica",
+                    "normal"
+                );
+
+
+                doc.setFontSize(
+                    7.2
+                );
+
+
+                const wrapped = [
+
+                    doc.splitTextToSize(
+                        toPdfText(
+                            row.module
+                        ),
+                        widths[0] - 4
+                    ),
+
+                    doc.splitTextToSize(
+                        toPdfText(
+                            row.metric
+                        ),
+                        widths[1] - 4
+                    ),
+
+                    doc.splitTextToSize(
+                        toPdfText(
+                            row.value
+                        ),
+                        widths[2] - 4
+                    ),
+
+                    doc.splitTextToSize(
+                        toPdfText(
+                            row.interpretation
+                        ),
+                        widths[3] - 4
+                    )
+
+                ];
+
+
+                const estimatedHeight =
+                    Math.max(
+
+                        9,
+
+                        Math.max(
+                            ...wrapped.map(
+                                function (
+                                    lines
+                                ) {
+                                    return lines.length;
+                                }
+                            )
+                        )
+                        *
+                        3.6
+                        +
+                        4
+
+                    );
+
+
+                if (
+                    y
+                    +
+                    estimatedHeight
+                    >
+                    280
+                ) {
+                    doc.addPage();
+
+
+                    y =
+                        addPdfPageHeader(
+                            doc,
+                            title,
+                            range,
+                            true
+                        );
+
+
+                    y =
+                        drawPdfTableHeader(
+                            doc,
+                            y,
+                            widths
+                        );
+                }
+
+
+                y =
+                    drawPdfTableRow(
+                        doc,
+                        y,
+                        row,
+                        widths
+                    );
+            }
+
+
+            /* =====================================
+               FOOTER + PAGE NUMBERS
+            ====================================== */
+
+            const totalPages =
+                doc.getNumberOfPages();
+
+
+            for (
+                let page =
+                    1;
+
+                page <=
+                    totalPages;
+
+                page++
+            ) {
+                doc.setPage(
+                    page
+                );
+
+
+                doc.setDrawColor(
+                    225,
+                    231,
+                    227
+                );
+
+
+                doc.line(
+                    14,
+                    287,
+                    196,
+                    287
+                );
+
+
+                doc.setFont(
+                    "helvetica",
+                    "normal"
+                );
+
+
+                doc.setFontSize(
+                    7.2
+                );
+
+
+                doc.setTextColor(
+                    120,
+                    130,
+                    124
+                );
+
+
+                doc.text(
+
+                    `Generated ${toPdfText(
                         formatDateTime(
                             new Date()
                                 .toISOString()
                         )
-                    )}
-                    · Generated by Admin User
+                    )} | Admin User`,
 
-                </footer>
+                    14,
 
-            </body>
+                    292
 
-            </html>
-
-        `);
+                );
 
 
-        printWindow.document.close();
+                doc.text(
+
+                    `Page ${page} of ${totalPages}`,
+
+                    196,
+
+                    292,
+
+                    {
+                        align:
+                            "right"
+                    }
+
+                );
+            }
 
 
-        printWindow.focus();
+            const fileName =
+                `${type}-report-${reportFromDateInput.value}-to-${reportToDateInput.value}.pdf`;
 
 
-        setTimeout(
-            function () {
+            doc.save(
+                fileName
+            );
 
-                printWindow.print();
 
-            },
-            350
-        );
+            showToast(
+                "PDF report downloaded successfully."
+            );
+        }
+        catch (
+            error
+        ) {
+            console.error(
+                "PDF export failed:",
+                error
+            );
 
+
+            showToast(
+                "PDF could not be generated. Check your internet connection, refresh the page and try again.",
+                "error"
+            );
+        }
+        finally {
+            savePdfBtn.disabled =
+                false;
+
+
+            savePdfBtn.textContent =
+                originalButtonText;
+        }
     }
+
+
+    savePdfBtn.addEventListener(
+        "click",
+        downloadPdfReport
+    );
 
 
     /* =========================================
        TOAST
-    ========================================= */
+    ========================================== */
 
     function showToast(
         message,
-        type = "success"
+        type =
+            "success"
     ) {
-
-        const oldToast =
-            document.querySelector(
-                ".report-toast"
-            );
-
-
-        if (
-            oldToast
-        ) {
-
-            oldToast.remove();
-
-        }
+        document.querySelector(
+            ".report-toast"
+        )
+        ?.remove();
 
 
         const toast =
@@ -5267,19 +5883,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 ${
                     type ===
                     "error"
-                        ? "!"
-                        : "✓"
+
+                        ?
+
+                        "!"
+
+                        :
+
+                        "✓"
                 }
 
             </span>
 
-
             <span>
-
                 ${escapeHTML(
                     message
                 )}
-
             </span>
 
         `;
@@ -5292,18 +5911,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         requestAnimationFrame(
             function () {
-
                 toast.classList.add(
                     "show"
                 );
-
             }
         );
 
 
         setTimeout(
             function () {
-
                 toast.classList.remove(
                     "show"
                 );
@@ -5311,30 +5927,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 setTimeout(
                     function () {
-
                         toast.remove();
-
                     },
                     250
                 );
-
             },
             3000
         );
-
     }
 
 
     /* =========================================
-       SIDEBAR
-    ========================================= */
+       MOBILE SIDEBAR
+    ========================================== */
 
     function openSidebar() {
-
-        if (!sidebar) {
-
+        if (
+            !sidebar
+        ) {
             return;
-
         }
 
 
@@ -5343,41 +5954,29 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        if (
-            sidebarBackdrop
-        ) {
-
-            sidebarBackdrop.classList.add(
+        sidebarBackdrop
+            ?.classList.add(
                 "show"
             );
 
-        }
 
-
-        if (
-            menuButton
-        ) {
-
-            menuButton.setAttribute(
+        menuButton
+            ?.setAttribute(
                 "aria-expanded",
                 "true"
             );
 
-        }
-
 
         document.body.style.overflow =
             "hidden";
-
     }
 
 
     function closeSidebar() {
-
-        if (!sidebar) {
-
+        if (
+            !sidebar
+        ) {
             return;
-
         }
 
 
@@ -5386,80 +5985,50 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        if (
-            sidebarBackdrop
-        ) {
-
-            sidebarBackdrop.classList.remove(
+        sidebarBackdrop
+            ?.classList.remove(
                 "show"
             );
 
-        }
 
-
-        if (
-            menuButton
-        ) {
-
-            menuButton.setAttribute(
+        menuButton
+            ?.setAttribute(
                 "aria-expanded",
                 "false"
             );
 
-        }
-
 
         document.body.style.overflow =
             "";
-
     }
 
 
-    if (
-        menuButton
-    ) {
-
-        menuButton.addEventListener(
+    menuButton
+        ?.addEventListener(
             "click",
             function () {
-
-                if (
-                    sidebar &&
-                    sidebar.classList.contains(
+                sidebar
+                    ?.classList.contains(
                         "open"
                     )
-                ) {
 
-                    closeSidebar();
+                    ?
 
-                }
-                else {
+                    closeSidebar()
+
+                    :
 
                     openSidebar();
-
-                }
-
             }
         );
 
-    }
 
-
-    if (
-        sidebarBackdrop
-    ) {
-
-        sidebarBackdrop.addEventListener(
+    sidebarBackdrop
+        ?.addEventListener(
             "click",
             closeSidebar
         );
 
-    }
-
-
-    /* =========================================
-       RESIZE CHARTS
-    ========================================= */
 
     let resizeTimer =
         null;
@@ -5468,14 +6037,11 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener(
         "resize",
         function () {
-
             if (
                 window.innerWidth >
                 1000
             ) {
-
                 closeSidebar();
-
             }
 
 
@@ -5486,21 +6052,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             resizeTimer =
                 setTimeout(
-                    function () {
-
-                        drawCharts();
-
-                    },
+                    drawCharts,
                     150
                 );
-
         }
     );
 
 
     /* =========================================
        INITIALIZE
-    ========================================= */
+    ========================================== */
+
+    savePdfBtn.textContent =
+        "Download PDF";
+
 
     reportFromDateInput.value =
         getMonthStartDate();
@@ -5518,5 +6083,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     displayReportHistory();
-
 });
