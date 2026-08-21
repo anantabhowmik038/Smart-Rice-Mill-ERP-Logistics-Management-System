@@ -2,10 +2,14 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Reports and Analytics - Smart Rice Mill ERP & Logistics Management System">
 
     <title>Reports & Analytics | Smart Rice Mill ERP</title>
 
@@ -14,16 +18,21 @@
 
     <link rel="stylesheet"
           href="../styles/reports.css">
+
 </head>
+
 
 <body>
 
     <div class="dashboard-layout">
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
-        <aside class="sidebar">
+
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+
+        <aside class="sidebar"
+               id="sidebar">
 
             <div class="sidebar-header">
 
@@ -38,7 +47,9 @@
 
                 <div class="sidebar-brand">
 
-                    <h2>Smart Rice Mill</h2>
+                    <h2>
+                        Smart Rice Mill
+                    </h2>
 
                     <p>
                         ERP &amp; Logistics<br>
@@ -53,11 +64,30 @@
             <nav class="sidebar-navigation"
                  aria-label="Main navigation">
 
+
                 <a class="navigation-link"
                    href="dashboard.html">
 
                     <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
+
+                    <span class="navigation-text">
+                        Dashboard
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="notifications.html">
+
+                    <span class="navigation-icon">🔔</span>
+
+                    <span class="navigation-text">
+                        Notifications
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -67,7 +97,39 @@
                    href="purchase.html">
 
                     <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
+
+                    <span class="navigation-text">
+                        Purchase
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="supplier.html">
+
+                    <span class="navigation-icon">👥</span>
+
+                    <span class="navigation-text">
+                        Farmer &amp; Supplier
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="quality.html">
+
+                    <span class="navigation-icon">✓</span>
+
+                    <span class="navigation-text">
+                        Quality Inspection
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -77,7 +139,11 @@
                    href="production.html">
 
                     <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
+
+                    <span class="navigation-text">
+                        Production
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -87,7 +153,11 @@
                    href="inventory.html">
 
                     <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
+
+                    <span class="navigation-text">
+                        Inventory
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -97,7 +167,25 @@
                    href="sales.html">
 
                     <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
+
+                    <span class="navigation-text">
+                        Sales
+                    </span>
+
+                    <span class="navigation-arrow">⌄</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="customer.html">
+
+                    <span class="navigation-icon">👤</span>
+
+                    <span class="navigation-text">
+                        Customers
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -107,31 +195,11 @@
                    href="delivery.html">
 
                     <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
-                    <span class="navigation-arrow">›</span>
 
-                </a>
-
-
-                <a class="navigation-link"
-                   href="expense.html">
-
-                    <span class="navigation-icon">৳</span>
                     <span class="navigation-text">
-                        Expense &amp; Salary
+                        Delivery
                     </span>
-                    <span class="navigation-arrow">›</span>
 
-                </a>
-
-
-                <a class="navigation-link"
-                   href="maintenance.html">
-
-                    <span class="navigation-icon">🔧</span>
-                    <span class="navigation-text">
-                        Maintenance
-                    </span>
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -141,7 +209,25 @@
                    href="reports.html">
 
                     <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
+
+                    <span class="navigation-text">
+                        Reports
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="expense.html">
+
+                    <span class="navigation-icon">৳</span>
+
+                    <span class="navigation-text">
+                        Expense &amp; Salary
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -151,7 +237,39 @@
                    href="profile.html">
 
                     <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
+
+                    <span class="navigation-text">
+                        Settings
+                    </span>
+
+                    <span class="navigation-arrow">⌄</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="users.html">
+
+                    <span class="navigation-icon">👥</span>
+
+                    <span class="navigation-text">
+                        User Roles
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">🔧</span>
+
+                    <span class="navigation-text">
+                        Maintenance
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -160,33 +278,50 @@
 
 
             <a class="logout-link"
-               href="../index.html">
+               href="#"
+               id="logoutBtn">
 
                 <span class="logout-icon">↪</span>
-                <span>Logout</span>
+
+                <span>
+                    Logout
+                </span>
 
             </a>
 
         </aside>
 
 
-        <!-- =====================================
-             Main
-        ====================================== -->
+        <div class="sidebar-backdrop"
+             id="sidebarBackdrop">
+        </div>
+
+
+        <!-- =========================================
+             MAIN AREA
+        ========================================== -->
+
         <main class="main-area">
 
-            <!-- Topbar -->
+
+            <!-- =========================================
+                 TOPBAR
+            ========================================== -->
+
             <header class="topbar">
 
                 <div class="topbar-left">
 
                     <button class="menu-button"
+                            id="menuButton"
                             type="button"
-                            aria-label="Open navigation menu">
+                            aria-label="Open navigation menu"
+                            aria-expanded="false">
 
                         ☰
 
                     </button>
+
 
                     <h1>
                         Reports &amp; Analytics
@@ -197,9 +332,9 @@
 
                 <div class="topbar-right">
 
-                    <a class="notification-area reports-topbar-link"
+                    <a class="notification-area"
                        href="notifications.html"
-                       aria-label="View notifications">
+                       aria-label="Open notifications">
 
                         <span class="notification-icon">
                             ♧
@@ -212,20 +347,17 @@
                     </a>
 
 
-                    <a class="user-profile reports-topbar-link"
+                    <a class="user-profile"
                        href="profile.html">
 
-                        <div class="user-avatar"
-                             aria-hidden="true">
-
+                        <div class="user-avatar">
                             👤
-
                         </div>
 
 
                         <div class="user-information">
 
-                            <strong id="reportsTopbarUserName">
+                            <strong>
                                 Admin User
                             </strong>
 
@@ -247,17 +379,57 @@
             </header>
 
 
-            <!-- =====================================
-                 Reports Content
-            ====================================== -->
-            <section class="dashboard-content reports-page">
+            <!-- =========================================
+                 CONTENT
+            ========================================== -->
 
-                <!-- =================================
-                     Filter
-                ================================== -->
-                <section class="content-card reports-filter-card">
+            <section class="dashboard-content reports-content">
 
-                    <div class="reports-section-heading">
+
+                <!-- =========================================
+                     PAGE HEADING
+                ========================================== -->
+
+                <div class="reports-page-heading">
+
+                    <div>
+
+                        <h2>
+                            Integrated Management Reporting
+                        </h2>
+
+                        <p>
+                            Consolidate procurement, quality, production,
+                            inventory, sales, finance and logistics data
+                            into decision-oriented reports.
+                        </p>
+
+                    </div>
+
+
+                    <div class="reports-heading-badges">
+
+                        <span class="reports-heading-badge">
+                            Transaction Driven
+                        </span>
+
+                        <span class="reports-heading-badge">
+                            Live KPIs
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     FILTER CARD
+                ========================================== -->
+
+                <section class="content-card report-filter-card">
+
+
+                    <div class="report-filter-heading">
 
                         <div>
 
@@ -266,60 +438,65 @@
                             </h2>
 
                             <p>
-                                Generate reports using live system records.
+                                Generate reports from live ERP transaction records.
                             </p>
 
                         </div>
 
+
+                        <span class="report-filter-badge">
+                            Management View
+                        </span>
+
                     </div>
 
 
-                    <form class="reports-filter-form"
-                          id="reportsFilterForm">
+                    <form id="reportFilterForm"
+                          class="report-filter-form">
 
-                        <div class="reports-field">
 
-                            <label for="report-type">
+                        <div class="report-filter-field">
+
+                            <label for="reportType">
                                 Report Type
                             </label>
 
-                            <select id="report-type"
-                                    name="reportType">
+                            <select id="reportType">
 
-                                <option value="all">
-                                    Overall Report
+                                <option value="overall">
+                                    Overall Management Report
                                 </option>
 
-                                <option value="sales">
-                                    Sales Report
+                                <option value="procurement">
+                                    Procurement Report
                                 </option>
 
-                                <option value="purchase">
-                                    Purchase Report
-                                </option>
-
-                                <option value="inventory">
-                                    Inventory Report
+                                <option value="quality">
+                                    Quality Report
                                 </option>
 
                                 <option value="production">
                                     Production Report
                                 </option>
 
-                                <option value="expense">
-                                    Expense &amp; Salary Report
+                                <option value="inventory">
+                                    Inventory Report
+                                </option>
+
+                                <option value="sales">
+                                    Sales Report
                                 </option>
 
                                 <option value="delivery">
                                     Delivery Report
                                 </option>
 
-                                <option value="maintenance">
-                                    Maintenance Report
+                                <option value="financial">
+                                    Financial Operations Report
                                 </option>
 
-                                <option value="profit-loss">
-                                    Profit &amp; Loss Report
+                                <option value="maintenance">
+                                    Maintenance Report
                                 </option>
 
                             </select>
@@ -327,44 +504,40 @@
                         </div>
 
 
-                        <div class="reports-field">
+                        <div class="report-filter-field">
 
-                            <label for="from-date">
+                            <label for="reportFromDate">
                                 From Date
                             </label>
 
                             <input
                                 type="date"
-                                id="from-date"
-                                name="fromDate"
+                                id="reportFromDate"
                                 required
                             >
 
                         </div>
 
 
-                        <div class="reports-field">
+                        <div class="report-filter-field">
 
-                            <label for="to-date">
+                            <label for="reportToDate">
                                 To Date
                             </label>
 
                             <input
                                 type="date"
-                                id="to-date"
-                                name="toDate"
+                                id="reportToDate"
                                 required
                             >
 
                         </div>
 
 
-                        <div class="reports-filter-action">
+                        <div class="report-generate-area">
 
-                            <button
-                                class="reports-generate-button"
-                                type="submit"
-                            >
+                            <button class="generate-report-button"
+                                    type="submit">
 
                                 <span aria-hidden="true">
                                     ▣
@@ -379,72 +552,65 @@
                     </form>
 
 
-                    
+                    <div class="report-filter-footer">
 
-                        <div class="reports-secondary-actions">
+                        <span id="selectedReportRange">
+                            Overall Management Report
+                        </span>
 
-                            <button
-                                class="reports-secondary-button"
-                                id="exportReportButton"
-                                type="button"
-    >
+
+                        <div class="report-export-actions">
+
+                            <button class="report-export-button"
+                                    id="exportCsvBtn"
+                                    type="button">
+
                                 Export CSV
+
                             </button>
 
 
-                            <button
-                                class="reports-secondary-button"
-                                id="downloadPdfButton"
-                                type="button"
-    >
-                                Download PDF
+                            <button class="report-export-button"
+                                    id="savePdfBtn"
+                                    type="button">
+
+                                Print / Save PDF
+
                             </button>
 
-
-                            <button
-                                class="reports-secondary-button"
-                                id="printReportButton"
-                                type="button"
-    >
-                            Print Report
-                        </button>
+                        </div>
 
                     </div>
-
-
-                    <p class="reports-current-range"
-                       id="reportMetaText">
-                    </p>
 
                 </section>
 
 
-                <!-- =================================
-                     Summary Cards
-                ================================== -->
-                <section class="reports-summary-grid"
-                         aria-label="Reports summary">
+                <!-- =========================================
+                     KPI SUMMARY
+                ========================================== -->
 
-                    <!-- Sales -->
-                    <article class="summary-card">
+                <section class="reports-kpi-grid">
 
-                        <div class="summary-icon green-icon reports-simple-icon">
+
+                    <article class="report-kpi-card">
+
+                        <div class="report-kpi-icon revenue-icon">
                             ↗
                         </div>
 
-                        <div class="summary-details">
 
-                            <p>
+                        <div>
+
+                            <span>
                                 Sales Revenue
-                            </p>
+                            </span>
 
-                            <h2 class="green-value"
-                                id="reportSalesValue">
+                            <h2 id="salesRevenueValue">
                                 ৳0
                             </h2>
 
-                            <small id="reportSalesMeta">
-                                0 invoices
+                            <small id="salesInvoiceCount">
+                                0 active invoices
                             </small>
 
                         </div>
@@ -452,25 +618,24 @@
                     </article>
 
 
-                    <!-- Purchase -->
-                    <article class="summary-card">
+                    <article class="report-kpi-card">
 
-                        <div class="summary-icon blue-icon reports-simple-icon">
+                        <div class="report-kpi-icon procurement-icon">
                             🛒
                         </div>
 
-                        <div class="summary-details">
 
-                            <p>
-                                Paddy Purchases
-                            </p>
+                        <div>
 
-                            <h2 class="blue-value"
-                                id="reportPurchaseValue">
+                            <span>
+                                Paddy Procurement
+                            </span>
+
+                            <h2 id="procurementCostValue">
                                 ৳0
                             </h2>
 
-                            <small id="reportPurchaseMeta">
+                            <small id="purchaseCountValue">
                                 0 purchases
                             </small>
 
@@ -479,26 +644,25 @@
                     </article>
 
 
-                    <!-- Inventory -->
-                    <article class="summary-card">
+                    <article class="report-kpi-card">
 
-                        <div class="summary-icon orange-icon reports-simple-icon">
-                            ▣
+                        <div class="report-kpi-icon balance-icon">
+                            ◷
                         </div>
 
-                        <div class="summary-details">
 
-                            <p>
-                                Current Inventory
-                            </p>
+                        <div>
 
-                            <h2 class="orange-value"
-                                id="reportInventoryValue">
-                                0 kg
+                            <span>
+                                Estimated Operating Balance
+                            </span>
+
+                            <h2 id="operatingBalanceValue">
+                                ৳0
                             </h2>
 
-                            <small id="reportInventoryMeta">
-                                Current stock snapshot
+                            <small>
+                                Selected period
                             </small>
 
                         </div>
@@ -506,26 +670,25 @@
                     </article>
 
 
-                    <!-- Net -->
-                    <article class="summary-card">
+                    <article class="report-kpi-card">
 
-                        <div class="summary-icon reports-purple-icon reports-simple-icon">
-                            ◔
+                        <div class="report-kpi-icon stock-icon">
+                            ▣
                         </div>
 
-                        <div class="summary-details">
 
-                            <p>
-                                Estimated Net Balance
-                            </p>
+                        <div>
 
-                            <h2 class="reports-purple-value"
-                                id="reportProfitValue">
-                                ৳0
+                            <span>
+                                Current Inventory
+                            </span>
+
+                            <h2 id="currentInventoryValue">
+                                0 kg
                             </h2>
 
-                            <small id="reportProfitMeta">
-                                Selected period
+                            <small id="lowStockSummary">
+                                0 low-stock items
                             </small>
 
                         </div>
@@ -535,31 +698,149 @@
                 </section>
 
 
-                <!-- Financial Notice -->
-                <div class="reports-information-box">
+                <!-- =========================================
+                     ACCOUNTING NOTICE
+                ========================================== -->
+
+                <div class="report-financial-note">
 
                     <strong>
-                        Financial calculation:
+                        Financial interpretation:
                     </strong>
 
-                    Estimated Net Balance =
-                    Sales − Purchases − Operating Expenses − Salaries.
+                    Estimated Operating Balance =
+                    Sales Revenue − Paddy Procurement Cost −
+                    Operating Expenses − Salary Expense.
 
-                    This is an operational estimate for the ERP prototype,
-                    not a formal COGS-based accounting statement.
+                    <span>
+                        It is a prototype operational cash-flow indicator,
+                        not a formal accounting profit or COGS statement.
+                    </span>
 
                 </div>
 
 
-                <!-- =================================
-                     Charts
-                ================================== -->
-                <section class="reports-chart-grid">
+                <!-- =========================================
+                     OPERATIONAL INDICATORS
+                ========================================== -->
 
-                    <!-- Sales Trend -->
-                    <section class="content-card reports-chart-card">
+                <section class="operational-indicator-grid">
 
-                        <div class="reports-chart-heading">
+
+                    <article class="operational-indicator-card">
+
+                        <span>
+                            Whole Rice Recovery
+                        </span>
+
+                        <strong id="recoveryRateValue">
+                            —
+                        </strong>
+
+                        <small id="productionQuantityValue">
+                            No production
+                        </small>
+
+                    </article>
+
+
+                    <article class="operational-indicator-card">
+
+                        <span>
+                            Quality Acceptance
+                        </span>
+
+                        <strong id="qualityAcceptanceValue">
+                            —
+                        </strong>
+
+                        <small id="qualityInspectionValue">
+                            0 inspections
+                        </small>
+
+                    </article>
+
+
+                    <article class="operational-indicator-card">
+
+                        <span>
+                            Customer Receivables
+                        </span>
+
+                        <strong id="customerDueValue">
+                            ৳0
+                        </strong>
+
+                        <small>
+                            Active invoice dues
+                        </small>
+
+                    </article>
+
+
+                    <article class="operational-indicator-card">
+
+                        <span>
+                            Supplier Payables
+                        </span>
+
+                        <strong id="supplierDueValue">
+                            ৳0
+                        </strong>
+
+                        <small>
+                            Purchase dues
+                        </small>
+
+                    </article>
+
+
+                    <article class="operational-indicator-card">
+
+                        <span>
+                            Delivery Completion
+                        </span>
+
+                        <strong id="deliveryCompletionValue">
+                            —
+                        </strong>
+
+                        <small id="deliveryCountValue">
+                            0 deliveries
+                        </small>
+
+                    </article>
+
+
+                    <article class="operational-indicator-card">
+
+                        <span>
+                            Maintenance Activity
+                        </span>
+
+                        <strong id="maintenanceCountValue">
+                            0
+                        </strong>
+
+                        <small id="maintenanceCostValue">
+                            ৳0 maintenance cost
+                        </small>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =========================================
+                     CHARTS
+                ========================================== -->
+
+                <section class="report-charts-grid">
+
+
+                    <article class="content-card report-chart-card">
+
+                        <div class="report-chart-heading">
 
                             <div>
 
@@ -568,95 +849,133 @@
                                 </h2>
 
                                 <p>
-                                    Six-month trend ending at the selected
-                                    To Date.
+                                    Six-month revenue trend ending at the selected To Date.
                                 </p>
 
                             </div>
 
-                        </div>
 
-
-                        <div class="reports-line-chart">
-
-                            <svg
-                                class="reports-line-svg"
-                                id="salesTrendSvg"
-                                viewBox="0 0 600 210"
-                                role="img"
-                                aria-label="Monthly sales trend chart"
-                            >
-                            </svg>
+                            <span class="chart-badge">
+                                Revenue
+                            </span>
 
                         </div>
 
 
-                        <div class="reports-chart-labels"
-                             id="salesTrendLabels">
+                        <div class="report-chart-wrapper">
+
+                            <canvas id="salesTrendCanvas">
+                            </canvas>
+
                         </div>
 
-                    </section>
+                    </article>
 
 
-                    <!-- Profit / Loss -->
-                    <section class="content-card reports-chart-card">
+                    <article class="content-card report-chart-card">
 
-                        <div class="reports-chart-heading">
+                        <div class="report-chart-heading">
 
                             <div>
 
                                 <h2>
-                                    Profit/Loss Overview
+                                    Revenue vs Procurement
                                 </h2>
 
                                 <p>
-                                    Estimated monthly net balance.
+                                    Monthly sales revenue compared with paddy procurement spending.
                                 </p>
+
+                            </div>
+
+
+                            <div class="chart-inline-legend">
+
+                                <span>
+                                    <i class="sales-legend"></i>
+                                    Sales
+                                </span>
+
+                                <span>
+                                    <i class="purchase-legend"></i>
+                                    Procurement
+                                </span>
 
                             </div>
 
                         </div>
 
 
-                        <div class="reports-dynamic-bar-chart"
-                             id="profitLossChart">
+                        <div class="report-chart-wrapper">
+
+                            <canvas id="cashFlowCanvas">
+                            </canvas>
+
                         </div>
 
-                    </section>
+                    </article>
 
                 </section>
 
 
-                <!-- =================================
-                     Report Details
-                ================================== -->
-                <section class="content-card reports-details-card">
+                <!-- =========================================
+                     REPORT TABLE
+                ========================================== -->
 
-                    <div class="reports-details-heading">
+                <section class="content-card generated-report-card">
+
+
+                    <div class="generated-report-heading">
 
                         <div>
 
-                            <h2 id="reportDetailsTitle">
-                                Overall Report
+                            <h2 id="reportResultTitle">
+                                Overall Management Report
                             </h2>
 
-                            <p id="reportDetailsMeta">
+                            <p id="reportResultRange">
                             </p>
 
                         </div>
 
+
+                        <span class="live-report-badge">
+                            Live Calculated Report
+                        </span>
+
                     </div>
 
 
-                    <div class="table-wrapper">
+                    <div class="report-table-wrapper">
 
-                        <table class="reports-table"
-                               id="reportDetailsTable">
+                        <table class="report-table">
 
-                            <thead id="detailsTableHead">
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Module
+                                    </th>
+
+                                    <th>
+                                        Metric
+                                    </th>
+
+                                    <th>
+                                        Value
+                                    </th>
+
+                                    <th>
+                                        Interpretation
+                                    </th>
+
+                                </tr>
+
                             </thead>
 
-                            <tbody id="detailsTableBody">
+
+                            <tbody id="reportTableBody">
                             </tbody>
 
                         </table>
@@ -666,12 +985,14 @@
                 </section>
 
 
-                <!-- =================================
-                     Generated Report History
-                ================================== -->
-                <section class="content-card reports-generated-card">
+                <!-- =========================================
+                     GENERATED HISTORY
+                ========================================== -->
 
-                    <div class="reports-details-heading">
+                <section class="content-card report-history-card">
+
+
+                    <div class="report-history-heading">
 
                         <div>
 
@@ -680,32 +1001,57 @@
                             </h2>
 
                             <p>
-                                Recently generated report history.
+                                Recently generated management report history.
                             </p>
 
                         </div>
 
+
+                        <span class="history-badge">
+                            Audit History
+                        </span>
+
                     </div>
 
 
-                    <div class="table-wrapper">
+                    <div class="report-table-wrapper">
 
-                        <table class="reports-table">
+                        <table class="report-history-table">
 
                             <thead>
 
                                 <tr>
-                                    <th>Report Name</th>
-                                    <th>Date Range</th>
-                                    <th>Generated By</th>
-                                    <th>Generated At</th>
-                                    <th>Status</th>
+
+                                    <th>
+                                        Report Name
+                                    </th>
+
+                                    <th>
+                                        Date Range
+                                    </th>
+
+                                    <th>
+                                        Generated By
+                                    </th>
+
+                                    <th>
+                                        Generated At
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
+
                                 </tr>
 
                             </thead>
 
 
-                            <tbody id="generatedReportsTableBody">
+                            <tbody id="reportHistoryBody">
                             </tbody>
 
                         </table>
@@ -713,6 +1059,7 @@
                     </div>
 
                 </section>
+
 
             </section>
 
@@ -722,8 +1069,6 @@
 
 
     <script src="../scripts/auth.js"></script>
-
-    <script src="../scripts/html2pdf.bundle.min.js"></script>
 
     <script src="../scripts/reports.js"></script>
 
