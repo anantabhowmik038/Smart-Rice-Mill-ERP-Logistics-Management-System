@@ -7,509 +7,684 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Notification & Alerts | Smart Rice Mill ERP</title>
+    <meta name="description"
+          content="Notifications and Alerts - Smart Rice Mill ERP & Logistics Management System">
 
-    <!-- Common Dashboard CSS -->
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <title>Notifications & Alerts | Smart Rice Mill ERP</title>
 
-    <!-- Notification Page CSS -->
-    <link rel="stylesheet" href="../styles/notifications.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
+
+    <link rel="stylesheet"
+          href="../styles/notifications.css">
 </head>
+
 
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
-        <aside class="sidebar">
 
-            <div class="sidebar-header">
+    <!-- =========================================
+         SIDEBAR
+         auth.js will rebuild this consistently.
+    ========================================== -->
 
-                <div class="sidebar-logo" aria-hidden="true">
-                    <span class="logo-shape logo-shape-one"></span>
-                    <span class="logo-shape logo-shape-two"></span>
-                </div>
+    <aside class="sidebar"
+           id="sidebar">
 
-                <div class="sidebar-brand">
 
-                    <h2>Smart Rice Mill</h2>
+        <div class="sidebar-header">
+
+            <div class="sidebar-logo"
+                 aria-hidden="true">
+
+                <span class="logo-shape logo-shape-one"></span>
+                <span class="logo-shape logo-shape-two"></span>
+
+            </div>
+
+
+            <div class="sidebar-brand">
+
+                <h2 id="sidebarMillName">
+                    Smart Rice Mill
+                </h2>
+
+                <p>
+                    ERP &amp; Logistics<br>
+                    Management System
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-navigation"
+             aria-label="Main navigation">
+
+            <a class="navigation-link"
+               href="dashboard.html">
+
+                <span class="navigation-icon">
+                    ⌂
+                </span>
+
+                <span class="navigation-text">
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link active"
+               href="notifications.html">
+
+                <span class="navigation-icon">
+                    🔔
+                </span>
+
+                <span class="navigation-text">
+                    Notifications
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="purchase.html">
+
+                <span class="navigation-icon">
+                    🛒
+                </span>
+
+                <span class="navigation-text">
+                    Purchase
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="production.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Production
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="inventory.html">
+
+                <span class="navigation-icon">
+                    ▣
+                </span>
+
+                <span class="navigation-text">
+                    Inventory
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="sales.html">
+
+                <span class="navigation-icon">
+                    ◇
+                </span>
+
+                <span class="navigation-text">
+                    Sales
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="delivery.html">
+
+                <span class="navigation-icon">
+                    ▱
+                </span>
+
+                <span class="navigation-text">
+                    Delivery
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="reports.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Reports
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="expense.html">
+
+                <span class="navigation-icon">
+                    ৳
+                </span>
+
+                <span class="navigation-text">
+                    Expense &amp; Salary
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="profile.html">
+
+                <span class="navigation-icon">
+                    ⚙
+                </span>
+
+                <span class="navigation-text">
+                    Settings
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="maintenance.html">
+
+                <span class="navigation-icon">
+                    🔧
+                </span>
+
+                <span class="navigation-text">
+                    Maintenance
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <a class="logout-link"
+           id="logoutBtn"
+           href="#">
+
+            <span class="logout-icon">
+                ↪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </aside>
+
+
+    <div class="sidebar-backdrop"
+         id="sidebarBackdrop">
+    </div>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="main-area">
+
+
+        <!-- =========================================
+             TOPBAR
+        ========================================== -->
+
+        <header class="topbar">
+
+
+            <div class="topbar-left">
+
+                <button class="menu-button"
+                        id="menuButton"
+                        type="button"
+                        aria-label="Open navigation menu"
+                        aria-expanded="false">
+
+                    ☰
+
+                </button>
+
+
+                <h1>
+                    Notification &amp; Alerts
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+
+                <a class="notification-area"
+                   href="notifications.html"
+                   aria-label="Notifications">
+
+                    <span class="notification-icon">
+                        ♧
+                    </span>
+
+                    <span class="notification-count"
+                          id="notificationBadge">
+                        0
+                    </span>
+
+                </a>
+
+
+                <a class="user-profile"
+                   href="profile.html">
+
+                    <div class="user-avatar">
+                        👤
+                    </div>
+
+
+                    <div class="user-information">
+
+                        <strong id="topbarUserName">
+                            Admin User
+                        </strong>
+
+                        <span>
+                            Rice Mill Owner
+                        </span>
+
+                    </div>
+
+
+                    <span class="profile-arrow">
+                        ⌄
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================================
+             CONTENT
+        ========================================== -->
+
+        <section class="dashboard-content notifications-content">
+
+
+            <!-- =====================================
+                 PAGE INTRO
+            ====================================== -->
+
+            <div class="notification-page-heading">
+
+
+                <div>
+
+                    <h2>
+                        Operational Alert Center
+                    </h2>
 
                     <p>
-                        ERP &amp; Logistics<br>
-                        Management System
+                        Alerts are generated automatically from live ERP
+                        transactions, configured stock thresholds, due records,
+                        delivery status and maintenance schedules.
                     </p>
+
+                </div>
+
+
+                <div class="notification-heading-actions">
+
+
+                    <span class="notification-system-badge">
+                        Transaction Driven
+                    </span>
+
+
+                    <button class="notification-refresh-button"
+                            id="refreshAlertsBtn"
+                            type="button">
+
+                        ↻ Refresh Alerts
+
+                    </button>
 
                 </div>
 
             </div>
 
 
-            <nav class="sidebar-navigation"
-                 aria-label="Main navigation">
-
-                <a class="navigation-link active"
-                   href="dashboard.html">
-
-                    <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="purchase.html">
-
-                    <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="production.html">
-
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="inventory.html">
-
-                    <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="sales.html">
-
-                    <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="delivery.html">
-
-                    <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="reports.html">
-
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="profile.html">
-
-                    <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-            </nav>
-
-
-            <a class="logout-link"
-               href="../index.html">
-
-                <span class="logout-icon">↪</span>
-                <span>Logout</span>
-
-            </a>
-
-        </aside>
-
-
-        <!-- =====================================
-             Main Area
-        ====================================== -->
-        <main class="main-area">
-
             <!-- =====================================
-                 Topbar
+                 KPI CARDS
             ====================================== -->
-            <header class="topbar">
 
-                <div class="topbar-left">
-
-                    <button class="menu-button"
-                            type="button"
-                            aria-label="Open navigation menu">
-
-                        ☰
-
-                    </button>
-
-                    <h1>Notification &amp; Alerts</h1>
-
-                </div>
+            <section class="notification-summary-grid">
 
 
-                <div class="topbar-right">
+                <article class="notification-summary-card">
 
-                    <a class="notification-area notification-page-link"
-                       href="notifications.html"
-                       aria-label="View notifications">
+                    <div class="notification-summary-icon low-stock-icon">
+                        ▣
+                    </div>
 
-                        <span class="notification-icon">♧</span>
 
-                        <span class="notification-count">
-                            3
+                    <div>
+
+                        <span>
+                            Low Stock Alerts
                         </span>
 
-                    </a>
+                        <h2 id="lowStockCount">
+                            0
+                        </h2>
 
-
-                    <div class="user-profile">
-
-                        <div class="user-avatar"
-                             aria-hidden="true">
-
-                            👤
-
-                        </div>
-
-                        <div class="user-information">
-
-                            <strong>Admin User</strong>
-                            <span>Rice Mill Owner</span>
-
-                        </div>
-
-                        <span class="profile-arrow">⌄</span>
+                        <small>
+                            Below configured safety level
+                        </small>
 
                     </div>
 
-                </div>
-
-            </header>
+                </article>
 
 
-            <!-- =====================================
-                 Notification Content
-            ====================================== -->
-            <section class="dashboard-content notifications-page">
+                <article class="notification-summary-card">
 
-                <!-- =====================================
-                     Summary Cards
-                ====================================== -->
-                <section class="notification-summary-grid"
-                         aria-label="Notification summary">
-
-                    <!-- Low Stock -->
-                    <article class="summary-card">
-
-                        <div class="summary-icon notification-red-icon">
-                            ▣
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Low Stock Alerts</p>
-
-                            <h2 class="notification-red-value">
-                                2
-                            </h2>
-
-                        </div>
-
-                    </article>
+                    <div class="notification-summary-icon due-payment-icon">
+                        ৳
+                    </div>
 
 
-                    <!-- Due Payments -->
-                    <article class="summary-card">
+                    <div>
 
-                        <div class="summary-icon orange-icon">
-                            ৳
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Due Payments</p>
-
-                            <h2 class="orange-value">
-                                4
-                            </h2>
-
-                        </div>
-
-                    </article>
-
-
-                    <!-- Pending Deliveries -->
-                    <article class="summary-card">
-
-                        <div class="summary-icon blue-icon">
-                            🚚
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Pending Deliveries</p>
-
-                            <h2 class="blue-value">
-                                3
-                            </h2>
-
-                        </div>
-
-                    </article>
-
-                </section>
-
-
-                <!-- =====================================
-                     Current Alert List
-                ====================================== -->
-                <section class="content-card current-alerts-card">
-
-                    <!-- Low Stock Alert -->
-                    <article class="current-alert-item">
-
-                        <div class="alert-icon alert-low-stock-icon">
-                            ▣
-                        </div>
-
-                        <div class="alert-details">
-
-                            <h3>Low Stock</h3>
-
-                            <p>
-                                Khud stock is below minimum level
-                            </p>
-
-                        </div>
-
-                        <span class="alert-label priority-high">
-                            High
+                        <span>
+                            Due Payments
                         </span>
 
-                    </article>
-
-
-                    <!-- Due Payment Alert -->
-                    <article class="current-alert-item">
-
-                        <div class="alert-icon alert-payment-icon">
-                            ৳
-                        </div>
-
-                        <div class="alert-details">
-
-                            <h3>Due Payment</h3>
-
-                            <p>
-                                ABC Traders has ৳2,80,000 due
-                            </p>
-
-                        </div>
-
-                        <span class="alert-label priority-medium">
-                            Medium
-                        </span>
-
-                    </article>
-
-
-                    <!-- Delivery Alert -->
-                    <article class="current-alert-item">
-
-                        <div class="alert-icon alert-delivery-icon">
-                            🚚
-                        </div>
-
-                        <div class="alert-details">
-
-                            <h3>Pending Delivery</h3>
-
-                            <p>
-                                Dhaka delivery is still on the way
-                            </p>
-
-                        </div>
-
-                        <span class="alert-label priority-medium">
-                            Medium
-                        </span>
-
-                    </article>
-
-
-                    <!-- Maintenance Alert -->
-                    <article class="current-alert-item">
-
-                        <div class="alert-icon alert-maintenance-icon">
-                            🔧
-                        </div>
-
-                        <div class="alert-details">
-
-                            <h3>Maintenance Reminder</h3>
-
-                            <p>
-                                Dryer Machine service is due
-                            </p>
-
-                        </div>
-
-                        <span class="alert-label alert-resolved">
-                            Resolved
-                        </span>
-
-                    </article>
-
-                </section>
-
-
-                <!-- =====================================
-                     All Alerts
-                ====================================== -->
-                <section class="content-card all-alerts-card">
-
-                    <h2>All Alerts</h2>
-
-
-                    <div class="table-wrapper">
-
-                        <table class="alerts-table">
-
-                            <thead>
-
-                                <tr>
-                                    <th>Alert Type</th>
-                                    <th>Message</th>
-                                    <th>Priority</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-                                <tr>
-
-                                    <td>Low Stock</td>
-
-                                    <td>
-                                        Khud stock is below minimum level
-                                    </td>
-
-                                    <td>
-
-                                        <span class="table-alert-badge priority-high">
-                                            High
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <span class="table-alert-badge status-pending-alert">
-                                            Pending
-                                        </span>
-
-                                    </td>
-
-                                    <td>01 Jul 2026</td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Due Payment</td>
-
-                                    <td>
-                                        ABC Traders has ৳2,80,000 due
-                                    </td>
-
-                                    <td>
-
-                                        <span class="table-alert-badge priority-medium">
-                                            Medium
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <span class="table-alert-badge status-pending-alert">
-                                            Pending
-                                        </span>
-
-                                    </td>
-
-                                    <td>01 Jul 2026</td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Maintenance</td>
-
-                                    <td>
-                                        Dryer Machine service is due
-                                    </td>
-
-                                    <td>
-
-                                        <span class="table-alert-badge priority-medium">
-                                            Medium
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <span class="table-alert-badge alert-resolved">
-                                            Resolved
-                                        </span>
-
-                                    </td>
-
-                                    <td>30 Jun 2026</td>
-
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        <h2 id="duePaymentCount">
+                            0
+                        </h2>
+
+                        <small>
+                            Supplier, customer and salary dues
+                        </small>
 
                     </div>
 
-                </section>
+                </article>
+
+
+                <article class="notification-summary-card">
+
+                    <div class="notification-summary-icon delivery-icon">
+                        🚚
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Pending Deliveries
+                        </span>
+
+                        <h2 id="pendingDeliveryCount">
+                            0
+                        </h2>
+
+                        <small>
+                            Pending or currently on the way
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+                <article class="notification-summary-card">
+
+                    <div class="notification-summary-icon attention-icon">
+                        !
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Attention Required
+                        </span>
+
+                        <h2 id="attentionCount">
+                            0
+                        </h2>
+
+                        <small>
+                            High-priority active alerts
+                        </small>
+
+                    </div>
+
+                </article>
 
             </section>
 
-        </main>
 
-    </div>
+            <!-- =====================================
+                 PRIORITY ALERT FEED
+            ====================================== -->
+
+            <section class="content-card priority-alert-card">
+
+
+                <div class="notification-section-heading">
+
+                    <div>
+
+                        <h2>
+                            Priority Alert Feed
+                        </h2>
+
+                        <p>
+                            Highest-priority active issues requiring management attention.
+                        </p>
+
+                    </div>
+
+
+                    <span class="live-alert-badge">
+                        Live Alerts
+                    </span>
+
+                </div>
+
+
+                <div class="priority-alert-list"
+                     id="priorityAlertList">
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 ALL ALERTS
+            ====================================== -->
+
+            <section class="content-card all-alerts-card">
+
+
+                <div class="all-alerts-header">
+
+
+                    <div>
+
+                        <h2>
+                            All Alerts
+                        </h2>
+
+                        <p>
+                            Active and resolved operational alert history.
+                        </p>
+
+                    </div>
+
+
+                    <div class="alert-filter-tools">
+
+
+                        <input type="search"
+                               id="alertSearch"
+                               placeholder="Search alerts or reference">
+
+
+                        <select id="alertTypeFilter">
+
+                            <option value="all">
+                                All Types
+                            </option>
+
+                            <option value="Low Stock">
+                                Low Stock
+                            </option>
+
+                            <option value="Supplier Due">
+                                Supplier Due
+                            </option>
+
+                            <option value="Customer Due">
+                                Customer Due
+                            </option>
+
+                            <option value="Salary Due">
+                                Salary Due
+                            </option>
+
+                            <option value="Delivery">
+                                Delivery
+                            </option>
+
+                            <option value="Maintenance">
+                                Maintenance
+                            </option>
+
+                            <option value="Quality">
+                                Quality
+                            </option>
+
+                        </select>
+
+
+                        <select id="alertStatusFilter">
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Resolved">
+                                Resolved
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="alerts-table-wrapper">
+
+
+                    <table class="alerts-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Alert ID
+                                </th>
+
+                                <th>
+                                    Alert Type
+                                </th>
+
+                                <th>
+                                    Message
+                                </th>
+
+                                <th>
+                                    Source
+                                </th>
+
+                                <th>
+                                    Reference
+                                </th>
+
+                                <th>
+                                    Priority
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="alertTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
 <script src="../scripts/auth.js"></script>
+<script src="../scripts/notifications.js"></script>
+
 </body>
 
 </html>

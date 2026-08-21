@@ -1,295 +1,856 @@
 /* =========================================
-   Smart Rice Mill ERP
-   Notification & Alerts Page
-   ========================================= */
+   SMART RICE MILL ERP
+   NOTIFICATIONS & ALERTS
+========================================= */
 
 
-/* =========================================
-   Topbar Notification Link
-   ========================================= */
-
-.notification-page-link {
-    color: inherit;
-    text-decoration: none;
+[hidden] {
+    display: none !important;
 }
 
 
 /* =========================================
-   Notification Summary Cards
-   ========================================= */
+   PAGE
+========================================= */
+
+.notifications-content {
+    padding-top: 25px;
+    padding-bottom: 30px;
+}
+
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.notification-page-heading {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.notification-page-heading h2 {
+    color: #19231d;
+
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+
+.notification-page-heading p {
+    max-width: 790px;
+
+    margin-top: 5px;
+
+    color: #7b867f;
+
+    font-size: 0.7rem;
+    line-height: 1.5;
+}
+
+
+.notification-heading-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.notification-system-badge {
+    padding: 7px 10px;
+
+    color: #147b36;
+    background: #edf8ef;
+
+    border: 1px solid #bfdfc7;
+    border-radius: 15px;
+
+    font-size: 0.59rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+.notification-refresh-button {
+    height: 34px;
+
+    padding: 0 12px;
+
+    color: #147b36;
+    background: #ffffff;
+
+    border: 1px solid #8fc79d;
+    border-radius: 7px;
+
+    font-family: inherit;
+    font-size: 0.63rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.notification-refresh-button:hover {
+    background: #edf8ef;
+}
+
+
+/* =========================================
+   KPI CARDS
+========================================= */
 
 .notification-summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
-}
 
-.notification-summary-grid .summary-icon {
-    font-size: 2rem;
-    font-weight: 700;
-}
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
 
-
-/* Red Summary Icon */
-
-.notification-red-icon {
-    color: #df2429;
-    background-color: #fdeced;
-    border: 1px solid #f3cfd1;
-}
-
-.notification-red-value {
-    color: #df2429;
-}
-
-
-/* =========================================
-   Current Alerts Card
-   ========================================= */
-
-.current-alerts-card {
-    margin-top: 30px;
-    padding: 21px 24px;
-}
-
-.current-alert-item {
-    min-height: 82px;
-
-    display: grid;
-    grid-template-columns: 58px minmax(0, 1fr) 115px;
-    align-items: center;
     gap: 20px;
-
-    padding: 11px 0;
-}
-
-.current-alert-item + .current-alert-item {
-    margin-top: 1px;
 }
 
 
-/* Alert Icons */
+.notification-summary-card {
+    min-height: 108px;
 
-.alert-icon {
-    width: 54px;
-    height: 54px;
+    padding: 20px;
 
     display: flex;
     align-items: center;
-    justify-content: center;
 
-    flex-shrink: 0;
+    gap: 16px;
 
-    font-size: 1.55rem;
-    font-weight: 700;
+    background: #ffffff;
 
-    border-radius: 50%;
-}
+    border: 1px solid #d8e1db;
+    border-radius: 10px;
 
-.alert-low-stock-icon {
-    color: #df2429;
-    background-color: #fdeced;
-    border: 1px solid #f3cfd1;
-}
-
-.alert-payment-icon {
-    color: #e89000;
-    background-color: #fff4e5;
-    border: 1px solid #f2dfc3;
-}
-
-.alert-delivery-icon {
-    color: #176cc8;
-    background-color: #e9f2fc;
-    border: 1px solid #d6e3f0;
-}
-
-.alert-maintenance-icon {
-    color: #148d35;
-    background-color: #eaf6ed;
-    border: 1px solid #d4e8d9;
+    box-shadow:
+        0 7px 18px
+        rgba(24, 45, 30, 0.05);
 }
 
 
-/* Alert Details */
+.notification-summary-icon {
+    flex: 0 0 auto;
 
-.alert-details {
-    min-width: 0;
-}
-
-.alert-details h3 {
-    margin: 0 0 5px;
-
-    font-size: 1rem;
-    font-weight: 600;
-
-    color: #171e29;
-}
-
-.alert-details p {
-    margin: 0;
-
-    font-size: 0.9rem;
-    line-height: 1.45;
-
-    color: #79828d;
-}
-
-
-/* =========================================
-   Alert Labels
-   ========================================= */
-
-.alert-label,
-.table-alert-badge {
-    min-width: 112px;
-    min-height: 31px;
-
-    padding: 5px 16px;
+    width: 58px;
+    height: 58px;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    font-size: 0.79rem;
+    border-radius: 10px;
+
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+
+.low-stock-icon {
+    color: #df3434;
+    background: #fff0f0;
+
+    border: 1px solid #efcaca;
+}
+
+
+.due-payment-icon {
+    color: #e28500;
+    background: #fff3df;
+
+    border: 1px solid #ebd3ac;
+}
+
+
+.delivery-icon {
+    color: #176cc2;
+    background: #eaf3fb;
+
+    border: 1px solid #c5dbea;
+}
+
+
+.attention-icon {
+    color: #8d55ad;
+    background: #f5eef9;
+
+    border: 1px solid #ddcbe8;
+}
+
+
+.notification-summary-card span {
+    color: #4e5a52;
+
+    font-size: 0.75rem;
+}
+
+
+.notification-summary-card h2 {
+    margin-top: 5px;
+
+    font-size: 1.35rem;
+}
+
+
+#lowStockCount {
+    color: #dd3434;
+}
+
+
+#duePaymentCount {
+    color: #e07d00;
+}
+
+
+#pendingDeliveryCount {
+    color: #176bc0;
+}
+
+
+#attentionCount {
+    color: #76519d;
+}
+
+
+.notification-summary-card small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #89938d;
+
+    font-size: 0.58rem;
+}
+
+
+/* =========================================
+   PRIORITY FEED
+========================================= */
+
+.priority-alert-card {
+    margin-top: 28px;
+
+    padding: 22px 20px;
+}
+
+
+.notification-section-heading {
+    margin-bottom: 15px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.notification-section-heading h2 {
+    color: #18231c;
+
+    font-size: 1.05rem;
+}
+
+
+.notification-section-heading p {
+    margin-top: 5px;
+
+    color: #7d8881;
+
+    font-size: 0.66rem;
+}
+
+
+.live-alert-badge {
+    padding: 6px 10px;
+
+    color: #147d35;
+    background: #edf8ef;
+
+    border: 1px solid #bfdfc7;
+    border-radius: 15px;
+
+    font-size: 0.59rem;
+    font-weight: 600;
+}
+
+
+.priority-alert-list {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.priority-alert-item {
+    min-height: 74px;
+
+    padding: 13px 4px;
+
+    display: grid;
+
+    grid-template-columns:
+        48px
+        minmax(0, 1fr)
+        auto;
+
+    gap: 15px;
+
+    align-items: center;
+
+    border-bottom: 1px solid #e4e9e6;
+}
+
+
+.priority-alert-item:last-child {
+    border-bottom: none;
+}
+
+
+.priority-alert-icon {
+    width: 44px;
+    height: 44px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 1.02rem;
+}
+
+
+.alert-icon-danger {
+    color: #df3333;
+    background: #fff0f0;
+
+    border: 1px solid #efc6c6;
+}
+
+
+.alert-icon-warning {
+    color: #dd8300;
+    background: #fff5e5;
+
+    border: 1px solid #ecd4ac;
+}
+
+
+.alert-icon-info {
+    color: #176cc2;
+    background: #edf5fc;
+
+    border: 1px solid #c7dcec;
+}
+
+
+.priority-alert-content {
+    min-width: 0;
+}
+
+
+.priority-alert-content h3 {
+    color: #17231c;
+
+    font-size: 0.77rem;
+    font-weight: 700;
+}
+
+
+.priority-alert-content p {
+    margin-top: 4px;
+
+    color: #77827b;
+
+    font-size: 0.66rem;
+    line-height: 1.45;
+}
+
+
+.priority-alert-meta {
+    margin-top: 5px;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    color: #909991;
+
+    font-size: 0.56rem;
+}
+
+
+.priority-alert-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.alert-view-button {
+    height: 31px;
+
+    padding: 0 11px;
+
+    color: #147d35;
+    background: #ffffff;
+
+    border: 1px solid #71ba84;
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: 0.6rem;
     font-weight: 600;
 
-    background-color: #ffffff;
-    border-radius: 9px;
+    cursor: pointer;
 }
 
 
-/* High Priority */
+.alert-view-button:hover {
+    color: #ffffff;
+    background: #168c3b;
+}
+
+
+/* =========================================
+   PRIORITY BADGES
+========================================= */
+
+.alert-priority-badge,
+.alert-status-badge {
+    min-width: 72px;
+
+    padding: 5px 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 0.58rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
 
 .priority-high {
-    color: #df2429;
-    background-color: #fff4f4;
-    border: 1px solid #df2429;
+    color: #d73030;
+    background: #fff0f0;
+
+    border: 1px solid #e97f7f;
 }
 
-
-/* Medium Priority */
 
 .priority-medium {
-    color: #e89000;
-    background-color: #fff8ed;
-    border: 1px solid #e9a01b;
+    color: #c87600;
+    background: #fff6e8;
+
+    border: 1px solid #eab55e;
 }
 
 
-/* Resolved */
+.priority-low {
+    color: #176bb7;
+    background: #edf5fc;
 
-.alert-resolved {
-    color: #148d35;
-    background-color: #edf8ef;
-    border: 1px solid #148d35;
+    border: 1px solid #92bbe0;
 }
 
 
-/* Pending */
+.status-active {
+    color: #b76d00;
+    background: #fff5e5;
 
-.status-pending-alert {
-    color: #e89000;
-    background-color: #fff8ed;
-    border: 1px solid #e9a01b;
+    border: 1px solid #e6ad51;
+}
+
+
+.status-resolved {
+    color: #137d36;
+    background: #edf8ef;
+
+    border: 1px solid #78bc87;
 }
 
 
 /* =========================================
-   All Alerts Card
-   ========================================= */
+   EMPTY FEED
+========================================= */
+
+.no-active-alerts {
+    min-height: 140px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+.no-active-alerts-icon {
+    width: 48px;
+    height: 48px;
+
+    margin-bottom: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #158139;
+    background: #edf8ef;
+
+    border-radius: 50%;
+
+    font-size: 1.1rem;
+}
+
+
+.no-active-alerts strong {
+    color: #26332a;
+
+    font-size: 0.76rem;
+}
+
+
+.no-active-alerts p {
+    margin-top: 5px;
+
+    color: #818c84;
+
+    font-size: 0.63rem;
+}
+
+
+/* =========================================
+   ALL ALERTS
+========================================= */
 
 .all-alerts-card {
-    margin-top: 30px;
-    padding: 23px 21px 10px;
+    margin-top: 28px;
+
+    padding: 22px 20px 16px;
 }
 
-.all-alerts-card h2 {
-    margin-bottom: 24px;
+
+.all-alerts-header {
+    margin-bottom: 17px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.all-alerts-header h2 {
+    color: #18231c;
+
+    font-size: 1.05rem;
+}
+
+
+.all-alerts-header p {
+    margin-top: 5px;
+
+    color: #7d8881;
+
+    font-size: 0.66rem;
+}
+
+
+.alert-filter-tools {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.alert-filter-tools input,
+.alert-filter-tools select {
+    height: 36px;
+
+    padding: 0 10px;
+
+    color: #29352d;
+    background: #ffffff;
+
+    border: 1px solid #d3ddd6;
+    border-radius: 6px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.62rem;
+}
+
+
+.alert-filter-tools input {
+    width: 210px;
+}
+
+
+.alert-filter-tools select {
+    width: 125px;
 }
 
 
 /* =========================================
-   Alerts Table
-   ========================================= */
+   TABLE
+========================================= */
+
+.alerts-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+}
+
 
 .alerts-table {
     width: 100%;
-    min-width: 880px;
+    min-width: 1280px;
 
-    border-collapse: separate;
-    border-spacing: 0;
+    border-collapse: collapse;
 
-    font-size: 0.88rem;
+    font-size: 0.66rem;
 }
+
+
+.alerts-table thead {
+    background: #fafcfa;
+
+    border: 1px solid #d8dfda;
+}
+
 
 .alerts-table th,
 .alerts-table td {
-    padding: 14px 20px;
+    padding: 11px 10px;
 
     text-align: left;
     vertical-align: middle;
 }
 
 
-/* Rounded Table Header */
+.alerts-table th {
+    color: #344038;
 
-.alerts-table thead th {
-    font-weight: 500;
+    font-size: 0.63rem;
+    font-weight: 600;
 
-    color: #171e29;
-    background-color: #fafcfc;
-
-    border-top: 1px solid #d8dee3;
-    border-bottom: 1px solid #d8dee3;
-}
-
-.alerts-table thead th:first-child {
-    border-left: 1px solid #d8dee3;
-    border-radius: 8px 0 0 8px;
-}
-
-.alerts-table thead th:last-child {
-    border-right: 1px solid #d8dee3;
-    border-radius: 0 8px 8px 0;
+    white-space: nowrap;
 }
 
 
-/* Table Body */
-
-.alerts-table tbody td {
-    border-bottom: 1px solid #e1e5e8;
-}
-
-.alerts-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.alerts-table tbody tr:hover td {
-    background-color: #fafcfa;
+.alerts-table tbody tr {
+    border-bottom: 1px solid #e1e7e3;
 }
 
 
-/* Message Column */
+.alerts-table tbody tr:hover {
+    background: #fbfdfb;
+}
 
-.alerts-table th:nth-child(2),
-.alerts-table td:nth-child(2) {
-    width: 32%;
+
+.alert-id {
+    color: #0867ad;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+.alert-primary-text {
+    color: #1e2922;
+
+    font-weight: 600;
+}
+
+
+.alert-secondary-text {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #838d86;
+
+    font-size: 0.57rem;
+}
+
+
+.alert-reference {
+    color: #0969af;
+
+    font-weight: 600;
+
+    white-space: nowrap;
 }
 
 
 /* =========================================
-   Responsive Design
-   ========================================= */
+   TYPE BADGE
+========================================= */
 
-@media screen and (max-width: 1100px) {
+.alert-type-badge {
+    padding: 5px 8px;
+
+    display: inline-flex;
+
+    border-radius: 12px;
+
+    font-size: 0.57rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+.type-stock {
+    color: #c43636;
+    background: #fff1f1;
+}
+
+
+.type-payment {
+    color: #b96d00;
+    background: #fff5e6;
+}
+
+
+.type-delivery {
+    color: #176cb7;
+    background: #edf5fc;
+}
+
+
+.type-maintenance {
+    color: #76519e;
+    background: #f4eff8;
+}
+
+
+.type-quality {
+    color: #9c5b11;
+    background: #fff3e5;
+}
+
+
+/* =========================================
+   TABLE ACTION
+========================================= */
+
+.table-view-button {
+    height: 30px;
+
+    padding: 0 10px;
+
+    color: #147d35;
+    background: #ffffff;
+
+    border: 1px solid #6db980;
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: 0.59rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.table-view-button:hover {
+    color: #ffffff;
+    background: #168c3b;
+}
+
+
+.alert-empty-row td {
+    padding: 38px 15px;
+
+    color: #818b84;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+.notification-toast {
+    position: fixed;
+
+    top: 91px;
+    right: 23px;
+
+    z-index: 9000;
+
+    padding: 11px 14px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    color: #22502e;
+    background: #eff9f1;
+
+    border: 1px solid #badfc2;
+    border-radius: 8px;
+
+    box-shadow:
+        0 12px 26px
+        rgba(20, 38, 25, 0.13);
+
+    font-size: 0.68rem;
+
+    opacity: 0;
+
+    transform: translateY(-8px);
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.notification-toast.show {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media screen and (max-width: 1300px) {
 
     .notification-summary-grid {
-        gap: 20px;
-    }
-
-    .current-alert-item {
-        grid-template-columns: 58px minmax(0, 1fr) 105px;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
 }
@@ -297,79 +858,79 @@
 
 @media screen and (max-width: 900px) {
 
-    .notification-summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    .notification-page-heading,
+    .all-alerts-header {
+        flex-direction: column;
+
+        align-items: flex-start;
     }
 
-    .notification-summary-grid .summary-card:last-child {
-        grid-column: 1 / -1;
+
+    .alert-filter-tools {
+        width: 100%;
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .alert-filter-tools input,
+    .alert-filter-tools select {
+        width: 100%;
+    }
+
+
+    .priority-alert-item {
+        grid-template-columns:
+            44px
+            minmax(0, 1fr);
+
+        align-items: flex-start;
+    }
+
+
+    .priority-alert-actions {
+        grid-column: 2;
     }
 
 }
 
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 650px) {
 
     .notification-summary-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
     }
 
-    .notification-summary-grid .summary-card:last-child {
+
+    .notification-heading-actions {
+        width: 100%;
+
+        flex-wrap: wrap;
+    }
+
+
+    .priority-alert-item {
+        grid-template-columns: 1fr;
+    }
+
+
+    .priority-alert-icon {
+        display: none;
+    }
+
+
+    .priority-alert-actions {
         grid-column: auto;
     }
 
-    .current-alerts-card {
-        margin-top: 25px;
-        padding: 18px;
-    }
 
-    .current-alert-item {
-        grid-template-columns: 52px minmax(0, 1fr);
-        gap: 14px;
+    .notification-toast {
+        right: 14px;
+        left: 14px;
 
-        padding: 15px 0;
-    }
-
-    .alert-icon {
-        width: 48px;
-        height: 48px;
-
-        font-size: 1.35rem;
-    }
-
-    .alert-label {
-        grid-column: 2;
-
-        width: fit-content;
-        min-width: 105px;
-    }
-
-    .all-alerts-card {
-        margin-top: 25px;
-        padding: 20px 16px 8px;
-    }
-
-}
-
-
-@media screen and (max-width: 440px) {
-
-    .all-alerts-card h2 {
-        font-size: 1.15rem;
-    }
-
-    .alert-details h3 {
-        font-size: 0.95rem;
-    }
-
-    .alert-details p {
-        font-size: 0.82rem;
-    }
-
-    .alerts-table th,
-    .alerts-table td {
-        padding: 12px 15px;
+        max-width: none;
     }
 
 }
