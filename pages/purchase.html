@@ -2,31 +2,33 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Paddy Purchase Management - Smart Rice Mill ERP & Logistics Management System">
+
     <title>Paddy Purchase | Smart Rice Mill ERP</title>
 
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 
-    <link rel="stylesheet" href="../styles/purchase.css">
-
+    <link rel="stylesheet"
+          href="../styles/purchase.css">
 </head>
-
 
 <body>
 
     <div class="dashboard-layout">
 
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
 
-        <!-- ==============================
-             Sidebar
-        =============================== -->
-
-        <aside class="sidebar">
+        <aside class="sidebar"
+               id="sidebar">
 
             <div class="sidebar-header">
 
@@ -37,7 +39,6 @@
                     <span class="logo-shape logo-shape-two"></span>
 
                 </div>
-
 
                 <div class="sidebar-brand">
 
@@ -56,12 +57,29 @@
             <nav class="sidebar-navigation"
                  aria-label="Main navigation">
 
-
                 <a class="navigation-link"
                    href="dashboard.html">
 
                     <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
+
+                    <span class="navigation-text">
+                        Dashboard
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="notifications.html">
+
+                    <span class="navigation-icon">🔔</span>
+
+                    <span class="navigation-text">
+                        Notifications
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -71,7 +89,39 @@
                    href="purchase.html">
 
                     <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
+
+                    <span class="navigation-text">
+                        Purchase
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="supplier.html">
+
+                    <span class="navigation-icon">👥</span>
+
+                    <span class="navigation-text">
+                        Farmer &amp; Supplier
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="quality.html">
+
+                    <span class="navigation-icon">✓</span>
+
+                    <span class="navigation-text">
+                        Quality Inspection
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -81,7 +131,11 @@
                    href="production.html">
 
                     <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
+
+                    <span class="navigation-text">
+                        Production
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -91,7 +145,11 @@
                    href="inventory.html">
 
                     <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
+
+                    <span class="navigation-text">
+                        Inventory
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -101,7 +159,25 @@
                    href="sales.html">
 
                     <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
+
+                    <span class="navigation-text">
+                        Sales
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="customer.html">
+
+                    <span class="navigation-icon">👤</span>
+
+                    <span class="navigation-text">
+                        Customers
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -111,7 +187,11 @@
                    href="delivery.html">
 
                     <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
+
+                    <span class="navigation-text">
+                        Delivery
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -121,7 +201,25 @@
                    href="reports.html">
 
                     <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
+
+                    <span class="navigation-text">
+                        Reports
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="expense.html">
+
+                    <span class="navigation-icon">৳</span>
+
+                    <span class="navigation-text">
+                        Expense &amp; Salary
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -131,7 +229,39 @@
                    href="profile.html">
 
                     <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
+
+                    <span class="navigation-text">
+                        Settings
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="users.html">
+
+                    <span class="navigation-icon">👥</span>
+
+                    <span class="navigation-text">
+                        User Roles
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">🔧</span>
+
+                    <span class="navigation-text">
+                        Maintenance
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -140,9 +270,11 @@
 
 
             <a class="logout-link"
-               href="../index.html">
+               href="#"
+               id="logoutBtn">
 
                 <span class="logout-icon">↪</span>
+
                 <span>Logout</span>
 
             </a>
@@ -150,36 +282,47 @@
         </aside>
 
 
+        <div class="sidebar-backdrop"
+             id="sidebarBackdrop">
+        </div>
 
-        <!-- ==============================
-             Main Area
-        =============================== -->
+
+        <!-- =========================================
+             MAIN AREA
+        ========================================== -->
 
         <main class="main-area">
 
-
-            <!-- Topbar -->
+            <!-- =========================================
+                 TOPBAR
+            ========================================== -->
 
             <header class="topbar">
 
                 <div class="topbar-left">
 
                     <button class="menu-button"
+                            id="menuButton"
                             type="button"
-                            aria-label="Open navigation menu">
+                            aria-label="Open navigation menu"
+                            aria-expanded="false">
 
                         ☰
 
                     </button>
 
-                    <h1>Paddy Purchase Management</h1>
+                    <h1>
+                        Paddy Purchase Management
+                    </h1>
 
                 </div>
 
 
                 <div class="topbar-right">
 
-                    <div class="notification-area">
+                    <a class="notification-area"
+                       href="notifications.html"
+                       aria-label="Open notifications">
 
                         <span class="notification-icon">
                             ♧
@@ -189,10 +332,12 @@
                             3
                         </span>
 
-                    </div>
+                    </a>
 
 
-                    <div class="user-profile">
+                    <a class="user-profile"
+                       href="profile.html"
+                       aria-label="Open profile and settings">
 
                         <div class="user-avatar"
                              aria-hidden="true">
@@ -201,44 +346,67 @@
 
                         </div>
 
-
                         <div class="user-information">
 
-                            <strong>Admin User</strong>
+                            <strong>
+                                Admin User
+                            </strong>
 
-                            <span>Rice Mill Owner</span>
+                            <span>
+                                Rice Mill Owner
+                            </span>
 
                         </div>
-
 
                         <span class="profile-arrow">
                             ⌄
                         </span>
 
-                    </div>
+                    </a>
 
                 </div>
 
             </header>
 
 
-
-            <!-- ==============================
-                 Purchase Content
-            =============================== -->
+            <!-- =========================================
+                 PURCHASE CONTENT
+            ========================================== -->
 
             <section class="dashboard-content purchase-content">
 
+                <div class="page-heading-row">
 
-                <!-- ==============================
-                     Dynamic Summary
-                =============================== -->
+                    <div>
+
+                        <h2>
+                            Purchase Overview
+                        </h2>
+
+                        <p>
+                            Record incoming paddy, calculate purchase value,
+                            and monitor supplier payments.
+                        </p>
+
+                    </div>
+
+
+                    <a class="quality-shortcut"
+                       href="quality.html">
+
+                        Quality Inspection →
+
+                    </a>
+
+                </div>
+
+
+                <!-- =========================================
+                     SUMMARY CARDS
+                ========================================== -->
 
                 <section class="purchase-summary-grid"
                          aria-label="Purchase summary">
-
-
-                    <!-- Today's Purchase -->
 
                     <article class="summary-card">
 
@@ -246,10 +414,11 @@
                             🌾
                         </div>
 
-
                         <div class="summary-details">
 
-                            <p>Today’s Purchase</p>
+                            <p>
+                                Today’s Paddy Purchase
+                            </p>
 
                             <h2 class="green-value"
                                 id="todayPurchaseValue">
@@ -263,19 +432,17 @@
                     </article>
 
 
-
-                    <!-- Today's Paddy Quantity -->
-
                     <article class="summary-card">
 
                         <div class="summary-icon blue-icon">
                             ⚖
                         </div>
 
-
                         <div class="summary-details">
 
-                            <p>Paddy Qty</p>
+                            <p>
+                                Today’s Paddy Quantity
+                            </p>
 
                             <h2 class="blue-value"
                                 id="todayPaddyQtyValue">
@@ -289,19 +456,17 @@
                     </article>
 
 
-
-                    <!-- Total Due Bills -->
-
                     <article class="summary-card">
 
                         <div class="summary-icon orange-icon">
                             ৳
                         </div>
 
-
                         <div class="summary-details">
 
-                            <p>Due Bills</p>
+                            <p>
+                                Outstanding Supplier Due
+                            </p>
 
                             <h2 class="orange-value"
                                 id="dueBillsValue">
@@ -317,36 +482,68 @@
                 </section>
 
 
-
-                <!-- ==============================
-                     Purchase Form
-                =============================== -->
+                <!-- =========================================
+                     PURCHASE FORM
+                ========================================== -->
 
                 <section class="content-card purchase-form-card">
 
-                    <h2>Save Purchase</h2>
+                    <div class="card-heading-row">
+
+                        <div>
+
+                            <h2>
+                                Record Paddy Purchase
+                            </h2>
+
+                            <p>
+                                Fields marked with * are required.
+                            </p>
+
+                        </div>
+
+
+                        <span class="form-note">
+
+                            Quality grade and procurement decision are
+                            completed in the Quality Inspection module.
+
+                        </span>
+
+                    </div>
 
 
                     <form class="purchase-form"
                           id="purchaseForm"
                           novalidate>
 
-
-                        <!-- Supplier -->
-
                         <div class="form-field">
 
-                            <label for="supplier">
-
-                                Supplier/Farmer Name
-
+                            <label for="purchase-date">
+                                Purchase Date *
                             </label>
 
+                            <input
+                                type="date"
+                                id="purchase-date"
+                                name="purchaseDate"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-field supplier-field">
+
+                            <label for="supplier">
+                                Supplier/Farmer Name *
+                            </label>
 
                             <div class="supplier-selection-row">
 
                                 <select id="supplier"
-                                        name="supplier">
+                                        name="supplier"
+                                        required>
 
                                     <option value=""
                                             selected
@@ -366,7 +563,7 @@
                                         +
                                     </span>
 
-                                    Add New Supplier
+                                    Add Supplier
 
                                 </a>
 
@@ -375,17 +572,11 @@
                         </div>
 
 
-
-                        <!-- Phone -->
-
                         <div class="form-field">
 
                             <label for="phone">
-
                                 Phone Number
-
                             </label>
-
 
                             <input
                                 type="tel"
@@ -398,41 +589,81 @@
                         </div>
 
 
+                        <div class="form-field">
 
-                        <!-- Paddy Weight -->
+                            <label for="paddy-type">
+                                Paddy Type *
+                            </label>
+
+                            <select id="paddy-type"
+                                    name="paddyType"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+
+                                    Select paddy type
+
+                                </option>
+
+                                <option value="BRRI dhan28">
+                                    BRRI dhan28
+                                </option>
+
+                                <option value="BRRI dhan29">
+                                    BRRI dhan29
+                                </option>
+
+                                <option value="BRRI dhan49">
+                                    BRRI dhan49
+                                </option>
+
+                                <option value="Miniket">
+                                    Miniket
+                                </option>
+
+                                <option value="Najirshail">
+                                    Najirshail
+                                </option>
+
+                                <option value="Swarna">
+                                    Swarna
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
 
                         <div class="form-field">
 
                             <label for="paddy-weight">
-
-                                Paddy Weight
-
+                                Paddy Weight (kg) *
                             </label>
-
 
                             <input
                                 type="number"
                                 id="paddy-weight"
                                 name="paddyWeight"
                                 placeholder="Enter paddy weight"
-                                min="1"
+                                min="0.01"
                                 step="0.01"
+                                required
                             >
 
                         </div>
 
 
-
-                        <!-- Moisture -->
-
                         <div class="form-field">
 
                             <label for="moisture">
-
-                                Moisture %
-
+                                Moisture % *
                             </label>
-
 
                             <input
                                 type="number"
@@ -442,49 +673,60 @@
                                 min="0"
                                 max="100"
                                 step="0.01"
+                                required
                             >
 
                         </div>
 
 
-
-                        <!-- Price -->
-
                         <div class="form-field">
 
                             <label for="price">
-
-                                Price per kg
-
+                                Price per kg (৳) *
                             </label>
-
 
                             <input
                                 type="number"
                                 id="price"
                                 name="pricePerKg"
                                 placeholder="Enter price per kg"
-                                min="0"
+                                min="0.01"
                                 step="0.01"
+                                required
                             >
 
                         </div>
 
 
+                        <div class="form-field calculated-field">
 
-                        <!-- Payment Status -->
+                            <label for="total-amount">
+                                Total Purchase Amount
+                            </label>
+
+                            <input
+                                type="text"
+                                id="total-amount"
+                                value="৳0"
+                                readonly
+                            >
+
+                            <small>
+                                Weight × Price per kg
+                            </small>
+
+                        </div>
+
 
                         <div class="form-field">
 
                             <label for="payment-status">
-
-                                Payment Status
-
+                                Payment Status *
                             </label>
 
-
                             <select id="payment-status"
-                                    name="paymentStatus">
+                                    name="paymentStatus"
+                                    required>
 
                                 <option value=""
                                         selected
@@ -494,16 +736,13 @@
 
                                 </option>
 
-
                                 <option value="paid">
                                     Paid
                                 </option>
 
-
                                 <option value="due">
                                     Due
                                 </option>
-
 
                                 <option value="partial">
                                     Partially Paid
@@ -514,41 +753,60 @@
                         </div>
 
 
-
-                        <!-- Partial Paid Amount -->
-
                         <div class="form-field"
                              id="partialPaymentField"
                              hidden>
 
                             <label for="paid-amount">
-
-                                Paid Amount
-
+                                Paid Amount (৳) *
                             </label>
-
 
                             <input
                                 type="number"
                                 id="paid-amount"
                                 name="paidAmount"
-                                placeholder="Enter amount already paid"
-                                min="0"
+                                placeholder="Enter paid amount"
+                                min="0.01"
                                 step="0.01"
                             >
 
-
                             <small id="paymentBalanceText">
-
                             </small>
 
                         </div>
 
 
+                        <div class="form-field calculated-field">
 
-                        <!-- Save -->
+                            <label for="due-amount">
+                                Remaining Due
+                            </label>
+
+                            <input
+                                type="text"
+                                id="due-amount"
+                                value="৳0"
+                                readonly
+                            >
+
+                        </div>
+
+
+                        <!-- =================================
+                             CENTERED FORM ACTIONS
+                        ================================== -->
 
                         <div class="form-action">
+
+                            <button class="secondary-action-button"
+                                    type="button"
+                                    id="resetPurchaseBtn"
+                                    hidden>
+
+                                Cancel Edit
+
+                            </button>
+
 
                             <button class="primary-action-button"
                                     type="submit"
@@ -569,14 +827,33 @@
                 </section>
 
 
-
-                <!-- ==============================
-                     Purchase List
-                =============================== -->
+                <!-- =========================================
+                     PURCHASE LIST
+                ========================================== -->
 
                 <section class="content-card purchase-list-card">
 
-                    <h2>Paddy Purchase List</h2>
+                    <div class="list-heading-row">
+
+                        <div>
+
+                            <h2>
+                                Paddy Purchase List
+                            </h2>
+
+                            <p>
+                                Saved purchase history with payment and
+                                quality status.
+                            </p>
+
+                        </div>
+
+
+                        <!-- <span class="table-hint">
+                            Scroll horizontally on smaller screens
+                        </span> -->
+
+                    </div>
 
 
                     <div class="table-wrapper">
@@ -587,16 +864,15 @@
 
                                 <tr>
 
+                                    <th>Purchase ID</th>
                                     <th>Supplier</th>
-
+                                    <th>Paddy Type</th>
                                     <th>Weight</th>
-
-                                    <th>Price</th>
-
+                                    <th>Moisture</th>
+                                    <th>Total</th>
                                     <th>Payment</th>
-
+                                    <th>Quality</th>
                                     <th>Date</th>
-
                                     <th>Action</th>
 
                                 </tr>
@@ -605,7 +881,6 @@
 
 
                             <tbody id="purchaseTableBody">
-
                             </tbody>
 
                         </table>
@@ -620,8 +895,6 @@
 
     </div>
 
-
-    <!-- JavaScript -->
 
     <script src="../scripts/auth.js"></script>
 

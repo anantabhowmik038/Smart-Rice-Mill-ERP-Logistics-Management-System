@@ -1,17 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ==========================================
-    // ELEMENTS
-    // ==========================================
+    /* =========================================
+       SMART RICE MILL ERP
+       PADDY PURCHASE MANAGEMENT
+    ========================================= */
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
 
     const purchaseForm =
         document.getElementById("purchaseForm");
+
+    if (!purchaseForm) {
+        return;
+    }
+
 
     const supplierSelect =
         document.getElementById("supplier");
 
     const phoneInput =
         document.getElementById("phone");
+
+    const purchaseDateInput =
+        document.getElementById("purchase-date");
+
+    const paddyTypeSelect =
+        document.getElementById("paddy-type");
 
     const paddyWeightInput =
         document.getElementById("paddy-weight");
@@ -22,14 +39,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const priceInput =
         document.getElementById("price");
 
-    const paymentStatus =
+    const totalAmountInput =
+        document.getElementById("total-amount");
+
+    const paymentStatusSelect =
         document.getElementById("payment-status");
+
+    const partialPaymentField =
+        document.getElementById("partialPaymentField");
 
     const paidAmountInput =
         document.getElementById("paid-amount");
 
-    const partialPaymentField =
-        document.getElementById("partialPaymentField");
+    const dueAmountInput =
+        document.getElementById("due-amount");
 
     const paymentBalanceText =
         document.getElementById("paymentBalanceText");
@@ -37,11 +60,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const savePurchaseBtn =
         document.getElementById("savePurchaseBtn");
 
+    const resetPurchaseBtn =
+        document.getElementById("resetPurchaseBtn");
+
     const purchaseTableBody =
         document.getElementById("purchaseTableBody");
 
-
-    // Summary
 
     const todayPurchaseValue =
         document.getElementById("todayPurchaseValue");
@@ -53,321 +77,212 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("dueBillsValue");
 
 
-    // ==========================================
-    // EDIT MODE
-    // ==========================================
+    const menuButton =
+        document.getElementById("menuButton");
 
-    let editingPurchaseId = null;
+    const sidebar =
+        document.getElementById("sidebar");
 
-
-    // ==========================================
-    // SUPPLIERS
-    // ==========================================
-
-    function getSuppliers() {
-
-        return (
-            JSON.parse(
-                localStorage.getItem("suppliers")
-            ) || []
-        );
-
-    }
+    const sidebarBackdrop =
+        document.getElementById("sidebarBackdrop");
 
 
-    // ==========================================
-    // DEFAULT PURCHASES
-    // ==========================================
+    /* =========================================
+       DEFAULT SUPPLIERS
+    ========================================= */
 
-    const defaultPurchases = [
+    const defaultSuppliers = [
 
         {
             id: 1,
-            purchaseId: "P-1024",
-            supplierId: 1,
-            supplierName: "Rahim Farmer",
+            name: "Rahim Farmer",
             phone: "01700000001",
-            weight: 650,
-            moisture: 14,
-            pricePerKg: 42,
-            totalPrice: 27300,
-            payment: "paid",
-            paidAmount: 27300,
-            dueAmount: 0,
-            date: "2026-07-01"
+            address: "Dinajpur",
+            type: "farmer",
+            payment: "paid"
         },
 
         {
             id: 2,
-            purchaseId: "P-1023",
-            supplierId: 2,
-            supplierName: "Karim Supplier",
+            name: "Karim Supplier",
             phone: "01800000002",
-            weight: 900,
-            moisture: 18,
-            pricePerKg: 42,
-            totalPrice: 37800,
-            payment: "due",
-            paidAmount: 0,
-            dueAmount: 37800,
-            date: "2026-07-01"
+            address: "Bogura",
+            type: "supplier",
+            payment: "due"
         },
 
         {
             id: 3,
-            purchaseId: "P-1022",
-            supplierId: 3,
-            supplierName: "Molla Agro",
+            name: "Molla Agro",
             phone: "01900000003",
-            weight: 500,
-            moisture: 15,
-            pricePerKg: 42,
-            totalPrice: 21000,
-            payment: "paid",
-            paidAmount: 21000,
-            dueAmount: 0,
-            date: "2026-06-30"
+            address: "Naogaon",
+            type: "supplier",
+            payment: "paid"
         }
 
     ];
 
 
-    // ==========================================
-    // LOAD PURCHASES
-    // ==========================================
+    /* =========================================
+       DEFAULT PURCHASES
+    ========================================= */
 
-    const storedPurchases =
-        localStorage.getItem("purchases");
+    const defaultPurchases = [
 
+        {
+            id: 1,
 
-    let purchases;
+            purchaseId:
+                "P-1024",
 
+            supplierId:
+                1,
 
-    if (storedPurchases === null) {
+            supplierName:
+                "Rahim Farmer",
 
-        purchases =
-            defaultPurchases;
+            phone:
+                "01700000001",
 
-    } else {
+            purchaseDate:
+                "2026-07-01",
 
-        purchases =
-            JSON.parse(storedPurchases) || [];
+            date:
+                "2026-07-01",
 
-    }
+            paddyType:
+                "BRRI dhan28",
 
+            weight:
+                650,
 
-    // ==========================================
-    // FIX / MIGRATE OLD PURCHASE DATA
-    // ==========================================
+            moisture:
+                14,
 
-    let dataChanged = false;
+            pricePerKg:
+                42,
 
+            totalPrice:
+                27300,
 
-    purchases =
-        purchases.map(
-            function (purchase, index) {
+            payment:
+                "paid",
 
-                // Missing internal ID
+            paidAmount:
+                27300,
 
-                if (
-                    purchase.id === undefined ||
-                    purchase.id === null
-                ) {
+            dueAmount:
+                0
+        },
 
-                    purchase.id =
-                        Date.now() + index;
 
-                    dataChanged = true;
+        {
+            id: 2,
 
-                }
+            purchaseId:
+                "P-1023",
 
+            supplierId:
+                2,
 
-                // Missing Purchase ID
+            supplierName:
+                "Karim Supplier",
 
-                if (!purchase.purchaseId) {
+            phone:
+                "01800000002",
 
-                    purchase.purchaseId =
-                        "P-" +
-                        (2000 + index);
+            purchaseDate:
+                "2026-07-01",
 
-                    dataChanged = true;
+            date:
+                "2026-07-01",
 
-                }
+            paddyType:
+                "BRRI dhan29",
 
+            weight:
+                900,
 
-                // Missing total price
+            moisture:
+                18,
 
-                if (
-                    purchase.totalPrice === undefined ||
-                    purchase.totalPrice === null
-                ) {
+            pricePerKg:
+                42,
 
-                    purchase.totalPrice =
-                        Number(purchase.weight || 0) *
-                        Number(purchase.pricePerKg || 0);
+            totalPrice:
+                37800,
 
-                    dataChanged = true;
+            payment:
+                "due",
 
-                }
+            paidAmount:
+                0,
 
+            dueAmount:
+                37800
+        },
 
-                // Old PAID record
 
-                if (
-                    purchase.payment === "paid" &&
-                    (
-                        purchase.paidAmount === undefined ||
-                        purchase.dueAmount === undefined
-                    )
-                ) {
+        {
+            id: 3,
 
-                    purchase.paidAmount =
-                        purchase.totalPrice;
+            purchaseId:
+                "P-1022",
 
-                    purchase.dueAmount = 0;
+            supplierId:
+                3,
 
-                    dataChanged = true;
+            supplierName:
+                "Molla Agro",
 
-                }
+            phone:
+                "01900000003",
 
+            purchaseDate:
+                "2026-06-30",
 
-                // Old DUE record
+            date:
+                "2026-06-30",
 
-                if (
-                    purchase.payment === "due" &&
-                    (
-                        purchase.paidAmount === undefined ||
-                        purchase.dueAmount === undefined
-                    )
-                ) {
+            paddyType:
+                "Miniket",
 
-                    purchase.paidAmount = 0;
+            weight:
+                500,
 
-                    purchase.dueAmount =
-                        purchase.totalPrice;
+            moisture:
+                15,
 
-                    dataChanged = true;
+            pricePerKg:
+                42,
 
-                }
+            totalPrice:
+                21000,
 
+            payment:
+                "paid",
 
-                // Old PARTIAL record
-                // Exact previous paid amount was not saved.
-                // Keep paidAmount null until user edits it.
+            paidAmount:
+                21000,
 
-                if (
-                    purchase.payment === "partial" &&
-                    (
-                        purchase.paidAmount === undefined ||
-                        purchase.dueAmount === undefined
-                    )
-                ) {
-
-                    purchase.paidAmount = null;
-
-                    purchase.dueAmount =
-                        purchase.totalPrice;
-
-                    dataChanged = true;
-
-                }
-
-
-                return purchase;
-
-            }
-        );
-
-
-    savePurchases();
-
-
-    // ==========================================
-    // SAVE
-    // ==========================================
-
-    function savePurchases() {
-
-        localStorage.setItem(
-            "purchases",
-            JSON.stringify(purchases)
-        );
-
-    }
-
-
-    // ==========================================
-    // SAFE TEXT
-    // ==========================================
-
-    function escapeHTML(value) {
-
-        const element =
-            document.createElement("div");
-
-        element.textContent =
-            String(value);
-
-        return element.innerHTML;
-
-    }
-
-
-    // ==========================================
-    // MONEY FORMAT
-    // ==========================================
-
-    function formatMoney(amount) {
-
-        return (
-            "৳" +
-            Number(amount || 0)
-                .toLocaleString(
-                    "en-US",
-                    {
-                        maximumFractionDigits: 2
-                    }
-                )
-        );
-
-    }
-
-
-    // ==========================================
-    // DATE FORMAT
-    // ==========================================
-
-    function formatDate(dateValue) {
-
-        if (!dateValue) {
-
-            return "";
-
+            dueAmount:
+                0
         }
 
-
-        const date =
-            new Date(
-                dateValue +
-                "T00:00:00"
-            );
+    ];
 
 
-        return date.toLocaleDateString(
-            "en-GB",
-            {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            }
-        );
+    /* =========================================
+       EDIT MODE
+    ========================================= */
 
-    }
+    let editingPurchaseId =
+        null;
 
 
-    // ==========================================
-    // TODAY
-    // ==========================================
+    /* =========================================
+       TODAY DATE
+    ========================================= */
 
     function getTodayDate() {
 
@@ -382,31 +297,663 @@ document.addEventListener("DOMContentLoaded", function () {
         const month =
             String(
                 today.getMonth() + 1
-            ).padStart(2, "0");
+            ).padStart(
+                2,
+                "0"
+            );
 
 
         const day =
             String(
                 today.getDate()
-            ).padStart(2, "0");
+            ).padStart(
+                2,
+                "0"
+            );
 
 
         return (
-            year +
-            "-" +
-            month +
-            "-" +
-            day
+            `${year}-${month}-${day}`
         );
 
     }
 
 
-    // ==========================================
-    // SUPPLIER DROPDOWN
-    // ==========================================
+    /* =========================================
+       GET SUPPLIERS
+    ========================================= */
 
-    function loadSupplierDropdown() {
+    function getSuppliers() {
+
+        const stored =
+            localStorage.getItem(
+                "suppliers"
+            );
+
+
+        if (stored === null) {
+
+            localStorage.setItem(
+                "suppliers",
+                JSON.stringify(
+                    defaultSuppliers
+                )
+            );
+
+
+            return [
+                ...defaultSuppliers
+            ];
+
+        }
+
+
+        try {
+
+            return (
+                JSON.parse(stored) ||
+                []
+            );
+
+        }
+        catch {
+
+            localStorage.setItem(
+                "suppliers",
+                JSON.stringify(
+                    defaultSuppliers
+                )
+            );
+
+
+            return [
+                ...defaultSuppliers
+            ];
+
+        }
+
+    }
+
+
+    /* =========================================
+       LOAD PURCHASES
+    ========================================= */
+
+    function loadPurchases() {
+
+        const stored =
+            localStorage.getItem(
+                "purchases"
+            );
+
+
+        let data;
+
+
+        if (stored === null) {
+
+            data = [
+                ...defaultPurchases
+            ];
+
+        }
+        else {
+
+            try {
+
+                data =
+                    JSON.parse(
+                        stored
+                    ) || [];
+
+            }
+            catch {
+
+                data = [
+                    ...defaultPurchases
+                ];
+
+            }
+
+        }
+
+
+        data =
+            data.map(
+                function (
+                    purchase,
+                    index
+                ) {
+
+                    const weight =
+                        Number(
+                            purchase.weight ||
+                            0
+                        );
+
+
+                    const pricePerKg =
+                        Number(
+                            purchase.pricePerKg ||
+                            0
+                        );
+
+
+                    const totalPrice =
+
+                        purchase.totalPrice ==
+                        null
+
+                            ?
+
+                            weight *
+                            pricePerKg
+
+                            :
+
+                            Number(
+                                purchase.totalPrice ||
+                                0
+                            );
+
+
+                    const payment =
+                        purchase.payment ||
+                        "due";
+
+
+                    let paidAmount =
+                        purchase.paidAmount;
+
+
+                    let dueAmount =
+                        purchase.dueAmount;
+
+
+                    if (
+                        paidAmount ==
+                        null
+                    ) {
+
+                        paidAmount =
+
+                            payment ===
+                            "paid"
+
+                                ?
+
+                                totalPrice
+
+                                :
+
+                                0;
+
+                    }
+
+
+                    if (
+                        dueAmount ==
+                        null
+                    ) {
+
+                        dueAmount =
+                            Math.max(
+                                totalPrice -
+                                Number(
+                                    paidAmount ||
+                                    0
+                                ),
+                                0
+                            );
+
+                    }
+
+
+                    return {
+
+                        ...purchase,
+
+
+                        id:
+
+                            purchase.id ??
+
+                            Date.now() +
+                            index,
+
+
+                        purchaseId:
+
+                            purchase.purchaseId ||
+
+                            `P-${2000 + index}`,
+
+
+                        purchaseDate:
+
+                            purchase.purchaseDate ||
+
+                            purchase.date ||
+
+                            getTodayDate(),
+
+
+                        date:
+
+                            purchase.purchaseDate ||
+
+                            purchase.date ||
+
+                            getTodayDate(),
+
+
+                        paddyType:
+
+                            purchase.paddyType ||
+
+                            "Not Recorded",
+
+
+                        weight:
+                            weight,
+
+
+                        moisture:
+
+                            Number(
+                                purchase.moisture ||
+                                0
+                            ),
+
+
+                        pricePerKg:
+                            pricePerKg,
+
+
+                        totalPrice:
+                            totalPrice,
+
+
+                        payment:
+                            payment,
+
+
+                        paidAmount:
+
+                            Number(
+                                paidAmount ||
+                                0
+                            ),
+
+
+                        dueAmount:
+
+                            Number(
+                                dueAmount ||
+                                0
+                            )
+
+                    };
+
+                }
+            );
+
+
+        localStorage.setItem(
+            "purchases",
+            JSON.stringify(data)
+        );
+
+
+        return data;
+
+    }
+
+
+    let purchases =
+        loadPurchases();
+
+
+    /* =========================================
+       SAVE PURCHASES
+    ========================================= */
+
+    function savePurchases() {
+
+        localStorage.setItem(
+            "purchases",
+            JSON.stringify(
+                purchases
+            )
+        );
+
+    }
+
+
+    /* =========================================
+       QUALITY INSPECTIONS
+    ========================================= */
+
+    function getQualityInspections() {
+
+        try {
+
+            return (
+
+                JSON.parse(
+                    localStorage.getItem(
+                        "qualityInspections"
+                    )
+                ) ||
+
+                []
+
+            );
+
+        }
+        catch {
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =========================================
+       SAFE HTML
+    ========================================= */
+
+    function escapeHTML(value) {
+
+        const element =
+            document.createElement(
+                "div"
+            );
+
+
+        element.textContent =
+            String(
+                value ??
+                ""
+            );
+
+
+        return (
+            element.innerHTML
+        );
+
+    }
+
+
+    /* =========================================
+       MONEY FORMAT
+    ========================================= */
+
+    function formatMoney(amount) {
+
+        return (
+
+            "৳" +
+
+            Number(
+                amount ||
+                0
+            ).toLocaleString(
+                "en-US",
+                {
+                    maximumFractionDigits:
+                        2
+                }
+            )
+
+        );
+
+    }
+
+
+    /* =========================================
+       NUMBER FORMAT
+    ========================================= */
+
+    function formatNumber(value) {
+
+        return (
+
+            Number(
+                value ||
+                0
+            ).toLocaleString(
+                "en-US",
+                {
+                    maximumFractionDigits:
+                        2
+                }
+            )
+
+        );
+
+    }
+
+
+    /* =========================================
+       DATE FORMAT
+    ========================================= */
+
+    function formatDate(
+        dateValue
+    ) {
+
+        if (!dateValue) {
+
+            return "—";
+
+        }
+
+
+        const date =
+            new Date(
+                `${dateValue}T00:00:00`
+            );
+
+
+        return (
+
+            date.toLocaleDateString(
+                "en-GB",
+                {
+                    day:
+                        "2-digit",
+
+                    month:
+                        "short",
+
+                    year:
+                        "numeric"
+                }
+            )
+
+        );
+
+    }
+
+
+    /* =========================================
+       PAYMENT TEXT
+    ========================================= */
+
+    function getPaymentText(
+        payment
+    ) {
+
+        if (
+            payment ===
+            "paid"
+        ) {
+
+            return "Paid";
+
+        }
+
+
+        if (
+            payment ===
+            "partial"
+        ) {
+
+            return "Partially Paid";
+
+        }
+
+
+        return "Due";
+
+    }
+
+
+    /* =========================================
+       PAYMENT CLASS
+    ========================================= */
+
+    function getPaymentClass(
+        payment
+    ) {
+
+        if (
+            payment ===
+            "paid"
+        ) {
+
+            return "status-paid";
+
+        }
+
+
+        if (
+            payment ===
+            "partial"
+        ) {
+
+            return "status-partial";
+
+        }
+
+
+        return "status-due";
+
+    }
+
+
+    /* =========================================
+       QUALITY INFORMATION
+    ========================================= */
+
+    function getQualityInfo(
+        purchaseId
+    ) {
+
+        const inspection =
+            getQualityInspections()
+                .find(
+                    function (item) {
+
+                        return (
+                            item.purchaseId ===
+                            purchaseId
+                        );
+
+                    }
+                );
+
+
+        if (!inspection) {
+
+            return {
+
+                text:
+                    "Pending Inspection",
+
+                className:
+                    "quality-pending"
+
+            };
+
+        }
+
+
+        const gradeText =
+
+            inspection.grade
+
+                ?
+
+                ` · Grade ${
+                    String(
+                        inspection.grade
+                    ).toUpperCase()
+                }`
+
+                :
+
+                "";
+
+
+        if (
+            inspection.decision ===
+            "accepted"
+        ) {
+
+            return {
+
+                text:
+                    `Accepted${gradeText}`,
+
+                className:
+                    "quality-accepted"
+
+            };
+
+        }
+
+
+        if (
+            inspection.decision ===
+            "rejected"
+        ) {
+
+            return {
+
+                text:
+                    `Rejected${gradeText}`,
+
+                className:
+                    "quality-rejected"
+
+            };
+
+        }
+
+
+        return {
+
+            text:
+                `Review${gradeText}`,
+
+            className:
+                "quality-review"
+
+        };
+
+    }
+
+
+    /* =========================================
+       SUPPLIER DROPDOWN
+    ========================================= */
+
+    function loadSupplierDropdown(
+        selectedId = ""
+    ) {
 
         const suppliers =
             getSuppliers();
@@ -414,12 +961,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         supplierSelect.innerHTML = `
 
-            <option value=""
-                    selected
-                    disabled>
-
+            <option
+                value=""
+                disabled
+            >
                 Select supplier/farmer name
-
             </option>
 
         `;
@@ -450,7 +996,10 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        if (suppliers.length === 0) {
+        if (
+            suppliers.length ===
+            0
+        ) {
 
             const option =
                 document.createElement(
@@ -458,10 +1007,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            option.disabled = true;
+            option.value =
+                "";
+
+
+            option.disabled =
+                true;
+
 
             option.textContent =
-                "No supplier available";
+                "No supplier available — add a supplier first";
 
 
             supplierSelect.appendChild(
@@ -470,281 +1025,232 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
+
+        supplierSelect.value =
+
+            selectedId
+
+                ?
+
+                String(
+                    selectedId
+                )
+
+                :
+
+                "";
+
+
+        updateSupplierPhone();
+
     }
 
 
-    // ==========================================
-    // SUPPLIER SELECT -> PHONE
-    // ==========================================
+    /* =========================================
+       AUTO PHONE
+    ========================================= */
 
-    supplierSelect.addEventListener(
-        "change",
-        function () {
+    function updateSupplierPhone() {
 
-            const suppliers =
-                getSuppliers();
-
-
-            const supplier =
-                suppliers.find(
+        const supplier =
+            getSuppliers()
+                .find(
                     function (item) {
 
                         return (
-                            Number(item.id) ===
+
+                            Number(
+                                item.id
+                            ) ===
+
                             Number(
                                 supplierSelect.value
                             )
+
                         );
 
                     }
                 );
 
 
-            if (supplier) {
+        phoneInput.value =
 
-                phoneInput.value =
-                    supplier.phone;
+            supplier
 
-            } else {
+                ?
 
-                phoneInput.value = "";
+                supplier.phone ||
+                ""
 
-            }
+                :
 
-        }
-    );
-
-
-    // ==========================================
-    // PAYMENT STATUS
-    // ==========================================
-
-    paymentStatus.addEventListener(
-        "change",
-        function () {
-
-            updatePartialPaymentField();
-
-        }
-    );
-
-
-    function updatePartialPaymentField() {
-
-        if (
-            paymentStatus.value ===
-            "partial"
-        ) {
-
-            partialPaymentField.hidden =
-                false;
-
-        } else {
-
-            partialPaymentField.hidden =
-                true;
-
-            paidAmountInput.value = "";
-
-            paymentBalanceText.textContent =
                 "";
-
-        }
 
     }
 
 
-    // ==========================================
-    // LIVE PARTIAL PAYMENT CALCULATION
-    // ==========================================
+    /* =========================================
+       FINANCIAL CALCULATION
+    ========================================= */
 
-    function updatePaymentPreview() {
-
-        if (
-            paymentStatus.value !==
-            "partial"
-        ) {
-
-            paymentBalanceText.textContent =
-                "";
-
-            return;
-
-        }
-
+    function calculateFinancials() {
 
         const weight =
             Number(
-                paddyWeightInput.value
+                paddyWeightInput.value ||
+                0
             );
 
 
         const price =
             Number(
-                priceInput.value
-            );
-
-
-        const paid =
-            Number(
-                paidAmountInput.value
+                priceInput.value ||
+                0
             );
 
 
         const total =
-            weight * price;
+
+            weight > 0 &&
+            price >= 0
+
+                ?
+
+                weight *
+                price
+
+                :
+
+                0;
+
+
+        totalAmountInput.value =
+
+            total
+
+                ?
+
+                formatMoney(total)
+
+                :
+
+                "৳0";
+
+
+        const payment =
+            paymentStatusSelect.value;
+
+
+        let paid =
+            0;
 
 
         if (
-            total <= 0 ||
-            !paidAmountInput.value
+            payment ===
+            "paid"
         ) {
+
+            paid =
+                total;
+
+        }
+
+
+        if (
+            payment ===
+            "partial"
+        ) {
+
+            paid =
+                Math.max(
+                    Number(
+                        paidAmountInput.value ||
+                        0
+                    ),
+                    0
+                );
+
+        }
+
+
+        const due =
+            Math.max(
+                total -
+                paid,
+                0
+            );
+
+
+        dueAmountInput.value =
+            formatMoney(
+                due
+            );
+
+
+        if (
+            payment ===
+            "partial"
+        ) {
+
+            paymentBalanceText.textContent =
+
+                total > 0
+
+                    ?
+
+                    `Total ${formatMoney(total)} · Remaining ${formatMoney(due)}`
+
+                    :
+
+                    "Enter weight and price to calculate the balance.";
+
+        }
+        else {
 
             paymentBalanceText.textContent =
                 "";
 
-            return;
-
         }
-
-
-        const remaining =
-            total - paid;
-
-
-        if (
-            paid <= 0 ||
-            paid >= total
-        ) {
-
-            paymentBalanceText.textContent =
-                "Paid amount must be more than ৳0 and less than total amount.";
-
-            paymentBalanceText.className =
-                "payment-error";
-
-            return;
-
-        }
-
-
-        paymentBalanceText.textContent =
-            "Total: " +
-            formatMoney(total) +
-            " | Remaining Due: " +
-            formatMoney(remaining);
-
-
-        paymentBalanceText.className =
-            "payment-success";
 
     }
 
 
-    paddyWeightInput.addEventListener(
-        "input",
-        updatePaymentPreview
-    );
+    /* =========================================
+       PAYMENT FIELD
+    ========================================= */
+
+    function updatePaymentField() {
+
+        const isPartial =
+
+            paymentStatusSelect.value ===
+            "partial";
 
 
-    priceInput.addEventListener(
-        "input",
-        updatePaymentPreview
-    );
+        partialPaymentField.hidden =
+            !isPartial;
 
 
-    paidAmountInput.addEventListener(
-        "input",
-        updatePaymentPreview
-    );
+        paidAmountInput.required =
+            isPartial;
 
 
-    // ==========================================
-    // PAYMENT TEXT
-    // ==========================================
+        if (!isPartial) {
 
-    function getPaymentText(payment) {
+            paidAmountInput.value =
+                "";
 
-        if (payment === "paid") {
-            return "Paid";
         }
 
-        if (payment === "due") {
-            return "Due";
-        }
 
-        if (payment === "partial") {
-            return "Partially Paid";
-        }
-
-        return payment;
+        calculateFinancials();
 
     }
 
 
-    function getPaymentClass(payment) {
-
-        if (payment === "paid") {
-            return "status-paid";
-        }
-
-        return "status-due";
-
-    }
-
-
-    // ==========================================
-    // PURCHASE ID
-    // ==========================================
-
-    function generatePurchaseId() {
-
-        let highestNumber = 1024;
-
-
-        purchases.forEach(
-            function (purchase) {
-
-                if (!purchase.purchaseId) {
-                    return;
-                }
-
-
-                const number =
-                    Number(
-                        purchase.purchaseId
-                            .replace(
-                                "P-",
-                                ""
-                            )
-                    );
-
-
-                if (
-                    !isNaN(number) &&
-                    number > highestNumber
-                ) {
-
-                    highestNumber =
-                        number;
-
-                }
-
-            }
-        );
-
-
-        return (
-            "P-" +
-            (highestNumber + 1)
-        );
-
-    }
-
-
-    // ==========================================
-    // SUMMARY CARDS
-    // ==========================================
+    /* =========================================
+       SUMMARY CARDS
+    ========================================= */
 
     function updateSummaryCards() {
 
@@ -752,29 +1258,44 @@ document.addEventListener("DOMContentLoaded", function () {
             getTodayDate();
 
 
-        let todayPurchase = 0;
+        let todayAmount =
+            0;
 
-        let todayPaddyQuantity = 0;
 
-        let totalDue = 0;
+        let todayWeight =
+            0;
+
+
+        let totalDue =
+            0;
 
 
         purchases.forEach(
             function (purchase) {
 
+                const purchaseDate =
+
+                    purchase.purchaseDate ||
+
+                    purchase.date;
+
+
                 if (
-                    purchase.date === today
+                    purchaseDate ===
+                    today
                 ) {
 
-                    todayPurchase +=
+                    todayAmount +=
                         Number(
-                            purchase.totalPrice || 0
+                            purchase.totalPrice ||
+                            0
                         );
 
 
-                    todayPaddyQuantity +=
+                    todayWeight +=
                         Number(
-                            purchase.weight || 0
+                            purchase.weight ||
+                            0
                         );
 
                 }
@@ -782,7 +1303,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 totalDue +=
                     Number(
-                        purchase.dueAmount || 0
+                        purchase.dueAmount ||
+                        0
                     );
 
             }
@@ -791,20 +1313,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         todayPurchaseValue.textContent =
             formatMoney(
-                todayPurchase
+                todayAmount
             );
 
 
         todayPaddyQtyValue.textContent =
-            Number(
-                todayPaddyQuantity
-            ).toLocaleString(
-                "en-US",
-                {
-                    maximumFractionDigits: 2
-                }
-            ) +
-            " kg";
+
+            `${formatNumber(todayWeight)} kg`;
 
 
         dueBillsValue.textContent =
@@ -815,9 +1330,305 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ==========================================
-    // TOAST
-    // ==========================================
+    /* =========================================
+       DISPLAY PURCHASE TABLE
+    ========================================= */
+
+    function displayPurchases() {
+
+        purchaseTableBody.innerHTML =
+            "";
+
+
+        if (
+            purchases.length ===
+            0
+        ) {
+
+            purchaseTableBody.innerHTML = `
+
+                <tr class="empty-row">
+
+                    <td colspan="10">
+
+                        No purchase records found.
+                        Add the first paddy purchase above.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        [
+            ...purchases
+        ]
+
+            .sort(
+                function (
+                    a,
+                    b
+                ) {
+
+                    return (
+
+                        String(
+                            b.purchaseDate ||
+                            b.date
+                        ).localeCompare(
+                            String(
+                                a.purchaseDate ||
+                                a.date
+                            )
+                        )
+
+                        ||
+
+                        Number(b.id) -
+                        Number(a.id)
+
+                    );
+
+                }
+            )
+
+            .forEach(
+                function (purchase) {
+
+                    const quality =
+                        getQualityInfo(
+                            purchase.purchaseId
+                        );
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            <strong>
+                                ${escapeHTML(
+                                    purchase.purchaseId
+                                )}
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="supplier-name-cell">
+
+                                ${escapeHTML(
+                                    purchase.supplierName
+                                )}
+
+                            </span>
+
+
+                            <small>
+
+                                ${escapeHTML(
+                                    purchase.phone ||
+                                    ""
+                                )}
+
+                            </small>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                purchase.paddyType ||
+                                "Not Recorded"
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatNumber(
+                                purchase.weight
+                            )} kg
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatNumber(
+                                purchase.moisture
+                            )}%
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatMoney(
+                                purchase.totalPrice
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="status-badge
+                                ${getPaymentClass(
+                                    purchase.payment
+                                )}"
+                            >
+
+                                ${getPaymentText(
+                                    purchase.payment
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="quality-badge
+                                ${quality.className}"
+                            >
+
+                                ${escapeHTML(
+                                    quality.text
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatDate(
+                                purchase.purchaseDate ||
+                                purchase.date
+                            )}
+
+                        </td>
+
+
+                        <td class="action-cell">
+
+                            <button
+                                class="purchase-edit-button"
+                                type="button"
+                                data-action="edit"
+                                data-id="${purchase.id}"
+                            >
+                                Edit
+                            </button>
+
+
+                            <button
+                                class="purchase-delete-button"
+                                type="button"
+                                data-action="delete"
+                                data-id="${purchase.id}"
+                            >
+                                Delete
+                            </button>
+
+                        </td>
+
+                    `;
+
+
+                    purchaseTableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       GENERATE PURCHASE ID
+    ========================================= */
+
+    function generatePurchaseId() {
+
+        const numericIds =
+
+            purchases
+
+                .map(
+                    function (purchase) {
+
+                        const match =
+
+                            String(
+                                purchase.purchaseId ||
+                                ""
+                            ).match(
+                                /P-(\d+)/i
+                            );
+
+
+                        return (
+
+                            match
+
+                                ?
+
+                                Number(
+                                    match[1]
+                                )
+
+                                :
+
+                                0
+
+                        );
+
+                    }
+                )
+
+                .filter(Boolean);
+
+
+        const next =
+
+            Math.max(
+                1024,
+                ...numericIds
+            ) + 1;
+
+
+        return (
+            `P-${next}`
+        );
+
+    }
+
+
+    /* =========================================
+       TOAST
+    ========================================= */
 
     function showToast(
         message,
@@ -844,7 +1655,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         toast.className =
-            "purchase-toast " + type;
+            `purchase-toast ${type}`;
 
 
         toast.innerHTML = `
@@ -852,15 +1663,25 @@ document.addEventListener("DOMContentLoaded", function () {
             <span class="toast-icon">
 
                 ${
-                    type === "success"
-                        ? "✓"
-                        : "!"
+                    type ===
+                    "error"
+
+                        ?
+
+                        "!"
+
+                        :
+
+                        "✓"
                 }
 
             </span>
 
+
             <span>
+
                 ${escapeHTML(message)}
+
             </span>
 
         `;
@@ -871,15 +1692,14 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        setTimeout(
+        requestAnimationFrame(
             function () {
 
                 toast.classList.add(
                     "show"
                 );
 
-            },
-            50
+            }
         );
 
 
@@ -897,130 +1717,711 @@ document.addEventListener("DOMContentLoaded", function () {
                         toast.remove();
 
                     },
-                    300
+                    250
                 );
 
             },
-            2500
+            2800
         );
 
     }
 
 
-    // ==========================================
-    // DISPLAY TABLE
-    // ==========================================
+    /* =========================================
+       DEFAULT DATE
+    ========================================= */
 
-    function displayPurchases() {
+    function setDefaultDate() {
 
-        purchaseTableBody.innerHTML =
+        if (
+            !purchaseDateInput.value
+        ) {
+
+            purchaseDateInput.value =
+                getTodayDate();
+
+        }
+
+    }
+
+
+    /* =========================================
+       NORMAL ADD MODE
+    ========================================= */
+
+    function setAddMode() {
+
+        editingPurchaseId =
+            null;
+
+
+        resetPurchaseBtn.hidden =
+            true;
+
+
+        savePurchaseBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ▣
+            </span>
+
+            Save Purchase
+
+        `;
+
+    }
+
+
+    /* =========================================
+       RESET FORM
+    ========================================= */
+
+    function resetPurchaseForm() {
+
+        purchaseForm.reset();
+
+
+        setDefaultDate();
+
+
+        phoneInput.value =
             "";
 
 
-        purchases.forEach(
-            function (purchase) {
-
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
+        totalAmountInput.value =
+            "৳0";
 
 
-                row.innerHTML = `
-
-                    <td>
-
-                        ${escapeHTML(
-                            purchase.supplierName
-                        )}
-
-                    </td>
+        dueAmountInput.value =
+            "৳0";
 
 
-                    <td>
-
-                        ${escapeHTML(
-                            purchase.weight
-                        )} kg
-
-                    </td>
+        partialPaymentField.hidden =
+            true;
 
 
-                    <td>
-
-                        ${formatMoney(
-                            purchase.totalPrice
-                        )}
-
-                    </td>
+        paidAmountInput.required =
+            false;
 
 
-                    <td>
-
-                        <span
-                            class="status-badge
-                            ${getPaymentClass(
-                                purchase.payment
-                            )}"
-                        >
-
-                            ${getPaymentText(
-                                purchase.payment
-                            )}
-
-                        </span>
-
-                    </td>
+        paymentBalanceText.textContent =
+            "";
 
 
-                    <td>
-
-                        ${formatDate(
-                            purchase.date
-                        )}
-
-                    </td>
+        loadSupplierDropdown();
 
 
-                    <td>
+        setAddMode();
 
-                        <button
-                            class="purchase-edit-button"
-                            type="button"
-                            data-action="edit"
-                            data-id="${purchase.id}"
-                        >
-                            Edit
-                        </button>
+    }
 
 
-                        <button
-                            class="purchase-delete-button"
-                            type="button"
-                            data-action="delete"
-                            data-id="${purchase.id}"
-                        >
-                            Delete
-                        </button>
+    /* =========================================
+       VALIDATION
+    ========================================= */
 
-                    </td>
+    function validateForm() {
 
-                `;
+        if (
+            !supplierSelect.value
+        ) {
+
+            return (
+                "Please select a supplier or farmer."
+            );
+
+        }
 
 
-                purchaseTableBody.appendChild(
-                    row
+        if (
+            !purchaseDateInput.value
+        ) {
+
+            return (
+                "Please select the purchase date."
+            );
+
+        }
+
+
+        if (
+            !paddyTypeSelect.value
+        ) {
+
+            return (
+                "Please select a paddy type."
+            );
+
+        }
+
+
+        const weight =
+            Number(
+                paddyWeightInput.value
+            );
+
+
+        const moisture =
+            Number(
+                moistureInput.value
+            );
+
+
+        const price =
+            Number(
+                priceInput.value
+            );
+
+
+        if (
+            !Number.isFinite(weight) ||
+            weight <= 0
+        ) {
+
+            return (
+                "Paddy weight must be greater than zero."
+            );
+
+        }
+
+
+        if (
+            !Number.isFinite(moisture) ||
+            moisture < 0 ||
+            moisture > 100
+        ) {
+
+            return (
+                "Moisture percentage must be between 0 and 100."
+            );
+
+        }
+
+
+        if (
+            !Number.isFinite(price) ||
+            price <= 0
+        ) {
+
+            return (
+                "Price per kg must be greater than zero."
+            );
+
+        }
+
+
+        if (
+            !paymentStatusSelect.value
+        ) {
+
+            return (
+                "Please select a payment status."
+            );
+
+        }
+
+
+        const total =
+            weight *
+            price;
+
+
+        if (
+            paymentStatusSelect.value ===
+            "partial"
+        ) {
+
+            const paid =
+                Number(
+                    paidAmountInput.value
                 );
 
+
+            if (
+                !Number.isFinite(paid) ||
+                paid <= 0 ||
+                paid >= total
+            ) {
+
+                return (
+                    "For partial payment, paid amount must be greater than zero and less than the total amount."
+                );
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================================
+       BUILD PURCHASE RECORD
+    ========================================= */
+
+    function buildPurchaseRecord(
+        existingPurchase = null
+    ) {
+
+        const supplier =
+            getSuppliers()
+                .find(
+                    function (item) {
+
+                        return (
+
+                            Number(
+                                item.id
+                            ) ===
+
+                            Number(
+                                supplierSelect.value
+                            )
+
+                        );
+
+                    }
+                );
+
+
+        const weight =
+            Number(
+                paddyWeightInput.value
+            );
+
+
+        const moisture =
+            Number(
+                moistureInput.value
+            );
+
+
+        const pricePerKg =
+            Number(
+                priceInput.value
+            );
+
+
+        const totalPrice =
+            weight *
+            pricePerKg;
+
+
+        const payment =
+            paymentStatusSelect.value;
+
+
+        let paidAmount =
+            0;
+
+
+        if (
+            payment ===
+            "paid"
+        ) {
+
+            paidAmount =
+                totalPrice;
+
+        }
+
+
+        if (
+            payment ===
+            "partial"
+        ) {
+
+            paidAmount =
+                Number(
+                    paidAmountInput.value
+                );
+
+        }
+
+
+        const dueAmount =
+            Math.max(
+                totalPrice -
+                paidAmount,
+                0
+            );
+
+
+        const purchaseDate =
+            purchaseDateInput.value;
+
+
+        return {
+
+            id:
+
+                existingPurchase
+
+                    ?
+
+                    existingPurchase.id
+
+                    :
+
+                    Date.now(),
+
+
+            purchaseId:
+
+                existingPurchase
+
+                    ?
+
+                    existingPurchase.purchaseId
+
+                    :
+
+                    generatePurchaseId(),
+
+
+            supplierId:
+                supplier.id,
+
+
+            supplierName:
+                supplier.name,
+
+
+            phone:
+                supplier.phone ||
+                "",
+
+
+            purchaseDate:
+                purchaseDate,
+
+
+            date:
+                purchaseDate,
+
+
+            paddyType:
+                paddyTypeSelect.value,
+
+
+            weight:
+                weight,
+
+
+            moisture:
+                moisture,
+
+
+            pricePerKg:
+                pricePerKg,
+
+
+            totalPrice:
+                totalPrice,
+
+
+            payment:
+                payment,
+
+
+            paidAmount:
+                paidAmount,
+
+
+            dueAmount:
+                dueAmount
+
+        };
+
+    }
+
+
+    /* =========================================
+       EDIT PURCHASE
+    ========================================= */
+
+    function editPurchase(id) {
+
+        const purchase =
+            purchases.find(
+                function (item) {
+
+                    return (
+
+                        Number(
+                            item.id
+                        ) ===
+
+                        Number(id)
+
+                    );
+
+                }
+            );
+
+
+        if (!purchase) {
+
+            showToast(
+                "Purchase record not found.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        editingPurchaseId =
+            purchase.id;
+
+
+        loadSupplierDropdown(
+            purchase.supplierId
+        );
+
+
+        purchaseDateInput.value =
+
+            purchase.purchaseDate ||
+
+            purchase.date ||
+
+            getTodayDate();
+
+
+        paddyTypeSelect.value =
+
+            purchase.paddyType ===
+            "Not Recorded"
+
+                ?
+
+                ""
+
+                :
+
+                purchase.paddyType;
+
+
+        paddyWeightInput.value =
+            purchase.weight;
+
+
+        moistureInput.value =
+            purchase.moisture;
+
+
+        priceInput.value =
+            purchase.pricePerKg;
+
+
+        paymentStatusSelect.value =
+            purchase.payment;
+
+
+        updatePaymentField();
+
+
+        if (
+            purchase.payment ===
+            "partial"
+        ) {
+
+            paidAmountInput.value =
+                purchase.paidAmount ||
+                "";
+
+        }
+
+
+        calculateFinancials();
+
+
+        savePurchaseBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ✓
+            </span>
+
+            Update Purchase
+
+        `;
+
+
+        /* Cancel only visible during edit */
+
+        resetPurchaseBtn.hidden =
+            false;
+
+
+        purchaseForm.scrollIntoView(
+            {
+                behavior:
+                    "smooth",
+
+                block:
+                    "center"
             }
         );
 
     }
 
 
-    // ==========================================
-    // SAVE / UPDATE
-    // ==========================================
+    /* =========================================
+       DELETE PURCHASE
+    ========================================= */
+
+    function deletePurchase(id) {
+
+        const purchase =
+            purchases.find(
+                function (item) {
+
+                    return (
+
+                        Number(
+                            item.id
+                        ) ===
+
+                        Number(id)
+
+                    );
+
+                }
+            );
+
+
+        if (!purchase) {
+            return;
+        }
+
+
+        const linkedInspection =
+
+            getQualityInspections()
+                .some(
+                    function (inspection) {
+
+                        return (
+
+                            inspection.purchaseId ===
+                            purchase.purchaseId
+
+                        );
+
+                    }
+                );
+
+
+        if (linkedInspection) {
+
+            showToast(
+                "This purchase has a linked quality inspection. Remove that inspection before deleting the purchase.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const confirmed =
+            window.confirm(
+
+                `Delete purchase ${purchase.purchaseId} from ${purchase.supplierName}?`
+
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        purchases =
+            purchases.filter(
+                function (item) {
+
+                    return (
+
+                        Number(
+                            item.id
+                        ) !==
+
+                        Number(id)
+
+                    );
+
+                }
+            );
+
+
+        savePurchases();
+
+        displayPurchases();
+
+        updateSummaryCards();
+
+
+        if (
+            Number(
+                editingPurchaseId
+            ) ===
+            Number(id)
+        ) {
+
+            resetPurchaseForm();
+
+        }
+
+
+        showToast(
+            "Purchase deleted successfully."
+        );
+
+    }
+
+
+    /* =========================================
+       INPUT EVENTS
+    ========================================= */
+
+    supplierSelect.addEventListener(
+        "change",
+        updateSupplierPhone
+    );
+
+
+    paddyWeightInput.addEventListener(
+        "input",
+        calculateFinancials
+    );
+
+
+    priceInput.addEventListener(
+        "input",
+        calculateFinancials
+    );
+
+
+    paidAmountInput.addEventListener(
+        "input",
+        calculateFinancials
+    );
+
+
+    paymentStatusSelect.addEventListener(
+        "change",
+        updatePaymentField
+    );
+
+
+    /* =========================================
+       SAVE / UPDATE
+    ========================================= */
 
     purchaseForm.addEventListener(
         "submit",
@@ -1029,67 +2430,14 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
 
 
-            const suppliers =
-                getSuppliers();
+            const errorMessage =
+                validateForm();
 
 
-            const selectedSupplier =
-                suppliers.find(
-                    function (supplier) {
-
-                        return (
-                            Number(
-                                supplier.id
-                            ) ===
-                            Number(
-                                supplierSelect.value
-                            )
-                        );
-
-                    }
-                );
-
-
-            if (!selectedSupplier) {
+            if (errorMessage) {
 
                 showToast(
-                    "Please select a supplier or farmer.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            const weight =
-                Number(
-                    paddyWeightInput.value
-                );
-
-
-            const moisture =
-                Number(
-                    moistureInput.value
-                );
-
-
-            const pricePerKg =
-                Number(
-                    priceInput.value
-                );
-
-
-            const payment =
-                paymentStatus.value;
-
-
-            if (
-                weight <= 0
-            ) {
-
-                showToast(
-                    "Please enter a valid paddy weight.",
+                    errorMessage,
                     "error"
                 );
 
@@ -1099,105 +2447,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (
-                moisture < 0 ||
-                moisture > 100 ||
-                moistureInput.value === ""
+                editingPurchaseId !==
+                null
             ) {
 
-                showToast(
-                    "Please enter a valid moisture percentage.",
-                    "error"
-                );
+                const index =
+                    purchases.findIndex(
+                        function (item) {
 
-                return;
+                            return (
 
-            }
+                                Number(
+                                    item.id
+                                ) ===
 
+                                Number(
+                                    editingPurchaseId
+                                )
 
-            if (
-                pricePerKg <= 0
-            ) {
+                            );
 
-                showToast(
-                    "Please enter a valid price per kg.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            if (!payment) {
-
-                showToast(
-                    "Please select payment status.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            const totalPrice =
-                weight *
-                pricePerKg;
-
-
-            let paidAmount = 0;
-
-            let dueAmount = 0;
-
-
-            // Fully Paid
-
-            if (
-                payment === "paid"
-            ) {
-
-                paidAmount =
-                    totalPrice;
-
-                dueAmount = 0;
-
-            }
-
-
-            // Fully Due
-
-            if (
-                payment === "due"
-            ) {
-
-                paidAmount = 0;
-
-                dueAmount =
-                    totalPrice;
-
-            }
-
-
-            // Partial Payment
-
-            if (
-                payment === "partial"
-            ) {
-
-                paidAmount =
-                    Number(
-                        paidAmountInput.value
+                        }
                     );
 
 
                 if (
-                    !paidAmountInput.value ||
-                    paidAmount <= 0 ||
-                    paidAmount >= totalPrice
+                    index ===
+                    -1
                 ) {
 
                     showToast(
-                        "Enter a valid partial paid amount.",
+                        "Purchase record not found.",
                         "error"
                     );
 
@@ -1206,155 +2486,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                dueAmount =
-                    totalPrice -
-                    paidAmount;
-
-            }
-
-
-            // ==================================
-            // UPDATE
-            // ==================================
-
-            if (
-                editingPurchaseId !== null
-            ) {
-
-                const index =
-                    purchases.findIndex(
-                        function (purchase) {
-
-                            return (
-                                purchase.id ===
-                                editingPurchaseId
-                            );
-
-                        }
+                purchases[index] =
+                    buildPurchaseRecord(
+                        purchases[index]
                     );
 
 
-                if (index !== -1) {
+                showToast(
+                    "Purchase updated successfully."
+                );
 
-                    const oldPurchase =
-                        purchases[index];
+            }
+            else {
 
-
-                    purchases[index] = {
-
-                        id:
-                            oldPurchase.id,
-
-                        purchaseId:
-                            oldPurchase.purchaseId,
-
-                        supplierId:
-                            selectedSupplier.id,
-
-                        supplierName:
-                            selectedSupplier.name,
-
-                        phone:
-                            selectedSupplier.phone,
-
-                        weight:
-                            weight,
-
-                        moisture:
-                            moisture,
-
-                        pricePerKg:
-                            pricePerKg,
-
-                        totalPrice:
-                            totalPrice,
-
-                        payment:
-                            payment,
-
-                        paidAmount:
-                            paidAmount,
-
-                        dueAmount:
-                            dueAmount,
-
-                        date:
-                            oldPurchase.date
-
-                    };
-
-                }
-
-
-                savePurchases();
-
-                displayPurchases();
-
-                updateSummaryCards();
-
-                resetPurchaseForm();
+                purchases.push(
+                    buildPurchaseRecord()
+                );
 
 
                 showToast(
-                    "Purchase updated successfully!"
+                    "Purchase saved successfully."
                 );
 
-                return;
-
             }
-
-
-            // ==================================
-            // NEW PURCHASE
-            // ==================================
-
-            const newPurchase = {
-
-                id:
-                    Date.now(),
-
-                purchaseId:
-                    generatePurchaseId(),
-
-                supplierId:
-                    selectedSupplier.id,
-
-                supplierName:
-                    selectedSupplier.name,
-
-                phone:
-                    selectedSupplier.phone,
-
-                weight:
-                    weight,
-
-                moisture:
-                    moisture,
-
-                pricePerKg:
-                    pricePerKg,
-
-                totalPrice:
-                    totalPrice,
-
-                payment:
-                    payment,
-
-                paidAmount:
-                    paidAmount,
-
-                dueAmount:
-                    dueAmount,
-
-                date:
-                    getTodayDate()
-
-            };
-
-
-            purchases.push(
-                newPurchase
-            );
 
 
             savePurchases();
@@ -1365,18 +2519,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
             resetPurchaseForm();
 
+        }
+    );
+
+
+    /* =========================================
+       CANCEL EDIT
+    ========================================= */
+
+    resetPurchaseBtn.addEventListener(
+        "click",
+        function () {
+
+            resetPurchaseForm();
 
             showToast(
-                "Purchase saved successfully!"
+                "Edit cancelled."
             );
 
         }
     );
 
 
-    // ==========================================
-    // TABLE EVENTS
-    // ==========================================
+    /* =========================================
+       TABLE EVENTS
+    ========================================= */
 
     purchaseTableBody.addEventListener(
         "click",
@@ -1384,7 +2551,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const button =
                 event.target.closest(
-                    "button"
+                    "button[data-action]"
                 );
 
 
@@ -1422,643 +2589,176 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    // ==========================================
-    // EDIT
-    // ==========================================
+    /* =========================================
+       MOBILE SIDEBAR
+    ========================================= */
 
-    function editPurchase(id) {
+    function openSidebar() {
 
-        const purchase =
-            purchases.find(
-                function (item) {
-
-                    return (
-                        item.id === id
-                    );
-
-                }
-            );
-
-
-        if (!purchase) {
-
-            showToast(
-                "Purchase record not found.",
-                "error"
-            );
-
+        if (!sidebar) {
             return;
-
         }
 
 
-        const suppliers =
-            getSuppliers();
-
-
-        const supplierExists =
-            suppliers.some(
-                function (supplier) {
-
-                    return (
-                        Number(
-                            supplier.id
-                        ) ===
-                        Number(
-                            purchase.supplierId
-                        )
-                    );
-
-                }
-            );
-
-
-        if (!supplierExists) {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                purchase.supplierId;
-
-
-            option.textContent =
-                purchase.supplierName;
-
-
-            supplierSelect.appendChild(
-                option
-            );
-
-        }
-
-
-        supplierSelect.value =
-            purchase.supplierId;
-
-
-        phoneInput.value =
-            purchase.phone;
-
-
-        paddyWeightInput.value =
-            purchase.weight;
-
-
-        moistureInput.value =
-            purchase.moisture;
-
-
-        priceInput.value =
-            purchase.pricePerKg;
-
-
-        paymentStatus.value =
-            purchase.payment;
-
-
-        updatePartialPaymentField();
-
-
-        if (
-            purchase.payment ===
-            "partial"
-        ) {
-
-            if (
-                purchase.paidAmount !==
-                null
-            ) {
-
-                paidAmountInput.value =
-                    purchase.paidAmount;
-
-            } else {
-
-                paidAmountInput.value =
-                    "";
-
-            }
-
-
-            updatePaymentPreview();
-
-        }
-
-
-        editingPurchaseId =
-            purchase.id;
-
-
-        savePurchaseBtn.innerHTML = `
-
-            <span aria-hidden="true">
-                ▣
-            </span>
-
-            Update Purchase
-
-        `;
-
-
-        supplierSelect.focus();
-
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth"
-
-        });
-
-    }
-
-
-    // ==========================================
-    // DELETE
-    // ==========================================
-
-    function deletePurchase(id) {
-
-        const exists =
-            purchases.some(
-                function (purchase) {
-
-                    return (
-                        purchase.id === id
-                    );
-
-                }
-            );
-
-
-        if (!exists) {
-
-            showToast(
-                "Purchase record not found.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        purchases =
-            purchases.filter(
-                function (purchase) {
-
-                    return (
-                        purchase.id !== id
-                    );
-
-                }
-            );
-
-
-        savePurchases();
-
-        displayPurchases();
-
-        updateSummaryCards();
-
-
-        if (
-            editingPurchaseId === id
-        ) {
-
-            resetPurchaseForm();
-
-        }
-
-
-        showToast(
-            "Purchase deleted successfully!"
+        sidebar.classList.add(
+            "open"
         );
 
+
+        if (sidebarBackdrop) {
+
+            sidebarBackdrop.classList.add(
+                "show"
+            );
+
+        }
+
+
+        if (menuButton) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "hidden";
+
     }
 
 
-    // ==========================================
-    // RESET FORM
-    // ==========================================
+    function closeSidebar() {
 
-    function resetPurchaseForm() {
-
-        purchaseForm.reset();
+        if (!sidebar) {
+            return;
+        }
 
 
-        phoneInput.value = "";
+        sidebar.classList.remove(
+            "open"
+        );
 
 
-        partialPaymentField.hidden =
-            true;
+        if (sidebarBackdrop) {
+
+            sidebarBackdrop.classList.remove(
+                "show"
+            );
+
+        }
 
 
-        paidAmountInput.value = "";
+        if (menuButton) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
 
 
-        paymentBalanceText.textContent =
+        document.body.style.overflow =
             "";
 
+    }
 
-        editingPurchaseId = null;
 
+    if (menuButton) {
 
-        savePurchaseBtn.innerHTML = `
+        menuButton.addEventListener(
+            "click",
+            function () {
 
-            <span aria-hidden="true">
-                ▣
-            </span>
+                if (
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "open"
+                    )
+                ) {
 
-            Save Purchase
+                    closeSidebar();
 
-        `;
+                }
+                else {
+
+                    openSidebar();
+
+                }
+
+            }
+        );
 
     }
 
 
-    // ==========================================
-    // EXTRA UI DESIGN
-    // ==========================================
+    if (sidebarBackdrop) {
 
-    const style =
-        document.createElement(
-            "style"
+        sidebarBackdrop.addEventListener(
+            "click",
+            closeSidebar
         );
 
+    }
 
-    style.textContent = `
 
-        /* SUPPLIER ROW */
+    document.addEventListener(
+        "keydown",
+        function (event) {
 
-        .supplier-selection-row {
+            if (
+                event.key ===
+                "Escape"
+            ) {
 
-            display: flex !important;
-
-            align-items: stretch;
-
-            gap: 10px;
-
-            width: 100%;
-
-        }
-
-
-        .supplier-selection-row select {
-
-            flex: 1 1 auto;
-
-            width: auto !important;
-
-            min-width: 0;
-
-        }
-
-
-        /* ADD SUPPLIER */
-
-        .add-supplier-button {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 5px;
-
-            padding: 0 15px;
-
-            min-height: 42px;
-
-            border:
-                1px solid #15913a;
-
-            border-radius: 6px;
-
-            background-color:
-                #ffffff;
-
-            color:
-                #15913a;
-
-            text-decoration: none;
-
-            white-space: nowrap;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            transition:
-                0.2s ease;
-
-        }
-
-
-        .add-supplier-button:hover {
-
-            background-color:
-                #15913a;
-
-            color:
-                #ffffff;
-
-        }
-
-
-        /* READ ONLY PHONE */
-
-        #phone[readonly] {
-
-            background-color:
-                #f5f8f6;
-
-            cursor:
-                not-allowed;
-
-        }
-
-
-        /* PAYMENT INFO */
-
-        #paymentBalanceText {
-
-            display: block;
-
-            margin-top: 7px;
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-        }
-
-
-        #paymentBalanceText.payment-success {
-
-            color:
-                #15913a;
-
-        }
-
-
-        #paymentBalanceText.payment-error {
-
-            color:
-                #c62828;
-
-        }
-
-
-        /* EDIT */
-
-        .purchase-edit-button {
-
-            padding:
-                7px 15px;
-
-            border:
-                1px solid #15913a;
-
-            border-radius:
-                6px;
-
-            background:
-                #ffffff;
-
-            color:
-                #15913a;
-
-            font-weight:
-                600;
-
-            cursor:
-                pointer;
-
-        }
-
-
-        .purchase-edit-button:hover {
-
-            background-color:
-                #edf8f0;
-
-        }
-
-
-        /* DELETE */
-
-        .purchase-delete-button {
-
-            margin-left:
-                6px;
-
-            padding:
-                7px 15px;
-
-            border:
-                1px solid #efb8b8;
-
-            border-radius:
-                6px;
-
-            background-color:
-                #fff5f5;
-
-            color:
-                #c62828;
-
-            font-weight:
-                600;
-
-            cursor:
-                pointer;
-
-        }
-
-
-        .purchase-delete-button:hover {
-
-            background-color:
-                #fdeaea;
-
-        }
-
-
-        /* TOAST */
-
-        .purchase-toast {
-
-            position:
-                fixed;
-
-            top:
-                25px;
-
-            right:
-                25px;
-
-            min-width:
-                280px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                12px;
-
-            padding:
-                14px 18px;
-
-            background-color:
-                #ffffff;
-
-            color:
-                #17351f;
-
-            border-left:
-                5px solid #15913a;
-
-            border-radius:
-                8px;
-
-            box-shadow:
-                0 6px 20px
-                rgba(0, 0, 0, 0.15);
-
-            font-size:
-                14px;
-
-            font-weight:
-                600;
-
-            z-index:
-                9999;
-
-            opacity:
-                0;
-
-            transform:
-                translateX(30px);
-
-            transition:
-                opacity 0.3s ease,
-                transform 0.3s ease;
-
-        }
-
-
-        .purchase-toast.show {
-
-            opacity:
-                1;
-
-            transform:
-                translateX(0);
-
-        }
-
-
-        .purchase-toast .toast-icon {
-
-            width:
-                26px;
-
-            height:
-                26px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                50%;
-
-            background-color:
-                #e7f5eb;
-
-            color:
-                #15913a;
-
-            font-weight:
-                bold;
-
-        }
-
-
-        .purchase-toast.error {
-
-            border-left-color:
-                #d32f2f;
-
-            color:
-                #8f1d1d;
-
-        }
-
-
-        .purchase-toast.error
-        .toast-icon {
-
-            background-color:
-                #fdeaea;
-
-            color:
-                #d32f2f;
-
-        }
-
-
-        @media
-        (max-width: 700px) {
-
-            .supplier-selection-row {
-
-                flex-direction:
-                    column;
-
-            }
-
-
-            .add-supplier-button {
-
-                width:
-                    100%;
+                closeSidebar();
 
             }
 
         }
-
-    `;
-
-
-    document.head.appendChild(
-        style
     );
 
 
-    // ==========================================
-    // INITIAL LOAD
-    // ==========================================
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (
+                window.innerWidth >
+                1000
+            ) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
+
+    setDefaultDate();
 
     loadSupplierDropdown();
+
+    updatePaymentField();
 
     displayPurchases();
 
     updateSummaryCards();
+
+    /*
+        Important:
+        start page in ADD mode.
+        Therefore Cancel Edit is hidden.
+    */
+
+    setAddMode();
 
 });
