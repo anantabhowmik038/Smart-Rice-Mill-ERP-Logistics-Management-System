@@ -1,160 +1,282 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ==========================================
-    // ELEMENTS
-    // ==========================================
+    /* =========================================
+       SMART RICE MILL ERP
+       INVENTORY MANAGEMENT
 
-    const inventoryAdjustmentForm =
-        document.getElementById("inventoryAdjustmentForm");
+       DESIGN PRINCIPLES
 
-    const productSelect =
-        document.getElementById("product");
+       - Transaction-driven inventory
+       - Batch/source traceability
+       - Safety stock monitoring
+       - Immutable stock history
+       - Corrections through reversal
+         instead of deleting transactions
+    ========================================= */
+
+
+    /* =========================================
+       PRODUCTS
+    ========================================= */
+
+    const PRODUCTS = {
+
+        paddy: {
+
+            label:
+                "Accepted Paddy",
+
+            tableLabel:
+                "Accepted Paddy (Usable)",
+
+            note:
+                "Quality-approved paddy available for production"
+
+        },
+
+
+        wholeRice: {
+
+            label:
+                "Whole Rice",
+
+            tableLabel:
+                "Whole Rice",
+
+            note:
+                "Finished whole rice from production"
+
+        },
+
+
+        khud: {
+
+            label:
+                "Khud / Broken Rice",
+
+            tableLabel:
+                "Khud / Broken Rice",
+
+            note:
+                "Broken-rice production output"
+
+        },
+
+
+        tush: {
+
+            label:
+                "Tush / Husk",
+
+            tableLabel:
+                "Tush / Husk",
+
+            note:
+                "Rice husk production output"
+
+        },
+
+
+        bran: {
+
+            label:
+                "Rice Bran",
+
+            tableLabel:
+                "Rice Bran",
+
+            note:
+                "Rice bran production output"
+
+        }
+
+    };
+
+
+    const PRODUCT_KEYS =
+        Object.keys(PRODUCTS);
+
+
+    /* =========================================
+       DEFAULT SAFETY STOCK
+
+       Configurable mill settings.
+       These quantities are NOT claimed as
+       fixed research-derived values.
+    ========================================= */
+
+    const DEFAULT_SAFETY_STOCK = {
+
+        paddy:
+            500,
+
+        wholeRice:
+            300,
+
+        khud:
+            50,
+
+        tush:
+            100,
+
+        bran:
+            50
+
+    };
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const adjustmentForm =
+        document.getElementById(
+            "adjustmentForm"
+        );
+
+
+    if (!adjustmentForm) {
+        return;
+    }
+
+
+    const adjustmentProductSelect =
+        document.getElementById(
+            "adjustmentProduct"
+        );
+
 
     const adjustmentTypeSelect =
-        document.getElementById("adjustment-type");
+        document.getElementById(
+            "adjustmentType"
+        );
+
 
     const adjustmentQuantityInput =
-        document.getElementById("adjustment-quantity");
+        document.getElementById(
+            "adjustmentQuantity"
+        );
+
 
     const adjustmentDateInput =
-        document.getElementById("adjustment-date");
+        document.getElementById(
+            "adjustmentDate"
+        );
+
 
     const adjustmentReasonInput =
-        document.getElementById("adjustment-reason");
-
-    const saveAdjustmentBtn =
-        document.getElementById("saveAdjustmentBtn");
-
-    const inventoryTableBody =
-        document.getElementById("inventoryTableBody");
-
-    const adjustmentTableBody =
-        document.getElementById("adjustmentTableBody");
+        document.getElementById(
+            "adjustmentReason"
+        );
 
 
-    // Summary Cards
+    const adjustmentStockHelp =
+        document.getElementById(
+            "adjustmentStockHelp"
+        );
 
-    const riceStockValue =
-        document.getElementById("riceStockValue");
+
+    const safetyStockForm =
+        document.getElementById(
+            "safetyStockForm"
+        );
+
+
+    const safetyProductSelect =
+        document.getElementById(
+            "safetyProduct"
+        );
+
+
+    const safetyQuantityInput =
+        document.getElementById(
+            "safetyQuantity"
+        );
+
+
+    const adjustmentHistoryTableBody =
+        document.getElementById(
+            "adjustmentHistoryTableBody"
+        );
+
 
     const paddyStockValue =
-        document.getElementById("paddyStockValue");
+        document.getElementById(
+            "paddyStockValue"
+        );
+
+
+    const riceStockValue =
+        document.getElementById(
+            "riceStockValue"
+        );
+
+
+    const byproductStockValue =
+        document.getElementById(
+            "byproductStockValue"
+        );
+
 
     const lowStockValue =
-        document.getElementById("lowStockValue");
-
-
-    // ==========================================
-    // SETTINGS
-    // ==========================================
-
-    const LOW_STOCK_LIMIT = 100;
-
-    let editingAdjustmentId = null;
-
-
-    // ==========================================
-    // GET PURCHASE DATA
-    // ==========================================
-
-    function getPurchases() {
-
-        return (
-            JSON.parse(
-                localStorage.getItem("purchases")
-            ) || []
-        );
-
-    }
-
-
-    // ==========================================
-    // GET PRODUCTION DATA
-    // ==========================================
-
-    function getProductions() {
-
-        return (
-            JSON.parse(
-                localStorage.getItem("productions")
-            ) || []
-        );
-
-    }
-
-
-    // ==========================================
-    // GET SALES DATA
-    // ==========================================
-
-    function getSales() {
-
-        return (
-            JSON.parse(
-                localStorage.getItem("sales")
-            ) || []
-        );
-
-    }
-
-
-    // ==========================================
-    // LOAD MANUAL ADJUSTMENTS
-    // ==========================================
-
-    let adjustments =
-        JSON.parse(
-            localStorage.getItem(
-                "inventoryAdjustments"
-            )
-        ) || [];
-
-
-    // ==========================================
-    // FIX OLD ADJUSTMENTS WITHOUT ID
-    // ==========================================
-
-    adjustments =
-        adjustments.map(
-            function (adjustment, index) {
-
-                if (
-                    adjustment.id === undefined ||
-                    adjustment.id === null
-                ) {
-
-                    adjustment.id =
-                        Date.now() + index;
-
-                }
-
-
-                return adjustment;
-
-            }
+        document.getElementById(
+            "lowStockValue"
         );
 
 
-    saveAdjustments();
-
-
-    // ==========================================
-    // SAVE ADJUSTMENTS
-    // ==========================================
-
-    function saveAdjustments() {
-
-        localStorage.setItem(
-            "inventoryAdjustments",
-            JSON.stringify(adjustments)
+    const inventoryTableBody =
+        document.getElementById(
+            "inventoryTableBody"
         );
 
-    }
+
+    const movementSearch =
+        document.getElementById(
+            "movementSearch"
+        );
 
 
-    // ==========================================
-    // TODAY DATE
-    // ==========================================
+    const movementProductFilter =
+        document.getElementById(
+            "movementProductFilter"
+        );
+
+
+    const movementTableBody =
+        document.getElementById(
+            "movementTableBody"
+        );
+
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+
+    const sidebarBackdrop =
+        document.getElementById(
+            "sidebarBackdrop"
+        );
+
+
+    /* =========================================
+       REVERSAL STATE
+    ========================================= */
+
+    let pendingReverseAdjustmentId =
+        null;
+
+
+    /* =========================================
+       TODAY
+    ========================================= */
 
     function getTodayDate() {
 
@@ -169,74 +291,44 @@ document.addEventListener("DOMContentLoaded", function () {
         const month =
             String(
                 today.getMonth() + 1
-            ).padStart(2, "0");
+            ).padStart(
+                2,
+                "0"
+            );
 
 
         const day =
             String(
                 today.getDate()
-            ).padStart(2, "0");
-
-
-        return (
-            year +
-            "-" +
-            month +
-            "-" +
-            day
-        );
-
-    }
-
-
-    // ==========================================
-    // FORMAT DATE
-    // ==========================================
-
-    function formatDate(dateValue) {
-
-        if (!dateValue) {
-
-            return "";
-
-        }
-
-
-        const date =
-            new Date(
-                dateValue +
-                "T00:00:00"
+            ).padStart(
+                2,
+                "0"
             );
 
 
-        return date.toLocaleDateString(
-            "en-GB",
-            {
-
-                day: "2-digit",
-
-                month: "short",
-
-                year: "numeric"
-
-            }
+        return (
+            `${year}-${month}-${day}`
         );
 
     }
 
 
-    // ==========================================
-    // SAFE TEXT
-    // ==========================================
+    /* =========================================
+       SAFE HTML
+    ========================================= */
 
     function escapeHTML(value) {
 
         const element =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         element.textContent =
-            String(value);
+            String(
+                value ?? ""
+            );
 
 
         return element.innerHTML;
@@ -244,48 +336,1003 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ==========================================
-    // PRODUCT NAME
-    // ==========================================
+    /* =========================================
+       NUMBER
+    ========================================= */
 
-    function getProductText(product) {
+    function formatNumber(value) {
 
-        if (product === "paddy") {
-            return "Paddy";
-        }
-
-        if (product === "rice") {
-            return "Rice";
-        }
-
-        if (product === "khud") {
-            return "Khud";
-        }
-
-        if (product === "tush") {
-            return "Tush";
-        }
-
-        return product;
+        return Number(
+            value || 0
+        ).toLocaleString(
+            "en-US",
+            {
+                maximumFractionDigits:
+                    2
+            }
+        );
 
     }
 
 
-    // ==========================================
-    // MANUAL STOCK ADJUSTMENT TOTAL
-    // ==========================================
+    /* =========================================
+       DATE
+    ========================================= */
 
-    function getManualAdjustment(product) {
+    function formatDate(value) {
 
-        let adjustmentTotal = 0;
+        if (!value) {
+
+            return "—";
+
+        }
 
 
-        adjustments.forEach(
-            function (adjustment) {
+        const date =
+            new Date(
+                `${value}T00:00:00`
+            );
+
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       STORAGE
+    ========================================= */
+
+    function safeParseStorage(
+        key,
+        fallback = []
+    ) {
+
+        try {
+
+            return (
+                JSON.parse(
+                    localStorage.getItem(
+                        key
+                    )
+                ) ??
+                fallback
+            );
+
+        }
+        catch {
+
+            return fallback;
+
+        }
+
+    }
+
+
+    /* =========================================
+       PURCHASES
+    ========================================= */
+
+    function getPurchases() {
+
+        return safeParseStorage(
+            "purchases",
+            []
+        );
+
+    }
+
+
+    /* =========================================
+       QUALITY
+    ========================================= */
+
+    function getQualityInspections() {
+
+        return safeParseStorage(
+            "qualityInspections",
+            []
+        );
+
+    }
+
+
+    /* =========================================
+       PRODUCTION
+    ========================================= */
+
+    function getProductionRecords() {
+
+        const mainRecords =
+            safeParseStorage(
+                "productionRecords",
+                null
+            );
+
+
+        if (
+            Array.isArray(
+                mainRecords
+            )
+        ) {
+
+            return mainRecords;
+
+        }
+
+
+        return safeParseStorage(
+            "productions",
+            []
+        );
+
+    }
+
+
+    /* =========================================
+       SALES
+    ========================================= */
+
+    function getSalesRecords() {
+
+        const records =
+            safeParseStorage(
+                "salesRecords",
+                null
+            );
+
+
+        if (
+            Array.isArray(
+                records
+            )
+        ) {
+
+            return records;
+
+        }
+
+
+        return safeParseStorage(
+            "sales",
+            []
+        );
+
+    }
+
+
+    /* =========================================
+       SAFETY STOCK
+    ========================================= */
+
+    function loadSafetyStock() {
+
+        const stored =
+            safeParseStorage(
+                "inventorySafetyStock",
+                {}
+            );
+
+
+        return {
+
+            ...DEFAULT_SAFETY_STOCK,
+
+            ...stored
+
+        };
+
+    }
+
+
+    let safetyStock =
+        loadSafetyStock();
+
+
+    function saveSafetyStock() {
+
+        localStorage.setItem(
+            "inventorySafetyStock",
+            JSON.stringify(
+                safetyStock
+            )
+        );
+
+    }
+
+
+    /* =========================================
+       LOAD ADJUSTMENTS
+    ========================================= */
+
+    function loadAdjustments() {
+
+        const data =
+            safeParseStorage(
+                "inventoryAdjustments",
+                []
+            );
+
+
+        if (
+            !Array.isArray(data)
+        ) {
+
+            return [];
+
+        }
+
+
+        return data.map(
+            function (
+                adjustment,
+                index
+            ) {
+
+                let status =
+                    adjustment.status ||
+                    "active";
+
 
                 if (
-                    adjustment.product !==
-                    product
+                    adjustment.reversalOf
+                ) {
+
+                    status =
+                        "reversal";
+
+                }
+
+
+                return {
+
+                    id:
+
+                        adjustment.id ??
+                        Date.now() +
+                        index,
+
+
+                    adjustmentId:
+
+                        adjustment.adjustmentId ||
+                        `ADJ-${String(
+                            index + 1
+                        ).padStart(
+                            3,
+                            "0"
+                        )}`,
+
+
+                    product:
+
+                        adjustment.product ||
+                        "wholeRice",
+
+
+                    type:
+
+                        adjustment.type ===
+                        "out"
+
+                            ?
+
+                            "out"
+
+                            :
+
+                            "in",
+
+
+                    quantity:
+
+                        Number(
+                            adjustment.quantity ||
+                            0
+                        ),
+
+
+                    date:
+
+                        adjustment.date ||
+                        getTodayDate(),
+
+
+                    reason:
+
+                        adjustment.reason ||
+                        "Inventory adjustment",
+
+
+                    status:
+                        status,
+
+
+                    reversalOf:
+
+                        adjustment.reversalOf ||
+                        null,
+
+
+                    reversedBy:
+
+                        adjustment.reversedBy ||
+                        null,
+
+
+                    createdAt:
+
+                        adjustment.createdAt ||
+                        adjustment.id ||
+                        Date.now()
+
+                };
+
+            }
+        );
+
+    }
+
+
+    let adjustments =
+        loadAdjustments();
+
+
+    function saveAdjustments() {
+
+        localStorage.setItem(
+            "inventoryAdjustments",
+            JSON.stringify(
+                adjustments
+            )
+        );
+
+    }
+
+
+    /* =========================================
+       ADJUSTMENT ID
+    ========================================= */
+
+    function generateAdjustmentId() {
+
+        const numbers =
+            adjustments
+
+                .map(
+                    function (
+                        adjustment
+                    ) {
+
+                        const match =
+                            String(
+                                adjustment.adjustmentId ||
+                                ""
+                            ).match(
+                                /^ADJ-(\d+)$/i
+                            );
+
+
+                        return (
+                            match
+
+                                ?
+
+                                Number(
+                                    match[1]
+                                )
+
+                                :
+
+                                0
+                        );
+
+                    }
+                )
+
+                .filter(Boolean);
+
+
+        const next =
+
+            numbers.length > 0
+
+                ?
+
+                Math.max(
+                    ...numbers
+                ) + 1
+
+                :
+
+                1;
+
+
+        return (
+            `ADJ-${String(
+                next
+            ).padStart(
+                3,
+                "0"
+            )}`
+        );
+
+    }
+
+
+    /* =========================================
+       NORMALIZE PRODUCT
+    ========================================= */
+
+    function normalizeProductKey(
+        value
+    ) {
+
+        const normalized =
+            String(
+                value || ""
+            )
+            .trim()
+            .toLowerCase()
+            .replace(
+                /[\s_-]+/g,
+                ""
+            );
+
+
+        if (
+            [
+                "paddy",
+                "acceptedpaddy",
+                "rawpaddy"
+            ].includes(
+                normalized
+            )
+        ) {
+
+            return "paddy";
+
+        }
+
+
+        if (
+            [
+                "rice",
+                "wholerice",
+                "finishedrice",
+                "milledrice"
+            ].includes(
+                normalized
+            )
+        ) {
+
+            return "wholeRice";
+
+        }
+
+
+        if (
+            [
+                "khud",
+                "brokenrice",
+                "khudbrokenrice"
+            ].includes(
+                normalized
+            )
+        ) {
+
+            return "khud";
+
+        }
+
+
+        if (
+            [
+                "tush",
+                "husk",
+                "ricehusk",
+                "tushhusk"
+            ].includes(
+                normalized
+            )
+        ) {
+
+            return "tush";
+
+        }
+
+
+        if (
+            [
+                "bran",
+                "ricebran"
+            ].includes(
+                normalized
+            )
+        ) {
+
+            return "bran";
+
+        }
+
+
+        return null;
+
+    }
+
+
+    /* =========================================
+       ACCEPTED PADDY STOCK-IN
+    ========================================= */
+
+    function getAcceptedPaddyMovements() {
+
+        const purchases =
+            getPurchases();
+
+
+        const inspections =
+            getQualityInspections();
+
+
+        const acceptedIds =
+            new Set(
+
+                inspections
+
+                    .filter(
+                        function (
+                            inspection
+                        ) {
+
+                            return (
+                                inspection.decision ===
+                                "accepted"
+                            );
+
+                        }
+                    )
+
+                    .map(
+                        function (
+                            inspection
+                        ) {
+
+                            return String(
+                                inspection.purchaseId
+                            );
+
+                        }
+                    )
+
+            );
+
+
+        return purchases
+
+            .filter(
+                function (
+                    purchase
+                ) {
+
+                    return acceptedIds.has(
+                        String(
+                            purchase.purchaseId
+                        )
+                    );
+
+                }
+            )
+
+            .map(
+                function (
+                    purchase,
+                    index
+                ) {
+
+                    return {
+
+                        movementId:
+
+                            `PURCHASE-IN-${purchase.purchaseId}`,
+
+
+                        product:
+                            "paddy",
+
+
+                        direction:
+                            "in",
+
+
+                        quantity:
+
+                            Number(
+                                purchase.weight ||
+                                0
+                            ),
+
+
+                        date:
+
+                            purchase.purchaseDate ||
+                            purchase.date ||
+                            getTodayDate(),
+
+
+                        source:
+                            "Quality-Approved Purchase",
+
+
+                        reference:
+
+                            purchase.purchaseId ||
+                            "—",
+
+
+                        note:
+
+                            `${purchase.supplierName || "Supplier"} · ${purchase.paddyType || "Paddy"}`,
+
+
+                        createdAt:
+
+                            Number(
+                                purchase.id ||
+                                index
+                            )
+
+                    };
+
+                }
+            )
+
+            .filter(
+                function (
+                    movement
+                ) {
+
+                    return (
+                        movement.quantity >
+                        0
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       PRODUCTION MOVEMENTS
+    ========================================= */
+
+    function getProductionMovements() {
+
+        const movements =
+            [];
+
+
+        getProductionRecords().forEach(
+            function (
+                record,
+                index
+            ) {
+
+                const date =
+                    record.productionDate ||
+                    record.date ||
+                    getTodayDate();
+
+
+                const reference =
+                    record.batchId ||
+                    record.batch ||
+                    `PROD-${index + 1}`;
+
+
+                const baseCreatedAt =
+                    Number(
+                        record.createdAt ||
+                        record.id ||
+                        index
+                    );
+
+
+                const inputPaddy =
+                    Number(
+                        record.inputPaddy ||
+                        record.paddyInput ||
+                        0
+                    );
+
+
+                if (
+                    inputPaddy > 0
+                ) {
+
+                    movements.push({
+
+                        movementId:
+                            `${reference}-PADDY-OUT`,
+
+                        product:
+                            "paddy",
+
+                        direction:
+                            "out",
+
+                        quantity:
+                            inputPaddy,
+
+                        date:
+                            date,
+
+                        source:
+                            "Production",
+
+                        reference:
+                            reference,
+
+                        note:
+                            `Consumed from ${record.purchaseId || "accepted purchase"}`,
+
+                        createdAt:
+                            baseCreatedAt + 0.01
+
+                    });
+
+                }
+
+
+                const outputs = [
+
+                    {
+                        key:
+                            "wholeRice",
+
+                        quantity:
+
+                            Number(
+                                record.riceProduced ||
+                                record.rice ||
+                                0
+                            )
+                    },
+
+
+                    {
+                        key:
+                            "khud",
+
+                        quantity:
+
+                            Number(
+                                record.khudProduced ||
+                                record.khud ||
+                                record.brokenRice ||
+                                0
+                            )
+                    },
+
+
+                    {
+                        key:
+                            "tush",
+
+                        quantity:
+
+                            Number(
+                                record.tushProduced ||
+                                record.tush ||
+                                record.husk ||
+                                0
+                            )
+                    },
+
+
+                    {
+                        key:
+                            "bran",
+
+                        quantity:
+
+                            Number(
+                                record.branProduced ||
+                                record.bran ||
+                                0
+                            )
+                    }
+
+                ];
+
+
+                outputs.forEach(
+                    function (
+                        output,
+                        outputIndex
+                    ) {
+
+                        if (
+                            output.quantity <=
+                            0
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        movements.push({
+
+                            movementId:
+
+                                `${reference}-${output.key}-IN`,
+
+
+                            product:
+                                output.key,
+
+
+                            direction:
+                                "in",
+
+
+                            quantity:
+                                output.quantity,
+
+
+                            date:
+                                date,
+
+
+                            source:
+                                "Production",
+
+
+                            reference:
+                                reference,
+
+
+                            note:
+
+                                `Output from ${record.purchaseId || "source purchase"}`,
+
+
+                            createdAt:
+
+                                baseCreatedAt +
+                                0.02 +
+                                outputIndex /
+                                1000
+
+                        });
+
+                    }
+                );
+
+            }
+        );
+
+
+        return movements;
+
+    }
+
+
+    /* =========================================
+       SALES MOVEMENTS
+    ========================================= */
+
+    function getSalesMovements() {
+
+        const movements =
+            [];
+
+
+        getSalesRecords().forEach(
+            function (
+                sale,
+                index
+            ) {
+
+                const product =
+                    normalizeProductKey(
+
+                        sale.productKey ||
+                        sale.product ||
+                        sale.productType ||
+                        sale.item ||
+                        sale.riceType
+
+                    );
+
+
+                if (!product) {
+                    return;
+                }
+
+
+                let quantityKg =
+                    Number(
+                        sale.quantityKg ||
+                        sale.weightKg ||
+                        0
+                    );
+
+
+                if (
+                    quantityKg <= 0
+                ) {
+
+                    const unit =
+                        String(
+                            sale.unit ||
+                            ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    if (
+                        unit === "kg" ||
+                        unit === "kilogram" ||
+                        unit === "kilograms"
+                    ) {
+
+                        quantityKg =
+                            Number(
+                                sale.quantity ||
+                                sale.weight ||
+                                0
+                            );
+
+                    }
+
+                }
+
+
+                if (
+                    quantityKg <= 0 &&
+                    Number(
+                        sale.bagWeightKg
+                    ) > 0 &&
+                    Number(
+                        sale.quantity ||
+                        sale.bags
+                    ) > 0
+                ) {
+
+                    quantityKg =
+
+                        Number(
+                            sale.bagWeightKg
+                        )
+
+                        *
+
+                        Number(
+                            sale.quantity ||
+                            sale.bags
+                        );
+
+                }
+
+
+                if (
+                    quantityKg <= 0
                 ) {
 
                     return;
@@ -293,307 +1340,421 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                const quantity =
-                    Number(
-                        adjustment.quantity || 0
-                    );
+                movements.push({
+
+                    movementId:
+
+                        `SALE-OUT-${sale.saleId || sale.id || index}`,
 
 
-                if (
-                    adjustment.type ===
-                    "add"
-                ) {
-
-                    adjustmentTotal +=
-                        quantity;
-
-                }
+                    product:
+                        product,
 
 
-                if (
-                    adjustment.type ===
-                    "remove"
-                ) {
+                    direction:
+                        "out",
 
-                    adjustmentTotal -=
-                        quantity;
 
-                }
+                    quantity:
+                        quantityKg,
+
+
+                    date:
+
+                        sale.saleDate ||
+                        sale.date ||
+                        getTodayDate(),
+
+
+                    source:
+                        "Sales",
+
+
+                    reference:
+
+                        sale.saleId ||
+                        sale.invoiceId ||
+                        sale.invoiceNumber ||
+                        `SALE-${index + 1}`,
+
+
+                    note:
+
+                        sale.customerName
+
+                            ?
+
+                            `Sold to ${sale.customerName}`
+
+                            :
+
+                            "Sales stock issue",
+
+
+                    createdAt:
+
+                        Number(
+                            sale.createdAt ||
+                            sale.id ||
+                            index
+                        )
+
+                });
 
             }
         );
 
 
-        return adjustmentTotal;
+        return movements;
 
     }
 
 
-    // ==========================================
-    // TOTAL SOLD QUANTITY
-    // ==========================================
+    /* =========================================
+       ADJUSTMENT MOVEMENTS
 
-    function getSoldQuantity(product) {
+       Reversed original transactions remain
+       in history. Their reversal transaction
+       offsets the quantity.
+    ========================================= */
 
-        const sales =
-            getSales();
+    function getAdjustmentMovements() {
+
+        return adjustments.map(
+            function (
+                adjustment
+            ) {
+
+                const isReversal =
+                    Boolean(
+                        adjustment.reversalOf
+                    );
 
 
-        let totalSold = 0;
+                return {
+
+                    movementId:
+
+                        `ADJUSTMENT-${adjustment.id}`,
 
 
-        sales.forEach(
-            function (sale) {
+                    product:
+                        adjustment.product,
 
-                if (
-                    sale.product ===
-                    product
+
+                    direction:
+                        adjustment.type,
+
+
+                    quantity:
+                        Number(
+                            adjustment.quantity
+                        ),
+
+
+                    date:
+                        adjustment.date,
+
+
+                    source:
+
+                        isReversal
+
+                            ?
+
+                            "Adjustment Reversal"
+
+                            :
+
+                            "Stock Adjustment",
+
+
+                    reference:
+                        adjustment.adjustmentId,
+
+
+                    note:
+                        adjustment.reason,
+
+
+                    createdAt:
+                        adjustment.createdAt
+
+                };
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       ALL MOVEMENTS
+    ========================================= */
+
+    function buildMovements() {
+
+        const movements = [
+
+            ...getAcceptedPaddyMovements(),
+
+            ...getProductionMovements(),
+
+            ...getSalesMovements(),
+
+            ...getAdjustmentMovements()
+
+        ];
+
+
+        return movements
+
+            .filter(
+                function (
+                    movement
                 ) {
 
-                    totalSold +=
+                    return (
+
+                        PRODUCT_KEYS.includes(
+                            movement.product
+                        )
+
+                        &&
+
                         Number(
-                            sale.quantity || 0
+                            movement.quantity
+                        ) >
+                        0
+
+                    );
+
+                }
+            )
+
+            .sort(
+                function (
+                    a,
+                    b
+                ) {
+
+                    const dateCompare =
+                        String(
+                            a.date ||
+                            ""
+                        ).localeCompare(
+                            String(
+                                b.date ||
+                                ""
+                            )
                         );
 
+
+                    if (
+                        dateCompare !==
+                        0
+                    ) {
+
+                        return dateCompare;
+
+                    }
+
+
+                    return (
+                        Number(
+                            a.createdAt ||
+                            0
+                        )
+
+                        -
+
+                        Number(
+                            b.createdAt ||
+                            0
+                        )
+                    );
+
                 }
-
-            }
-        );
-
-
-        return totalSold;
+            );
 
     }
 
 
-    // ==========================================
-    // CALCULATE CURRENT INVENTORY
-    // ==========================================
+    /* =========================================
+       RUNNING BALANCE
+    ========================================= */
 
-    function calculateInventory() {
+    function attachRunningBalances(
+        movements
+    ) {
 
-        const purchases =
-            getPurchases();
+        const balances = {
+
+            paddy:
+                0,
+
+            wholeRice:
+                0,
+
+            khud:
+                0,
+
+            tush:
+                0,
+
+            bran:
+                0
+
+        };
 
 
-        const productions =
-            getProductions();
+        return movements.map(
+            function (
+                movement
+            ) {
+
+                const signedQuantity =
+
+                    movement.direction ===
+                    "in"
+
+                        ?
+
+                        movement.quantity
+
+                        :
+
+                        -movement.quantity;
 
 
-        // --------------------------------------
-        // Purchase Data
-        // --------------------------------------
+                balances[
+                    movement.product
+                ] +=
+                    signedQuantity;
 
-        let purchasedPaddy = 0;
+
+                return {
+
+                    ...movement,
+
+                    balanceAfter:
+
+                        balances[
+                            movement.product
+                        ]
+
+                };
+
+            }
+        );
+
+    }
 
 
-        purchases.forEach(
-            function (purchase) {
+    /* =========================================
+       INVENTORY STATE
+    ========================================= */
 
-                purchasedPaddy +=
-                    Number(
-                        purchase.weight || 0
-                    );
+    function buildInventoryState() {
+
+        const movements =
+            attachRunningBalances(
+                buildMovements()
+            );
+
+
+        const state = {};
+
+
+        PRODUCT_KEYS.forEach(
+            function (
+                key
+            ) {
+
+                state[key] = {
+
+                    quantity:
+                        0,
+
+                    lastMovement:
+                        "",
+
+                    safetyStock:
+
+                        Number(
+                            safetyStock[key] ||
+                            0
+                        )
+
+                };
 
             }
         );
 
 
-        // --------------------------------------
-        // Production Data
-        // --------------------------------------
+        movements.forEach(
+            function (
+                movement
+            ) {
 
-        let productionInputPaddy = 0;
-
-        let riceProduced = 0;
-
-        let khudProduced = 0;
-
-        let tushProduced = 0;
+                state[
+                    movement.product
+                ].quantity =
+                    movement.balanceAfter;
 
 
-        productions.forEach(
-            function (production) {
-
-                productionInputPaddy +=
-                    Number(
-                        production.inputPaddy || 0
-                    );
-
-
-                riceProduced +=
-                    Number(
-                        production.riceProduced || 0
-                    );
-
-
-                khudProduced +=
-                    Number(
-                        production.khudProduced || 0
-                    );
-
-
-                tushProduced +=
-                    Number(
-                        production.tushProduced || 0
-                    );
+                state[
+                    movement.product
+                ].lastMovement =
+                    movement.date;
 
             }
         );
-
-
-        // --------------------------------------
-        // Sales Data
-        // --------------------------------------
-
-        const riceSold =
-            getSoldQuantity("rice");
-
-
-        const khudSold =
-            getSoldQuantity("khud");
-
-
-        const tushSold =
-            getSoldQuantity("tush");
-
-
-        // --------------------------------------
-        // Final Paddy Stock
-        // --------------------------------------
-
-        let paddyStock =
-
-            purchasedPaddy
-
-            -
-
-            productionInputPaddy
-
-            +
-
-            getManualAdjustment(
-                "paddy"
-            );
-
-
-        // --------------------------------------
-        // Final Rice Stock
-        // --------------------------------------
-
-        let riceStock =
-
-            riceProduced
-
-            -
-
-            riceSold
-
-            +
-
-            getManualAdjustment(
-                "rice"
-            );
-
-
-        // --------------------------------------
-        // Final Khud Stock
-        // --------------------------------------
-
-        let khudStock =
-
-            khudProduced
-
-            -
-
-            khudSold
-
-            +
-
-            getManualAdjustment(
-                "khud"
-            );
-
-
-        // --------------------------------------
-        // Final Tush Stock
-        // --------------------------------------
-
-        let tushStock =
-
-            tushProduced
-
-            -
-
-            tushSold
-
-            +
-
-            getManualAdjustment(
-                "tush"
-            );
-
-
-        // Prevent negative display
-
-        paddyStock =
-            Math.max(
-                0,
-                paddyStock
-            );
-
-
-        riceStock =
-            Math.max(
-                0,
-                riceStock
-            );
-
-
-        khudStock =
-            Math.max(
-                0,
-                khudStock
-            );
-
-
-        tushStock =
-            Math.max(
-                0,
-                tushStock
-            );
 
 
         return {
 
-            paddy: paddyStock,
-
-            rice: riceStock,
-
-            khud: khudStock,
-
-            tush: tushStock
+            state,
+            movements
 
         };
 
     }
 
 
-    // ==========================================
-    // STOCK STATUS
-    // ==========================================
+    /* =========================================
+       STATUS
+    ========================================= */
 
-    function getStockStatus(stock) {
+    function getInventoryStatus(
+        quantity,
+        threshold
+    ) {
 
-        if (stock <= 0) {
+        const stock =
+            Number(
+                quantity
+            );
+
+
+        const safety =
+            Number(
+                threshold ||
+                0
+            );
+
+
+        if (
+            stock < 0
+        ) {
 
             return {
 
                 text:
-                    "Out of Stock",
+                    "Data Check",
 
                 className:
-                    "inventory-status-out"
+                    "status-check"
 
             };
 
@@ -601,8 +1762,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (
-            stock <
-            LOW_STOCK_LIMIT
+            stock === 0
+        ) {
+
+            return {
+
+                text:
+                    "Out of Stock",
+
+                className:
+                    "status-out"
+
+            };
+
+        }
+
+
+        if (
+            stock <=
+            safety
         ) {
 
             return {
@@ -621,69 +1799,153 @@ document.addEventListener("DOMContentLoaded", function () {
         return {
 
             text:
-                "Active",
+                "Healthy",
 
             className:
-                "status-active"
+                "status-healthy"
 
         };
 
     }
 
 
-    // ==========================================
-    // DISPLAY CURRENT INVENTORY
-    // ==========================================
+    /* =========================================
+       SUMMARY
+    ========================================= */
 
-    function displayInventory() {
+    function updateSummaryCards() {
 
         const inventory =
-            calculateInventory();
+            buildInventoryState()
+                .state;
+
+
+        const paddy =
+            Number(
+                inventory.paddy.quantity
+            );
+
+
+        const wholeRice =
+            Number(
+                inventory.wholeRice.quantity
+            );
+
+
+        const byproducts =
+
+            Number(
+                inventory.khud.quantity
+            )
+
+            +
+
+            Number(
+                inventory.tush.quantity
+            )
+
+            +
+
+            Number(
+                inventory.bran.quantity
+            );
+
+
+        let lowCount =
+            0;
+
+
+        PRODUCT_KEYS.forEach(
+            function (
+                key
+            ) {
+
+                const status =
+                    getInventoryStatus(
+
+                        inventory[key]
+                            .quantity,
+
+                        inventory[key]
+                            .safetyStock
+
+                    );
+
+
+                if (
+                    status.text !==
+                    "Healthy"
+                ) {
+
+                    lowCount +=
+                        1;
+
+                }
+
+            }
+        );
+
+
+        paddyStockValue.textContent =
+            `${formatNumber(
+                paddy
+            )} kg`;
+
+
+        riceStockValue.textContent =
+            `${formatNumber(
+                wholeRice
+            )} kg`;
+
+
+        byproductStockValue.textContent =
+            `${formatNumber(
+                byproducts
+            )} kg`;
+
+
+        lowStockValue.textContent =
+            `${lowCount} ${
+                lowCount === 1
+                    ? "Item"
+                    : "Items"
+            }`;
+
+    }
+
+
+    /* =========================================
+       CURRENT INVENTORY
+    ========================================= */
+
+    function displayCurrentInventory() {
+
+        const inventory =
+            buildInventoryState()
+                .state;
 
 
         inventoryTableBody.innerHTML =
             "";
 
 
-        const products = [
+        PRODUCT_KEYS.forEach(
+            function (
+                key
+            ) {
 
-            {
-                key: "paddy",
-                name: "Paddy"
-            },
-
-            {
-                key: "rice",
-                name: "Rice"
-            },
-
-            {
-                key: "khud",
-                name: "Khud"
-            },
-
-            {
-                key: "tush",
-                name: "Tush"
-            }
-
-        ];
+                const product =
+                    PRODUCTS[key];
 
 
-        products.forEach(
-            function (product) {
-
-                const stock =
-                    Number(
-                        inventory[
-                            product.key
-                        ] || 0
-                    );
+                const item =
+                    inventory[key];
 
 
                 const status =
-                    getStockStatus(
-                        stock
+                    getInventoryStatus(
+                        item.quantity,
+                        item.safetyStock
                     );
 
 
@@ -697,35 +1959,63 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <td>
 
-                        ${product.name}
+                        <span class="inventory-product-name">
+
+                            ${escapeHTML(
+                                product.tableLabel
+                            )}
+
+                        </span>
+
+
+                        <span class="inventory-product-note">
+
+                            ${escapeHTML(
+                                product.note
+                            )}
+
+                        </span>
 
                     </td>
 
 
                     <td>
 
-                        ${stock.toLocaleString(
-                            "en-US",
-                            {
-                                maximumFractionDigits: 2
-                            }
-                        )}
+                        <span class="inventory-stock-value">
+
+                            ${formatNumber(
+                                item.quantity
+                            )} kg
+
+                        </span>
 
                     </td>
 
 
                     <td>
 
-                        kg
+                        ${formatNumber(
+                            item.safetyStock
+                        )} kg
 
                     </td>
 
 
                     <td>
 
-                        ${formatDate(
-                            getTodayDate()
-                        )}
+                        ${
+                            item.lastMovement
+
+                                ?
+
+                                formatDate(
+                                    item.lastMovement
+                                )
+
+                                :
+
+                                "—"
+                        }
 
                     </td>
 
@@ -733,8 +2023,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>
 
                         <span
-                            class="status-badge
-                            ${status.className}"
+                            class="
+                                inventory-status
+                                ${status.className}
+                            "
                         >
 
                             ${status.text}
@@ -753,235 +2045,1340 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
 
+    }
 
-        updateSummaryCards(
-            inventory
-        );
+
+    /* =========================================
+       ADJUSTMENT STATUS
+    ========================================= */
+
+    function getAdjustmentStatusInfo(
+        adjustment
+    ) {
+
+        if (
+            adjustment.reversalOf
+        ) {
+
+            return {
+
+                text:
+                    "Reversal",
+
+                className:
+                    "adjustment-reversal"
+
+            };
+
+        }
+
+
+        if (
+            adjustment.status ===
+            "reversed"
+        ) {
+
+            return {
+
+                text:
+                    "Reversed",
+
+                className:
+                    "adjustment-reversed"
+
+            };
+
+        }
+
+
+        return {
+
+            text:
+                "Active",
+
+            className:
+                "adjustment-active"
+
+        };
 
     }
 
 
-    // ==========================================
-    // SUMMARY CARDS
-    // ==========================================
+    /* =========================================
+       REVERSAL ACTION HTML
+    ========================================= */
 
-    function updateSummaryCards(
-        inventory
+    function getAdjustmentActionHTML(
+        adjustment
     ) {
 
-        riceStockValue.textContent =
+        /*
+            Reversal transactions themselves
+            cannot be reversed again.
+
+            Reversed original records also
+            cannot be reversed twice.
+        */
+
+        if (
+            adjustment.reversalOf ||
+            adjustment.status ===
+            "reversed"
+        ) {
+
+            return "—";
+
+        }
+
+
+        const waitingForConfirmation =
+
             Number(
-                inventory.rice
-            ).toLocaleString(
-                "en-US",
-                {
-                    maximumFractionDigits: 2
-                }
-            ) +
-            " kg";
+                pendingReverseAdjustmentId
+            )
 
+            ===
 
-        paddyStockValue.textContent =
             Number(
-                inventory.paddy
-            ).toLocaleString(
-                "en-US",
-                {
-                    maximumFractionDigits: 2
-                }
-            ) +
-            " kg";
+                adjustment.id
+            );
 
 
-        let lowStockCount = 0;
+        if (
+            waitingForConfirmation
+        ) {
+
+            return `
+
+                <span class="adjustment-reverse-question">
+                    Reverse?
+                </span>
 
 
-        Object.values(
-            inventory
-        ).forEach(
-            function (stock) {
+                <button
+                    class="adjustment-confirm-reverse-button"
+                    type="button"
+                    data-action="confirm-reverse"
+                    data-id="${adjustment.id}"
+                >
+                    Confirm
+                </button>
 
-                if (
-                    Number(stock) <
-                    LOW_STOCK_LIMIT
+
+                <button
+                    class="adjustment-cancel-reverse-button"
+                    type="button"
+                    data-action="cancel-reverse"
+                    data-id="${adjustment.id}"
+                >
+                    Cancel
+                </button>
+
+            `;
+
+        }
+
+
+        return `
+
+            <button
+                class="adjustment-reverse-button"
+                type="button"
+                data-action="request-reverse"
+                data-id="${adjustment.id}"
+            >
+                Reverse
+            </button>
+
+        `;
+
+    }
+
+
+    /* =========================================
+       ADJUSTMENT HISTORY
+    ========================================= */
+
+    function displayAdjustmentHistory() {
+
+        adjustmentHistoryTableBody.innerHTML =
+            "";
+
+
+        if (
+            adjustments.length ===
+            0
+        ) {
+
+            adjustmentHistoryTableBody.innerHTML = `
+
+                <tr class="adjustment-empty-row">
+
+                    <td colspan="8">
+
+                        No manual stock adjustments have been recorded.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        [
+            ...adjustments
+        ]
+
+            .sort(
+                function (
+                    a,
+                    b
                 ) {
 
-                    lowStockCount++;
+                    return (
+
+                        String(
+                            b.date
+                        ).localeCompare(
+                            String(
+                                a.date
+                            )
+                        )
+
+                        ||
+
+                        Number(
+                            b.createdAt
+                        )
+
+                        -
+
+                        Number(
+                            a.createdAt
+                        )
+
+                    );
 
                 }
+            )
 
-            }
-        );
+            .forEach(
+                function (
+                    adjustment
+                ) {
+
+                    const status =
+                        getAdjustmentStatusInfo(
+                            adjustment
+                        );
 
 
-        lowStockValue.textContent =
-            lowStockCount +
-            (
-                lowStockCount === 1
-                    ? " Item"
-                    : " Items"
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            <span class="adjustment-id">
+
+                                ${escapeHTML(
+                                    adjustment.adjustmentId
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatDate(
+                                adjustment.date
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                PRODUCTS[
+                                    adjustment.product
+                                ]?.label ||
+                                adjustment.product
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    adjustment-type-badge
+                                    ${
+                                        adjustment.type ===
+                                        "in"
+
+                                            ?
+
+                                            "adjustment-in"
+
+                                            :
+
+                                            "adjustment-out"
+                                    }
+                                "
+                            >
+
+                                ${
+                                    adjustment.type ===
+                                    "in"
+
+                                        ?
+
+                                        "Stock In"
+
+                                        :
+
+                                        "Stock Out"
+                                }
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                adjustment.type ===
+                                "in"
+
+                                    ?
+
+                                    "+"
+
+                                    :
+
+                                    "-"
+                            }${formatNumber(
+                                adjustment.quantity
+                            )} kg
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                adjustment.reason
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    adjustment-status
+                                    ${status.className}
+                                "
+                            >
+
+                                ${status.text}
+
+                            </span>
+
+                        </td>
+
+
+                        <td class="adjustment-action-cell">
+
+                            ${getAdjustmentActionHTML(
+                                adjustment
+                            )}
+
+                        </td>
+
+                    `;
+
+
+                    adjustmentHistoryTableBody.appendChild(
+                        row
+                    );
+
+                }
             );
 
     }
 
 
-    // ==========================================
-    // DISPLAY ADJUSTMENT HISTORY
-    // ==========================================
+    /* =========================================
+       REQUEST REVERSAL
+    ========================================= */
 
-    function displayAdjustments() {
+    function requestAdjustmentReversal(
+        id
+    ) {
 
-        adjustmentTableBody.innerHTML =
-            "";
+        pendingReverseAdjustmentId =
+            id;
 
 
-        adjustments.forEach(
-            function (adjustment) {
+        displayAdjustmentHistory();
 
-                const row =
-                    document.createElement(
-                        "tr"
+    }
+
+
+    /* =========================================
+       CANCEL REVERSAL
+    ========================================= */
+
+    function cancelAdjustmentReversal() {
+
+        pendingReverseAdjustmentId =
+            null;
+
+
+        displayAdjustmentHistory();
+
+    }
+
+
+    /* =========================================
+       CONFIRM REVERSAL
+    ========================================= */
+
+    function confirmAdjustmentReversal(
+        id
+    ) {
+
+        const adjustment =
+            adjustments.find(
+                function (
+                    item
+                ) {
+
+                    return (
+                        Number(
+                            item.id
+                        )
+
+                        ===
+
+                        Number(
+                            id
+                        )
                     );
 
-
-                const adjustmentText =
-
-                    adjustment.type ===
-                    "add"
-
-                        ? "Add Stock"
-
-                        : "Remove Stock";
+                }
+            );
 
 
-                row.innerHTML = `
+        if (!adjustment) {
 
-                    <td>
-
-                        ${getProductText(
-                            adjustment.product
-                        )}
-
-                    </td>
+            pendingReverseAdjustmentId =
+                null;
 
 
-                    <td>
-
-                        ${adjustmentText}
-
-                    </td>
+            displayAdjustmentHistory();
 
 
-                    <td>
-
-                        ${Number(
-                            adjustment.quantity
-                        ).toLocaleString(
-                            "en-US",
-                            {
-                                maximumFractionDigits: 2
-                            }
-                        )} kg
-
-                    </td>
+            showToast(
+                "Adjustment record not found.",
+                "error"
+            );
 
 
-                    <td>
+            return;
 
-                        ${escapeHTML(
-                            adjustment.reason
-                        )}
-
-                    </td>
+        }
 
 
-                    <td>
+        if (
+            adjustment.status ===
+            "reversed" ||
+            adjustment.reversalOf
+        ) {
 
-                        ${formatDate(
-                            adjustment.date
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        <button
-                            class="inventory-edit-button"
-                            type="button"
-                            data-action="edit"
-                            data-id="${adjustment.id}"
-                        >
-
-                            Edit
-
-                        </button>
+            pendingReverseAdjustmentId =
+                null;
 
 
-                        <button
-                            class="inventory-delete-button"
-                            type="button"
-                            data-action="delete"
-                            data-id="${adjustment.id}"
-                        >
-
-                            Delete
-
-                        </button>
-
-                    </td>
-
-                `;
+            displayAdjustmentHistory();
 
 
-                adjustmentTableBody.appendChild(
-                    row
+            showToast(
+                "This adjustment cannot be reversed.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        /*
+            Original Stock In
+            → reversal is Stock Out
+
+            Original Stock Out
+            → reversal is Stock In
+        */
+
+        const reverseType =
+
+            adjustment.type ===
+            "in"
+
+                ?
+
+                "out"
+
+                :
+
+                "in";
+
+
+        /*
+            If reversal creates Stock Out,
+            verify current inventory first.
+        */
+
+        if (
+            reverseType ===
+            "out"
+        ) {
+
+            const inventory =
+                buildInventoryState()
+                    .state;
+
+
+            const currentStock =
+                Number(
+                    inventory[
+                        adjustment.product
+                    ].quantity
                 );
 
+
+            if (
+                adjustment.quantity >
+                currentStock
+            ) {
+
+                pendingReverseAdjustmentId =
+                    null;
+
+
+                displayAdjustmentHistory();
+
+
+                showToast(
+
+                    `Cannot reverse ${adjustment.adjustmentId}. Current ${PRODUCTS[
+                        adjustment.product
+                    ].label} stock is only ${formatNumber(
+                        currentStock
+                    )} kg.`,
+
+                    "error"
+
+                );
+
+
+                return;
+
             }
+
+        }
+
+
+        const reversalId =
+            generateAdjustmentId();
+
+
+        const reversalRecord = {
+
+            id:
+                Date.now(),
+
+
+            adjustmentId:
+                reversalId,
+
+
+            product:
+                adjustment.product,
+
+
+            type:
+                reverseType,
+
+
+            quantity:
+                adjustment.quantity,
+
+
+            date:
+                getTodayDate(),
+
+
+            reason:
+
+                `Reversal of ${adjustment.adjustmentId}: ${adjustment.reason}`,
+
+
+            status:
+                "reversal",
+
+
+            reversalOf:
+                adjustment.adjustmentId,
+
+
+            reversedBy:
+                null,
+
+
+            createdAt:
+                Date.now()
+
+        };
+
+
+        adjustment.status =
+            "reversed";
+
+
+        adjustment.reversedBy =
+            reversalId;
+
+
+        adjustments.push(
+            reversalRecord
+        );
+
+
+        pendingReverseAdjustmentId =
+            null;
+
+
+        saveAdjustments();
+
+
+        refreshInventory();
+
+
+        showToast(
+
+            `${adjustment.adjustmentId} reversed through ${reversalId}.`
+
         );
 
     }
 
 
-    // ==========================================
-    // SAVE / UPDATE STOCK ADJUSTMENT
-    // ==========================================
+    /* =========================================
+       MOVEMENT LEDGER
+    ========================================= */
 
-    inventoryAdjustmentForm.addEventListener(
+    function displayMovementLedger() {
+
+        const searchText =
+            movementSearch.value
+                .trim()
+                .toLowerCase();
+
+
+        const productFilter =
+            movementProductFilter.value;
+
+
+        const movements =
+            buildInventoryState()
+                .movements;
+
+
+        const filtered =
+            movements.filter(
+                function (
+                    movement
+                ) {
+
+                    const searchable = `
+
+                        ${PRODUCTS[movement.product]?.label || ""}
+                        ${movement.source}
+                        ${movement.reference}
+                        ${movement.note}
+
+                    `.toLowerCase();
+
+
+                    const searchMatch =
+                        searchable.includes(
+                            searchText
+                        );
+
+
+                    const productMatch =
+
+                        productFilter ===
+                        "all"
+
+                        ||
+
+                        movement.product ===
+                        productFilter;
+
+
+                    return (
+                        searchMatch &&
+                        productMatch
+                    );
+
+                }
+            );
+
+
+        movementTableBody.innerHTML =
+            "";
+
+
+        if (
+            filtered.length ===
+            0
+        ) {
+
+            movementTableBody.innerHTML = `
+
+                <tr class="movement-empty-row">
+
+                    <td colspan="8">
+
+                        No stock movements match the current filter.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        [
+            ...filtered
+        ]
+
+            .reverse()
+
+            .forEach(
+                function (
+                    movement
+                ) {
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            ${formatDate(
+                                movement.date
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                PRODUCTS[
+                                    movement.product
+                                ].label
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    movement-badge
+                                    ${
+                                        movement.direction ===
+                                        "in"
+
+                                            ?
+
+                                            "movement-in"
+
+                                            :
+
+                                            "movement-out"
+                                    }
+                                "
+                            >
+
+                                ${
+                                    movement.direction ===
+                                    "in"
+
+                                        ?
+
+                                        "Stock In"
+
+                                        :
+
+                                        "Stock Out"
+                                }
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                movement.direction ===
+                                "in"
+
+                                    ?
+
+                                    "+"
+
+                                    :
+
+                                    "-"
+                            }${formatNumber(
+                                movement.quantity
+                            )} kg
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                ${formatNumber(
+                                    movement.balanceAfter
+                                )} kg
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="movement-source">
+
+                                ${escapeHTML(
+                                    movement.source
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="movement-reference">
+
+                                ${escapeHTML(
+                                    movement.reference
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                movement.note
+                            )}
+
+                        </td>
+
+                    `;
+
+
+                    movementTableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       REFRESH
+    ========================================= */
+
+    function refreshInventory() {
+
+        updateSummaryCards();
+
+        displayAdjustmentHistory();
+
+        displayCurrentInventory();
+
+        displayMovementLedger();
+
+        updateAdjustmentStockHelp();
+
+    }
+
+
+    /* =========================================
+       CURRENT STOCK HELP
+    ========================================= */
+
+    function updateAdjustmentStockHelp() {
+
+        const product =
+            adjustmentProductSelect.value;
+
+
+        if (
+            !product ||
+            !PRODUCTS[product]
+        ) {
+
+            adjustmentStockHelp.textContent =
+                "Select a product to view current stock.";
+
+            return;
+
+        }
+
+
+        const inventory =
+            buildInventoryState()
+                .state;
+
+
+        adjustmentStockHelp.textContent =
+
+            `Current stock: ${formatNumber(
+                inventory[product]
+                    .quantity
+            )} kg`;
+
+    }
+
+
+    /* =========================================
+       VALIDATE ADJUSTMENT
+    ========================================= */
+
+    function validateAdjustment() {
+
+        const product =
+            adjustmentProductSelect.value;
+
+
+        const type =
+            adjustmentTypeSelect.value;
+
+
+        const quantity =
+            Number(
+                adjustmentQuantityInput.value
+            );
+
+
+        const date =
+            adjustmentDateInput.value;
+
+
+        const reason =
+            adjustmentReasonInput.value
+                .trim();
+
+
+        if (
+            !product ||
+            !PRODUCTS[product]
+        ) {
+
+            return (
+                "Please select a product."
+            );
+
+        }
+
+
+        if (
+            ![
+                "in",
+                "out"
+            ].includes(
+                type
+            )
+        ) {
+
+            return (
+                "Please select an adjustment type."
+            );
+
+        }
+
+
+        if (
+            !Number.isFinite(
+                quantity
+            ) ||
+            quantity <= 0
+        ) {
+
+            return (
+                "Adjustment quantity must be greater than zero."
+            );
+
+        }
+
+
+        if (!date) {
+
+            return (
+                "Please select the adjustment date."
+            );
+
+        }
+
+
+        if (
+            reason.length <
+            5
+        ) {
+
+            return (
+                "Please provide a clear reason for the stock adjustment."
+            );
+
+        }
+
+
+        if (
+            type ===
+            "out"
+        ) {
+
+            const inventory =
+                buildInventoryState()
+                    .state;
+
+
+            const available =
+                Number(
+                    inventory[
+                        product
+                    ].quantity
+                );
+
+
+            if (
+                quantity >
+                available
+            ) {
+
+                return (
+
+                    `Stock-out cannot exceed the current available stock of ${formatNumber(
+                        available
+                    )} kg.`
+
+                );
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================================
+       SAVE ADJUSTMENT
+    ========================================= */
+
+    adjustmentForm.addEventListener(
         "submit",
-        function (event) {
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+
+            pendingReverseAdjustmentId =
+                null;
+
+
+            const error =
+                validateAdjustment();
+
+
+            if (error) {
+
+                showToast(
+                    error,
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const adjustment = {
+
+                id:
+                    Date.now(),
+
+
+                adjustmentId:
+                    generateAdjustmentId(),
+
+
+                product:
+                    adjustmentProductSelect.value,
+
+
+                type:
+                    adjustmentTypeSelect.value,
+
+
+                quantity:
+
+                    Number(
+                        adjustmentQuantityInput.value
+                    ),
+
+
+                date:
+                    adjustmentDateInput.value,
+
+
+                reason:
+
+                    adjustmentReasonInput.value
+                        .trim(),
+
+
+                status:
+                    "active",
+
+
+                reversalOf:
+                    null,
+
+
+                reversedBy:
+                    null,
+
+
+                createdAt:
+                    Date.now()
+
+            };
+
+
+            adjustments.push(
+                adjustment
+            );
+
+
+            saveAdjustments();
+
+
+            const savedId =
+                adjustment.adjustmentId;
+
+
+            adjustmentForm.reset();
+
+
+            adjustmentDateInput.value =
+                getTodayDate();
+
+
+            refreshInventory();
+
+
+            showToast(
+                `${savedId} saved successfully.`
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       ADJUSTMENT HISTORY ACTIONS
+    ========================================= */
+
+    adjustmentHistoryTableBody.addEventListener(
+        "click",
+        function (
+            event
+        ) {
+
+            const button =
+                event.target.closest(
+                    "button[data-action]"
+                );
+
+
+            if (!button) {
+                return;
+            }
+
+
+            const id =
+                Number(
+                    button.dataset.id
+                );
+
+
+            const action =
+                button.dataset.action;
+
+
+            if (
+                action ===
+                "request-reverse"
+            ) {
+
+                requestAdjustmentReversal(
+                    id
+                );
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "confirm-reverse"
+            ) {
+
+                confirmAdjustmentReversal(
+                    id
+                );
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "cancel-reverse"
+            ) {
+
+                cancelAdjustmentReversal();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       SAFETY STOCK
+    ========================================= */
+
+    safetyProductSelect.addEventListener(
+        "change",
+        function () {
+
+            const product =
+                safetyProductSelect.value;
+
+
+            if (
+                !product ||
+                !PRODUCTS[product]
+            ) {
+
+                safetyQuantityInput.value =
+                    "";
+
+                return;
+
+            }
+
+
+            safetyQuantityInput.value =
+                Number(
+                    safetyStock[
+                        product
+                    ] ||
+                    0
+                );
+
+        }
+    );
+
+
+    safetyStockForm.addEventListener(
+        "submit",
+        function (
+            event
+        ) {
 
             event.preventDefault();
 
 
             const product =
-                productSelect.value;
-
-
-            const type =
-                adjustmentTypeSelect.value;
+                safetyProductSelect.value;
 
 
             const quantity =
                 Number(
-                    adjustmentQuantityInput.value
+                    safetyQuantityInput.value
                 );
 
 
-            const date =
-                adjustmentDateInput.value;
-
-
-            const reason =
-                adjustmentReasonInput.value.trim();
-
-
-            // ----------------------------------
-            // Validation
-            // ----------------------------------
-
-            if (!product) {
+            if (
+                !product ||
+                !PRODUCTS[product]
+            ) {
 
                 showToast(
                     "Please select a product.",
@@ -993,26 +3390,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            if (!type) {
-
-                showToast(
-                    "Please select an adjustment type.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
             if (
-                adjustmentQuantityInput.value ===
-                    "" ||
-                quantity <= 0
+                !Number.isFinite(
+                    quantity
+                ) ||
+                quantity < 0
             ) {
 
                 showToast(
-                    "Please enter a valid quantity.",
+                    "Safety stock level cannot be negative.",
                     "error"
                 );
 
@@ -1021,480 +3407,55 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            if (!date) {
+            safetyStock[
+                product
+            ] =
+                quantity;
 
-                showToast(
-                    "Please select adjustment date.",
-                    "error"
-                );
 
-                return;
+            saveSafetyStock();
 
-            }
 
-
-            if (!reason) {
-
-                showToast(
-                    "Please enter an adjustment reason.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            // ==================================
-            // REMOVE STOCK VALIDATION
-            // ==================================
-
-            if (
-                type === "remove"
-            ) {
-
-                const inventory =
-                    calculateInventory();
-
-
-                const availableStock =
-                    Number(
-                        inventory[
-                            product
-                        ] || 0
-                    );
-
-
-                let oldAdjustmentEffect =
-                    0;
-
-
-                if (
-                    editingAdjustmentId !==
-                    null
-                ) {
-
-                    const oldAdjustment =
-                        adjustments.find(
-                            function (
-                                adjustment
-                            ) {
-
-                                return (
-                                    adjustment.id ===
-                                    editingAdjustmentId
-                                );
-
-                            }
-                        );
-
-
-                    if (
-                        oldAdjustment &&
-                        oldAdjustment.product ===
-                            product
-                    ) {
-
-                        if (
-                            oldAdjustment.type ===
-                            "add"
-                        ) {
-
-                            oldAdjustmentEffect =
-                                Number(
-                                    oldAdjustment.quantity
-                                );
-
-                        } else {
-
-                            oldAdjustmentEffect =
-                                -Number(
-                                    oldAdjustment.quantity
-                                );
-
-                        }
-
-                    }
-
-                }
-
-
-                const stockBeforeCurrentEdit =
-
-                    availableStock
-
-                    -
-
-                    oldAdjustmentEffect;
-
-
-                if (
-                    quantity >
-                    stockBeforeCurrentEdit
-                ) {
-
-                    showToast(
-                        "Cannot remove more than available stock.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-            }
-
-
-            // ==================================
-            // UPDATE
-            // ==================================
-
-            if (
-                editingAdjustmentId !==
-                null
-            ) {
-
-                const index =
-                    adjustments.findIndex(
-                        function (
-                            adjustment
-                        ) {
-
-                            return (
-                                adjustment.id ===
-                                editingAdjustmentId
-                            );
-
-                        }
-                    );
-
-
-                if (index !== -1) {
-
-                    adjustments[index] = {
-
-                        id:
-                            editingAdjustmentId,
-
-                        product:
-                            product,
-
-                        type:
-                            type,
-
-                        quantity:
-                            quantity,
-
-                        date:
-                            date,
-
-                        reason:
-                            reason
-
-                    };
-
-                }
-
-
-                saveAdjustments();
-
-                displayInventory();
-
-                displayAdjustments();
-
-                resetAdjustmentForm();
-
-
-                showToast(
-                    "Stock adjustment updated successfully!"
-                );
-
-
-                return;
-
-            }
-
-
-            // ==================================
-            // NEW ADJUSTMENT
-            // ==================================
-
-            const newAdjustment = {
-
-                id:
-                    Date.now(),
-
-                product:
-                    product,
-
-                type:
-                    type,
-
-                quantity:
-                    quantity,
-
-                date:
-                    date,
-
-                reason:
-                    reason
-
-            };
-
-
-            adjustments.push(
-                newAdjustment
-            );
-
-
-            saveAdjustments();
-
-            displayInventory();
-
-            displayAdjustments();
-
-            resetAdjustmentForm();
+            refreshInventory();
 
 
             showToast(
-                "Stock adjustment saved successfully!"
+
+                `${PRODUCTS[product].label} safety stock updated to ${formatNumber(
+                    quantity
+                )} kg.`
+
             );
 
         }
     );
 
 
-    // ==========================================
-    // TABLE BUTTON EVENTS
-    // ==========================================
+    /* =========================================
+       FILTERS
+    ========================================= */
 
-    adjustmentTableBody.addEventListener(
-        "click",
-        function (event) {
-
-            const button =
-                event.target.closest(
-                    "button"
-                );
-
-
-            if (!button) {
-
-                return;
-
-            }
-
-
-            const id =
-                Number(
-                    button.dataset.id
-                );
-
-
-            if (
-                button.dataset.action ===
-                "edit"
-            ) {
-
-                editAdjustment(id);
-
-            }
-
-
-            if (
-                button.dataset.action ===
-                "delete"
-            ) {
-
-                deleteAdjustment(id);
-
-            }
-
-        }
+    movementSearch.addEventListener(
+        "input",
+        displayMovementLedger
     );
 
 
-    // ==========================================
-    // EDIT ADJUSTMENT
-    // ==========================================
+    movementProductFilter.addEventListener(
+        "change",
+        displayMovementLedger
+    );
 
-    function editAdjustment(id) {
 
-        const adjustment =
-            adjustments.find(
-                function (adjustment) {
+    adjustmentProductSelect.addEventListener(
+        "change",
+        updateAdjustmentStockHelp
+    );
 
-                    return (
-                        adjustment.id ===
-                        id
-                    );
 
-                }
-            );
-
-
-        if (!adjustment) {
-
-            showToast(
-                "Adjustment record not found.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        productSelect.value =
-            adjustment.product;
-
-
-        adjustmentTypeSelect.value =
-            adjustment.type;
-
-
-        adjustmentQuantityInput.value =
-            adjustment.quantity;
-
-
-        adjustmentDateInput.value =
-            adjustment.date;
-
-
-        adjustmentReasonInput.value =
-            adjustment.reason;
-
-
-        editingAdjustmentId =
-            adjustment.id;
-
-
-        saveAdjustmentBtn.innerHTML = `
-
-            <span aria-hidden="true">
-                ▣
-            </span>
-
-            Update Adjustment
-
-        `;
-
-
-        productSelect.focus();
-
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth"
-
-        });
-
-    }
-
-
-    // ==========================================
-    // DELETE ADJUSTMENT
-    // ==========================================
-
-    function deleteAdjustment(id) {
-
-        const exists =
-            adjustments.some(
-                function (adjustment) {
-
-                    return (
-                        adjustment.id ===
-                        id
-                    );
-
-                }
-            );
-
-
-        if (!exists) {
-
-            showToast(
-                "Adjustment record not found.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        adjustments =
-            adjustments.filter(
-                function (adjustment) {
-
-                    return (
-                        adjustment.id !==
-                        id
-                    );
-
-                }
-            );
-
-
-        saveAdjustments();
-
-        displayInventory();
-
-        displayAdjustments();
-
-
-        if (
-            editingAdjustmentId ===
-            id
-        ) {
-
-            resetAdjustmentForm();
-
-        }
-
-
-        showToast(
-            "Stock adjustment deleted successfully!"
-        );
-
-    }
-
-
-    // ==========================================
-    // RESET FORM
-    // ==========================================
-
-    function resetAdjustmentForm() {
-
-        inventoryAdjustmentForm.reset();
-
-
-        adjustmentDateInput.value =
-            getTodayDate();
-
-
-        editingAdjustmentId =
-            null;
-
-
-        saveAdjustmentBtn.innerHTML = `
-
-            <span aria-hidden="true">
-                ▣
-            </span>
-
-            Save Adjustment
-
-        `;
-
-    }
-
-
-    // ==========================================
-    // TOAST
-    // ==========================================
+    /* =========================================
+       TOAST
+    ========================================= */
 
     function showToast(
         message,
@@ -1521,21 +3482,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         toast.className =
-            "inventory-toast " +
-            type;
+            `inventory-toast ${type}`;
 
 
         toast.innerHTML = `
 
-            <span class="toast-icon">
+            <span class="inventory-toast-icon">
 
                 ${
-                    type === "success"
-                        ? "✓"
-                        : "!"
+                    type ===
+                    "error"
+
+                        ?
+
+                        "!"
+
+                        :
+
+                        "✓"
                 }
 
             </span>
+
 
             <span>
 
@@ -1553,15 +3521,14 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        setTimeout(
+        requestAnimationFrame(
             function () {
 
                 toast.classList.add(
                     "show"
                 );
 
-            },
-            50
+            }
         );
 
 
@@ -1579,228 +3546,208 @@ document.addEventListener("DOMContentLoaded", function () {
                         toast.remove();
 
                     },
-                    300
+                    250
                 );
 
             },
-            2500
+            2800
         );
 
     }
 
 
-    // ==========================================
-    // EXTRA DESIGN
-    // ==========================================
+    /* =========================================
+       MOBILE SIDEBAR
+    ========================================= */
 
-    const style =
-        document.createElement(
-            "style"
+    function openSidebar() {
+
+        if (!sidebar) {
+            return;
+        }
+
+
+        sidebar.classList.add(
+            "open"
         );
 
 
-    style.textContent = `
+        if (
+            sidebarBackdrop
+        ) {
 
-        .inventory-status-out {
-
-            background-color: #fdeaea;
-
-            color: #c62828;
-
-            border: 1px solid #efb8b8;
+            sidebarBackdrop.classList.add(
+                "show"
+            );
 
         }
 
 
-        .inventory-edit-button {
+        if (
+            menuButton
+        ) {
 
-            padding: 7px 15px;
-
-            border: 1px solid #15913a;
-
-            border-radius: 6px;
-
-            background: #ffffff;
-
-            color: #15913a;
-
-            font-weight: 600;
-
-            cursor: pointer;
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
 
         }
 
 
-        .inventory-edit-button:hover {
+        document.body.style.overflow =
+            "hidden";
 
-            background-color:
-                #edf8f0;
+    }
+
+
+    function closeSidebar() {
+
+        if (!sidebar) {
+            return;
+        }
+
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        if (
+            sidebarBackdrop
+        ) {
+
+            sidebarBackdrop.classList.remove(
+                "show"
+            );
 
         }
 
 
-        .inventory-delete-button {
+        if (
+            menuButton
+        ) {
 
-            margin-left: 6px;
-
-            padding: 7px 15px;
-
-            border:
-                1px solid #efb8b8;
-
-            border-radius: 6px;
-
-            background-color:
-                #fff5f5;
-
-            color: #c62828;
-
-            font-weight: 600;
-
-            cursor: pointer;
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
 
         }
 
 
-        .inventory-delete-button:hover {
+        document.body.style.overflow =
+            "";
 
-            background-color:
-                #fdeaea;
-
-        }
+    }
 
 
-        .inventory-toast {
+    if (
+        menuButton
+    ) {
 
-            position: fixed;
+        menuButton.addEventListener(
+            "click",
+            function () {
 
-            top: 25px;
+                if (
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "open"
+                    )
+                ) {
 
-            right: 25px;
+                    closeSidebar();
 
-            min-width: 280px;
+                }
+                else {
 
-            display: flex;
+                    openSidebar();
 
-            align-items: center;
+                }
 
-            gap: 12px;
+            }
+        );
 
-            padding: 14px 18px;
-
-            background-color:
-                #ffffff;
-
-            color:
-                #17351f;
-
-            border-left:
-                5px solid #15913a;
-
-            border-radius:
-                8px;
-
-            box-shadow:
-                0 6px 20px
-                rgba(0, 0, 0, 0.15);
-
-            font-size:
-                14px;
-
-            font-weight:
-                600;
-
-            z-index:
-                9999;
-
-            opacity:
-                0;
-
-            transform:
-                translateX(30px);
-
-            transition:
-                opacity 0.3s ease,
-                transform 0.3s ease;
-
-        }
+    }
 
 
-        .inventory-toast.show {
+    if (
+        sidebarBackdrop
+    ) {
 
-            opacity: 1;
+        sidebarBackdrop.addEventListener(
+            "click",
+            closeSidebar
+        );
 
-            transform:
-                translateX(0);
-
-        }
+    }
 
 
-        .inventory-toast .toast-icon {
+    document.addEventListener(
+        "keydown",
+        function (
+            event
+        ) {
 
-            width: 26px;
+            if (
+                event.key !==
+                "Escape"
+            ) {
 
-            height: 26px;
+                return;
 
-            display: flex;
+            }
 
-            align-items: center;
 
-            justify-content: center;
+            if (
+                pendingReverseAdjustmentId !==
+                null
+            ) {
 
-            border-radius: 50%;
+                pendingReverseAdjustmentId =
+                    null;
 
-            background-color:
-                #e7f5eb;
 
-            color:
-                #15913a;
+                displayAdjustmentHistory();
 
-            font-weight: bold;
+
+                return;
+
+            }
+
+
+            closeSidebar();
 
         }
-
-
-        .inventory-toast.error {
-
-            border-left-color:
-                #d32f2f;
-
-            color:
-                #8f1d1d;
-
-        }
-
-
-        .inventory-toast.error
-        .toast-icon {
-
-            background-color:
-                #fdeaea;
-
-            color:
-                #d32f2f;
-
-        }
-
-    `;
-
-
-    document.head.appendChild(
-        style
     );
 
 
-    // ==========================================
-    // INITIAL LOAD
-    // ==========================================
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (
+                window.innerWidth >
+                1000
+            ) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
 
     adjustmentDateInput.value =
         getTodayDate();
 
 
-    displayInventory();
-
-    displayAdjustments();
+    refreshInventory();
 
 });
