@@ -2,386 +2,400 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================
        SMART RICE MILL ERP
-       LIVE NOTIFICATION ENGINE
+       INTEGRATED NOTIFICATION ENGINE
 
-       Alerts are generated from:
-       1. Inventory safety stock
-       2. Supplier purchase dues
-       3. Customer invoice dues
-       4. Salary dues
-       5. Pending / On-the-Way deliveries
-       6. Maintenance due / overdue
-       7. Rejected / Under Review quality batches
-
-       No alert is manually hard-coded.
-
-       History is preserved in:
-       notificationAlertHistory
+       Sources:
+       - Inventory transactions
+       - Purchase supplier dues
+       - Sales customer dues
+       - Salary dues
+       - Delivery status
+       - Maintenance schedules
+       - Quality inspections
     ========================================== */
 
 
     /* =========================================
-       ELEMENTS
+       1. ELEMENTS
     ========================================== */
 
     const lowStockCount =
-        document.getElementById(
-            "lowStockCount"
-        );
-
+        document.getElementById("lowStockCount");
 
     const duePaymentCount =
-        document.getElementById(
-            "duePaymentCount"
-        );
-
+        document.getElementById("duePaymentCount");
 
     const pendingDeliveryCount =
-        document.getElementById(
-            "pendingDeliveryCount"
-        );
-
+        document.getElementById("pendingDeliveryCount");
 
     const attentionCount =
-        document.getElementById(
-            "attentionCount"
-        );
-
+        document.getElementById("attentionCount");
 
     const notificationBadge =
-        document.getElementById(
-            "notificationBadge"
-        );
-
+        document.getElementById("notificationBadge");
 
     const priorityAlertList =
-        document.getElementById(
-            "priorityAlertList"
-        );
-
+        document.getElementById("priorityAlertList");
 
     const alertTableBody =
-        document.getElementById(
-            "alertTableBody"
-        );
-
+        document.getElementById("alertTableBody");
 
     const alertSearch =
-        document.getElementById(
-            "alertSearch"
-        );
-
+        document.getElementById("alertSearch");
 
     const alertTypeFilter =
-        document.getElementById(
-            "alertTypeFilter"
-        );
-
+        document.getElementById("alertTypeFilter");
 
     const alertStatusFilter =
-        document.getElementById(
-            "alertStatusFilter"
-        );
-
+        document.getElementById("alertStatusFilter");
 
     const refreshAlertsBtn =
-        document.getElementById(
-            "refreshAlertsBtn"
-        );
-
+        document.getElementById("refreshAlertsBtn");
 
     const topbarUserName =
-        document.getElementById(
-            "topbarUserName"
-        );
-
+        document.getElementById("topbarUserName");
 
     const sidebarMillName =
-        document.getElementById(
-            "sidebarMillName"
-        );
-
+        document.getElementById("sidebarMillName");
 
     const menuButton =
-        document.getElementById(
-            "menuButton"
-        );
-
+        document.getElementById("menuButton");
 
     const sidebar =
-        document.getElementById(
-            "sidebar"
-        );
-
+        document.getElementById("sidebar");
 
     const sidebarBackdrop =
-        document.getElementById(
-            "sidebarBackdrop"
-        );
+        document.getElementById("sidebarBackdrop");
 
-
-    /* =========================================
-       STATE
-    ========================================== */
 
     let activeAlerts = [];
     let alertHistory = [];
 
 
     /* =========================================
-       STORAGE HELPERS
+       2. INVENTORY CONSTANTS
     ========================================== */
 
-    function safeParse(value) {
+    const PRODUCTS = {
+
+        paddy: {
+            label: "Accepted Paddy"
+        },
+
+        wholeRice: {
+            label: "Whole Rice"
+        },
+
+        khud: {
+            label: "Khud / Broken Rice"
+        },
+
+        tush: {
+            label: "Tush / Husk"
+        },
+
+        bran: {
+            label: "Rice Bran"
+        }
+
+    };
+
+
+    const PRODUCT_KEYS = [
+        "paddy",
+        "wholeRice",
+        "khud",
+        "tush",
+        "bran"
+    ];
+
+
+    const DEFAULT_SAFETY_STOCK = {
+
+        paddy: 500,
+
+        wholeRice: 300,
+
+        khud: 50,
+
+        tush: 100,
+
+        bran: 50
+
+    };
+
+
+    /* =========================================
+       3. STORAGE HELPERS
+    ========================================== */
+
+    function safeParseStorage(
+        key,
+        fallback = null
+    ) {
 
         try {
 
-            return JSON.parse(value);
+            const value =
+                localStorage.getItem(key);
+
+
+            if (value === null) {
+                return fallback;
+            }
+
+
+            return (
+                JSON.parse(value) ??
+                fallback
+            );
 
         }
         catch {
 
-            return null;
+            return fallback;
 
         }
 
     }
 
 
-    function getStorageValue(key) {
+    function firstNonEmptyArray(keys) {
 
-        const value =
-            localStorage.getItem(key);
-
-
-        if (value === null) {
-            return null;
-        }
+        let emptyArray = [];
 
 
-        return safeParse(value);
-
-    }
-
-
-    function firstArray(keys) {
-
-        for (
-            const key of keys
-        ) {
+        for (const key of keys) {
 
             const value =
-                getStorageValue(key);
-
-
-            if (
-                Array.isArray(value)
-            ) {
-
-                return value;
-
-            }
-
-
-            if (
-                value &&
-                Array.isArray(value.records)
-            ) {
-
-                return value.records;
-
-            }
-
-
-            if (
-                value &&
-                Array.isArray(value.items)
-            ) {
-
-                return value.items;
-
-            }
-
-        }
-
-
-        return [];
-
-    }
-
-
-    function firstObject(keys) {
-
-        for (
-            const key of keys
-        ) {
-
-            const value =
-                getStorageValue(key);
-
-
-            if (
-                value &&
-                !Array.isArray(value) &&
-                typeof value === "object"
-            ) {
-
-                return value;
-
-            }
-
-        }
-
-
-        return {};
-
-    }
-
-
-    /* =========================================
-       FALLBACK STORAGE DISCOVERY
-
-       Makes the notification page more tolerant
-       if older project files used slightly
-       different storage-key names.
-    ========================================== */
-
-    function discoverBestArray(
-        fieldGroups
-    ) {
-
-        let bestArray = [];
-        let bestScore = 0;
-
-
-        for (
-            let i = 0;
-            i < localStorage.length;
-            i++
-        ) {
-
-            const key =
-                localStorage.key(i);
-
-
-            if (!key) {
-                continue;
-            }
-
-
-            const value =
-                safeParse(
-                    localStorage.getItem(
-                        key
-                    )
+                safeParseStorage(
+                    key,
+                    null
                 );
 
 
-            if (
-                !Array.isArray(value) ||
-                value.length === 0
-            ) {
-
-                continue;
-            }
+            let array = null;
 
 
-            const sample =
-                value.find(
-                    item =>
-                        item &&
-                        typeof item === "object"
-                );
+            if (Array.isArray(value)) {
 
-
-            if (!sample) {
-                continue;
-            }
-
-
-            let score = 0;
-
-
-            fieldGroups.forEach(
-                function (group) {
-
-                    const matched =
-                        group.some(
-                            field =>
-                                Object.prototype
-                                    .hasOwnProperty
-                                    .call(
-                                        sample,
-                                        field
-                                    )
-                        );
-
-
-                    if (matched) {
-                        score++;
-                    }
-
-                }
-            );
-
-
-            if (
-                score > bestScore
-            ) {
-
-                bestScore =
-                    score;
-
-
-                bestArray =
+                array =
                     value;
 
             }
+            else if (
+                value &&
+                typeof value === "object"
+            ) {
+
+                if (
+                    Array.isArray(
+                        value.records
+                    )
+                ) {
+
+                    array =
+                        value.records;
+
+                }
+                else if (
+                    Array.isArray(
+                        value.items
+                    )
+                ) {
+
+                    array =
+                        value.items;
+
+                }
+                else if (
+                    Array.isArray(
+                        value.data
+                    )
+                ) {
+
+                    array =
+                        value.data;
+
+                }
+
+            }
+
+
+            if (!array) {
+                continue;
+            }
+
+
+            if (array.length > 0) {
+
+                return array;
+
+            }
+
+
+            emptyArray =
+                array;
 
         }
 
 
-        return bestArray;
+        return emptyArray;
 
     }
 
 
-    function getArray(
-        keys,
-        fieldGroups
-    ) {
+    function mergeArrays(keys) {
 
-        const direct =
-            firstArray(keys);
+        const merged = [];
 
-
-        if (
-            direct.length > 0
-        ) {
-
-            return direct;
-
-        }
+        const seen =
+            new Set();
 
 
-        return discoverBestArray(
-            fieldGroups
+        keys.forEach(
+            function (key) {
+
+                const data =
+                    safeParseStorage(
+                        key,
+                        null
+                    );
+
+
+                if (
+                    !Array.isArray(data)
+                ) {
+                    return;
+                }
+
+
+                data.forEach(
+                    function (record) {
+
+                        if (
+                            !record ||
+                            typeof record !== "object"
+                        ) {
+                            return;
+                        }
+
+
+                        const identity =
+                            String(
+
+                                record.maintenanceId ??
+                                record.deliveryId ??
+                                record.machineId ??
+                                record.id ??
+                                ""
+
+                            )
+                            +
+                            "|"
+                            +
+                            String(
+                                record.machineName ??
+                                record.name ??
+                                ""
+                            )
+                            +
+                            "|"
+                            +
+                            String(
+                                record.nextServiceDate ??
+                                record.date ??
+                                ""
+                            );
+
+
+                        const keyValue =
+                            identity !== "||"
+
+                                ?
+
+                                identity
+
+                                :
+
+                                JSON.stringify(
+                                    record
+                                );
+
+
+                        if (
+                            seen.has(
+                                keyValue
+                            )
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        seen.add(
+                            keyValue
+                        );
+
+
+                        merged.push(
+                            record
+                        );
+
+                    }
+                );
+
+            }
         );
+
+
+        return merged;
 
     }
 
 
     /* =========================================
-       GENERIC HELPERS
+       4. GENERIC HELPERS
     ========================================== */
 
-    function numberValue(
-        ...values
-    ) {
+    function normalizeText(value) {
 
-        for (
-            const value of values
-        ) {
+        return String(
+            value ?? ""
+        )
+            .trim()
+            .toLowerCase();
+
+    }
+
+
+    function stringValue(...values) {
+
+        for (const value of values) {
+
+            if (
+                value !== null &&
+                value !== undefined &&
+                String(value).trim() !== ""
+            ) {
+
+                return String(value)
+                    .trim();
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+
+    function numberValue(...values) {
+
+        for (const value of values) {
 
             if (
                 value === null ||
@@ -396,7 +410,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const cleaned =
                 String(value)
-                    .replace(/[৳,\s]/g, "");
+                    .replace(
+                        /[৳,\s]/g,
+                        ""
+                    );
 
 
             const number =
@@ -404,7 +421,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (
-                Number.isFinite(number)
+                Number.isFinite(
+                    number
+                )
             ) {
 
                 return number;
@@ -419,54 +438,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function stringValue(
-        ...values
-    ) {
-
-        for (
-            const value of values
-        ) {
-
-            if (
-                value !== null &&
-                value !== undefined &&
-                String(value).trim() !== ""
-            ) {
-
-                return String(value).trim();
-
-            }
-
-        }
-
-
-        return "";
-
-    }
-
-
-    function normalizeText(value) {
-
-        return String(
-            value || ""
-        )
-            .trim()
-            .toLowerCase();
-
-    }
-
-
     function escapeHTML(value) {
 
-        const div =
-            document.createElement("div");
+        const element =
+            document.createElement(
+                "div"
+            );
 
 
-        div.textContent =
-            String(value ?? "");
+        element.textContent =
+            String(
+                value ?? ""
+            );
 
 
-        return div.innerHTML;
+        return element.innerHTML;
 
     }
 
@@ -474,16 +460,15 @@ document.addEventListener("DOMContentLoaded", function () {
     function formatMoney(value) {
 
         return (
-            "৳" +
-            Math.max(
-                0,
-                numberValue(value)
-            ).toLocaleString(
-                "en-BD",
-                {
-                    maximumFractionDigits: 2
-                }
-            )
+            "৳"
+            +
+            numberValue(value)
+                .toLocaleString(
+                    "en-IN",
+                    {
+                        maximumFractionDigits: 2
+                    }
+                )
         );
 
     }
@@ -494,7 +479,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return (
             numberValue(value)
                 .toLocaleString(
-                    "en-BD",
+                    "en-US",
                     {
                         maximumFractionDigits: 2
                     }
@@ -506,9 +491,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function pad2(number) {
+    /* =========================================
+       5. DATE HELPERS
+    ========================================== */
 
-        return String(number)
+    function pad2(value) {
+
+        return String(value)
             .padStart(
                 2,
                 "0"
@@ -517,7 +506,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function toISODate(date) {
+    function todayISO() {
+
+        const date =
+            new Date();
+
 
         return (
             date.getFullYear()
@@ -538,15 +531,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function todayISO() {
-
-        return toISODate(
-            new Date()
-        );
-
-    }
-
-
     function parseDate(value) {
 
         if (!value) {
@@ -559,35 +543,43 @@ document.addEventListener("DOMContentLoaded", function () {
                 .trim();
 
 
-        const isoMatch =
+        let match =
             raw.match(
-                /^(\d{4})-(\d{2})-(\d{2})/
+                /^(\d{4})-(\d{1,2})-(\d{1,2})/
             );
 
 
-        if (isoMatch) {
+        if (match) {
 
             return new Date(
-                Number(isoMatch[1]),
-                Number(isoMatch[2]) - 1,
-                Number(isoMatch[3])
+
+                Number(match[1]),
+
+                Number(match[2]) - 1,
+
+                Number(match[3])
+
             );
 
         }
 
 
-        const usMatch =
+        match =
             raw.match(
-                /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+                /^(\d{1,2})\/(\d{1,2})\/(\d{4})/
             );
 
 
-        if (usMatch) {
+        if (match) {
 
             return new Date(
-                Number(usMatch[3]),
-                Number(usMatch[1]) - 1,
-                Number(usMatch[2])
+
+                Number(match[3]),
+
+                Number(match[1]) - 1,
+
+                Number(match[2])
+
             );
 
         }
@@ -609,38 +601,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         return new Date(
+
             parsed.getFullYear(),
+
             parsed.getMonth(),
+
             parsed.getDate()
+
         );
 
     }
 
 
-    function dateDifferenceDays(
-        targetDate
-    ) {
+    function toISODate(date) {
 
-        if (!targetDate) {
-            return null;
+        if (!date) {
+            return todayISO();
         }
 
 
-        const today =
-            parseDate(
-                todayISO()
-            );
-
-
-        const milliseconds =
-            targetDate.getTime()
-            -
-            today.getTime();
-
-
-        return Math.ceil(
-            milliseconds /
-            86400000
+        return (
+            date.getFullYear()
+            +
+            "-"
+            +
+            pad2(
+                date.getMonth() + 1
+            )
+            +
+            "-"
+            +
+            pad2(
+                date.getDate()
+            )
         );
 
     }
@@ -653,120 +646,90 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (!date) {
-
             return "—";
-
         }
 
 
-        return date.toLocaleDateString(
-            "en-GB",
-            {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            }
+        return date
+            .toLocaleDateString(
+                "en-GB",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+    }
+
+
+    function daysFromToday(date) {
+
+        if (!date) {
+            return null;
+        }
+
+
+        const today =
+            parseDate(
+                todayISO()
+            );
+
+
+        return Math.ceil(
+
+            (
+                date.getTime()
+                -
+                today.getTime()
+            )
+
+            /
+
+            86400000
+
         );
 
     }
 
 
     /* =========================================
-       PROFILE + SETTINGS
+       6. MODULE DATA
     ========================================== */
 
-    function renderHeaderInformation() {
+    function getPurchases() {
 
-        const profile =
-            firstObject(
-                [
-                    "adminProfile",
-                    "profileData"
-                ]
-            );
-
-
-        const settings =
-            firstObject(
-                [
-                    "riceMillSettings",
-                    "systemSettings"
-                ]
-            );
-
-
-        if (
-            topbarUserName
-        ) {
-
-            topbarUserName.textContent =
-                stringValue(
-                    profile.fullName,
-                    profile.name,
-                    "Admin User"
-                );
-
-        }
-
-
-        if (
-            sidebarMillName
-        ) {
-
-            sidebarMillName.textContent =
-                stringValue(
-                    settings.millName,
-                    settings.businessName,
-                    "Smart Rice Mill"
-                );
-
-        }
+        return firstNonEmptyArray(
+            [
+                "purchases",
+                "purchaseRecords",
+                "paddyPurchases"
+            ]
+        );
 
     }
 
 
-    /* =========================================
-       SOURCE ARRAYS
-    ========================================== */
+    function getQualityInspections() {
 
-    function getPurchaseRecords() {
-
-        return getArray(
-
+        return firstNonEmptyArray(
             [
-                "paddyPurchaseRecords",
-                "purchaseRecords",
-                "paddyPurchases",
-                "purchases",
-                "smartRiceMillPurchases"
-            ],
-
-            [
-                [
-                    "purchaseId",
-                    "purchaseID",
-                    "id"
-                ],
-
-                [
-                    "supplierName",
-                    "supplier",
-                    "farmerName"
-                ],
-
-                [
-                    "paddyWeight",
-                    "weight",
-                    "quantity"
-                ],
-
-                [
-                    "paymentStatus",
-                    "remainingDue",
-                    "dueAmount"
-                ]
+                "qualityInspections",
+                "qualityInspectionRecords",
+                "qualityRecords"
             ]
+        );
 
+    }
+
+
+    function getProductionRecords() {
+
+        return firstNonEmptyArray(
+            [
+                "productionRecords",
+                "productions"
+            ]
         );
 
     }
@@ -774,41 +737,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function getSalesRecords() {
 
-        return getArray(
-
+        return firstNonEmptyArray(
             [
-                "salesInvoices",
-                "invoiceRecords",
                 "salesRecords",
-                "invoices",
-                "smartRiceMillSales"
-            ],
-
-            [
-                [
-                    "invoiceId",
-                    "invoiceID",
-                    "invoice"
-                ],
-
-                [
-                    "customerName",
-                    "customer"
-                ],
-
-                [
-                    "totalAmount",
-                    "total",
-                    "amount"
-                ],
-
-                [
-                    "paymentStatus",
-                    "dueAmount",
-                    "remainingDue"
-                ]
+                "sales",
+                "salesInvoices",
+                "invoiceRecords"
             ]
-
         );
 
     }
@@ -816,74 +751,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function getDeliveryRecords() {
 
-        return getArray(
+        /*
+           Important:
+           Skip empty alias arrays.
 
+           This fixes:
+           Delivery page = 1
+           Notifications = 0
+        */
+
+        return firstNonEmptyArray(
             [
                 "deliveryRecords",
                 "deliveries",
-                "smartRiceMillDeliveries"
-            ],
-
-            [
-                [
-                    "deliveryId",
-                    "deliveryID"
-                ],
-
-                [
-                    "customerName",
-                    "customer"
-                ],
-
-                [
-                    "deliveryStatus",
-                    "status"
-                ],
-
-                [
-                    "driverName",
-                    "driver",
-                    "truckNumber"
-                ]
+                "deliveryHistory"
             ]
-
-        );
-
-    }
-
-
-    function getMaintenanceRecords() {
-
-        return getArray(
-
-            [
-                "maintenanceRecords",
-                "machineMaintenanceRecords",
-                "maintenanceHistory"
-            ],
-
-            [
-                [
-                    "machineName",
-                    "machine"
-                ],
-
-                [
-                    "nextServiceDate",
-                    "nextService"
-                ],
-
-                [
-                    "maintenanceType",
-                    "serviceActivity"
-                ],
-
-                [
-                    "maintenanceStatus",
-                    "machineStatus"
-                ]
-            ]
-
         );
 
     }
@@ -891,292 +773,884 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function getSalaryRecords() {
 
-        return getArray(
-
+        return firstNonEmptyArray(
             [
                 "salaryRecords",
                 "payrollRecords",
                 "salaryHistory"
-            ],
-
-            [
-                [
-                    "employee",
-                    "employeeName"
-                ],
-
-                [
-                    "salaryAmount",
-                    "salary"
-                ],
-
-                [
-                    "paidAmount",
-                    "dueAmount",
-                    "due"
-                ],
-
-                [
-                    "paymentStatus",
-                    "status"
-                ]
             ]
-
         );
 
     }
 
 
-    function getQualityRecords() {
+    function getMaintenanceRecords() {
 
-        return getArray(
+        /*
+           Maintenance data may exist in more
+           than one storage collection.
 
+           Merge them and later keep only the
+           latest schedule per machine.
+        */
+
+        return mergeArrays(
             [
-                "qualityInspectionRecords",
-                "qualityInspections",
-                "inspectionRecords",
-                "qualityRecords"
-            ],
-
-            [
-                [
-                    "purchaseId",
-                    "purchaseID"
-                ],
-
-                [
-                    "decision"
-                ],
-
-                [
-                    "grade"
-                ],
-
-                [
-                    "moisture",
-                    "impurity"
-                ]
+                "maintenanceRecords",
+                "machineMaintenanceRecords",
+                "maintenanceHistory",
+                "machineMaintenance",
+                "machines",
+                "machineRecords"
             ]
-
         );
 
     }
 
 
     /* =========================================
-       INVENTORY NORMALIZATION
+       7. INVENTORY SAFETY STOCK
     ========================================== */
 
-    function normalizeProductName(value) {
+    function loadSafetyStock() {
 
-        const text =
-            normalizeText(value);
+        const stored =
+            safeParseStorage(
+                "inventorySafetyStock",
+                {}
+            );
+
+
+        return {
+
+            ...DEFAULT_SAFETY_STOCK,
+
+            ...(
+                stored &&
+                typeof stored === "object" &&
+                !Array.isArray(stored)
+
+                    ?
+
+                    stored
+
+                    :
+
+                    {}
+            )
+
+        };
+
+    }
+
+
+    /* =========================================
+       8. INVENTORY ADJUSTMENTS
+    ========================================== */
+
+    function getInventoryAdjustments() {
+
+        const data =
+            safeParseStorage(
+                "inventoryAdjustments",
+                []
+            );
 
 
         if (
-            text.includes("paddy")
+            !Array.isArray(data)
         ) {
-            return "Accepted Paddy";
+
+            return [];
+
         }
 
 
-        if (
-            text.includes("whole") ||
-            text === "rice"
-        ) {
-            return "Whole Rice";
-        }
+        return data.map(
+            function (
+                adjustment,
+                index
+            ) {
+
+                return {
+
+                    id:
+
+                        adjustment.id ??
+                        Date.now() +
+                        index,
 
 
-        if (
-            text.includes("khud") ||
-            text.includes("broken")
-        ) {
-            return "Khud / Broken Rice";
-        }
+                    adjustmentId:
+
+                        adjustment.adjustmentId ||
+                        `ADJ-${String(
+                            index + 1
+                        ).padStart(
+                            3,
+                            "0"
+                        )}`,
 
 
-        if (
-            text.includes("tush") ||
-            text.includes("husk")
-        ) {
-            return "Tush / Husk";
-        }
+                    product:
+
+                        adjustment.product ||
+                        "wholeRice",
 
 
-        if (
-            text.includes("bran")
-        ) {
-            return "Rice Bran";
-        }
+                    type:
+
+                        adjustment.type === "out"
+
+                            ?
+
+                            "out"
+
+                            :
+
+                            "in",
 
 
-        return stringValue(
-            value,
-            "Unknown Product"
+                    quantity:
+
+                        Number(
+                            adjustment.quantity ||
+                            0
+                        ),
+
+
+                    date:
+
+                        adjustment.date ||
+                        todayISO(),
+
+
+                    reason:
+
+                        adjustment.reason ||
+                        "Inventory adjustment",
+
+
+                    reversalOf:
+
+                        adjustment.reversalOf ||
+                        null,
+
+
+                    createdAt:
+
+                        adjustment.createdAt ||
+                        adjustment.id ||
+                        index
+
+                };
+
+            }
         );
 
     }
 
 
-    function getInventoryRecords() {
+    /* =========================================
+       9. PRODUCT NORMALIZATION
+    ========================================== */
 
-        const direct =
-            getArray(
+    function normalizeProductKey(value) {
 
-                [
-                    "currentInventory",
-                    "inventoryProducts",
-                    "inventoryRecords",
-                    "inventoryStock",
-                    "stockRecords"
-                ],
+        const normalized =
+            String(
+                value || ""
+            )
+                .trim()
+                .toLowerCase()
+                .replace(
+                    /[\s_-]+/g,
+                    ""
+                );
 
-                [
-                    [
-                        "product",
-                        "productName",
-                        "name"
-                    ],
 
-                    [
-                        "availableStock",
-                        "stock",
-                        "quantity",
-                        "balance"
-                    ],
+        if (
+            [
+                "paddy",
+                "acceptedpaddy",
+                "rawpaddy"
+            ]
+                .includes(normalized)
+        ) {
 
-                    [
-                        "safetyStock",
-                        "minimumLevel",
-                        "minStock"
-                    ]
-                ]
+            return "paddy";
+
+        }
+
+
+        if (
+            [
+                "rice",
+                "wholerice",
+                "finishedrice",
+                "milledrice"
+            ]
+                .includes(normalized)
+        ) {
+
+            return "wholeRice";
+
+        }
+
+
+        if (
+            [
+                "khud",
+                "brokenrice",
+                "khudbrokenrice"
+            ]
+                .includes(normalized)
+        ) {
+
+            return "khud";
+
+        }
+
+
+        if (
+            [
+                "tush",
+                "husk",
+                "ricehusk",
+                "tushhusk"
+            ]
+                .includes(normalized)
+        ) {
+
+            return "tush";
+
+        }
+
+
+        if (
+            [
+                "bran",
+                "ricebran"
+            ]
+                .includes(normalized)
+        ) {
+
+            return "bran";
+
+        }
+
+
+        return null;
+
+    }
+
+
+    /* =========================================
+       10. ACCEPTED PADDY MOVEMENTS
+    ========================================== */
+
+    function getAcceptedPaddyMovements() {
+
+        const purchases =
+            getPurchases();
+
+
+        const inspections =
+            getQualityInspections();
+
+
+        const acceptedPurchaseIds =
+            new Set(
+
+                inspections
+
+                    .filter(
+                        function (inspection) {
+
+                            return (
+                                normalizeText(
+                                    inspection.decision
+                                )
+                                ===
+                                "accepted"
+                            );
+
+                        }
+                    )
+
+                    .map(
+                        function (inspection) {
+
+                            return String(
+                                inspection.purchaseId
+                            );
+
+                        }
+                    )
 
             );
 
 
-        if (
-            direct.length > 0
-        ) {
+        return purchases
 
-            return direct.map(
-                function (record) {
+            .filter(
+                function (purchase) {
+
+                    return acceptedPurchaseIds
+                        .has(
+                            String(
+                                purchase.purchaseId
+                            )
+                        );
+
+                }
+            )
+
+            .map(
+                function (
+                    purchase,
+                    index
+                ) {
 
                     return {
 
                         product:
-                            normalizeProductName(
-                                stringValue(
-                                    record.product,
-                                    record.productName,
-                                    record.name
-                                )
-                            ),
+                            "paddy",
 
-                        availableStock:
+                        direction:
+                            "in",
+
+                        quantity:
+
                             numberValue(
-                                record.availableStock,
-                                record.stock,
-                                record.quantity,
-                                record.balance,
-                                record.currentStock
+
+                                purchase.weight,
+
+                                purchase.paddyWeight,
+
+                                purchase.quantity
+
                             ),
 
-                        safetyStock:
+                        date:
+
+                            purchase.purchaseDate ||
+                            purchase.date ||
+                            "",
+
+                        createdAt:
+
                             numberValue(
-                                record.safetyStock,
-                                record.minimumLevel,
-                                record.minStock,
-                                record.minimumStock,
-                                record.threshold
-                            ),
 
-                        lastMovement:
-                            stringValue(
-                                record.lastMovement,
-                                record.lastUpdated,
-                                record.date
+                                purchase.createdAt,
+
+                                purchase.id,
+
+                                index
+
                             )
+
+                    };
+
+                }
+            )
+
+            .filter(
+                movement =>
+                    movement.quantity > 0
+            );
+
+    }
+
+
+    /* =========================================
+       11. PRODUCTION MOVEMENTS
+    ========================================== */
+
+    function getProductionMovements() {
+
+        const movements = [];
+
+
+        getProductionRecords()
+            .forEach(
+                function (
+                    record,
+                    index
+                ) {
+
+                    const date =
+
+                        record.productionDate ||
+                        record.date ||
+                        "";
+
+
+                    const createdAt =
+
+                        numberValue(
+
+                            record.createdAt,
+
+                            record.id,
+
+                            index
+
+                        );
+
+
+                    const inputPaddy =
+                        numberValue(
+
+                            record.inputPaddy,
+
+                            record.paddyInput,
+
+                            record.inputPaddyQuantity
+
+                        );
+
+
+                    if (
+                        inputPaddy > 0
+                    ) {
+
+                        movements.push({
+
+                            product:
+                                "paddy",
+
+                            direction:
+                                "out",
+
+                            quantity:
+                                inputPaddy,
+
+                            date:
+                                date,
+
+                            createdAt:
+                                createdAt + 0.01
+
+                        });
+
+                    }
+
+
+                    const outputs = [
+
+                        {
+                            product:
+                                "wholeRice",
+
+                            quantity:
+
+                                numberValue(
+
+                                    record.riceProduced,
+
+                                    record.wholeRiceProduced,
+
+                                    record.rice
+
+                                )
+                        },
+
+                        {
+                            product:
+                                "khud",
+
+                            quantity:
+
+                                numberValue(
+
+                                    record.khudProduced,
+
+                                    record.khud,
+
+                                    record.brokenRice
+
+                                )
+                        },
+
+                        {
+                            product:
+                                "tush",
+
+                            quantity:
+
+                                numberValue(
+
+                                    record.tushProduced,
+
+                                    record.tush,
+
+                                    record.husk
+
+                                )
+                        },
+
+                        {
+                            product:
+                                "bran",
+
+                            quantity:
+
+                                numberValue(
+
+                                    record.branProduced,
+
+                                    record.riceBranProduced,
+
+                                    record.bran
+
+                                )
+                        }
+
+                    ];
+
+
+                    outputs.forEach(
+                        function (
+                            output,
+                            outputIndex
+                        ) {
+
+                            if (
+                                output.quantity <= 0
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            movements.push({
+
+                                product:
+                                    output.product,
+
+                                direction:
+                                    "in",
+
+                                quantity:
+                                    output.quantity,
+
+                                date:
+                                    date,
+
+                                createdAt:
+
+                                    createdAt
+                                    +
+                                    0.02
+                                    +
+                                    outputIndex /
+                                    1000
+
+                            });
+
+                        }
+                    );
+
+                }
+            );
+
+
+        return movements;
+
+    }
+
+
+    /* =========================================
+       12. SALES MOVEMENTS
+    ========================================== */
+
+    function getSalesMovements() {
+
+        const movements = [];
+
+
+        getSalesRecords()
+            .forEach(
+                function (
+                    sale,
+                    index
+                ) {
+
+                    const product =
+                        normalizeProductKey(
+
+                            sale.productKey ||
+                            sale.product ||
+                            sale.productType ||
+                            sale.item ||
+                            sale.riceType
+
+                        );
+
+
+                    if (!product) {
+                        return;
+                    }
+
+
+                    let quantityKg =
+                        numberValue(
+
+                            sale.quantityKg,
+
+                            sale.weightKg
+
+                        );
+
+
+                    if (
+                        quantityKg <= 0
+                    ) {
+
+                        const unit =
+                            normalizeText(
+                                sale.unit
+                            );
+
+
+                        if (
+                            unit === "kg" ||
+                            unit === "kilogram" ||
+                            unit === "kilograms"
+                        ) {
+
+                            quantityKg =
+                                numberValue(
+
+                                    sale.quantity,
+
+                                    sale.weight
+
+                                );
+
+                        }
+
+                    }
+
+
+                    if (
+                        quantityKg <= 0 &&
+                        numberValue(
+                            sale.bagWeightKg
+                        ) > 0 &&
+                        numberValue(
+                            sale.quantity,
+                            sale.bags
+                        ) > 0
+                    ) {
+
+                        quantityKg =
+
+                            numberValue(
+                                sale.bagWeightKg
+                            )
+
+                            *
+
+                            numberValue(
+                                sale.quantity,
+                                sale.bags
+                            );
+
+                    }
+
+
+                    if (
+                        quantityKg <= 0
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    movements.push({
+
+                        product:
+                            product,
+
+                        direction:
+                            "out",
+
+                        quantity:
+                            quantityKg,
+
+                        date:
+
+                            sale.saleDate ||
+                            sale.invoiceDate ||
+                            sale.date ||
+                            "",
+
+                        createdAt:
+
+                            numberValue(
+
+                                sale.createdAt,
+
+                                sale.id,
+
+                                index
+
+                            )
+
+                    });
+
+                }
+            );
+
+
+        return movements;
+
+    }
+
+
+    /* =========================================
+       13. ADJUSTMENT MOVEMENTS
+    ========================================== */
+
+    function getAdjustmentMovements() {
+
+        return getInventoryAdjustments()
+            .map(
+                function (adjustment) {
+
+                    return {
+
+                        product:
+                            adjustment.product,
+
+                        direction:
+                            adjustment.type,
+
+                        quantity:
+                            adjustment.quantity,
+
+                        date:
+                            adjustment.date,
+
+                        createdAt:
+                            adjustment.createdAt
 
                     };
 
                 }
             );
 
-        }
+    }
 
 
-        /*
-           Fallback:
-           derive available stock from ledger.
-        */
+    /* =========================================
+       14. CURRENT INVENTORY STATE
+    ========================================== */
 
-        const ledger =
-            firstArray(
-                [
-                    "stockMovementLedger",
-                    "inventoryLedger",
-                    "stockLedger",
-                    "inventoryTransactions"
-                ]
-            );
+    function buildInventoryState() {
+
+        const safetyStock =
+            loadSafetyStock();
 
 
-        const safetyRaw =
-            firstObject(
-                [
-                    "safetyStockLevels",
-                    "inventorySafetyLevels"
-                ]
-            );
+        const movements = [
 
+            ...getAcceptedPaddyMovements(),
 
-        const products =
-            {};
+            ...getProductionMovements(),
 
+            ...getSalesMovements(),
 
-        ledger.forEach(
-            function (entry) {
+            ...getAdjustmentMovements()
 
-                const product =
-                    normalizeProductName(
-                        stringValue(
-                            entry.product,
-                            entry.productName
+        ]
+            .filter(
+                function (movement) {
+
+                    return (
+
+                        PRODUCT_KEYS.includes(
+                            movement.product
                         )
+
+                        &&
+
+                        numberValue(
+                            movement.quantity
+                        ) > 0
+
                     );
 
-
-                if (!product) {
-                    return;
                 }
+            )
+
+            .sort(
+                function (
+                    first,
+                    second
+                ) {
+
+                    const dateCompare =
+                        String(
+                            first.date || ""
+                        )
+                            .localeCompare(
+                                String(
+                                    second.date || ""
+                                )
+                            );
 
 
-                const balance =
-                    numberValue(
-                        entry.balanceAfter,
-                        entry.balance,
-                        entry.availableStock
+                    if (
+                        dateCompare !== 0
+                    ) {
+
+                        return dateCompare;
+
+                    }
+
+
+                    return (
+
+                        numberValue(
+                            first.createdAt
+                        )
+
+                        -
+
+                        numberValue(
+                            second.createdAt
+                        )
+
                     );
 
+                }
+            );
 
-                products[product] = {
 
-                    product:
-                        product,
+        const state = {};
 
-                    availableStock:
-                        balance,
 
-                    safetyStock:
+        PRODUCT_KEYS.forEach(
+            function (key) {
+
+                state[key] = {
+
+                    quantity:
                         0,
 
+                    safetyStock:
+
+                        numberValue(
+                            safetyStock[key]
+                        ),
+
                     lastMovement:
-                        stringValue(
-                            entry.date,
-                            entry.createdAt
-                        )
+                        ""
 
                 };
 
@@ -1184,274 +1658,44 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        Object.keys(products)
-            .forEach(
-                function (product) {
+        movements.forEach(
+            function (movement) {
 
-                    const directLevel =
-                        safetyRaw[
-                            product
-                        ];
+                const signedQuantity =
 
+                    movement.direction === "in"
 
-                    const normalizedKey =
-                        Object.keys(
-                            safetyRaw
-                        )
-                        .find(
-                            key =>
-                                normalizeProductName(
-                                    key
-                                )
-                                ===
-                                product
-                        );
+                        ?
+
+                        movement.quantity
+
+                        :
+
+                        -movement.quantity;
 
 
-                    products[
-                        product
-                    ].safetyStock =
-                        numberValue(
-                            directLevel,
-                            normalizedKey
-                                ? safetyRaw[
-                                    normalizedKey
-                                ]
-                                : 0
-                        );
-
-                }
-            );
+                state[
+                    movement.product
+                ].quantity +=
+                    signedQuantity;
 
 
-        return Object.values(
-            products
+                state[
+                    movement.product
+                ].lastMovement =
+                    movement.date;
+
+            }
         );
+
+
+        return state;
 
     }
 
 
     /* =========================================
-       DUE CALCULATIONS
-    ========================================== */
-
-    function calculatePurchaseDue(
-        record
-    ) {
-
-        const explicit =
-            numberValue(
-                record.remainingDue,
-                record.dueAmount,
-                record.due,
-                record.balanceDue
-            );
-
-
-        if (
-            explicit > 0
-        ) {
-
-            return explicit;
-
-        }
-
-
-        const total =
-            numberValue(
-                record.totalPurchaseAmount,
-                record.totalAmount,
-                record.total,
-                record.amount
-            )
-
-            ||
-
-            (
-                numberValue(
-                    record.paddyWeight,
-                    record.weight,
-                    record.quantity
-                )
-                *
-                numberValue(
-                    record.pricePerKg,
-                    record.price
-                )
-            );
-
-
-        const paid =
-            numberValue(
-                record.paidAmount,
-                record.amountPaid
-            );
-
-
-        const paymentStatus =
-            normalizeText(
-                record.paymentStatus
-            );
-
-
-        if (
-            paymentStatus.includes("due") ||
-            paymentStatus.includes("partial")
-        ) {
-
-            return Math.max(
-                0,
-                total - paid
-            )
-
-            || total;
-
-        }
-
-
-        return Math.max(
-            0,
-            total - paid
-        );
-
-    }
-
-
-    function calculateSalesDue(
-        record
-    ) {
-
-        const explicit =
-            numberValue(
-                record.remainingDue,
-                record.dueAmount,
-                record.due,
-                record.balanceDue
-            );
-
-
-        if (
-            explicit > 0
-        ) {
-
-            return explicit;
-
-        }
-
-
-        const total =
-            numberValue(
-                record.totalAmount,
-                record.total,
-                record.amount,
-                record.invoiceAmount
-            );
-
-
-        const paid =
-            numberValue(
-                record.paidAmount,
-                record.amountPaid
-            );
-
-
-        const status =
-            normalizeText(
-                record.paymentStatus
-            );
-
-
-        if (
-            status.includes("due") ||
-            status.includes("partial")
-        ) {
-
-            return Math.max(
-                0,
-                total - paid
-            )
-
-            || total;
-
-        }
-
-
-        return Math.max(
-            0,
-            total - paid
-        );
-
-    }
-
-
-    function calculateSalaryDue(
-        record
-    ) {
-
-        const explicit =
-            numberValue(
-                record.due,
-                record.dueAmount,
-                record.remainingDue
-            );
-
-
-        if (
-            explicit > 0
-        ) {
-
-            return explicit;
-
-        }
-
-
-        const salary =
-            numberValue(
-                record.salaryAmount,
-                record.salary,
-                record.amount
-            );
-
-
-        const paid =
-            numberValue(
-                record.paidAmount,
-                record.amountPaid
-            );
-
-
-        const status =
-            normalizeText(
-                record.paymentStatus,
-                record.status
-            );
-
-
-        if (
-            status.includes("due") ||
-            status.includes("partial")
-        ) {
-
-            return Math.max(
-                0,
-                salary - paid
-            )
-
-            || salary;
-
-        }
-
-
-        return Math.max(
-            0,
-            salary - paid
-        );
-
-    }
-
-
-    /* =========================================
-       ALERT CREATOR
+       15. CREATE ALERT
     ========================================== */
 
     function makeAlert({
@@ -1504,24 +1748,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       LOW STOCK ALERTS
+       16. LOW STOCK ALERTS
     ========================================== */
 
     function buildLowStockAlerts() {
 
         const inventory =
-            getInventoryRecords();
+            buildInventoryState();
 
 
         const alerts = [];
 
 
-        inventory.forEach(
-            function (item) {
+        PRODUCT_KEYS.forEach(
+            function (key) {
 
-                const stock =
+                const item =
+                    inventory[key];
+
+
+                const quantity =
                     numberValue(
-                        item.availableStock
+                        item.quantity
                     );
 
 
@@ -1530,11 +1778,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         item.safetyStock
                     );
 
-
-                /*
-                   Ignore products with no
-                   configured safety stock.
-                */
 
                 if (
                     safety <= 0
@@ -1546,43 +1789,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 if (
-                    stock <= safety
+                    quantity <= safety
                 ) {
 
-                    const product =
-                        normalizeProductName(
-                            item.product
-                        );
-
-
                     alerts.push(
+
                         makeAlert({
 
                             key:
-                                `stock:${product}`,
+                                `stock:${key}`,
 
                             type:
                                 "Low Stock",
 
                             title:
-                                "Low Stock",
+
+                                quantity <= 0
+
+                                    ?
+
+                                    "Out of Stock"
+
+                                    :
+
+                                    "Low Stock",
 
                             message:
 
-                                `${product} stock is ${formatQuantity(stock)}; configured safety stock is ${formatQuantity(safety)}.`,
+                                `${PRODUCTS[key].label} stock is ${formatQuantity(
+                                    quantity
+                                )}; configured safety stock is ${formatQuantity(
+                                    safety
+                                )}.`,
 
                             source:
                                 "Inventory",
 
                             reference:
-                                product,
+                                PRODUCTS[key]
+                                    .label,
 
                             priority:
-                                stock <= 0
-                                    ? "High"
-                                    : "High",
+                                "High",
 
                             date:
+
                                 item.lastMovement ||
                                 todayISO(),
 
@@ -1590,6 +1841,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 "inventory.html"
 
                         })
+
                     );
 
                 }
@@ -1604,95 +1856,215 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       PURCHASE DUE ALERTS
+       17. PURCHASE DUE
     ========================================== */
+
+    function calculatePurchaseDue(record) {
+
+        const explicit =
+            numberValue(
+
+                record.remainingDue,
+
+                record.dueAmount,
+
+                record.due,
+
+                record.balanceDue
+
+            );
+
+
+        if (
+            explicit > 0
+        ) {
+
+            return explicit;
+
+        }
+
+
+        const total =
+
+            numberValue(
+
+                record.totalPurchaseAmount,
+
+                record.totalAmount,
+
+                record.purchaseAmount,
+
+                record.amount,
+
+                record.total
+
+            )
+
+            ||
+
+            (
+                numberValue(
+
+                    record.weight,
+
+                    record.paddyWeight,
+
+                    record.quantity
+
+                )
+
+                *
+
+                numberValue(
+
+                    record.pricePerKg,
+
+                    record.price
+
+                )
+            );
+
+
+        const paid =
+            numberValue(
+
+                record.paidAmount,
+
+                record.amountPaid
+
+            );
+
+
+        const status =
+            normalizeText(
+                record.paymentStatus
+            );
+
+
+        if (
+            status.includes("due") ||
+            status.includes("partial")
+        ) {
+
+            return (
+                Math.max(
+                    0,
+                    total - paid
+                )
+                ||
+                total
+            );
+
+        }
+
+
+        return Math.max(
+            0,
+            total - paid
+        );
+
+    }
+
 
     function buildSupplierDueAlerts() {
 
-        const purchases =
-            getPurchaseRecords();
-
-
         const alerts = [];
 
 
-        purchases.forEach(
-            function (record, index) {
-
-                const due =
-                    calculatePurchaseDue(
-                        record
-                    );
-
-
-                if (
-                    due <= 0
+        getPurchases()
+            .forEach(
+                function (
+                    record,
+                    index
                 ) {
 
-                    return;
+                    const due =
+                        calculatePurchaseDue(
+                            record
+                        );
+
+
+                    if (
+                        due <= 0
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const purchaseId =
+                        stringValue(
+
+                            record.purchaseId,
+
+                            record.purchaseID,
+
+                            record.id,
+
+                            `P-${index + 1}`
+
+                        );
+
+
+                    const supplier =
+                        stringValue(
+
+                            record.supplierName,
+
+                            record.supplier,
+
+                            record.farmerName,
+
+                            "Supplier"
+
+                        );
+
+
+                    alerts.push(
+
+                        makeAlert({
+
+                            key:
+
+                                `supplier-due:${purchaseId}`,
+
+                            type:
+                                "Supplier Due",
+
+                            title:
+                                "Supplier Payment Due",
+
+                            message:
+
+                                `${supplier} has ${formatMoney(
+                                    due
+                                )} outstanding from paddy procurement.`,
+
+                            source:
+                                "Purchase",
+
+                            reference:
+                                purchaseId,
+
+                            priority:
+                                "Medium",
+
+                            date:
+
+                                record.purchaseDate ||
+                                record.date ||
+                                todayISO(),
+
+                            targetPage:
+                                "purchase.html"
+
+                        })
+
+                    );
 
                 }
-
-
-                const purchaseId =
-                    stringValue(
-                        record.purchaseId,
-                        record.purchaseID,
-                        record.id,
-                        `PUR-${index + 1}`
-                    );
-
-
-                const supplier =
-                    stringValue(
-                        record.supplierName,
-                        record.supplier,
-                        record.farmerName,
-                        record.partnerName,
-                        "Supplier"
-                    );
-
-
-                alerts.push(
-                    makeAlert({
-
-                        key:
-                            `supplier-due:${purchaseId}`,
-
-                        type:
-                            "Supplier Due",
-
-                        title:
-                            "Supplier Payment Due",
-
-                        message:
-
-                            `${supplier} has ${formatMoney(due)} outstanding from paddy procurement.`,
-
-                        source:
-                            "Purchase",
-
-                        reference:
-                            purchaseId,
-
-                        priority:
-                            "Medium",
-
-                        date:
-                            stringValue(
-                                record.purchaseDate,
-                                record.date,
-                                todayISO()
-                            ),
-
-                        targetPage:
-                            "purchase.html"
-
-                    })
-                );
-
-            }
-        );
+            );
 
 
         return alerts;
@@ -1701,112 +2073,212 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       CUSTOMER DUE ALERTS
+       18. CUSTOMER DUE
     ========================================== */
+
+    function calculateSalesDue(record) {
+
+        const explicit =
+            numberValue(
+
+                record.remainingDue,
+
+                record.dueAmount,
+
+                record.due,
+
+                record.balanceDue
+
+            );
+
+
+        if (
+            explicit > 0
+        ) {
+
+            return explicit;
+
+        }
+
+
+        const total =
+            numberValue(
+
+                record.totalAmount,
+
+                record.invoiceAmount,
+
+                record.amount,
+
+                record.total
+
+            );
+
+
+        const paid =
+            numberValue(
+
+                record.paidAmount,
+
+                record.amountPaid
+
+            );
+
+
+        const status =
+            normalizeText(
+                record.paymentStatus
+            );
+
+
+        if (
+            status.includes("due") ||
+            status.includes("partial")
+        ) {
+
+            return (
+                Math.max(
+                    0,
+                    total - paid
+                )
+                ||
+                total
+            );
+
+        }
+
+
+        return Math.max(
+            0,
+            total - paid
+        );
+
+    }
+
 
     function buildCustomerDueAlerts() {
 
-        const sales =
-            getSalesRecords();
-
-
         const alerts = [];
 
 
-        sales.forEach(
-            function (record, index) {
-
-                const status =
-                    normalizeText(
-                        record.status,
-                        record.invoiceStatus
-                    );
-
-
-                if (
-                    status.includes("void") ||
-                    status.includes("cancel")
+        getSalesRecords()
+            .forEach(
+                function (
+                    record,
+                    index
                 ) {
 
-                    return;
+                    const recordStatus =
+                        normalizeText(
+                            record.status
+                        );
+
+
+                    if (
+                        recordStatus.includes(
+                            "cancel"
+                        )
+
+                        ||
+
+                        recordStatus.includes(
+                            "void"
+                        )
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const due =
+                        calculateSalesDue(
+                            record
+                        );
+
+
+                    if (
+                        due <= 0
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const invoiceId =
+                        stringValue(
+
+                            record.invoiceId,
+
+                            record.invoiceNumber,
+
+                            record.saleId,
+
+                            record.id,
+
+                            `INV-${index + 1}`
+
+                        );
+
+
+                    const customer =
+                        stringValue(
+
+                            record.customerName,
+
+                            record.customer,
+
+                            "Customer"
+
+                        );
+
+
+                    alerts.push(
+
+                        makeAlert({
+
+                            key:
+
+                                `customer-due:${invoiceId}`,
+
+                            type:
+                                "Customer Due",
+
+                            title:
+                                "Customer Receivable Due",
+
+                            message:
+
+                                `${customer} has ${formatMoney(
+                                    due
+                                )} outstanding on invoice ${invoiceId}.`,
+
+                            source:
+                                "Sales",
+
+                            reference:
+                                invoiceId,
+
+                            priority:
+                                "Medium",
+
+                            date:
+
+                                record.saleDate ||
+                                record.invoiceDate ||
+                                record.date ||
+                                todayISO(),
+
+                            targetPage:
+                                "sales.html"
+
+                        })
+
+                    );
 
                 }
-
-
-                const due =
-                    calculateSalesDue(
-                        record
-                    );
-
-
-                if (
-                    due <= 0
-                ) {
-
-                    return;
-
-                }
-
-
-                const invoiceId =
-                    stringValue(
-                        record.invoiceId,
-                        record.invoiceID,
-                        record.invoice,
-                        record.id,
-                        `INV-${index + 1}`
-                    );
-
-
-                const customer =
-                    stringValue(
-                        record.customerName,
-                        record.customer,
-                        "Customer"
-                    );
-
-
-                alerts.push(
-                    makeAlert({
-
-                        key:
-                            `customer-due:${invoiceId}`,
-
-                        type:
-                            "Customer Due",
-
-                        title:
-                            "Customer Receivable Due",
-
-                        message:
-
-                            `${customer} has ${formatMoney(due)} outstanding on invoice ${invoiceId}.`,
-
-                        source:
-                            "Sales",
-
-                        reference:
-                            invoiceId,
-
-                        priority:
-                            "Medium",
-
-                        date:
-                            stringValue(
-                                record.invoiceDate,
-                                record.saleDate,
-                                record.date,
-                                todayISO()
-                            ),
-
-                        targetPage:
-                            "sales.html"
-
-                    })
-                );
-
-            }
-        );
+            );
 
 
         return alerts;
@@ -1815,101 +2287,201 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       SALARY DUE ALERTS
+       19. SALARY DUE
     ========================================== */
+
+    function calculateSalaryDue(record) {
+
+        const explicit =
+            numberValue(
+
+                record.due,
+
+                record.dueAmount,
+
+                record.remainingDue
+
+            );
+
+
+        if (
+            explicit > 0
+        ) {
+
+            return explicit;
+
+        }
+
+
+        const salary =
+            numberValue(
+
+                record.salaryAmount,
+
+                record.salary,
+
+                record.amount
+
+            );
+
+
+        const paid =
+            numberValue(
+
+                record.paidAmount,
+
+                record.amountPaid
+
+            );
+
+
+        const status =
+            normalizeText(
+
+                record.paymentStatus ||
+                record.status
+
+            );
+
+
+        if (
+            status.includes("due") ||
+            status.includes("partial")
+        ) {
+
+            return (
+                Math.max(
+                    0,
+                    salary - paid
+                )
+                ||
+                salary
+            );
+
+        }
+
+
+        return Math.max(
+            0,
+            salary - paid
+        );
+
+    }
+
 
     function buildSalaryDueAlerts() {
 
-        const salaries =
-            getSalaryRecords();
-
-
         const alerts = [];
 
 
-        salaries.forEach(
-            function (record, index) {
-
-                const due =
-                    calculateSalaryDue(
-                        record
-                    );
-
-
-                if (
-                    due <= 0
+        getSalaryRecords()
+            .forEach(
+                function (
+                    record,
+                    index
                 ) {
 
-                    return;
+                    const due =
+                        calculateSalaryDue(
+                            record
+                        );
+
+
+                    if (
+                        due <= 0
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const employee =
+                        stringValue(
+
+                            record.employeeName,
+
+                            record.employee,
+
+                            record.name,
+
+                            "Employee"
+
+                        );
+
+
+                    const salaryId =
+                        stringValue(
+
+                            record.salaryId,
+
+                            record.id,
+
+                            `SAL-${index + 1}`
+
+                        );
+
+
+                    const month =
+                        stringValue(
+
+                            record.salaryMonth,
+
+                            record.month
+
+                        );
+
+
+                    alerts.push(
+
+                        makeAlert({
+
+                            key:
+
+                                `salary-due:${salaryId}`,
+
+                            type:
+                                "Salary Due",
+
+                            title:
+                                "Salary Payment Due",
+
+                            message:
+
+                                `${employee}${
+                                    month
+                                        ?
+                                        ` (${month})`
+                                        :
+                                        ""
+                                } has ${formatMoney(
+                                    due
+                                )} salary due.`,
+
+                            source:
+                                "Expense & Salary",
+
+                            reference:
+                                salaryId,
+
+                            priority:
+                                "Medium",
+
+                            date:
+
+                                record.date ||
+                                record.salaryDate ||
+                                todayISO(),
+
+                            targetPage:
+                                "expense.html"
+
+                        })
+
+                    );
 
                 }
-
-
-                const employee =
-                    stringValue(
-                        record.employeeName,
-                        record.employee,
-                        record.name,
-                        "Employee"
-                    );
-
-
-                const month =
-                    stringValue(
-                        record.salaryMonth,
-                        record.month,
-                        ""
-                    );
-
-
-                const reference =
-                    stringValue(
-                        record.salaryId,
-                        record.id,
-                        `SAL-${index + 1}`
-                    );
-
-
-                alerts.push(
-                    makeAlert({
-
-                        key:
-                            `salary-due:${reference}`,
-
-                        type:
-                            "Salary Due",
-
-                        title:
-                            "Salary Payment Due",
-
-                        message:
-
-                            `${employee}${month ? ` (${month})` : ""} has ${formatMoney(due)} salary due.`,
-
-                        source:
-                            "Expense & Salary",
-
-                        reference:
-                            reference,
-
-                        priority:
-                            "Medium",
-
-                        date:
-                            stringValue(
-                                record.date,
-                                record.salaryDate,
-                                todayISO()
-                            ),
-
-                        targetPage:
-                            "expense.html"
-
-                    })
-                );
-
-            }
-        );
+            );
 
 
         return alerts;
@@ -1918,128 +2490,208 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       DELIVERY ALERTS
+       20. DELIVERY ALERTS
     ========================================== */
+
+    function isPendingDelivery(record) {
+
+        const status =
+            normalizeText(
+
+                record.deliveryStatus ||
+                record.status
+
+            );
+
+
+        return (
+
+            status === "pending"
+
+            ||
+
+            status.includes(
+                "on the way"
+            )
+
+            ||
+
+            status.includes(
+                "on-the-way"
+            )
+
+            ||
+
+            status.includes(
+                "in transit"
+            )
+
+            ||
+
+            status.includes(
+                "running"
+            )
+
+            ||
+
+            status.includes(
+                "assigned"
+            )
+
+        );
+
+    }
+
 
     function buildDeliveryAlerts() {
 
-        const deliveries =
-            getDeliveryRecords();
-
-
         const alerts = [];
 
 
-        deliveries.forEach(
-            function (record, index) {
+        getDeliveryRecords()
+            .forEach(
+                function (
+                    record,
+                    index
+                ) {
 
-                const status =
-                    normalizeText(
-                        record.deliveryStatus,
-                        record.status
+                    if (
+                        !isPendingDelivery(
+                            record
+                        )
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const deliveryId =
+                        stringValue(
+
+                            record.deliveryId,
+
+                            record.deliveryID,
+
+                            record.id,
+
+                            `DLV-${index + 1}`
+
+                        );
+
+
+                    const customer =
+                        stringValue(
+
+                            record.customerName,
+
+                            record.customer,
+
+                            "Customer"
+
+                        );
+
+
+                    const status =
+                        normalizeText(
+
+                            record.deliveryStatus ||
+                            record.status ||
+                            "pending"
+
+                        );
+
+
+                    const onTheWay =
+
+                        status.includes(
+                            "way"
+                        )
+
+                        ||
+
+                        status.includes(
+                            "transit"
+                        )
+
+                        ||
+
+                        status.includes(
+                            "running"
+                        );
+
+
+                    const destination =
+                        stringValue(
+
+                            record.destination,
+
+                            record.deliveryAddress,
+
+                            record.upazila
+
+                        );
+
+
+                    alerts.push(
+
+                        makeAlert({
+
+                            key:
+
+                                `delivery:${deliveryId}`,
+
+                            type:
+                                "Delivery",
+
+                            title:
+
+                                onTheWay
+
+                                    ?
+
+                                    "Delivery On the Way"
+
+                                    :
+
+                                    "Pending Delivery",
+
+                            message:
+
+                                `${customer}'s delivery ${deliveryId} is ${
+                                    status || "pending"
+                                }${
+                                    destination
+                                        ?
+                                        ` for ${destination}`
+                                        :
+                                        ""
+                                }.`,
+
+                            source:
+                                "Delivery",
+
+                            reference:
+                                deliveryId,
+
+                            priority:
+                                "Medium",
+
+                            date:
+
+                                record.deliveryDate ||
+                                record.date ||
+                                todayISO(),
+
+                            targetPage:
+                                "delivery.html"
+
+                        })
+
                     );
 
-
-                const isPending =
-
-                    status === "pending"
-
-                    ||
-
-                    status.includes(
-                        "on the way"
-                    )
-
-                    ||
-
-                    status.includes(
-                        "in transit"
-                    )
-
-                    ||
-
-                    status.includes(
-                        "running"
-                    );
-
-
-                if (!isPending) {
-                    return;
                 }
-
-
-                const deliveryId =
-                    stringValue(
-                        record.deliveryId,
-                        record.deliveryID,
-                        record.id,
-                        `DEL-${index + 1}`
-                    );
-
-
-                const customer =
-                    stringValue(
-                        record.customerName,
-                        record.customer,
-                        "Customer"
-                    );
-
-
-                const destination =
-                    stringValue(
-                        record.destination,
-                        record.deliveryAddress,
-                        record.upazila,
-                        ""
-                    );
-
-
-                alerts.push(
-                    makeAlert({
-
-                        key:
-                            `delivery:${deliveryId}`,
-
-                        type:
-                            "Delivery",
-
-                        title:
-                            status.includes("way")
-                                ||
-                            status.includes("transit")
-                                ?
-                                "Delivery On the Way"
-                                :
-                                "Pending Delivery",
-
-                        message:
-
-                            `${customer}'s delivery ${deliveryId} is ${status || "pending"}${destination ? ` for ${destination}` : ""}.`,
-
-                        source:
-                            "Delivery",
-
-                        reference:
-                            deliveryId,
-
-                        priority:
-                            "Medium",
-
-                        date:
-                            stringValue(
-                                record.deliveryDate,
-                                record.date,
-                                todayISO()
-                            ),
-
-                        targetPage:
-                            "delivery.html"
-
-                    })
-                );
-
-            }
-        );
+            );
 
 
         return alerts;
@@ -2048,192 +2700,402 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       MAINTENANCE ALERTS
+       21. MAINTENANCE SCHEDULE
     ========================================== */
+
+    function calculateNextServiceDate(record) {
+
+        const storedNextDate =
+            parseDate(
+
+                record.nextServiceDate ||
+                record.nextService ||
+                record.nextMaintenanceDate
+
+            );
+
+
+        if (storedNextDate) {
+
+            return storedNextDate;
+
+        }
+
+
+        const lastServiceDate =
+            parseDate(
+
+                record.lastServiceDate ||
+                record.maintenanceDate ||
+                record.serviceDate
+
+            );
+
+
+        const interval =
+            numberValue(
+
+                record.maintenanceInterval,
+
+                record.intervalDays,
+
+                record.serviceInterval
+
+            );
+
+
+        if (
+            !lastServiceDate ||
+            interval <= 0
+        ) {
+
+            return null;
+
+        }
+
+
+        const calculated =
+            new Date(
+                lastServiceDate
+            );
+
+
+        calculated.setDate(
+
+            calculated.getDate()
+            +
+            interval
+
+        );
+
+
+        return calculated;
+
+    }
+
+
+    function maintenanceRecordTimestamp(
+        record
+    ) {
+
+        const lastDate =
+            parseDate(
+
+                record.lastServiceDate ||
+                record.maintenanceDate ||
+                record.serviceDate ||
+                record.date
+
+            );
+
+
+        if (lastDate) {
+
+            return lastDate.getTime();
+
+        }
+
+
+        return numberValue(
+
+            record.createdAt,
+
+            record.id
+
+        );
+
+    }
+
+
+    function getLatestMaintenanceByMachine() {
+
+        const latest =
+            new Map();
+
+
+        getMaintenanceRecords()
+            .forEach(
+                function (
+                    record,
+                    index
+                ) {
+
+                    const machine =
+                        stringValue(
+
+                            record.machineName,
+
+                            record.machine,
+
+                            record.name,
+
+                            record.machineId,
+
+                            `Machine-${index + 1}`
+
+                        );
+
+
+                    const machineKey =
+                        normalizeText(machine);
+
+
+                    if (!machineKey) {
+                        return;
+                    }
+
+
+                    const existing =
+                        latest.get(
+                            machineKey
+                        );
+
+
+                    if (
+                        !existing ||
+                        maintenanceRecordTimestamp(
+                            record
+                        )
+                        >=
+                        maintenanceRecordTimestamp(
+                            existing
+                        )
+                    ) {
+
+                        latest.set(
+                            machineKey,
+                            record
+                        );
+
+                    }
+
+                }
+            );
+
+
+        return Array.from(
+            latest.values()
+        );
+
+    }
+
 
     function buildMaintenanceAlerts() {
 
-        const maintenance =
-            getMaintenanceRecords();
-
-
         const alerts = [];
 
 
-        maintenance.forEach(
-            function (record, index) {
-
-                const maintenanceStatus =
-                    normalizeText(
-                        record.maintenanceStatus
-                    );
-
-
-                if (
-                    maintenanceStatus.includes(
-                        "completed"
-                    )
-
-                    ||
-
-                    maintenanceStatus.includes(
-                        "cancel"
-                    )
+        getLatestMaintenanceByMachine()
+            .forEach(
+                function (
+                    record,
+                    index
                 ) {
 
-                    return;
+                    const status =
+                        normalizeText(
 
-                }
+                            record.maintenanceStatus ||
+                            record.status
+
+                        );
 
 
-                const nextDate =
-                    parseDate(
-                        stringValue(
-                            record.nextServiceDate,
-                            record.nextService
+                    /*
+                       Cancelled schedule should not alert.
+
+                       IMPORTANT:
+                       "Completed" is NOT ignored.
+
+                       A completed maintenance record can
+                       still have a next service date that
+                       is now overdue.
+                    */
+
+                    if (
+                        status.includes(
+                            "cancel"
                         )
-                    );
+                    ) {
+
+                        return;
+
+                    }
 
 
-                if (!nextDate) {
-                    return;
-                }
+                    const nextService =
+                        calculateNextServiceDate(
+                            record
+                        );
 
 
-                const days =
-                    dateDifferenceDays(
-                        nextDate
-                    );
+                    if (!nextService) {
+                        return;
+                    }
 
 
-                /*
-                   Alert:
-                   overdue or due within 7 days.
-                */
-
-                if (
-                    days === null ||
-                    days > 7
-                ) {
-
-                    return;
-
-                }
+                    const days =
+                        daysFromToday(
+                            nextService
+                        );
 
 
-                const machine =
-                    stringValue(
-                        record.machineName,
-                        record.machine,
-                        "Machine"
-                    );
+                    /*
+                       Show:
+                       - overdue
+                       - today
+                       - within next 7 days
+                    */
+
+                    if (
+                        days === null ||
+                        days > 7
+                    ) {
+
+                        return;
+
+                    }
 
 
-                const reference =
-                    stringValue(
-                        record.maintenanceId,
-                        record.recordId,
-                        record.id,
-                        `MNT-${index + 1}`
-                    );
+                    const machine =
+                        stringValue(
+
+                            record.machineName,
+
+                            record.machine,
+
+                            record.name,
+
+                            "Machine"
+
+                        );
 
 
-                let message =
-                    "";
+                    const reference =
+                        stringValue(
+
+                            record.maintenanceId,
+
+                            record.recordId,
+
+                            record.machineId,
+
+                            record.id,
+
+                            `MNT-${index + 1}`
+
+                        );
 
 
-                let title =
-                    "";
-
-
-                let priority =
-                    "Medium";
-
-
-                if (
-                    days < 0
-                ) {
-
-                    title =
-                        "Maintenance Overdue";
-
-
-                    priority =
-                        "High";
-
-
-                    message =
-
-                        `${machine} service is overdue by ${Math.abs(days)} day${Math.abs(days) === 1 ? "" : "s"}.`;
-
-                }
-                else if (
-                    days === 0
-                ) {
-
-                    title =
-                        "Maintenance Due Today";
-
-
-                    priority =
-                        "High";
-
-
-                    message =
-
-                        `${machine} is scheduled for service today.`;
-
-                }
-                else {
-
-                    title =
+                    let title =
                         "Upcoming Maintenance";
 
 
-                    message =
+                    let message =
 
-                        `${machine} is due for service in ${days} day${days === 1 ? "" : "s"}.`;
+                        `${machine} is due for service in ${days} day${
+                            days === 1
+                                ?
+                                ""
+                                :
+                                "s"
+                        }.`;
+
+
+                    let priority =
+                        "Medium";
+
+
+                    if (
+                        days < 0
+                    ) {
+
+                        title =
+                            "Maintenance Overdue";
+
+
+                        message =
+
+                            `${machine} service is overdue by ${Math.abs(
+                                days
+                            )} day${
+                                Math.abs(days) === 1
+                                    ?
+                                    ""
+                                    :
+                                    "s"
+                            }.`;
+
+
+                        priority =
+                            "High";
+
+                    }
+                    else if (
+                        days === 0
+                    ) {
+
+                        title =
+                            "Maintenance Due Today";
+
+
+                        message =
+
+                            `${machine} is scheduled for service today.`;
+
+
+                        priority =
+                            "High";
+
+                    }
+
+
+                    alerts.push(
+
+                        makeAlert({
+
+                            key:
+
+                                `maintenance:${
+                                    normalizeText(machine)
+                                        .replace(
+                                            /\s+/g,
+                                            "-"
+                                        )
+                                }`,
+
+                            type:
+                                "Maintenance",
+
+                            title:
+                                title,
+
+                            message:
+                                message,
+
+                            source:
+                                "Maintenance",
+
+                            reference:
+                                reference,
+
+                            priority:
+                                priority,
+
+                            date:
+                                toISODate(
+                                    nextService
+                                ),
+
+                            targetPage:
+                                "maintenance.html"
+
+                        })
+
+                    );
 
                 }
-
-
-                alerts.push(
-                    makeAlert({
-
-                        key:
-                            `maintenance:${reference}`,
-
-                        type:
-                            "Maintenance",
-
-                        title:
-                            title,
-
-                        message:
-                            message,
-
-                        source:
-                            "Maintenance",
-
-                        reference:
-                            reference,
-
-                        priority:
-                            priority,
-
-                        date:
-                            toISODate(
-                                nextDate
-                            ),
-
-                        targetPage:
-                            "maintenance.html"
-
-                    })
-                );
-
-            }
-        );
+            );
 
 
         return alerts;
@@ -2242,115 +3104,148 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       QUALITY ALERTS
+       22. QUALITY ALERTS
     ========================================== */
 
     function buildQualityAlerts() {
 
-        const quality =
-            getQualityRecords();
-
-
         const alerts = [];
 
 
-        quality.forEach(
-            function (record, index) {
-
-                const decision =
-                    normalizeText(
-                        record.decision,
-                        record.status
-                    );
-
-
-                const isRejected =
-                    decision.includes(
-                        "reject"
-                    );
-
-
-                const isReview =
-                    decision.includes(
-                        "review"
-                    );
-
-
-                if (
-                    !isRejected &&
-                    !isReview
+        getQualityInspections()
+            .forEach(
+                function (
+                    record,
+                    index
                 ) {
 
-                    return;
+                    const decision =
+                        normalizeText(
+
+                            record.decision ||
+                            record.status
+
+                        );
+
+
+                    const rejected =
+                        decision.includes(
+                            "reject"
+                        );
+
+
+                    const review =
+                        decision.includes(
+                            "review"
+                        );
+
+
+                    if (
+                        !rejected &&
+                        !review
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const purchaseId =
+                        stringValue(
+
+                            record.purchaseId,
+
+                            record.purchaseID,
+
+                            record.id,
+
+                            `QIN-${index + 1}`
+
+                        );
+
+
+                    const supplier =
+                        stringValue(
+
+                            record.supplierName,
+
+                            record.supplier
+
+                        );
+
+
+                    alerts.push(
+
+                        makeAlert({
+
+                            key:
+
+                                `quality:${purchaseId}`,
+
+                            type:
+                                "Quality",
+
+                            title:
+
+                                rejected
+
+                                    ?
+
+                                    "Rejected Paddy Batch"
+
+                                    :
+
+                                    "Quality Review Required",
+
+                            message:
+
+                                `${purchaseId}${
+                                    supplier
+                                        ?
+                                        ` from ${supplier}`
+                                        :
+                                        ""
+                                } is ${
+                                    rejected
+                                        ?
+                                        "rejected"
+                                        :
+                                        "under review"
+                                } and requires attention.`,
+
+                            source:
+                                "Quality Inspection",
+
+                            reference:
+                                purchaseId,
+
+                            priority:
+
+                                rejected
+
+                                    ?
+
+                                    "High"
+
+                                    :
+
+                                    "Medium",
+
+                            date:
+
+                                record.inspectionDate ||
+                                record.date ||
+                                todayISO(),
+
+                            targetPage:
+                                "quality.html"
+
+                        })
+
+                    );
 
                 }
-
-
-                const purchaseId =
-                    stringValue(
-                        record.purchaseId,
-                        record.purchaseID,
-                        record.id,
-                        `QIN-${index + 1}`
-                    );
-
-
-                const supplier =
-                    stringValue(
-                        record.supplierName,
-                        record.supplier,
-                        ""
-                    );
-
-
-                alerts.push(
-                    makeAlert({
-
-                        key:
-                            `quality:${purchaseId}`,
-
-                        type:
-                            "Quality",
-
-                        title:
-                            isRejected
-                                ?
-                                "Rejected Paddy Batch"
-                                :
-                                "Quality Review Required",
-
-                        message:
-
-                            `${purchaseId}${supplier ? ` from ${supplier}` : ""} is ${isRejected ? "rejected" : "under review"} and requires attention.`,
-
-                        source:
-                            "Quality Inspection",
-
-                        reference:
-                            purchaseId,
-
-                        priority:
-                            isRejected
-                                ?
-                                "High"
-                                :
-                                "Medium",
-
-                        date:
-                            stringValue(
-                                record.inspectionDate,
-                                record.date,
-                                todayISO()
-                            ),
-
-                        targetPage:
-                            "quality.html"
-
-                    })
-                );
-
-            }
-        );
+            );
 
 
         return alerts;
@@ -2359,7 +3254,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       BUILD ALL ACTIVE ALERTS
+       23. GENERATE ACTIVE ALERTS
     ========================================== */
 
     function generateActiveAlerts() {
@@ -2386,48 +3281,70 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       ALERT ID
+       24. HISTORY
     ========================================== */
 
-    function nextAlertId(
+    function loadAlertHistory() {
+
+        const history =
+            safeParseStorage(
+                "notificationAlertHistory",
+                []
+            );
+
+
+        return Array.isArray(history)
+            ?
+            history
+            :
+            [];
+
+    }
+
+
+    function generateNextAlertId(
         history
     ) {
 
         const numbers =
             history
+
                 .map(
-                    function (alert) {
+                    function (record) {
 
                         const match =
                             String(
-                                alert.alertId ||
+                                record.alertId ||
                                 ""
                             )
-                            .match(
-                                /^ALT-(\d+)$/i
-                            );
+                                .match(
+                                    /^ALT-(\d+)$/i
+                                );
 
 
                         return match
                             ?
-                            Number(
-                                match[1]
-                            )
+                            Number(match[1])
                             :
                             0;
 
                     }
                 )
+
                 .filter(Boolean);
 
 
         const next =
-            numbers.length
+            numbers.length > 0
+
                 ?
+
                 Math.max(
                     ...numbers
                 ) + 1
+
                 :
+
                 1;
 
 
@@ -2444,45 +3361,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* =========================================
-       HISTORY
-    ========================================== */
-
-    function loadAlertHistory() {
-
-        const history =
-            getStorageValue(
-                "notificationAlertHistory"
-            );
-
-
-        return Array.isArray(
-            history
-        )
-            ?
-            history
-            :
-            [];
-
-    }
-
-
-    function saveAlertHistory() {
-
-        localStorage.setItem(
-
-            "notificationAlertHistory",
-
-            JSON.stringify(
-                alertHistory
-            )
-
-        );
-
-    }
-
-
-    function syncHistoryWithActiveAlerts() {
+    function syncHistory() {
 
         const now =
             new Date()
@@ -2494,8 +3373,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /*
-           Resolve alerts whose underlying
-           ERP condition no longer exists.
+           Resolve conditions that disappeared.
         */
 
         history =
@@ -2537,7 +3415,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /*
-           Add/update current active alerts.
+           Insert/update active alerts.
         */
 
         activeAlerts.forEach(
@@ -2545,8 +3423,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const index =
                     history.findIndex(
-                        item =>
-                            item.key ===
+                        record =>
+                            record.key ===
                             alert.key
                     );
 
@@ -2565,18 +3443,19 @@ document.addEventListener("DOMContentLoaded", function () {
                             history[index]
                                 .alertId,
 
-                        status:
-                            "Active",
-
                         createdAt:
                             history[index]
-                                .createdAt,
+                                .createdAt ||
+                            now,
 
                         lastDetectedAt:
                             now,
 
                         resolvedAt:
-                            null
+                            null,
+
+                        status:
+                            "Active"
 
                     };
 
@@ -2588,12 +3467,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         ...alert,
 
                         alertId:
-                            nextAlertId(
+                            generateNextAlertId(
                                 history
                             ),
-
-                        status:
-                            "Active",
 
                         createdAt:
                             now,
@@ -2602,7 +3478,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             now,
 
                         resolvedAt:
-                            null
+                            null,
+
+                        status:
+                            "Active"
 
                     });
 
@@ -2616,30 +3495,40 @@ document.addEventListener("DOMContentLoaded", function () {
             history;
 
 
-        saveAlertHistory();
+        localStorage.setItem(
+
+            "notificationAlertHistory",
+
+            JSON.stringify(
+                history
+            )
+
+        );
 
     }
 
 
     /* =========================================
-       PRIORITY SORT
+       25. PRIORITY
     ========================================== */
 
-    function priorityWeight(
-        priority
-    ) {
+    function priorityWeight(priority) {
 
         if (
             priority === "High"
         ) {
+
             return 3;
+
         }
 
 
         if (
             priority === "Medium"
         ) {
+
             return 2;
+
         }
 
 
@@ -2648,24 +3537,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function sortAlerts(
-        records
-    ) {
+    function sortAlerts(records) {
 
         return [...records]
             .sort(
-                function (a, b) {
+                function (
+                    first,
+                    second
+                ) {
 
                     const priorityDifference =
 
                         priorityWeight(
-                            b.priority
+                            second.priority
                         )
 
                         -
 
                         priorityWeight(
-                            a.priority
+                            first.priority
                         );
 
 
@@ -2678,22 +3568,36 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
 
 
-                    const dateA =
+                    const firstDate =
                         parseDate(
-                            a.date
+                            first.date
                         );
 
 
-                    const dateB =
+                    const secondDate =
                         parseDate(
-                            b.date
+                            second.date
                         );
 
 
                     return (
-                        (dateB?.getTime() || 0)
+
+                        (
+                            secondDate
+                                ?.getTime()
+                            ||
+                            0
+                        )
+
                         -
-                        (dateA?.getTime() || 0)
+
+                        (
+                            firstDate
+                                ?.getTime()
+                            ||
+                            0
+                        )
+
                     );
 
                 }
@@ -2703,7 +3607,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       KPI
+       26. KPI
     ========================================== */
 
     function updateKPIs() {
@@ -2713,10 +3617,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert =>
                     alert.type ===
                     "Low Stock"
-            ).length;
+            )
+                .length;
 
 
-        const due =
+        const duePayments =
             activeAlerts.filter(
                 alert =>
                     [
@@ -2724,18 +3629,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         "Customer Due",
                         "Salary Due"
                     ]
-                    .includes(
-                        alert.type
-                    )
-            ).length;
+                        .includes(
+                            alert.type
+                        )
+            )
+                .length;
 
 
-        const delivery =
+        const pendingDeliveries =
             activeAlerts.filter(
                 alert =>
                     alert.type ===
                     "Delivery"
-            ).length;
+            )
+                .length;
 
 
         const highPriority =
@@ -2743,73 +3650,100 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert =>
                     alert.priority ===
                     "High"
-            ).length;
+            )
+                .length;
 
 
-        lowStockCount.textContent =
-            lowStock;
+        if (lowStockCount) {
+
+            lowStockCount.textContent =
+                String(lowStock);
+
+        }
 
 
-        duePaymentCount.textContent =
-            due;
+        if (duePaymentCount) {
+
+            duePaymentCount.textContent =
+                String(
+                    duePayments
+                );
+
+        }
 
 
-        pendingDeliveryCount.textContent =
-            delivery;
+        if (pendingDeliveryCount) {
+
+            pendingDeliveryCount.textContent =
+                String(
+                    pendingDeliveries
+                );
+
+        }
 
 
-        attentionCount.textContent =
-            highPriority;
+        if (attentionCount) {
+
+            attentionCount.textContent =
+                String(
+                    highPriority
+                );
+
+        }
+
+
+        const total =
+            activeAlerts.length;
+
+
+        localStorage.setItem(
+
+            "activeNotificationCount",
+
+            String(total)
+
+        );
 
 
         if (
             notificationBadge
         ) {
 
-            const total =
-                activeAlerts.length;
-
-
             notificationBadge.textContent =
+
                 total > 99
+
                     ?
+
                     "99+"
+
                     :
-                    total;
+
+                    String(total);
 
 
             notificationBadge.style.display =
+
                 total > 0
+
                     ?
+
                     "inline-flex"
+
                     :
+
                     "none";
 
         }
-
-
-        /*
-           Shared badge value that can later
-           be used by dashboard/header code.
-        */
-
-        localStorage.setItem(
-            "activeNotificationCount",
-            String(
-                activeAlerts.length
-            )
-        );
 
     }
 
 
     /* =========================================
-       ICON
+       27. ALERT ICONS
     ========================================== */
 
-    function getAlertIcon(
-        type
-    ) {
+    function getAlertIcon(type) {
 
         if (
             type === "Low Stock"
@@ -2817,21 +3751,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return {
                 icon: "▣",
-                className: "alert-icon-danger"
+                className:
+                    "alert-icon-danger"
             };
 
         }
 
 
         if (
-            type === "Supplier Due" ||
-            type === "Customer Due" ||
-            type === "Salary Due"
+            [
+                "Supplier Due",
+                "Customer Due",
+                "Salary Due"
+            ]
+                .includes(type)
         ) {
 
             return {
                 icon: "৳",
-                className: "alert-icon-warning"
+                className:
+                    "alert-icon-warning"
             };
 
         }
@@ -2843,7 +3782,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return {
                 icon: "🚚",
-                className: "alert-icon-info"
+                className:
+                    "alert-icon-info"
             };
 
         }
@@ -2855,7 +3795,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return {
                 icon: "🔧",
-                className: "alert-icon-warning"
+                className:
+                    "alert-icon-warning"
             };
 
         }
@@ -2863,17 +3804,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return {
             icon: "✓",
-            className: "alert-icon-warning"
+            className:
+                "alert-icon-warning"
         };
 
     }
 
 
     /* =========================================
-       PRIORITY FEED
+       28. PRIORITY FEED
     ========================================== */
 
     function renderPriorityFeed() {
+
+        if (!priorityAlertList) {
+            return;
+        }
+
 
         priorityAlertList.innerHTML =
             "";
@@ -2883,10 +3830,10 @@ document.addEventListener("DOMContentLoaded", function () {
             sortAlerts(
                 activeAlerts
             )
-            .slice(
-                0,
-                5
-            );
+                .slice(
+                    0,
+                    5
+                );
 
 
         if (
@@ -2928,22 +3875,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
 
-                const item =
+                const article =
                     document.createElement(
                         "article"
                     );
 
 
-                item.className =
+                article.className =
                     "priority-alert-item";
 
 
-                item.innerHTML = `
+                article.innerHTML = `
 
-                    <div class="
-                        priority-alert-icon
-                        ${icon.className}
-                    ">
+                    <div
+                        class="
+                            priority-alert-icon
+                            ${icon.className}
+                        "
+                    >
                         ${icon.icon}
                     </div>
 
@@ -2989,20 +3938,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <div class="priority-alert-actions">
 
-                        <span class="
-                            alert-priority-badge
-                            ${
-                                alert.priority === "High"
-                                    ?
-                                    "priority-high"
-                                    :
-                                    alert.priority === "Medium"
+                        <span
+                            class="
+                                alert-priority-badge
+                                ${
+                                    alert.priority === "High"
+
                                         ?
-                                        "priority-medium"
+
+                                        "priority-high"
+
                                         :
-                                        "priority-low"
-                            }
-                        ">
+
+                                        alert.priority === "Medium"
+
+                                            ?
+
+                                            "priority-medium"
+
+                                            :
+
+                                            "priority-low"
+                                }
+                            "
+                        >
                             ${escapeHTML(
                                 alert.priority
                             )}
@@ -3025,7 +3984,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 priorityAlertList.appendChild(
-                    item
+                    article
                 );
 
             }
@@ -3035,40 +3994,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       TYPE CLASS
+       29. TYPE CLASS
     ========================================== */
 
-    function getTypeClass(
-        type
-    ) {
+    function getTypeClass(type) {
 
         if (
             type === "Low Stock"
         ) {
+
             return "type-stock";
+
         }
 
 
         if (
-            type === "Supplier Due" ||
-            type === "Customer Due" ||
-            type === "Salary Due"
+            [
+                "Supplier Due",
+                "Customer Due",
+                "Salary Due"
+            ]
+                .includes(type)
         ) {
+
             return "type-payment";
+
         }
 
 
         if (
             type === "Delivery"
         ) {
+
             return "type-delivery";
+
         }
 
 
         if (
             type === "Maintenance"
         ) {
+
             return "type-maintenance";
+
         }
 
 
@@ -3078,34 +4046,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       TABLE
+       30. ALERT TABLE
     ========================================== */
 
     function renderAlertTable() {
 
+        if (!alertTableBody) {
+            return;
+        }
+
+
         const search =
             normalizeText(
-                alertSearch.value
+                alertSearch
+                    ?.value
             );
 
 
-        const selectedType =
-            alertTypeFilter.value;
+        const type =
+            alertTypeFilter
+                ?.value
+            ||
+            "all";
 
 
-        const selectedStatus =
-            alertStatusFilter.value;
+        const status =
+            alertStatusFilter
+                ?.value
+            ||
+            "all";
 
 
-        const filtered =
+        const records =
             alertHistory
 
                 .filter(
                     function (alert) {
 
                         if (
-                            selectedType !== "all" &&
-                            alert.type !== selectedType
+                            type !== "all" &&
+                            alert.type !== type
                         ) {
 
                             return false;
@@ -3114,8 +4094,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                         if (
-                            selectedStatus !== "all" &&
-                            alert.status !== selectedStatus
+                            status !== "all" &&
+                            alert.status !== status
                         ) {
 
                             return false;
@@ -3124,7 +4104,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                         if (!search) {
+
                             return true;
+
                         }
 
 
@@ -3132,52 +4114,73 @@ document.addEventListener("DOMContentLoaded", function () {
                             [
 
                                 alert.alertId,
+
                                 alert.type,
+
                                 alert.title,
+
                                 alert.message,
+
                                 alert.source,
+
                                 alert.reference,
+
                                 alert.priority,
+
                                 alert.status
 
                             ]
-                            .join(" ")
-                            .toLowerCase();
+                                .join(" ")
+                                .toLowerCase();
 
 
-                        return searchable.includes(
-                            search
-                        );
+                        return searchable
+                            .includes(
+                                search
+                            );
 
                     }
                 )
 
                 .sort(
-                    function (a, b) {
+                    function (
+                        first,
+                        second
+                    ) {
 
                         if (
-                            a.status !==
-                            b.status
+                            first.status !==
+                            second.status
                         ) {
 
-                            return a.status ===
+                            return (
+                                first.status ===
                                 "Active"
-                                ?
-                                -1
-                                :
-                                1;
+
+                                    ?
+
+                                    -1
+
+                                    :
+
+                                    1
+                            );
 
                         }
 
 
                         return (
+
                             priorityWeight(
-                                b.priority
+                                second.priority
                             )
+
                             -
+
                             priorityWeight(
-                                a.priority
+                                first.priority
                             )
+
                         );
 
                     }
@@ -3189,7 +4192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (
-            filtered.length === 0
+            records.length === 0
         ) {
 
             alertTableBody.innerHTML = `
@@ -3210,7 +4213,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        filtered.forEach(
+        records.forEach(
             function (alert) {
 
                 const row =
@@ -3224,11 +4227,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>
 
                         <span class="alert-id">
-
                             ${escapeHTML(
                                 alert.alertId
                             )}
-
                         </span>
 
                     </td>
@@ -3236,17 +4237,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <td>
 
-                        <span class="
-                            alert-type-badge
-                            ${getTypeClass(
-                                alert.type
-                            )}
-                        ">
-
+                        <span
+                            class="
+                                alert-type-badge
+                                ${getTypeClass(
+                                    alert.type
+                                )}
+                            "
+                        >
                             ${escapeHTML(
                                 alert.type
                             )}
-
                         </span>
 
                     </td>
@@ -3255,19 +4256,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>
 
                         <span class="alert-primary-text">
-
                             ${escapeHTML(
                                 alert.title
                             )}
-
                         </span>
 
                         <span class="alert-secondary-text">
-
                             ${escapeHTML(
                                 alert.message
                             )}
-
                         </span>
 
                     </td>
@@ -3283,11 +4280,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>
 
                         <span class="alert-reference">
-
                             ${escapeHTML(
                                 alert.reference
                             )}
-
                         </span>
 
                     </td>
@@ -3295,26 +4290,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <td>
 
-                        <span class="
-                            alert-priority-badge
+                        <span
+                            class="
+                                alert-priority-badge
+                                ${
+                                    alert.priority === "High"
 
-                            ${
-                                alert.priority === "High"
-                                    ?
-                                    "priority-high"
-                                    :
-                                    alert.priority === "Medium"
                                         ?
-                                        "priority-medium"
-                                        :
-                                        "priority-low"
-                            }
-                        ">
 
+                                        "priority-high"
+
+                                        :
+
+                                        alert.priority === "Medium"
+
+                                            ?
+
+                                            "priority-medium"
+
+                                            :
+
+                                            "priority-low"
+                                }
+                            "
+                        >
                             ${escapeHTML(
                                 alert.priority
                             )}
-
                         </span>
 
                     </td>
@@ -3322,22 +4324,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <td>
 
-                        <span class="
-                            alert-status-badge
+                        <span
+                            class="
+                                alert-status-badge
+                                ${
+                                    alert.status === "Active"
 
-                            ${
-                                alert.status === "Active"
-                                    ?
-                                    "status-active"
-                                    :
-                                    "status-resolved"
-                            }
-                        ">
+                                        ?
 
+                                        "status-active"
+
+                                        :
+
+                                        "status-resolved"
+                                }
+                            "
+                        >
                             ${escapeHTML(
                                 alert.status
                             )}
-
                         </span>
 
                     </td>
@@ -3378,143 +4383,78 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       GO TO SOURCE
+       31. PROFILE / MILL NAME
     ========================================== */
 
-    document.addEventListener(
-        "click",
-        function (event) {
+    function renderHeaderInformation() {
 
-            const button =
-                event.target.closest(
-                    "[data-target-page]"
-                );
-
-
-            if (!button) {
-                return;
-            }
+        const profile =
+            safeParseStorage(
+                "adminProfile",
+                {}
+            );
 
 
-            const target =
-                button.dataset.targetPage;
-
-
-            if (target) {
-
-                window.location.href =
-                    target;
-
-            }
-
-        }
-    );
-
-
-    /* =========================================
-       FILTER EVENTS
-    ========================================== */
-
-    alertSearch.addEventListener(
-        "input",
-        renderAlertTable
-    );
-
-
-    alertTypeFilter.addEventListener(
-        "change",
-        renderAlertTable
-    );
-
-
-    alertStatusFilter.addEventListener(
-        "change",
-        renderAlertTable
-    );
-
-
-    /* =========================================
-       REFRESH ENGINE
-    ========================================== */
-
-    function refreshAlertEngine(
-        showMessage = false
-    ) {
-
-        activeAlerts =
-            generateActiveAlerts();
-
-
-        syncHistoryWithActiveAlerts();
-
-
-        updateKPIs();
-
-        renderPriorityFeed();
-
-        renderAlertTable();
+        const settings =
+            safeParseStorage(
+                "riceMillSettings",
+                {}
+            );
 
 
         if (
-            showMessage
+            topbarUserName
         ) {
 
-            showToast(
-                `${activeAlerts.length} active alert${activeAlerts.length === 1 ? "" : "s"} detected from current ERP records.`
-            );
+            topbarUserName.textContent =
+                stringValue(
+
+                    profile.fullName,
+
+                    profile.name,
+
+                    "Admin User"
+
+                );
+
+        }
+
+
+        if (
+            sidebarMillName
+        ) {
+
+            sidebarMillName.textContent =
+                stringValue(
+
+                    settings.millName,
+
+                    settings.businessName,
+
+                    "Smart Rice Mill"
+
+                );
 
         }
 
     }
 
 
-    refreshAlertsBtn.addEventListener(
-        "click",
-        function () {
-
-            refreshAlertEngine(
-                true
-            );
-
-        }
-    );
-
-
     /* =========================================
-       STORAGE UPDATE
-
-       Useful when another tab modifies ERP data.
+       32. TOAST
     ========================================== */
 
-    window.addEventListener(
-        "storage",
-        function () {
+    function showToast(message) {
 
-            refreshAlertEngine();
-
-        }
-    );
-
-
-    /* =========================================
-       TOAST
-    ========================================== */
-
-    function showToast(
-        message
-    ) {
-
-        const existing =
+        const oldToast =
             document.querySelector(
                 ".notification-toast"
             );
 
 
-        if (
-            existing
-        ) {
+        if (oldToast) {
 
-            existing.remove();
+            oldToast.remove();
 
         }
 
@@ -3531,9 +4471,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         toast.innerHTML = `
 
-            <span>
-                ✓
-            </span>
+            <span>✓</span>
 
             <span>
                 ${escapeHTML(
@@ -3585,7 +4523,131 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       MOBILE SIDEBAR
+       33. REFRESH ENGINE
+    ========================================== */
+
+    function refreshAlertEngine(
+        showMessage = false
+    ) {
+
+        activeAlerts =
+            generateActiveAlerts();
+
+
+        syncHistory();
+
+        updateKPIs();
+
+        renderPriorityFeed();
+
+        renderAlertTable();
+
+
+        if (showMessage) {
+
+            showToast(
+
+                `${activeAlerts.length} active alert${
+                    activeAlerts.length === 1
+                        ?
+                        ""
+                        :
+                        "s"
+                } detected from current ERP records.`
+
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       34. VIEW SOURCE
+    ========================================== */
+
+    document.addEventListener(
+        "click",
+        function (event) {
+
+            const button =
+                event.target.closest(
+                    "[data-target-page]"
+                );
+
+
+            if (!button) {
+                return;
+            }
+
+
+            const target =
+                button.dataset.targetPage;
+
+
+            if (target) {
+
+                window.location.href =
+                    target;
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       35. FILTER EVENTS
+    ========================================== */
+
+    if (alertSearch) {
+
+        alertSearch.addEventListener(
+            "input",
+            renderAlertTable
+        );
+
+    }
+
+
+    if (alertTypeFilter) {
+
+        alertTypeFilter.addEventListener(
+            "change",
+            renderAlertTable
+        );
+
+    }
+
+
+    if (alertStatusFilter) {
+
+        alertStatusFilter.addEventListener(
+            "change",
+            renderAlertTable
+        );
+
+    }
+
+
+    if (refreshAlertsBtn) {
+
+        refreshAlertsBtn.addEventListener(
+            "click",
+            function () {
+
+                refreshAlertEngine(
+                    true
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       36. MOBILE SIDEBAR
     ========================================== */
 
     function openSidebar() {
@@ -3600,9 +4662,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        if (
-            sidebarBackdrop
-        ) {
+        if (sidebarBackdrop) {
 
             sidebarBackdrop.classList.add(
                 "show"
@@ -3611,9 +4671,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (
-            menuButton
-        ) {
+        if (menuButton) {
 
             menuButton.setAttribute(
                 "aria-expanded",
@@ -3641,9 +4699,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        if (
-            sidebarBackdrop
-        ) {
+        if (sidebarBackdrop) {
 
             sidebarBackdrop.classList.remove(
                 "show"
@@ -3652,9 +4708,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (
-            menuButton
-        ) {
+        if (menuButton) {
 
             menuButton.setAttribute(
                 "aria-expanded",
@@ -3670,9 +4724,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    if (
-        menuButton
-    ) {
+    if (menuButton) {
 
         menuButton.addEventListener(
             "click",
@@ -3700,9 +4752,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    if (
-        sidebarBackdrop
-    ) {
+    if (sidebarBackdrop) {
 
         sidebarBackdrop.addEventListener(
             "click",
@@ -3713,7 +4763,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       INITIALIZE
+       37. LIVE REFRESH
+    ========================================== */
+
+    window.addEventListener(
+        "storage",
+        function () {
+
+            refreshAlertEngine();
+
+        }
+    );
+
+
+    window.addEventListener(
+        "focus",
+        function () {
+
+            refreshAlertEngine();
+
+        }
+    );
+
+
+    window.addEventListener(
+        "pageshow",
+        function () {
+
+            refreshAlertEngine();
+
+        }
+    );
+
+
+    /* =========================================
+       38. INITIALIZE
     ========================================== */
 
     renderHeaderInformation();
