@@ -7,34 +7,44 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Smart Rice Mill ERP & Logistics Management System Dashboard">
+
     <title>Dashboard | Smart Rice Mill ERP</title>
 
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 </head>
 
 <body>
 
     <div class="dashboard-layout">
 
-        <!-- =========================
-             Sidebar
-        ========================== -->
-        <aside class="sidebar">
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+        <aside class="sidebar"
+               id="sidebar">
 
             <div class="sidebar-header">
 
-                <div class="sidebar-logo" aria-hidden="true">
+                <div class="sidebar-logo"
+                     aria-hidden="true">
+
                     <span class="logo-shape logo-shape-one"></span>
                     <span class="logo-shape logo-shape-two"></span>
+
                 </div>
 
                 <div class="sidebar-brand">
+
                     <h2>Smart Rice Mill</h2>
 
                     <p>
                         ERP &amp; Logistics<br>
                         Management System
                     </p>
+
                 </div>
 
             </div>
@@ -53,11 +63,41 @@
                 </a>
 
 
+                <a class="navigation-link sub-navigation-link"
+                   href="notifications.html">
+
+                    <span class="navigation-icon">🔔</span>
+                    <span class="navigation-text">Notifications</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
                 <a class="navigation-link"
                    href="purchase.html">
 
                     <span class="navigation-icon">🛒</span>
                     <span class="navigation-text">Purchase</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="supplier.html">
+
+                    <span class="navigation-icon">👥</span>
+                    <span class="navigation-text">Farmer &amp; Supplier</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="quality.html">
+
+                    <span class="navigation-icon">✓</span>
+                    <span class="navigation-text">Quality Inspection</span>
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -93,6 +133,16 @@
                 </a>
 
 
+                <a class="navigation-link sub-navigation-link"
+                   href="customer.html">
+
+                    <span class="navigation-icon">👤</span>
+                    <span class="navigation-text">Customers</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
                 <a class="navigation-link"
                    href="delivery.html">
 
@@ -113,6 +163,16 @@
                 </a>
 
 
+                <a class="navigation-link sub-navigation-link"
+                   href="expense.html">
+
+                    <span class="navigation-icon">৳</span>
+                    <span class="navigation-text">Expense &amp; Salary</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
                 <a class="navigation-link"
                    href="profile.html">
 
@@ -122,32 +182,63 @@
 
                 </a>
 
+
+                <a class="navigation-link sub-navigation-link"
+                   href="users.html">
+
+                    <span class="navigation-icon">👥</span>
+                    <span class="navigation-text">User Roles</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">🔧</span>
+                    <span class="navigation-text">Maintenance</span>
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
             </nav>
 
 
-            <a href="#" class="logout-link" id="logoutBtn">
+            <a href="#"
+               class="logout-link"
+               id="logoutBtn">
 
-                    <span class="logout-icon">↪</span>
-                    <span>Logout</span>
+                <span class="logout-icon">↪</span>
+                <span>Logout</span>
 
             </a>
 
         </aside>
 
 
-        <!-- =========================
-             Main Area
-        ========================== -->
+        <!-- Mobile Sidebar Backdrop -->
+        <div class="sidebar-backdrop"
+             id="sidebarBackdrop"></div>
+
+
+        <!-- =========================================
+             MAIN AREA
+        ========================================== -->
         <main class="main-area">
 
-            <!-- Topbar -->
+            <!-- =========================================
+                 TOPBAR
+            ========================================== -->
             <header class="topbar">
 
                 <div class="topbar-left">
 
                     <button class="menu-button"
+                            id="menuButton"
                             type="button"
-                            aria-label="Open navigation menu">
+                            aria-label="Open navigation menu"
+                            aria-expanded="false">
 
                         ☰
 
@@ -160,18 +251,24 @@
 
                 <div class="topbar-right">
 
-                    <div class="notification-area">
+                    <a class="notification-area"
+                       href="notifications.html"
+                       aria-label="Open notifications">
 
-                        <span class="notification-icon">♧</span>
+                        <span class="notification-icon">
+                            ♧
+                        </span>
 
                         <span class="notification-count">
                             3
                         </span>
 
-                    </div>
+                    </a>
 
 
-                    <div class="user-profile">
+                    <a class="user-profile"
+                       href="profile.html"
+                       aria-label="Open profile and settings">
 
                         <div class="user-avatar"
                              aria-hidden="true">
@@ -183,128 +280,348 @@
                         <div class="user-information">
 
                             <strong>Admin User</strong>
-                            <span>Rice Mill Owner</span>
+
+                            <span>
+                                Rice Mill Owner
+                            </span>
 
                         </div>
 
-                        <span class="profile-arrow">⌄</span>
+                        <span class="profile-arrow">
+                            ⌄
+                        </span>
 
-                    </div>
+                    </a>
 
                 </div>
 
             </header>
 
 
-            <!-- Page Content -->
+            <!-- =========================================
+                 DASHBOARD CONTENT
+            ========================================== -->
             <section class="dashboard-content">
 
-                <!-- Summary Cards -->
+                <!-- Page Information -->
+                <div class="dashboard-heading-row">
+
+                    <div>
+
+                        <h2 class="dashboard-welcome">
+                            Business Overview
+                        </h2>
+
+                        <p class="dashboard-description">
+                            Monitor today's rice mill operations at a glance.
+                        </p>
+
+                    </div>
+
+                    <p class="last-updated"
+                       id="lastUpdatedText">
+
+                        Last updated: ---
+
+                    </p>
+
+                </div>
+
+
+                <!-- =========================================
+                     SUMMARY CARDS
+                ========================================== -->
                 <section class="summary-grid"
                          aria-label="Dashboard summary">
 
-                    <article class="summary-card">
+                    <a class="summary-card"
+                       href="purchase.html"
+                       aria-label="Open today's paddy purchase records">
 
                         <div class="summary-icon green-icon">
                             🚚
                         </div>
 
                         <div class="summary-details">
-                            <p>Today’s Purchase</p>
-                            <h2 class="green-value">৳85,000</h2>
+
+                            <p>
+                                Today’s Paddy Purchase
+                            </p>
+
+                            <h2 class="green-value">
+                                ৳85,000
+                            </h2>
+
                         </div>
 
-                    </article>
+                        <span class="card-arrow"
+                              aria-hidden="true">
+                            →
+                        </span>
+
+                    </a>
 
 
-                    <article class="summary-card">
+                    <a class="summary-card"
+                       href="sales.html"
+                       aria-label="Open today's sales records">
 
                         <div class="summary-icon blue-icon">
                             ৳
                         </div>
 
                         <div class="summary-details">
-                            <p>Today’s Sales</p>
-                            <h2 class="blue-value">৳1,20,000</h2>
+
+                            <p>
+                                Today’s Sales
+                            </p>
+
+                            <h2 class="blue-value">
+                                ৳1,20,000
+                            </h2>
+
                         </div>
 
-                    </article>
+                        <span class="card-arrow"
+                              aria-hidden="true">
+                            →
+                        </span>
+
+                    </a>
 
 
-                    <article class="summary-card">
+                    <a class="summary-card"
+                       href="inventory.html"
+                       aria-label="Open current rice inventory">
 
                         <div class="summary-icon green-icon">
                             ▣
                         </div>
 
                         <div class="summary-details">
-                            <p>Rice Stock</p>
-                            <h2 class="green-value">450 Bags</h2>
+
+                            <p>
+                                Current Rice Stock
+                            </p>
+
+                            <h2 class="green-value">
+                                450 Bags
+                            </h2>
+
                         </div>
 
-                    </article>
+                        <span class="card-arrow"
+                              aria-hidden="true">
+                            →
+                        </span>
+
+                    </a>
 
 
-                    <article class="summary-card">
+                    <a class="summary-card"
+                       href="delivery.html"
+                       aria-label="Open pending deliveries">
 
                         <div class="summary-icon orange-icon">
                             ⌛
                         </div>
 
                         <div class="summary-details">
-                            <p>Pending Deliveries</p>
-                            <h2 class="orange-value">5</h2>
+
+                            <p>
+                                Pending Deliveries
+                            </p>
+
+                            <h2 class="orange-value">
+                                5
+                            </h2>
+
                         </div>
 
-                    </article>
+                        <span class="card-arrow"
+                              aria-hidden="true">
+                            →
+                        </span>
+
+                    </a>
 
                 </section>
 
 
-                <!-- Charts -->
+                <!-- =========================================
+                     CHARTS
+                ========================================== -->
                 <section class="chart-grid">
 
                     <!-- Sales Overview -->
                     <article class="content-card chart-card">
 
-                        <h2>Sales Overview</h2>
+                        <div class="chart-heading-row">
+
+                            <div>
+
+                                <h2>
+                                    7-Day Sales Overview
+                                </h2>
+
+                                <p class="chart-subtitle">
+                                    Daily sales trend for the last seven days
+                                </p>
+
+                            </div>
+
+                            <span class="chart-unit">
+                                Amount (৳)
+                            </span>
+
+                        </div>
+
 
                         <div class="line-chart"
-                             aria-label="Sales overview chart">
+                             aria-label="Seven-day sales overview">
 
-                            <div class="chart-line horizontal-line line-one"></div>
-                            <div class="chart-line horizontal-line line-two"></div>
-                            <div class="chart-line horizontal-line line-three"></div>
-                            <div class="chart-line horizontal-line line-four"></div>
+                            <div class="chart-grid-line chart-line-one"></div>
+                            <div class="chart-grid-line chart-line-two"></div>
+                            <div class="chart-grid-line chart-line-three"></div>
+                            <div class="chart-grid-line chart-line-four"></div>
+
 
                             <svg class="sales-chart-svg"
-                                 viewBox="0 0 500 180"
+                                 viewBox="0 0 500 170"
+                                 preserveAspectRatio="none"
                                  role="img"
-                                 aria-label="Sales trend line">
+                                 aria-label="Seven-day sales trend">
 
                                 <polyline
-                                    points="20,135 115,110 190,48 285,83 375,25 470,42"
+                                    points="
+                                        20,135
+                                        95,110
+                                        170,48
+                                        245,83
+                                        320,25
+                                        395,42
+                                        470,62
+                                    "
                                     fill="none"
                                     stroke="currentColor"
                                     stroke-width="5"
                                     stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
+                                    stroke-linejoin="round">
+                                </polyline>
 
-                                <g fill="#ffffff"
-                                   stroke="currentColor"
-                                   stroke-width="4">
 
-                                    <circle cx="20" cy="135" r="6"></circle>
-                                    <circle cx="115" cy="110" r="6"></circle>
-                                    <circle cx="190" cy="48" r="6"></circle>
-                                    <circle cx="285" cy="83" r="6"></circle>
-                                    <circle cx="375" cy="25" r="6"></circle>
-                                    <circle cx="470" cy="42" r="6"></circle>
+                                <g class="sales-point">
+
+                                    <title>
+                                        Monday: ৳72,000
+                                    </title>
+
+                                    <circle cx="20"
+                                            cy="135"
+                                            r="6">
+                                    </circle>
+
+                                </g>
+
+
+                                <g class="sales-point">
+
+                                    <title>
+                                        Tuesday: ৳85,000
+                                    </title>
+
+                                    <circle cx="95"
+                                            cy="110"
+                                            r="6">
+                                    </circle>
+
+                                </g>
+
+
+                                <g class="sales-point">
+
+                                    <title>
+                                        Wednesday: ৳1,18,000
+                                    </title>
+
+                                    <circle cx="170"
+                                            cy="48"
+                                            r="6">
+                                    </circle>
+
+                                </g>
+
+
+                                <g class="sales-point">
+
+                                    <title>
+                                        Thursday: ৳98,000
+                                    </title>
+
+                                    <circle cx="245"
+                                            cy="83"
+                                            r="6">
+                                    </circle>
+
+                                </g>
+
+
+                                <g class="sales-point">
+
+                                    <title>
+                                        Friday: ৳1,32,000
+                                    </title>
+
+                                    <circle cx="320"
+                                            cy="25"
+                                            r="6">
+                                    </circle>
+
+                                </g>
+
+
+                                <g class="sales-point">
+
+                                    <title>
+                                        Saturday: ৳1,25,000
+                                    </title>
+
+                                    <circle cx="395"
+                                            cy="42"
+                                            r="6">
+                                    </circle>
+
+                                </g>
+
+
+                                <g class="sales-point">
+
+                                    <title>
+                                        Sunday: ৳1,20,000
+                                    </title>
+
+                                    <circle cx="470"
+                                            cy="62"
+                                            r="6">
+                                    </circle>
 
                                 </g>
 
                             </svg>
+
+
+                            <div class="sales-axis-labels"
+                                 aria-hidden="true">
+
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                                <span>Sun</span>
+
+                            </div>
 
                         </div>
 
@@ -314,35 +631,149 @@
                     <!-- Inventory Summary -->
                     <article class="content-card chart-card">
 
-                        <h2>Inventory Summary</h2>
+                        <div class="chart-heading-row">
+
+                            <div>
+
+                                <h2>
+                                    Inventory Summary
+                                </h2>
+
+                                <p class="chart-subtitle">
+                                    Current stock by product category
+                                </p>
+
+                            </div>
+
+
+                            <span class="low-stock-key">
+
+                                <span class="low-stock-dot"></span>
+
+                                Low Stock
+
+                            </span>
+
+                        </div>
+
 
                         <div class="bar-chart"
-                             aria-label="Inventory summary chart">
+                             aria-label="Inventory summary">
 
-                            <div class="chart-line horizontal-line line-one"></div>
-                            <div class="chart-line horizontal-line line-two"></div>
-                            <div class="chart-line horizontal-line line-three"></div>
-                            <div class="chart-line horizontal-line line-four"></div>
+                            <div class="chart-grid-line chart-line-one"></div>
+                            <div class="chart-grid-line chart-line-two"></div>
+                            <div class="chart-grid-line chart-line-three"></div>
+                            <div class="chart-grid-line chart-line-four"></div>
+
 
                             <div class="bars">
 
-                                <span class="bar"
-                                      style="height: 45%;"></span>
+                                <div class="bar-item"
+                                     title="Paddy: 900 Bags">
 
-                                <span class="bar"
-                                      style="height: 68%;"></span>
+                                    <div class="bar-wrapper">
 
-                                <span class="bar"
-                                      style="height: 53%;"></span>
+                                        <span class="bar"
+                                              data-height="88">
+                                        </span>
 
-                                <span class="bar warning-bar"
-                                      style="height: 85%;"></span>
+                                    </div>
 
-                                <span class="bar"
-                                      style="height: 62%;"></span>
+                                    <span class="bar-label">
+                                        Paddy
+                                    </span>
 
-                                <span class="bar"
-                                      style="height: 96%;"></span>
+                                </div>
+
+
+                                <div class="bar-item"
+                                     title="Rice: 450 Bags">
+
+                                    <div class="bar-wrapper">
+
+                                        <span class="bar"
+                                              data-height="70">
+                                        </span>
+
+                                    </div>
+
+                                    <span class="bar-label">
+                                        Rice
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item"
+                                     title="Khud: 240 Bags">
+
+                                    <div class="bar-wrapper">
+
+                                        <span class="bar"
+                                              data-height="52">
+                                        </span>
+
+                                    </div>
+
+                                    <span class="bar-label">
+                                        Khud
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item"
+                                     title="Bran: 65 Bags — Low Stock">
+
+                                    <div class="bar-wrapper">
+
+                                        <span class="bar warning-bar"
+                                              data-height="27">
+                                        </span>
+
+                                    </div>
+
+                                    <span class="bar-label warning-label">
+                                        Bran
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item"
+                                     title="Tush: 310 Bags">
+
+                                    <div class="bar-wrapper">
+
+                                        <span class="bar"
+                                              data-height="61">
+                                        </span>
+
+                                    </div>
+
+                                    <span class="bar-label">
+                                        Tush
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item"
+                                     title="Waste: 45 Bags">
+
+                                    <div class="bar-wrapper">
+
+                                        <span class="bar neutral-bar"
+                                              data-height="20">
+                                        </span>
+
+                                    </div>
+
+                                    <span class="bar-label">
+                                        Waste
+                                    </span>
+
+                                </div>
 
                             </div>
 
@@ -353,78 +784,169 @@
                 </section>
 
 
-                <!-- Recent Activity -->
-                <section class="content-card activity-card">
+                <!-- =========================================
+                     RECENT ACTIVITY
+                ========================================== -->
+                <article class="content-card activity-card">
 
-                    <h2>Recent Activity</h2>
+                    <div class="activity-heading-row">
+
+                        <div>
+
+                            <h2>
+                                Recent Activity
+                            </h2>
+
+                            <p>
+                                Latest operational transactions
+                            </p>
+
+                        </div>
+
+                        <a class="view-reports-link"
+                           href="reports.html">
+
+                            View Reports →
+
+                        </a>
+
+                    </div>
+
 
                     <div class="table-wrapper">
 
                         <table class="activity-table">
 
                             <thead>
+
                                 <tr>
+
                                     <th>Activity</th>
                                     <th>Module</th>
-                                    <th>Amount/Qty</th>
+                                    <th>Amount / Qty</th>
                                     <th>Status</th>
                                     <th>Time</th>
+
                                 </tr>
+
                             </thead>
+
 
                             <tbody>
 
                                 <tr>
+
                                     <td>
-                                        Paddy purchased from Rahim Farmer
+                                        Purchased paddy from Rahim Farmer
                                     </td>
 
-                                    <td>Purchase</td>
-                                    <td>650 kg</td>
+                                    <td>
+                                        Purchase
+                                    </td>
 
                                     <td>
+                                        650 kg
+                                    </td>
+
+                                    <td>
+
                                         <span class="status-badge status-paid">
                                             Paid
                                         </span>
+
                                     </td>
 
-                                    <td>10:30 AM</td>
+                                    <td>
+                                        10:30 AM
+                                    </td>
+
                                 </tr>
 
 
                                 <tr>
+
                                     <td>
-                                        Invoice generated for ABC Traders
+                                        Generated invoice for ABC Traders
                                     </td>
 
-                                    <td>Sales</td>
-                                    <td>100 Bags</td>
+                                    <td>
+                                        Sales
+                                    </td>
 
                                     <td>
+                                        100 Bags
+                                    </td>
+
+                                    <td>
+
                                         <span class="status-badge status-due">
                                             Due
                                         </span>
+
                                     </td>
 
-                                    <td>11:15 AM</td>
+                                    <td>
+                                        11:15 AM
+                                    </td>
+
                                 </tr>
 
 
                                 <tr>
+
                                     <td>
                                         Production batch completed
                                     </td>
 
-                                    <td>Production</td>
-                                    <td>420 Bags</td>
-
                                     <td>
-                                        <span class="status-badge status-active">
-                                            Active
-                                        </span>
+                                        Production
                                     </td>
 
-                                    <td>12:20 PM</td>
+                                    <td>
+                                        420 Bags
+                                    </td>
+
+                                    <td>
+
+                                        <span class="status-badge status-completed">
+                                            Completed
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+                                        12:20 PM
+                                    </td>
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <td>
+                                        Delivery scheduled to Dhaka
+                                    </td>
+
+                                    <td>
+                                        Delivery
+                                    </td>
+
+                                    <td>
+                                        60 Bags
+                                    </td>
+
+                                    <td>
+
+                                        <span class="status-badge status-pending">
+                                            Pending
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+                                        01:45 PM
+                                    </td>
+
                                 </tr>
 
                             </tbody>
@@ -433,14 +955,21 @@
 
                     </div>
 
-                </section>
+                </article>
 
             </section>
 
         </main>
 
     </div>
-<script src="../scripts/auth.js"></script>
+
+
+    <!-- Existing authentication -->
+    <script src="../scripts/auth.js"></script>
+
+    <!-- Dashboard-specific functionality -->
+    <script src="../scripts/dashboard.js"></script>
+
 </body>
 
 </html>
