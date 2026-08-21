@@ -2,91 +2,849 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================================
        SMART RICE MILL ERP
-       SHARED AUTH + CANONICAL SIDEBAR
-
-       Permanent rule:
-       - Only Purchase, Sales and Settings have arrows.
-       - Parent text/icon opens the parent page.
-       - Arrow button opens/closes the submenu.
-       - Parent/child page starts with its submenu open.
-       - Other pages start with that submenu closed.
-
-       This script rebuilds the sidebar navigation on
-       every page so page-specific sidebar HTML can no
-       longer conflict with the shared submenu behavior.
+       FINAL AUTHORIZATION + ROLE UI
     ========================================== */
 
 
     /* =========================================
-       1. LOGIN PROTECTION
+       ROLE PERMISSIONS
     ========================================== */
 
-    const isLoggedIn =
-        sessionStorage.getItem("isLoggedIn");
+    const ROLE_PERMISSIONS = {
+
+        Owner: [
+            "Dashboard",
+            "Notifications",
+            "Purchase",
+            "Farmer & Supplier",
+            "Quality Inspection",
+            "Production",
+            "Inventory",
+            "Sales",
+            "Customers",
+            "Delivery",
+            "Reports",
+            "Expense & Salary",
+            "Settings",
+            "User Roles",
+            "Maintenance"
+        ],
+
+        Admin: [
+            "Dashboard",
+            "Notifications",
+            "Purchase",
+            "Farmer & Supplier",
+            "Quality Inspection",
+            "Production",
+            "Inventory",
+            "Sales",
+            "Customers",
+            "Delivery",
+            "Reports",
+            "Expense & Salary",
+            "Settings",
+            "Maintenance"
+        ],
+
+        Manager: [
+            "Dashboard",
+            "Notifications",
+            "Purchase",
+            "Farmer & Supplier",
+            "Quality Inspection",
+            "Production",
+            "Inventory",
+            "Sales",
+            "Customers",
+            "Delivery",
+            "Reports",
+            "Maintenance"
+        ],
+
+        Accountant: [
+            "Dashboard",
+            "Notifications",
+            "Sales",
+            "Customers",
+            "Reports",
+            "Expense & Salary"
+        ],
+
+        Operator: [
+            "Dashboard",
+            "Notifications",
+            "Purchase",
+            "Farmer & Supplier",
+            "Quality Inspection",
+            "Production",
+            "Inventory",
+            "Maintenance"
+        ],
+
+        Driver: [
+            "Dashboard",
+            "Notifications",
+            "Delivery"
+        ]
+
+    };
 
 
-    if (isLoggedIn !== "true") {
+    /* =========================================
+       PAGE PERMISSIONS
+    ========================================== */
+
+    const PAGE_PERMISSIONS = {
+
+        "dashboard.html":
+            "Dashboard",
+
+        "notifications.html":
+            "Notifications",
+
+        "purchase.html":
+            "Purchase",
+
+        "supplier.html":
+            "Farmer & Supplier",
+
+        "quality.html":
+            "Quality Inspection",
+
+        "production.html":
+            "Production",
+
+        "inventory.html":
+            "Inventory",
+
+        "sales.html":
+            "Sales",
+
+        "customer.html":
+            "Customers",
+
+        "delivery.html":
+            "Delivery",
+
+        "reports.html":
+            "Reports",
+
+        "expense.html":
+            "Expense & Salary",
+
+        "profile.html":
+            "Settings",
+
+        "users.html":
+            "User Roles",
+
+        "maintenance.html":
+            "Maintenance"
+
+    };
+
+
+    /* =========================================
+       CANONICAL SIDEBAR MENU
+    ========================================== */
+
+    const MENU_ITEMS = [
+
+        {
+            type: "link",
+            permission: "Dashboard",
+            href: "dashboard.html",
+            icon: "⌂",
+            label: "Dashboard"
+        },
+
+        {
+            type: "link",
+            permission: "Notifications",
+            href: "notifications.html",
+            icon: "🔔",
+            label: "Notifications"
+        },
+
+        {
+            type: "group",
+            key: "purchase",
+            permission: "Purchase",
+            href: "purchase.html",
+            icon: "🛒",
+            label: "Purchase",
+
+            children: [
+
+                {
+                    permission: "Farmer & Supplier",
+                    href: "supplier.html",
+                    icon: "👥",
+                    label: "Farmer & Supplier"
+                },
+
+                {
+                    permission: "Quality Inspection",
+                    href: "quality.html",
+                    icon: "✓",
+                    label: "Quality Inspection"
+                }
+
+            ]
+        },
+
+        {
+            type: "link",
+            permission: "Production",
+            href: "production.html",
+            icon: "▥",
+            label: "Production"
+        },
+
+        {
+            type: "link",
+            permission: "Inventory",
+            href: "inventory.html",
+            icon: "▣",
+            label: "Inventory"
+        },
+
+        {
+            type: "group",
+            key: "sales",
+            permission: "Sales",
+            href: "sales.html",
+            icon: "◇",
+            label: "Sales",
+
+            children: [
+
+                {
+                    permission: "Customers",
+                    href: "customer.html",
+                    icon: "👤",
+                    label: "Customers"
+                }
+
+            ]
+        },
+
+        {
+            type: "link",
+            permission: "Delivery",
+            href: "delivery.html",
+            icon: "▱",
+            label: "Delivery"
+        },
+
+        {
+            type: "link",
+            permission: "Reports",
+            href: "reports.html",
+            icon: "▥",
+            label: "Reports"
+        },
+
+        {
+            type: "link",
+            permission: "Expense & Salary",
+            href: "expense.html",
+            icon: "৳",
+            label: "Expense & Salary"
+        },
+
+        {
+            type: "group",
+            key: "settings",
+            permission: "Settings",
+            href: "profile.html",
+            icon: "⚙",
+            label: "Settings",
+
+            children: [
+
+                {
+                    permission: "User Roles",
+                    href: "users.html",
+                    icon: "👥",
+                    label: "User Roles"
+                }
+
+            ]
+        },
+
+        {
+            type: "link",
+            permission: "Maintenance",
+            href: "maintenance.html",
+            icon: "🔧",
+            label: "Maintenance"
+        }
+
+    ];
+
+
+    /* =========================================
+       STORAGE HELPERS
+    ========================================== */
+
+    function safeParse(
+        storage,
+        key,
+        fallback = null
+    ) {
+
+        try {
+
+            const value =
+                storage.getItem(
+                    key
+                );
+
+
+            if (
+                value === null
+            ) {
+
+                return fallback;
+
+            }
+
+
+            return (
+                JSON.parse(
+                    value
+                )
+                ??
+                fallback
+            );
+
+        }
+        catch {
+
+            return fallback;
+
+        }
+
+    }
+
+
+    function firstNonEmptyArray(
+        keys
+    ) {
+
+        for (
+            const key of keys
+        ) {
+
+            const value =
+                safeParse(
+                    localStorage,
+                    key,
+                    null
+                );
+
+
+            if (
+                Array.isArray(
+                    value
+                )
+                &&
+                value.length > 0
+            ) {
+
+                return value;
+
+            }
+
+        }
+
+
+        return [];
+
+    }
+
+
+    function getUserAccounts() {
+
+        return firstNonEmptyArray(
+            [
+                "userAccounts",
+                "systemUsers",
+                "users"
+            ]
+        );
+
+    }
+
+
+    function getDeliveryRecords() {
+
+        return firstNonEmptyArray(
+            [
+                "deliveryRecords",
+                "deliveries"
+            ]
+        );
+
+    }
+
+
+    /* =========================================
+       NORMALIZATION HELPERS
+    ========================================== */
+
+    function normalizeRole(
+        role
+    ) {
+
+        const value =
+            String(
+                role || ""
+            )
+            .trim();
+
+
+        if (
+            value ===
+            "Rice Mill Owner"
+        ) {
+
+            return "Owner";
+
+        }
+
+
+        if (
+            ROLE_PERMISSIONS[
+                value
+            ]
+        ) {
+
+            return value;
+
+        }
+
+
+        return "Operator";
+
+    }
+
+
+    function normalizeText(
+        value
+    ) {
+
+        return String(
+            value || ""
+        )
+        .trim()
+        .toLowerCase();
+
+    }
+
+
+    function escapeHTML(
+        value
+    ) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            String(
+                value ?? ""
+            );
+
+
+        return div.innerHTML;
+
+    }
+
+
+    function humanizeText(
+        value
+    ) {
+
+        let text =
+            String(
+                value || ""
+            )
+            .trim();
+
+
+        if (
+            !text
+        ) {
+
+            return "—";
+
+        }
+
+
+        text =
+            text.replace(
+                /([a-z])([A-Z])/g,
+                "$1 $2"
+            );
+
+
+        text =
+            text.replace(
+                /[_-]+/g,
+                " "
+            );
+
+
+        return text
+            .split(/\s+/)
+            .map(
+                function (
+                    word
+                ) {
+
+                    if (
+                        !word
+                    ) {
+
+                        return "";
+
+                    }
+
+
+                    return (
+                        word.charAt(0)
+                            .toUpperCase()
+
+                        +
+
+                        word.slice(1)
+                    );
+
+                }
+            )
+            .join(" ");
+
+    }
+
+
+    /* =========================================
+       LOGOUT
+    ========================================== */
+
+    function logoutWithMessage(
+        message = ""
+    ) {
+
+        sessionStorage.removeItem(
+            "isLoggedIn"
+        );
+
+
+        sessionStorage.removeItem(
+            "currentUser"
+        );
+
+
+        if (
+            message
+        ) {
+
+            sessionStorage.setItem(
+                "loginNotice",
+                message
+            );
+
+        }
+
 
         window.location.href =
             "../index.html";
 
+    }
+
+
+    /* =========================================
+       LOGIN PROTECTION
+    ========================================== */
+
+    if (
+        sessionStorage.getItem(
+            "isLoggedIn"
+        )
+        !==
+        "true"
+    ) {
+
+        window.location.href =
+            "../index.html";
+
+
         return;
 
     }
 
 
+    let currentUser =
+        safeParse(
+            sessionStorage,
+            "currentUser",
+            null
+        );
+
+
+    if (
+        !currentUser
+    ) {
+
+        logoutWithMessage();
+
+        return;
+
+    }
+
+
+    currentUser.role =
+        normalizeRole(
+            currentUser.role
+        );
+
+
+    if (
+        !Array.isArray(
+            currentUser.permissions
+        )
+    ) {
+
+        currentUser.permissions =
+            ROLE_PERMISSIONS[
+                currentUser.role
+            ]
+            ||
+            [];
+
+    }
+
+
     /* =========================================
-       2. LOGOUT
+       LIVE USER VALIDATION
     ========================================== */
 
-    document
-        .querySelectorAll(".logout-link")
-        .forEach(function (logoutLink) {
-
-            logoutLink.href =
-                "#";
+    const accounts =
+        getUserAccounts();
 
 
-            logoutLink.addEventListener(
-                "click",
-                function (event) {
+    if (
+        accounts.length > 0
+    ) {
 
-                    event.preventDefault();
+        const liveAccount =
+            accounts.find(
+                function (
+                    account
+                ) {
+
+                    const sameId =
+
+                        currentUser.userId
+
+                        &&
+
+                        account.userId
+
+                        &&
+
+                        String(
+                            currentUser.userId
+                        )
+
+                        ===
+
+                        String(
+                            account.userId
+                        );
 
 
-                    sessionStorage.removeItem(
-                        "isLoggedIn"
+                    const sameEmail =
+
+                        normalizeText(
+                            currentUser.email
+                        )
+
+                        ===
+
+                        normalizeText(
+                            account.email
+                        );
+
+
+                    return Boolean(
+                        sameId
+                        ||
+                        sameEmail
                     );
-
-
-                    sessionStorage.removeItem(
-                        "currentUser"
-                    );
-
-
-                    window.location.href =
-                        "../index.html";
 
                 }
             );
 
-        });
+
+        if (
+            liveAccount
+        ) {
+
+            if (
+                normalizeText(
+                    liveAccount.status
+                    ||
+                    "Active"
+                )
+                !==
+                "active"
+            ) {
+
+                logoutWithMessage(
+                    "Your account is inactive. Please contact the administrator."
+                );
+
+
+                return;
+
+            }
+
+
+            const liveRole =
+                normalizeRole(
+                    liveAccount.role
+                );
+
+
+            currentUser = {
+
+                ...currentUser,
+
+
+                userId:
+                    liveAccount.userId
+                    ||
+                    currentUser.userId,
+
+
+                name:
+                    liveAccount.fullName
+                    ||
+                    liveAccount.name
+                    ||
+                    currentUser.name
+                    ||
+                    "System User",
+
+
+                fullName:
+                    liveAccount.fullName
+                    ||
+                    liveAccount.name
+                    ||
+                    currentUser.fullName
+                    ||
+                    currentUser.name
+                    ||
+                    "System User",
+
+
+                email:
+                    String(
+                        liveAccount.email
+                        ||
+                        currentUser.email
+                        ||
+                        ""
+                    )
+                    .toLowerCase(),
+
+
+                phone:
+                    liveAccount.phone
+                    ||
+                    currentUser.phone
+                    ||
+                    "",
+
+
+                role:
+                    liveRole,
+
+
+                displayRole:
+                    liveRole ===
+                    "Owner"
+
+                        ?
+
+                        "Rice Mill Owner"
+
+                        :
+
+                        liveRole,
+
+
+                status:
+                    "Active",
+
+
+                permissions:
+                    Array.isArray(
+                        liveAccount.permissions
+                    )
+
+                        ?
+
+                        liveAccount.permissions
+
+                        :
+
+                        (
+                            ROLE_PERMISSIONS[
+                                liveRole
+                            ]
+                            ||
+                            []
+                        )
+
+            };
+
+
+            sessionStorage.setItem(
+                "currentUser",
+                JSON.stringify(
+                    currentUser
+                )
+            );
+
+        }
+        else if (
+            currentUser.role !==
+            "Owner"
+        ) {
+
+            logoutWithMessage(
+                "This user account no longer exists. Please contact the administrator."
+            );
+
+
+            return;
+
+        }
+
+    }
 
 
     /* =========================================
-       3. SIDEBAR NAVIGATION
+       CURRENT PAGE
     ========================================== */
-
-    const sidebarNavigation =
-        document.querySelector(
-            ".sidebar-navigation"
-        );
-
-
-    if (!sidebarNavigation) {
-        return;
-    }
-
 
     const currentPage =
         window.location.pathname
@@ -98,173 +856,2191 @@ document.addEventListener("DOMContentLoaded", function () {
         "dashboard.html";
 
 
-    /* =========================================
-       4. CANONICAL MENU
-    ========================================== */
+    function hasPermission(
+        permission
+    ) {
 
-    const MENU_ITEMS = [
+        if (
+            !permission
+        ) {
 
-        {
-            type: "link",
-            href: "dashboard.html",
-            icon: "⌂",
-            label: "Dashboard"
-        },
+            return true;
 
-        {
-            type: "link",
-            href: "notifications.html",
-            icon: "🔔",
-            label: "Notifications"
-        },
-
-        {
-            type: "group",
-            key: "purchase",
-            href: "purchase.html",
-            icon: "🛒",
-            label: "Purchase",
-
-            children: [
-
-                {
-                    href: "supplier.html",
-                    icon: "👥",
-                    label: "Farmer & Supplier"
-                },
-
-                {
-                    href: "quality.html",
-                    icon: "✓",
-                    label: "Quality Inspection"
-                }
-
-            ]
-        },
-
-        {
-            type: "link",
-            href: "production.html",
-            icon: "▥",
-            label: "Production"
-        },
-
-        {
-            type: "link",
-            href: "inventory.html",
-            icon: "▣",
-            label: "Inventory"
-        },
-
-        {
-            type: "group",
-            key: "sales",
-            href: "sales.html",
-            icon: "◇",
-            label: "Sales",
-
-            children: [
-
-                {
-                    href: "customer.html",
-                    icon: "👤",
-                    label: "Customers"
-                }
-
-            ]
-        },
-
-        {
-            type: "link",
-            href: "delivery.html",
-            icon: "▱",
-            label: "Delivery"
-        },
-
-        {
-            type: "link",
-            href: "reports.html",
-            icon: "▥",
-            label: "Reports"
-        },
-
-        {
-            type: "link",
-            href: "expense.html",
-            icon: "৳",
-            label: "Expense & Salary"
-        },
-
-        {
-            type: "group",
-            key: "settings",
-            href: "profile.html",
-            icon: "⚙",
-            label: "Settings",
-
-            children: [
-
-                {
-                    href: "users.html",
-                    icon: "👥",
-                    label: "User Roles"
-                }
-
-            ]
-        },
-
-        {
-            type: "link",
-            href: "maintenance.html",
-            icon: "🔧",
-            label: "Maintenance"
         }
 
-    ];
-
-
-    /* =========================================
-       5. HELPERS
-    ========================================== */
-
-    function isCurrentPage(href) {
 
         return (
-            currentPage ===
-            href
+
+            Array.isArray(
+                currentUser.permissions
+            )
+
+            &&
+
+            currentUser.permissions
+                .includes(
+                    permission
+                )
+
         );
 
     }
 
 
-    function isGroupCurrent(item) {
+    /* =========================================
+       DIRECT URL PROTECTION
+    ========================================== */
+
+    const requiredPermission =
+        PAGE_PERMISSIONS[
+            currentPage
+        ];
+
+
+    if (
+        requiredPermission
+
+        &&
+
+        !hasPermission(
+            requiredPermission
+        )
+    ) {
+
+        alert(
+            `Access denied. Your ${currentUser.role} role does not have permission to open ${requiredPermission}.`
+        );
+
+
+        window.location.href =
+            "dashboard.html";
+
+
+        return;
+
+    }
+
+
+    /* =========================================
+       LOGOUT LINKS
+    ========================================== */
+
+    function bindLogoutLinks() {
+
+        document
+            .querySelectorAll(
+                ".logout-link"
+            )
+            .forEach(
+                function (
+                    link
+                ) {
+
+                    if (
+                        link.dataset
+                            .authLogoutBound
+                        ===
+                        "true"
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    link.dataset
+                        .authLogoutBound =
+                        "true";
+
+
+                    link.href =
+                        "#";
+
+
+                    link.addEventListener(
+                        "click",
+                        function (
+                            event
+                        ) {
+
+                            event.preventDefault();
+
+                            logoutWithMessage();
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       USER IDENTITY
+    ========================================== */
+
+    function getCurrentUserName() {
 
         return (
 
-            isCurrentPage(
-                item.href
+            currentUser.fullName
+
+            ||
+
+            currentUser.name
+
+            ||
+
+            "System User"
+
+        );
+
+    }
+
+
+    function getCurrentUserRoleLabel() {
+
+        return (
+
+            currentUser.displayRole
+
+            ||
+
+            (
+                currentUser.role ===
+                "Owner"
+
+                    ?
+
+                    "Rice Mill Owner"
+
+                    :
+
+                    currentUser.role
             )
 
             ||
 
-            item.children.some(
-                function (child) {
+            "System User"
+
+        );
+
+    }
+
+
+    function applyCurrentUserIdentity() {
+
+        const name =
+            getCurrentUserName();
+
+
+        const role =
+            getCurrentUserRoleLabel();
+
+
+        document
+            .querySelectorAll(
+                "#topbarUserName,.topbar-user-name,[data-current-user-name],.user-information strong"
+            )
+            .forEach(
+                function (
+                    element
+                ) {
+
+                    element.textContent =
+                        name;
+
+                }
+            );
+
+
+        document
+            .querySelectorAll(
+                "#topbarUserRole,.topbar-user-role,[data-current-user-role],.user-information span"
+            )
+            .forEach(
+                function (
+                    element
+                ) {
+
+                    element.textContent =
+                        role;
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       PROFILE ACCESS
+    ========================================== */
+
+    function applyProfileAccess() {
+
+        document
+            .querySelectorAll(
+                ".user-profile"
+            )
+            .forEach(
+                function (
+                    link
+                ) {
+
+                    const arrow =
+                        link.querySelector(
+                            ".profile-arrow"
+                        );
+
+
+                    if (
+                        hasPermission(
+                            "Settings"
+                        )
+                    ) {
+
+                        link.setAttribute(
+                            "href",
+                            "profile.html"
+                        );
+
+
+                        link.removeAttribute(
+                            "aria-disabled"
+                        );
+
+
+                        link.setAttribute(
+                            "aria-label",
+                            "Open profile and settings"
+                        );
+
+
+                        link.style.cursor =
+                            "";
+
+
+                        if (
+                            arrow
+                        ) {
+
+                            arrow.hidden =
+                                false;
+
+                        }
+
+                    }
+                    else {
+
+                        link.removeAttribute(
+                            "href"
+                        );
+
+
+                        link.setAttribute(
+                            "aria-disabled",
+                            "true"
+                        );
+
+
+                        link.setAttribute(
+                            "aria-label",
+                            `${getCurrentUserName()} — ${getCurrentUserRoleLabel()}`
+                        );
+
+
+                        link.style.cursor =
+                            "default";
+
+
+                        if (
+                            arrow
+                        ) {
+
+                            arrow.hidden =
+                                true;
+
+                        }
+
+                    }
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       DASHBOARD SHORTCUT ACCESS
+    ========================================== */
+
+    const DASHBOARD_SHORTCUT_PERMISSIONS = {
+
+        "purchase.html":
+            "Purchase",
+
+        "sales.html":
+            "Sales",
+
+        "inventory.html":
+            "Inventory",
+
+        "delivery.html":
+            "Delivery"
+
+    };
+
+
+    function applyDashboardShortcutAccess() {
+
+        if (
+            currentPage !==
+            "dashboard.html"
+        ) {
+
+            return;
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".summary-card"
+            )
+            .forEach(
+                function (
+                    card
+                ) {
+
+                    if (
+                        !card.dataset
+                            .originalHref
+                    ) {
+
+                        const href =
+                            card.getAttribute(
+                                "href"
+                            );
+
+
+                        if (
+                            href
+                        ) {
+
+                            card.dataset
+                                .originalHref =
+                                href;
+
+                        }
+
+                    }
+
+
+                    const originalHref =
+                        card.dataset
+                            .originalHref;
+
+
+                    if (
+                        !originalHref
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const permission =
+                        DASHBOARD_SHORTCUT_PERMISSIONS[
+                            originalHref
+                        ];
+
+
+                    if (
+                        !permission
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const allowed =
+                        hasPermission(
+                            permission
+                        );
+
+
+                    const arrow =
+                        card.querySelector(
+                            ".card-arrow"
+                        );
+
+
+                    card.style
+                        .removeProperty(
+                            "display"
+                        );
+
+
+                    if (
+                        !card.dataset
+                            .roleGuardBound
+                    ) {
+
+                        card.dataset
+                            .roleGuardBound =
+                            "true";
+
+
+                        card.addEventListener(
+                            "click",
+                            function (
+                                event
+                            ) {
+
+                                if (
+                                    card.classList
+                                        .contains(
+                                            "role-restricted-card"
+                                        )
+                                ) {
+
+                                    event.preventDefault();
+
+                                    event.stopPropagation();
+
+                                }
+
+                            }
+                        );
+
+                    }
+
+
+                    if (
+                        allowed
+                    ) {
+
+                        card.setAttribute(
+                            "href",
+                            originalHref
+                        );
+
+
+                        card.classList.remove(
+                            "role-restricted-card"
+                        );
+
+
+                        card.removeAttribute(
+                            "aria-disabled"
+                        );
+
+
+                        card.removeAttribute(
+                            "tabindex"
+                        );
+
+
+                        card.removeAttribute(
+                            "role"
+                        );
+
+
+                        card.removeAttribute(
+                            "title"
+                        );
+
+
+                        card.style.cursor =
+                            "";
+
+
+                        if (
+                            arrow
+                        ) {
+
+                            arrow.hidden =
+                                false;
+
+                        }
+
+                    }
+                    else {
+
+                        card.removeAttribute(
+                            "href"
+                        );
+
+
+                        card.classList.add(
+                            "role-restricted-card"
+                        );
+
+
+                        card.setAttribute(
+                            "aria-disabled",
+                            "true"
+                        );
+
+
+                        card.setAttribute(
+                            "tabindex",
+                            "-1"
+                        );
+
+
+                        card.setAttribute(
+                            "role",
+                            "group"
+                        );
+
+
+                        card.title =
+                            "View-only dashboard metric for your current role.";
+
+
+                        card.style.cursor =
+                            "default";
+
+
+                        if (
+                            arrow
+                        ) {
+
+                            arrow.hidden =
+                                true;
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+        /*
+           Always restore original Dashboard layout.
+        */
+
+        const summaryGrid =
+            document.querySelector(
+                ".summary-grid"
+            );
+
+
+        if (
+            summaryGrid
+        ) {
+
+            summaryGrid.style
+                .removeProperty(
+                    "grid-template-columns"
+                );
+
+
+            summaryGrid.style
+                .removeProperty(
+                    "display"
+                );
+
+        }
+
+
+        const chartGrid =
+            document.querySelector(
+                ".chart-grid"
+            );
+
+
+        if (
+            chartGrid
+        ) {
+
+            chartGrid.style
+                .removeProperty(
+                    "display"
+                );
+
+
+            chartGrid.style
+                .removeProperty(
+                    "grid-template-columns"
+                );
+
+        }
+
+
+        /*
+           Hide Reports shortcut from roles
+           without Reports permission.
+        */
+
+        document
+            .querySelectorAll(
+                ".view-reports-link"
+            )
+            .forEach(
+                function (
+                    link
+                ) {
+
+                    if (
+                        !link.dataset
+                            .originalHref
+                    ) {
+
+                        const href =
+                            link.getAttribute(
+                                "href"
+                            );
+
+
+                        if (
+                            href
+                        ) {
+
+                            link.dataset
+                                .originalHref =
+                                href;
+
+                        }
+
+                    }
+
+
+                    if (
+                        hasPermission(
+                            "Reports"
+                        )
+                    ) {
+
+                        link.style
+                            .removeProperty(
+                                "display"
+                            );
+
+
+                        if (
+                            link.dataset
+                                .originalHref
+                        ) {
+
+                            link.setAttribute(
+                                "href",
+                                link.dataset
+                                    .originalHref
+                            );
+
+                        }
+
+                    }
+                    else {
+
+                        link.style.setProperty(
+                            "display",
+                            "none",
+                            "important"
+                        );
+
+
+                        link.removeAttribute(
+                            "href"
+                        );
+
+                    }
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       DELIVERY DISPLAY HELPERS
+    ========================================== */
+
+    function getDeliveryStatus(
+        record
+    ) {
+
+        return (
+
+            record.deliveryStatus
+
+            ||
+
+            record.status
+
+            ||
+
+            "Pending"
+
+        );
+
+    }
+
+
+    function getDeliveryId(
+        record
+    ) {
+
+        return (
+
+            record.deliveryId
+
+            ||
+
+            record.id
+
+            ||
+
+            "Delivery"
+
+        );
+
+    }
+
+
+    function getDeliveryCustomer(
+        record
+    ) {
+
+        return (
+
+            record.customerName
+
+            ||
+
+            record.customer
+
+            ||
+
+            "Customer"
+
+        );
+
+    }
+
+
+    function getDeliveryProduct(
+        record
+    ) {
+
+        const value =
+
+            record.product
+
+            ||
+
+            record.productName
+
+            ||
+
+            record.item
+
+            ||
+
+            "Delivery";
+
+
+        return humanizeText(
+            value
+        );
+
+    }
+
+
+    function getDeliveryQuantity(
+        record
+    ) {
+
+        const quantity =
+
+            record.quantityKg
+
+            ??
+
+            record.quantity
+
+            ??
+
+            record.qty
+
+            ??
+
+            record.weight;
+
+
+        if (
+            quantity ===
+            undefined
+
+            ||
+
+            quantity ===
+            null
+
+            ||
+
+            quantity ===
+            ""
+        ) {
+
+            return "—";
+
+        }
+
+
+        const text =
+            String(
+                quantity
+            );
+
+
+        return /kg/i
+            .test(
+                text
+            )
+
+            ?
+
+            text
+
+            :
+
+            `${text} kg`;
+
+    }
+
+
+    function getDeliveryTimestamp(
+        record
+    ) {
+
+        const values = [
+
+            record.gpsUpdatedAt,
+
+            record.lastGpsUpdate,
+
+            record.updatedAt,
+
+            record.deliveryDate,
+
+            record.date,
+
+            record.createdAt
+
+        ];
+
+
+        for (
+            const value
+            of values
+        ) {
+
+            if (
+                !value
+            ) {
+
+                continue;
+
+            }
+
+
+            const parsed =
+                new Date(
+                    value
+                );
+
+
+            if (
+                !Number.isNaN(
+                    parsed.getTime()
+                )
+            ) {
+
+                return parsed.getTime();
+
+            }
+
+        }
+
+
+        return 0;
+
+    }
+
+
+    function formatDeliveryDate(
+        record
+    ) {
+
+        const timestamp =
+            getDeliveryTimestamp(
+                record
+            );
+
+
+        if (
+            !timestamp
+        ) {
+
+            return "—";
+
+        }
+
+
+        const date =
+            new Date(
+                timestamp
+            );
+
+
+        const today =
+            new Date();
+
+
+        if (
+            date.getFullYear() ===
+            today.getFullYear()
+
+            &&
+
+            date.getMonth() ===
+            today.getMonth()
+
+            &&
+
+            date.getDate() ===
+            today.getDate()
+        ) {
+
+            return "Today";
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       DRIVER DASHBOARD ACTIVITY
+    ========================================== */
+
+    function applyDriverDashboardActivity() {
+
+        if (
+            currentUser.role !==
+            "Driver"
+
+            ||
+
+            currentPage !==
+            "dashboard.html"
+        ) {
+
+            return;
+
+        }
+
+
+        const tbody =
+            document.querySelector(
+                ".activity-table tbody"
+            );
+
+
+        if (
+            !tbody
+        ) {
+
+            return;
+
+        }
+
+
+        const deliveries =
+            [
+                ...getDeliveryRecords()
+            ]
+            .sort(
+                function (
+                    first,
+                    second
+                ) {
 
                     return (
-                        isCurrentPage(
-                            child.href
+
+                        getDeliveryTimestamp(
+                            second
                         )
+
+                        -
+
+                        getDeliveryTimestamp(
+                            first
+                        )
+
+                    );
+
+                }
+            )
+            .slice(
+                0,
+                6
+            );
+
+
+        tbody.innerHTML =
+            "";
+
+
+        if (
+            deliveries.length ===
+            0
+        ) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="5"
+                        style="
+                            text-align:center;
+                            padding:28px 16px;
+                            color:#758078;
+                        "
+                    >
+
+                        No delivery activity recorded yet.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        deliveries.forEach(
+            function (
+                record
+            ) {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+
+                        ${escapeHTML(
+                            `Delivery ${getDeliveryId(
+                                record
+                            )} for ${getDeliveryCustomer(
+                                record
+                            )}`
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        Delivery
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHTML(
+                            getDeliveryProduct(
+                                record
+                            )
+                        )}
+
+                        /
+
+                        ${escapeHTML(
+                            getDeliveryQuantity(
+                                record
+                            )
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="status-badge">
+
+                            ${escapeHTML(
+                                humanizeText(
+                                    getDeliveryStatus(
+                                        record
+                                    )
+                                )
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHTML(
+                            formatDeliveryDate(
+                                record
+                            )
+                        )}
+
+                    </td>
+
+                `;
+
+
+                tbody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       ACTIVE DELIVERY COUNT
+    ========================================== */
+
+    function isActiveDelivery(
+        record
+    ) {
+
+        const status =
+            normalizeText(
+                getDeliveryStatus(
+                    record
+                )
+            );
+
+
+        return (
+
+            status ===
+            "pending"
+
+            ||
+
+            status.includes(
+                "dispatch"
+            )
+
+            ||
+
+            status.includes(
+                "on the way"
+            )
+
+            ||
+
+            status.includes(
+                "in transit"
+            )
+
+            ||
+
+            status.includes(
+                "running"
+            )
+
+            ||
+
+            status.includes(
+                "assigned"
+            )
+
+        );
+
+    }
+
+
+    function getDriverNotificationCount() {
+
+        return getDeliveryRecords()
+            .filter(
+                isActiveDelivery
+            )
+            .length;
+
+    }
+
+
+    function getGlobalNotificationCount() {
+
+        const count =
+            Number(
+                localStorage.getItem(
+                    "activeNotificationCount"
+                )
+            );
+
+
+        if (
+            !Number.isFinite(
+                count
+            )
+
+            ||
+
+            count < 0
+        ) {
+
+            return 0;
+
+        }
+
+
+        return Math.floor(
+            count
+        );
+
+    }
+
+
+    function getVisibleNotificationCount() {
+
+        return currentUser.role ===
+            "Driver"
+
+            ?
+
+            getDriverNotificationCount()
+
+            :
+
+            getGlobalNotificationCount();
+
+    }
+
+
+    /* =========================================
+       NOTIFICATION BADGE
+    ========================================== */
+
+    function syncNotificationBadges() {
+
+        const count =
+            getVisibleNotificationCount();
+
+
+        document
+            .querySelectorAll(
+                ".notification-count"
+            )
+            .forEach(
+                function (
+                    badge
+                ) {
+
+                    badge.textContent =
+
+                        count > 99
+
+                            ?
+
+                            "99+"
+
+                            :
+
+                            String(
+                                count
+                            );
+
+
+                    badge.setAttribute(
+                        "aria-label",
+                        `${count} active notifications`
+                    );
+
+
+                    if (
+                        count > 0
+                    ) {
+
+                        badge.style
+                            .removeProperty(
+                                "display"
+                            );
+
+                    }
+                    else {
+
+                        badge.style
+                            .setProperty(
+                                "display",
+                                "none",
+                                "important"
+                            );
+
+                    }
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       DOM HELPERS
+    ========================================== */
+
+    function findExactTextElement(
+        text
+    ) {
+
+        const wanted =
+            normalizeText(
+                text
+            );
+
+
+        const elements =
+            Array.from(
+                document.querySelectorAll(
+                    "h1,h2,h3,h4,p,span,strong,small,label"
+                )
+            );
+
+
+        return (
+
+            elements.find(
+                function (
+                    element
+                ) {
+
+                    return normalizeText(
+                        element.textContent
+                    )
+                    ===
+                    wanted;
+
+                }
+            )
+
+            ||
+
+            null
+
+        );
+
+    }
+
+
+    function closestCard(
+        element
+    ) {
+
+        if (
+            !element
+        ) {
+
+            return null;
+
+        }
+
+
+        return (
+
+            element.closest(
+                "article"
+            )
+
+            ||
+
+            element.closest(
+                ".content-card"
+            )
+
+            ||
+
+            element.closest(
+                ".alert-card"
+            )
+
+            ||
+
+            element.closest(
+                ".notification-card"
+            )
+
+            ||
+
+            element.parentElement
+
+        );
+
+    }
+
+
+    function hideElement(
+        element
+    ) {
+
+        if (
+            !element
+        ) {
+
+            return;
+
+        }
+
+
+        element.style
+            .setProperty(
+                "display",
+                "none",
+                "important"
+            );
+
+    }
+
+
+    function showElement(
+        element
+    ) {
+
+        if (
+            !element
+        ) {
+
+            return;
+
+        }
+
+
+        element.style
+            .removeProperty(
+                "display"
+            );
+
+    }
+
+
+    /* =========================================
+       DRIVER ALL ALERTS FILTER
+    ========================================== */
+
+    function findAllAlertsTable() {
+
+        const tables =
+            Array.from(
+                document.querySelectorAll(
+                    "table"
+                )
+            );
+
+
+        return (
+
+            tables.find(
+                function (
+                    table
+                ) {
+
+                    const headers =
+                        Array.from(
+                            table.querySelectorAll(
+                                "thead th"
+                            )
+                        )
+                        .map(
+                            function (
+                                header
+                            ) {
+
+                                return normalizeText(
+                                    header.textContent
+                                );
+
+                            }
+                        );
+
+
+                    return (
+
+                        headers.includes(
+                            "alert id"
+                        )
+
+                        &&
+
+                        headers.includes(
+                            "alert type"
+                        )
+
+                        &&
+
+                        headers.includes(
+                            "source"
+                        )
+
                     );
 
                 }
             )
 
+            ||
+
+            null
+
         );
 
     }
 
 
-    function createIcon(icon) {
+    function filterDriverAllAlertsTable() {
+
+        const table =
+            findAllAlertsTable();
+
+
+        if (
+            !table
+        ) {
+
+            return;
+
+        }
+
+
+        table
+            .querySelectorAll(
+                "tbody tr"
+            )
+            .forEach(
+                function (
+                    row
+                ) {
+
+                    const cells =
+                        row.querySelectorAll(
+                            "td"
+                        );
+
+
+                    const source =
+
+                        cells[3]
+
+                            ?
+
+                            normalizeText(
+                                cells[3]
+                                    .textContent
+                            )
+
+                            :
+
+                            "";
+
+
+                    const rowText =
+                        normalizeText(
+                            row.textContent
+                        );
+
+
+                    const isDelivery =
+
+                        source ===
+                        "delivery"
+
+                        ||
+
+                        rowText.includes(
+                            "delivery"
+                        )
+
+                        ||
+
+                        rowText.includes(
+                            "dispatch"
+                        );
+
+
+                    if (
+                        isDelivery
+                    ) {
+
+                        row.style
+                            .removeProperty(
+                                "display"
+                            );
+
+                    }
+                    else {
+
+                        row.style
+                            .setProperty(
+                                "display",
+                                "none",
+                                "important"
+                            );
+
+                    }
+
+                }
+            );
+
+
+        const heading =
+            findExactTextElement(
+                "All Alerts"
+            );
+
+
+        if (
+            heading
+        ) {
+
+            const container =
+
+                heading.closest(
+                    "article"
+                )
+
+                ||
+
+                heading.closest(
+                    ".content-card"
+                )
+
+                ||
+
+                (
+                    heading.parentElement
+                    &&
+                    heading.parentElement
+                        .parentElement
+                );
+
+
+            const subtitle =
+                container
+
+                    ?
+
+                    container.querySelector(
+                        "p"
+                    )
+
+                    :
+
+                    null;
+
+
+            if (
+                subtitle
+            ) {
+
+                subtitle.textContent =
+                    "Delivery alert history available to the Driver role.";
+
+            }
+
+        }
+
+    }
+
+
+    /* =========================================
+       DRIVER NOTIFICATION VIEW
+    ========================================== */
+
+    function applyDriverNotificationView() {
+
+        if (
+            currentUser.role !==
+            "Driver"
+
+            ||
+
+            currentPage !==
+            "notifications.html"
+        ) {
+
+            return;
+
+        }
+
+
+        [
+            "Low Stock Alerts",
+            "Due Payments",
+            "Attention Required"
+        ]
+        .forEach(
+            function (
+                label
+            ) {
+
+                hideElement(
+                    closestCard(
+                        findExactTextElement(
+                            label
+                        )
+                    )
+                );
+
+            }
+        );
+
+
+        const pendingCard =
+            closestCard(
+                findExactTextElement(
+                    "Pending Deliveries"
+                )
+            );
+
+
+        showElement(
+            pendingCard
+        );
+
+
+        if (
+            pendingCard
+        ) {
+
+            const value =
+                pendingCard.querySelector(
+                    "h2,strong"
+                );
+
+
+            if (
+                value
+            ) {
+
+                value.textContent =
+                    String(
+                        getDriverNotificationCount()
+                    );
+
+            }
+
+        }
+
+
+        /*
+           Priority Alert Feed is management-focused.
+        */
+
+        hideElement(
+            closestCard(
+                findExactTextElement(
+                    "Priority Alert Feed"
+                )
+            )
+        );
+
+
+        filterDriverAllAlertsTable();
+
+    }
+
+
+    /* =========================================
+       LEAFLET MAP REFLOW
+    ========================================== */
+
+    function refreshLeafletLayout() {
+
+        document
+            .querySelectorAll(
+                ".leaflet-container"
+            )
+            .forEach(
+                function (
+                    mapContainer
+                ) {
+
+                    mapContainer.style
+                        .setProperty(
+                            "width",
+                            "100%",
+                            "important"
+                        );
+
+
+                    mapContainer.style
+                        .setProperty(
+                            "max-width",
+                            "100%",
+                            "important"
+                        );
+
+                }
+            );
+
+
+        /*
+           Leaflet listens for the window resize
+           event and recalculates map dimensions.
+        */
+
+        window.dispatchEvent(
+            new Event(
+                "resize"
+            )
+        );
+
+
+        window.requestAnimationFrame(
+            function () {
+
+                window.requestAnimationFrame(
+                    function () {
+
+                        window.dispatchEvent(
+                            new Event(
+                                "resize"
+                            )
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        window.setTimeout(
+            function () {
+
+                window.dispatchEvent(
+                    new Event(
+                        "resize"
+                    )
+                );
+
+            },
+            120
+        );
+
+
+        window.setTimeout(
+            function () {
+
+                window.dispatchEvent(
+                    new Event(
+                        "resize"
+                    )
+                );
+
+            },
+            300
+        );
+
+    }
+
+
+    /* =========================================
+       DRIVER DELIVERY VIEW
+    ========================================== */
+
+    function applyDriverDeliveryView() {
+
+        if (
+            currentUser.role !==
+            "Driver"
+
+            ||
+
+            currentPage !==
+            "delivery.html"
+        ) {
+
+            return;
+
+        }
+
+
+        /* =====================================
+           HIDE CREATE DELIVERY
+        ====================================== */
+
+        const createHeading =
+            findExactTextElement(
+                "Create Delivery"
+            );
+
+
+        const createCard =
+            closestCard(
+                createHeading
+            );
+
+
+        hideElement(
+            createCard
+        );
+
+
+        /* =====================================
+           DELIVERY ROUTE CARD
+        ====================================== */
+
+        const routeHeading =
+            findExactTextElement(
+                "Delivery Route"
+            );
+
+
+        const routeCard =
+            closestCard(
+                routeHeading
+            );
+
+
+        if (
+            routeCard
+        ) {
+
+            routeCard.style
+                .setProperty(
+                    "width",
+                    "100%",
+                    "important"
+                );
+
+
+            routeCard.style
+                .setProperty(
+                    "max-width",
+                    "100%",
+                    "important"
+                );
+
+
+            routeCard.style
+                .setProperty(
+                    "grid-column",
+                    "1 / -1",
+                    "important"
+                );
+
+
+            /*
+               Change the old invoice-related text.
+            */
+
+            const paragraphs =
+                Array.from(
+                    routeCard.querySelectorAll(
+                        "p"
+                    )
+                );
+
+
+            const routeDescription =
+                paragraphs.find(
+                    function (
+                        paragraph
+                    ) {
+
+                        const text =
+                            normalizeText(
+                                paragraph.textContent
+                            );
+
+
+                        return (
+
+                            text.includes(
+                                "select an invoice"
+                            )
+
+                            ||
+
+                            text.includes(
+                                "customer delivery route"
+                            )
+
+                        );
+
+                    }
+                );
+
+
+            if (
+                routeDescription
+            ) {
+
+                routeDescription.textContent =
+                    "Select Track from a delivery record to preview its route and GPS information.";
+
+            }
+
+        }
+
+
+        /* =====================================
+           EXPAND THE MAIN DELIVERY GRID
+        ====================================== */
+
+        if (
+            routeCard
+            &&
+            routeCard.parentElement
+        ) {
+
+            const parent =
+                routeCard.parentElement;
+
+
+            parent.style
+                .setProperty(
+                    "grid-template-columns",
+                    "minmax(0, 1fr)",
+                    "important"
+                );
+
+
+            parent.style
+                .setProperty(
+                    "width",
+                    "100%",
+                    "important"
+                );
+
+        }
+
+
+        /* =====================================
+           CONTROL CENTER DESCRIPTION
+        ====================================== */
+
+        const controlHeading =
+            findExactTextElement(
+                "Delivery Control Center"
+            );
+
+
+        if (
+            controlHeading
+        ) {
+
+            const parent =
+                controlHeading.parentElement;
+
+
+            const description =
+                parent
+
+                    ?
+
+                    parent.querySelector(
+                        "p"
+                    )
+
+                    :
+
+                    null;
+
+
+            if (
+                description
+            ) {
+
+                description.textContent =
+                    "Track assigned deliveries, monitor routes, update GPS positions and review delivery progress.";
+
+            }
+
+        }
+
+
+        /* =====================================
+           MAP WIDTH / TILE FIX
+        ====================================== */
+
+        refreshLeafletLayout();
+
+    }
+
+
+    /* =========================================
+       ROLE-SPECIFIC UI
+    ========================================== */
+
+    function applyRoleSpecificPageUi() {
+
+        applyDashboardShortcutAccess();
+
+        applyDriverDashboardActivity();
+
+        applyDriverNotificationView();
+
+        applyDriverDeliveryView();
+
+    }
+
+
+    /* =========================================
+       SIDEBAR HELPERS
+    ========================================== */
+
+    const sidebarNavigation =
+        document.querySelector(
+            ".sidebar-navigation"
+        );
+
+
+    function isCurrentPage(
+        href
+    ) {
+
+        return currentPage ===
+            href;
+
+    }
+
+
+    function createIcon(
+        icon
+    ) {
 
         const span =
             document.createElement(
@@ -285,7 +3061,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function createText(label) {
+    function createText(
+        label
+    ) {
 
         const span =
             document.createElement(
@@ -306,11 +3084,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function getAllowedChildren(
+        item
+    ) {
+
+        return (
+            item.children
+            ||
+            []
+        )
+        .filter(
+            function (
+                child
+            ) {
+
+                return hasPermission(
+                    child.permission
+                );
+
+            }
+        );
+
+    }
+
+
     /* =========================================
-       6. SIMPLE MAIN LINK
+       SIMPLE SIDEBAR LINK
     ========================================== */
 
-    function createSimpleLink(item) {
+    function createSimpleLink(
+        item
+    ) {
 
         const link =
             document.createElement(
@@ -359,10 +3163,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       7. SUBMENU LINK
+       CHILD SIDEBAR LINK
     ========================================== */
 
-    function createChildLink(child) {
+    function createChildLink(
+        child
+    ) {
 
         const link =
             document.createElement(
@@ -371,10 +3177,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         link.className =
-
-            "navigation-link " +
-            "sub-navigation-link " +
-            "erp-sub-navigation-link";
+            "navigation-link sub-navigation-link erp-sub-navigation-link";
 
 
         link.href =
@@ -414,7 +3217,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       8. SET GROUP OPEN / CLOSED
+       GROUP STATE
     ========================================== */
 
     function setGroupState(
@@ -441,8 +3244,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (
-            !submenu ||
-            !toggle ||
+            !submenu
+
+            ||
+
+            !toggle
+
+            ||
+
             !chevron
         ) {
 
@@ -457,34 +3266,66 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /*
-           THIS directly controls visibility.
-           No old CSS or old HTML arrow logic.
-        */
-
         submenu.hidden =
             !open;
 
 
         toggle.setAttribute(
             "aria-expanded",
-            String(open)
+            String(
+                open
+            )
         );
 
 
         chevron.textContent =
+
             open
-                ? "⌄"
-                : "›";
+
+                ?
+
+                "⌄"
+
+                :
+
+                "›";
 
     }
 
 
     /* =========================================
-       9. CREATE GROUP
+       SIDEBAR GROUP
     ========================================== */
 
-    function createGroup(item) {
+    function createGroup(
+        item
+    ) {
+
+        const parentAllowed =
+            hasPermission(
+                item.permission
+            );
+
+
+        const allowedChildren =
+            getAllowedChildren(
+                item
+            );
+
+
+        if (
+            !parentAllowed
+
+            &&
+
+            allowedChildren.length ===
+            0
+        ) {
+
+            return null;
+
+        }
+
 
         const group =
             document.createElement(
@@ -500,8 +3341,6 @@ document.addEventListener("DOMContentLoaded", function () {
             item.key;
 
 
-        /* Parent row */
-
         const row =
             document.createElement(
                 "div"
@@ -511,8 +3350,6 @@ document.addEventListener("DOMContentLoaded", function () {
         row.className =
             "erp-nav-parent-row";
 
-
-        /* Parent link */
 
         const parentLink =
             document.createElement(
@@ -525,23 +3362,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         parentLink.href =
-            item.href;
+
+            parentAllowed
+
+                ?
+
+                item.href
+
+                :
+
+                allowedChildren[0]
+                    .href;
 
 
         const parentIsCurrent =
+
+            parentAllowed
+
+            &&
+
             isCurrentPage(
                 item.href
             );
 
 
         const childIsCurrent =
-            item.children.some(
-                function (child) {
+            allowedChildren.some(
+                function (
+                    child
+                ) {
 
-                    return (
-                        isCurrentPage(
-                            child.href
-                        )
+                    return isCurrentPage(
+                        child.href
                     );
 
                 }
@@ -582,8 +3434,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* Arrow button */
-
         const toggle =
             document.createElement(
                 "button"
@@ -603,8 +3453,6 @@ document.addEventListener("DOMContentLoaded", function () {
             `Toggle ${item.label} submenu`
         );
 
-
-        /* Chevron */
 
         const chevron =
             document.createElement(
@@ -635,8 +3483,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* Submenu */
-
         const submenu =
             document.createElement(
                 "div"
@@ -647,8 +3493,10 @@ document.addEventListener("DOMContentLoaded", function () {
             "erp-submenu";
 
 
-        item.children.forEach(
-            function (child) {
+        allowedChildren.forEach(
+            function (
+                child
+            ) {
 
                 submenu.appendChild(
                     createChildLink(
@@ -670,56 +3518,39 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* =====================================
-           DEFAULT STATE
-
-           Parent page:
-           Purchase page -> open
-           Sales page -> open
-           Settings page -> open
-
-           Child page:
-           Supplier / Quality -> Purchase open
-           Customer -> Sales open
-           User Roles -> Settings open
-        ====================================== */
-
-        const startsOpen =
-            isGroupCurrent(
-                item
-            );
-
-
         setGroupState(
+
             group,
-            startsOpen
+
+            parentIsCurrent
+
+            ||
+
+            childIsCurrent
+
         );
 
 
-        /* =====================================
-           ARROW CLICK
-        ====================================== */
-
         toggle.addEventListener(
             "click",
-            function (event) {
+            function (
+                event
+            ) {
 
                 event.preventDefault();
 
                 event.stopPropagation();
 
 
-                const shouldOpen =
+                setGroupState(
+
+                    group,
 
                     !group.classList
                         .contains(
                             "open"
-                        );
+                        )
 
-
-                setGroupState(
-                    group,
-                    shouldOpen
                 );
 
             }
@@ -732,53 +3563,83 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       10. REBUILD COMPLETE SIDEBAR
+       REBUILD SIDEBAR
     ========================================== */
 
-    /*
-       Critical fix:
+    function rebuildSidebar() {
 
-       Remove the different sidebar HTML
-       contained inside individual pages.
+        if (
+            !sidebarNavigation
+        ) {
 
-       Then rebuild ONE consistent sidebar.
-    */
-
-    sidebarNavigation.innerHTML =
-        "";
-
-
-    MENU_ITEMS.forEach(
-        function (item) {
-
-            if (
-                item.type ===
-                "group"
-            ) {
-
-                sidebarNavigation.appendChild(
-                    createGroup(
-                        item
-                    )
-                );
-
-            }
-            else {
-
-                sidebarNavigation.appendChild(
-                    createSimpleLink(
-                        item
-                    )
-                );
-
-            }
+            return;
 
         }
-    );
+
+
+        sidebarNavigation.innerHTML =
+            "";
+
+
+        MENU_ITEMS.forEach(
+            function (
+                item
+            ) {
+
+                if (
+                    item.type ===
+                    "group"
+                ) {
+
+                    const group =
+                        createGroup(
+                            item
+                        );
+
+
+                    if (
+                        group
+                    ) {
+
+                        sidebarNavigation
+                            .appendChild(
+                                group
+                            );
+
+                    }
+
+
+                    return;
+
+                }
+
+
+                if (
+                    hasPermission(
+                        item.permission
+                    )
+                ) {
+
+                    sidebarNavigation
+                        .appendChild(
+                            createSimpleLink(
+                                item
+                            )
+                        );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    rebuildSidebar();
 
 
     /* =========================================
-       11. SHARED STYLE OVERRIDES
+       SHARED SIDEBAR STYLE
     ========================================== */
 
     const styleId =
@@ -803,10 +3664,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         style.textContent = `
 
-            /* =====================================
-               NORMAL MAIN MENU
-            ===================================== */
-
             .sidebar-navigation
             .erp-simple-link {
 
@@ -818,35 +3675,30 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* =====================================
-               GROUP
-            ===================================== */
-
             .erp-nav-group {
 
-                width: 100%;
+                width:
+                    100%;
 
             }
 
 
             .erp-nav-parent-row {
 
-                position: relative;
+                position:
+                    relative;
 
-                width: 100%;
+                width:
+                    100%;
 
-                display: flex;
+                display:
+                    flex;
 
-                align-items: stretch;
+                align-items:
+                    stretch;
 
             }
 
-
-            /* =====================================
-               PARENT LINK
-
-               The arrow is NOT inside this link.
-            ===================================== */
 
             .erp-nav-parent-link {
 
@@ -870,15 +3722,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /*
-               Child page active:
-               parent gets soft highlight.
-            */
-
             .erp-nav-parent-link
             .navigation-text {
 
-                min-width: 0;
+                min-width:
+                    0;
 
             }
 
@@ -896,30 +3744,25 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* =====================================
-               DEDICATED ARROW BUTTON
-
-               Very important:
-               Button is outside <a>.
-               Therefore clicking arrow cannot
-               navigate away from current page.
-            ===================================== */
-
             .erp-submenu-toggle {
 
-                position: absolute;
+                position:
+                    absolute;
 
-                top: 50%;
+                top:
+                    50%;
 
-                right: 9px;
+                right:
+                    9px;
 
-                z-index: 50;
+                z-index:
+                    50;
 
+                width:
+                    38px;
 
-                width: 38px;
-
-                height: 38px;
-
+                height:
+                    38px;
 
                 display:
                     inline-flex;
@@ -930,30 +3773,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 justify-content:
                     center;
 
+                padding:
+                    0;
 
-                padding: 0;
-
-
-                color: #ffffff;
+                color:
+                    #ffffff;
 
                 background:
                     transparent;
 
-
-                border: 0;
+                border:
+                    0;
 
                 border-radius:
                     7px;
 
-
-                font: inherit;
-
-                cursor: pointer;
-
+                cursor:
+                    pointer;
 
                 transform:
                     translateY(-50%);
-
 
                 pointer-events:
                     auto !important;
@@ -961,19 +3800,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            .erp-submenu-toggle:hover {
-
-                background:
-                    rgba(
-                        255,
-                        255,
-                        255,
-                        0.10
-                    );
-
-            }
-
-
+            .erp-submenu-toggle:hover,
             .erp-submenu-toggle:focus-visible {
 
                 background:
@@ -984,22 +3811,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         0.10
                     );
 
-                outline: none;
+                outline:
+                    none;
 
             }
 
 
-            /* =====================================
-               ARROW CHARACTER
-            ===================================== */
-
             .erp-chevron {
 
-                display: block;
+                display:
+                    block;
 
-
-                color: inherit;
-
+                color:
+                    inherit;
 
                 font-size:
                     18px;
@@ -1010,26 +3834,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 line-height:
                     1;
 
-
-                transform:
-                    none !important;
-
-
                 pointer-events:
                     none;
-
 
                 user-select:
                     none;
 
             }
 
-
-            /* =====================================
-               SUBMENU VISIBILITY
-
-               JS controls hidden directly.
-            ===================================== */
 
             .erp-submenu[hidden] {
 
@@ -1047,18 +3859,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* =====================================
-               SUBMENU CONTAINER
-            ===================================== */
-
             .erp-submenu {
 
-                position: relative;
-
+                position:
+                    relative;
 
                 margin-left:
                     31px;
-
 
                 padding-left:
                     13px;
@@ -1066,25 +3873,25 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* Vertical connector */
-
             .erp-submenu::before {
 
-                content: "";
+                content:
+                    "";
 
+                position:
+                    absolute;
 
-                position: absolute;
+                top:
+                    0;
 
+                bottom:
+                    8px;
 
-                top: 0;
+                left:
+                    0;
 
-                bottom: 8px;
-
-                left: 0;
-
-
-                width: 1px;
-
+                width:
+                    1px;
 
                 background:
                     rgba(
@@ -1097,42 +3904,36 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* =====================================
-               CHILD LINK
-            ===================================== */
-
             .sidebar-navigation
             .erp-sub-navigation-link {
 
-                position: relative;
-
+                position:
+                    relative;
 
                 width:
                     calc(100% - 4px)
                     !important;
 
-
                 min-height:
-                    44px !important;
-
+                    44px
+                    !important;
 
                 margin-left:
-                    0 !important;
-
+                    0
+                    !important;
 
                 padding-left:
-                    15px !important;
-
+                    15px
+                    !important;
 
                 display:
-                    grid !important;
-
+                    grid
+                    !important;
 
                 grid-template-columns:
                     25px
                     minmax(0, 1fr)
                     !important;
-
 
                 align-items:
                     center;
@@ -1140,25 +3941,25 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* Horizontal connector */
-
             .erp-sub-navigation-link::before {
 
-                content: "";
+                content:
+                    "";
 
+                position:
+                    absolute;
 
-                position: absolute;
+                left:
+                    -13px;
 
+                top:
+                    50%;
 
-                left: -13px;
+                width:
+                    12px;
 
-                top: 50%;
-
-
-                width: 12px;
-
-                height: 1px;
-
+                height:
+                    1px;
 
                 background:
                     rgba(
@@ -1171,35 +3972,30 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            .erp-sub-navigation-link
-            .navigation-icon {
-
-                font-size:
-                    14px !important;
-
-            }
-
-
-            .erp-sub-navigation-link
-            .navigation-text {
-
-                font-size:
-                    13px !important;
-
-            }
-
-
-            /* =====================================
-               REMOVE ALL OLD ARROWS
-
-               Only our dedicated button remains.
-            ===================================== */
-
             .sidebar-navigation
             .navigation-arrow {
 
                 display:
-                    none !important;
+                    none
+                    !important;
+
+            }
+
+
+            .role-restricted-card {
+
+                cursor:
+                    default
+                    !important;
+
+            }
+
+
+            .role-restricted-card:hover {
+
+                transform:
+                    none
+                    !important;
 
             }
 
@@ -1208,6 +4004,223 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.head.appendChild(
             style
+        );
+
+    }
+
+
+    /* =========================================
+       FINAL ROLE UI ENFORCEMENT
+    ========================================== */
+
+    let roleUiTimer =
+        null;
+
+
+    function enforceRoleUi() {
+
+        applyCurrentUserIdentity();
+
+        applyProfileAccess();
+
+        applyRoleSpecificPageUi();
+
+        syncNotificationBadges();
+
+        bindLogoutLinks();
+
+    }
+
+
+    function scheduleRoleUiEnforcement(
+        delay = 0
+    ) {
+
+        clearTimeout(
+            roleUiTimer
+        );
+
+
+        roleUiTimer =
+            window.setTimeout(
+                enforceRoleUi,
+                delay
+            );
+
+    }
+
+
+    /*
+       Page-specific scripts render first.
+       Then this final role layer is applied.
+    */
+
+    scheduleRoleUiEnforcement(
+        0
+    );
+
+
+    /*
+       One extra delayed pass helps Leaflet
+       after the Delivery layout changes.
+    */
+
+    if (
+        currentUser.role ===
+        "Driver"
+
+        &&
+
+        currentPage ===
+        "delivery.html"
+    ) {
+
+        window.setTimeout(
+            function () {
+
+                enforceRoleUi();
+
+                refreshLeafletLayout();
+
+            },
+            180
+        );
+
+    }
+
+
+    /* =========================================
+       PAGE / FOCUS / STORAGE SYNC
+    ========================================== */
+
+    window.addEventListener(
+        "pageshow",
+        function () {
+
+            scheduleRoleUiEnforcement(
+                0
+            );
+
+        }
+    );
+
+
+    window.addEventListener(
+        "focus",
+        function () {
+
+            scheduleRoleUiEnforcement(
+                0
+            );
+
+        }
+    );
+
+
+    window.addEventListener(
+        "storage",
+        function () {
+
+            scheduleRoleUiEnforcement(
+                0
+            );
+
+        }
+    );
+
+
+    window.addEventListener(
+        "notificationCountUpdated",
+        function () {
+
+            scheduleRoleUiEnforcement(
+                0
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       DRIVER NOTIFICATION RE-RENDER SUPPORT
+    ========================================== */
+
+    if (
+        currentUser.role ===
+        "Driver"
+
+        &&
+
+        currentPage ===
+        "notifications.html"
+    ) {
+
+        const observer =
+            new MutationObserver(
+                function (
+                    mutations
+                ) {
+
+                    const childChange =
+                        mutations.some(
+                            function (
+                                mutation
+                            ) {
+
+                                return mutation.type ===
+                                    "childList";
+
+                            }
+                        );
+
+
+                    if (
+                        childChange
+                    ) {
+
+                        scheduleRoleUiEnforcement(
+                            10
+                        );
+
+                    }
+
+                }
+            );
+
+
+        observer.observe(
+            document.body,
+            {
+                childList:
+                    true,
+
+                subtree:
+                    true
+            }
+        );
+
+
+        document.addEventListener(
+            "change",
+            function () {
+
+                scheduleRoleUiEnforcement(
+                    20
+                );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "input",
+            function () {
+
+                scheduleRoleUiEnforcement(
+                    20
+                );
+
+            }
         );
 
     }

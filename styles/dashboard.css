@@ -86,7 +86,7 @@ svg {
     display: flex;
     flex-direction: column;
 
-    padding: 28px 18px 24px;
+    padding: 24px 18px 16px;
 
     color: #f4fff6;
     background:
@@ -128,7 +128,7 @@ svg {
     align-items: flex-start;
     gap: 15px;
 
-    padding: 0 11px 25px;
+    padding: 0 11px 30px;
 }
 
 .sidebar-logo {
@@ -209,11 +209,11 @@ svg {
 .sidebar-navigation {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 7px;
 }
 
 .navigation-link {
-    min-height: 45px;
+    min-height: 48px;
 
     padding: 0 15px;
 
@@ -281,7 +281,7 @@ svg {
 /* Sub Navigation */
 
 .sub-navigation-link {
-    min-height: 41px;
+    min-height: 43px;
 
     padding-left: 36px;
 
@@ -302,10 +302,12 @@ svg {
 ========================================= */
 
 .logout-link {
-    min-height: 49px;
+    position: relative;
+
+    min-height: 50px;
 
     margin-top: auto;
-    padding: 12px 17px;
+    padding: 13px 17px 11px;
 
     display: flex;
     align-items: center;
@@ -318,6 +320,20 @@ svg {
     transition:
         color 0.18s ease,
         background-color 0.18s ease;
+}
+
+.logout-link::before {
+    content: "";
+
+    position: absolute;
+
+    top: -12px;
+    left: 10px;
+    right: 10px;
+
+    height: 1px;
+
+    background-color: rgba(255, 255, 255, 0.10);
 }
 
 .logout-link:hover {
