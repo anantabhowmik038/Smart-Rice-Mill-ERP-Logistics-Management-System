@@ -1,10 +1,196 @@
-document.addEventListener(
-    "DOMContentLoaded",
-    async function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-    // ==========================================
-    // ELEMENTS
-    // ==========================================
+    /* =========================================
+       SMART RICE MILL ERP
+       TRUCK & DELIVERY MANAGEMENT
+
+       RESEARCH / DESIGN BASIS
+
+       1. Md. Saiful Islam (2026)
+          Web-based Real-time Bus Tracking System
+          for Enhanced Commuter Experience and
+          Efficient Fleet Management.
+          DOI: 10.2139/ssrn.6766801
+
+          Supports:
+          - GPS location updates
+          - web-based tracking
+          - estimated arrival information
+          - route / fleet monitoring
+
+       2. Azis, Irjayanti & Murti (2026)
+          Advancing Traceability and Sustainability
+          through a Digital Information System in
+          Indonesia's Rice Supply Chain.
+          DOI: 10.1007/s43621-025-02544-4
+
+          Supports:
+          - distribution monitoring
+          - real-time data
+          - digital documentation
+          - rice-flow traceability
+
+       IMPLEMENTATION
+
+       - Leaflet + OpenStreetMap
+       - Nominatim address geocoding
+       - OSRM road routing
+
+       IMPORTANT:
+       Browser GPS capture demonstrates the
+       coordinate-update workflow.
+
+       True multi-device real-time GPS tracking
+       requires the backend/API to receive
+       coordinates from the driver's device.
+    ========================================= */
+
+
+    /* =========================================
+       MILL LOCATION
+
+       Existing project starting location:
+       Karimganj, Kishoreganj
+    ========================================= */
+
+    const MILL_LOCATION = {
+
+        name:
+            "Karimganj, Kishoreganj",
+
+        address:
+            "Karimganj, Kishoreganj, Dhaka Division, Bangladesh",
+
+        lat:
+            24.4701,
+
+        lng:
+            90.8771
+
+    };
+
+
+    /* =========================================
+       LOCATION SERVICES
+    ========================================= */
+
+    const BD_API_BASE =
+        "https://bdapis.com/api/v1.2";
+
+
+    const NOMINATIM_URL =
+        "https://nominatim.openstreetmap.org/search";
+
+
+    const OSRM_URL =
+        "https://router.project-osrm.org/route/v1/driving";
+
+
+    const BANGLADESH_DIVISIONS = [
+
+        "Barishal",
+        "Chattogram",
+        "Dhaka",
+        "Khulna",
+        "Mymensingh",
+        "Rajshahi",
+        "Rangpur",
+        "Sylhet"
+
+    ];
+
+
+    /* =========================================
+       DEMO FLEET
+
+       These are prototype fleet records.
+       Later they can be replaced by a separate
+       Fleet / Vehicle Management module.
+    ========================================= */
+
+    const DEFAULT_TRUCKS = [
+
+        {
+            id:
+                "TRK-001",
+
+            number:
+                "Dhaka Metro-Ta 11-1234",
+
+            capacityKg:
+                3000
+        },
+
+
+        {
+            id:
+                "TRK-002",
+
+            number:
+                "Dhaka Metro-Ta 12-5678",
+
+            capacityKg:
+                5000
+        },
+
+
+        {
+            id:
+                "TRK-003",
+
+            number:
+                "Kishoreganj-Ta 11-2468",
+
+            capacityKg:
+                2500
+        }
+
+    ];
+
+
+    const DEFAULT_DRIVERS = [
+
+        {
+            id:
+                "DRV-001",
+
+            name:
+                "Rahim Uddin",
+
+            phone:
+                "01711000001"
+        },
+
+
+        {
+            id:
+                "DRV-002",
+
+            name:
+                "Karim Mia",
+
+            phone:
+                "01711000002"
+        },
+
+
+        {
+            id:
+                "DRV-003",
+
+            name:
+                "Hasan Ali",
+
+            phone:
+                "01711000003"
+        }
+
+    ];
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
 
     const deliveryForm =
         document.getElementById(
@@ -12,113 +198,90 @@ document.addEventListener(
         );
 
 
-    const invoiceSelect =
+    if (!deliveryForm) {
+        return;
+    }
+
+
+    const deliveryInvoiceSelect =
         document.getElementById(
-            "sales-invoice"
+            "deliveryInvoice"
         );
 
 
-    const customerInput =
+    const deliveryCustomerInput =
         document.getElementById(
-            "delivery-customer"
+            "deliveryCustomer"
         );
 
 
-    // Starting Point Display
-
-    const startLocationText =
+    const deliveryPhoneInput =
         document.getElementById(
-            "startLocationText"
+            "deliveryPhone"
         );
 
 
-    const startLocationMeta =
+    const deliveryDivisionSelect =
         document.getElementById(
-            "startLocationMeta"
+            "deliveryDivision"
         );
 
 
-    // Destination
-
-    const destinationDivisionSelect =
+    const deliveryDistrictSelect =
         document.getElementById(
-            "destination-division"
+            "deliveryDistrict"
         );
 
 
-    const destinationDistrictSelect =
+    const deliveryUpazilaSelect =
         document.getElementById(
-            "destination-district"
+            "deliveryUpazila"
         );
 
 
-    const destinationUpazilaSelect =
+    const deliveryAddressInput =
         document.getElementById(
-            "destination-upazila"
+            "deliveryAddress"
         );
 
 
-    const destinationDetailsInput =
+    const deliveryTruckSelect =
         document.getElementById(
-            "destination-details"
+            "deliveryTruck"
         );
 
 
-    const locationDataMessage =
+    const deliveryDriverSelect =
         document.getElementById(
-            "locationDataMessage"
+            "deliveryDriver"
         );
 
 
-    // Other Form Fields
-
-    const truckSelect =
+    const deliveryProductInput =
         document.getElementById(
-            "truck-number"
+            "deliveryProduct"
         );
 
 
-    const driverSelect =
+    const deliveryQuantityInput =
         document.getElementById(
-            "driver-name"
+            "deliveryQuantity"
         );
 
 
-    const productInput =
+    const truckCapacityHelp =
         document.getElementById(
-            "delivery-product"
+            "truckCapacityHelp"
         );
 
 
-    const quantityInput =
+    const previewRouteBtn =
         document.getElementById(
-            "delivery-quantity"
+            "previewRouteBtn"
         );
 
 
-    const statusSelect =
-        document.getElementById(
-            "delivery-status"
-        );
-
-
-    const saveDeliveryBtn =
-        document.getElementById(
-            "saveDeliveryBtn"
-        );
-
-
-    // Table
-
-    const deliveryTableBody =
-        document.getElementById(
-            "deliveryTableBody"
-        );
-
-
-    // Summary
-
-    const runningValue =
+    const runningDeliveriesValue =
         document.getElementById(
             "runningDeliveriesValue"
         );
@@ -130,13 +293,35 @@ document.addEventListener(
         );
 
 
-    const pendingValue =
+    const pendingDeliveriesValue =
         document.getElementById(
             "pendingDeliveriesValue"
         );
 
 
-    // Map
+    const routePlannerDescription =
+        document.getElementById(
+            "routePlannerDescription"
+        );
+
+
+    const destinationMetric =
+        document.getElementById(
+            "destinationMetric"
+        );
+
+
+    const distanceMetric =
+        document.getElementById(
+            "distanceMetric"
+        );
+
+
+    const durationMetric =
+        document.getElementById(
+            "durationMetric"
+        );
+
 
     const resetMapBtn =
         document.getElementById(
@@ -144,49 +329,91 @@ document.addEventListener(
         );
 
 
-    const mapRouteInformation =
+    const trackingDeliveryValue =
         document.getElementById(
-            "mapRouteInformation"
+            "trackingDeliveryValue"
         );
 
 
-    const millMapText =
+    const currentPositionValue =
         document.getElementById(
-            "millMapText"
+            "currentPositionValue"
         );
 
 
-    const destinationMapText =
+    const gpsUpdateValue =
         document.getElementById(
-            "destinationMapText"
+            "gpsUpdateValue"
         );
 
 
-    const routeDistanceText =
+    const captureGpsBtn =
         document.getElementById(
-            "routeDistanceText"
+            "captureGpsBtn"
         );
 
 
-    const routeDurationText =
+    const deliverySearch =
         document.getElementById(
-            "routeDurationText"
+            "deliverySearch"
         );
 
 
-    // ==========================================
-    // STATE
-    // ==========================================
+    const deliveryStatusFilter =
+        document.getElementById(
+            "deliveryStatusFilter"
+        );
 
-    let editingDeliveryId =
+
+    const deliveryTableBody =
+        document.getElementById(
+            "deliveryTableBody"
+        );
+
+
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
+
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+
+    const sidebarBackdrop =
+        document.getElementById(
+            "sidebarBackdrop"
+        );
+
+
+    /* =========================================
+       STATE
+    ========================================= */
+
+    let currentDivisionDistricts =
+        [];
+
+
+    let currentRouteInfo =
         null;
 
 
-    let millLocation =
+    let selectedTrackingDeliveryId =
         null;
 
 
-    let deliveryMap =
+    let pendingCancelDeliveryId =
+        null;
+
+
+    /* =========================================
+       MAP STATE
+    ========================================= */
+
+    let map =
         null;
 
 
@@ -198,126 +425,97 @@ document.addEventListener(
         null;
 
 
-    // Main colored road line
-
-    let roadRouteLine =
+    let truckMarker =
         null;
 
 
-    // White border behind road line
-
-    let roadRouteOutline =
+    let routeLayer =
         null;
 
 
-    // Straight line only if road API fails
+    /* =========================================
+       STORAGE
+    ========================================= */
 
-    let fallbackRouteLine =
-        null;
+    function safeParseStorage(
+        key,
+        fallback = []
+    ) {
 
+        try {
 
-    let currentRouteData =
-        null;
-
-
-    let currentDestination =
-        null;
-
-
-    let routeRequestNumber =
-        0;
-
-
-    let deliveries =
-        JSON.parse(
-            localStorage.getItem(
-                "deliveries"
-            )
-        ) || [];
-
-
-    // ==========================================
-    // LOCAL STORAGE HELPERS
-    // ==========================================
-
-    function getSales() {
-
-        return (
-            JSON.parse(
+            const value =
                 localStorage.getItem(
-                    "sales"
-                )
-            ) || []
-        );
+                    key
+                );
+
+
+            if (
+                value === null
+            ) {
+
+                return fallback;
+
+            }
+
+
+            return (
+                JSON.parse(
+                    value
+                ) ??
+                fallback
+            );
+
+        }
+        catch {
+
+            return fallback;
+
+        }
 
     }
 
 
-    function getCustomers() {
-
-        return (
-            JSON.parse(
-                localStorage.getItem(
-                    "customers"
-                )
-            ) || []
-        );
-
-    }
-
-
-    function saveDeliveries() {
-
-        localStorage.setItem(
-            "deliveries",
-            JSON.stringify(
-                deliveries
-            )
-        );
-
-    }
-
-
-    // ==========================================
-    // SAFE TEXT
-    // ==========================================
+    /* =========================================
+       SAFE HTML
+    ========================================= */
 
     function escapeHTML(value) {
 
-        const div =
+        const element =
             document.createElement(
                 "div"
             );
 
 
-        div.textContent =
+        element.textContent =
             String(
                 value ?? ""
             );
 
 
-        return div.innerHTML;
+        return element.innerHTML;
 
     }
 
 
-    // ==========================================
-    // DATE
-    // ==========================================
+    /* =========================================
+       DATE
+    ========================================= */
 
     function getTodayDate() {
 
-        const date =
+        const today =
             new Date();
 
 
         const year =
-            date.getFullYear();
+            today.getFullYear();
 
 
         const month =
             String(
-                date.getMonth() + 1
+                today.getMonth() + 1
             ).padStart(
                 2,
                 "0"
@@ -326,7 +524,7 @@ document.addEventListener(
 
         const day =
             String(
-                date.getDate()
+                today.getDate()
             ).padStart(
                 2,
                 "0"
@@ -334,11 +532,7 @@ document.addEventListener(
 
 
         return (
-            year +
-            "-" +
-            month +
-            "-" +
-            day
+            `${year}-${month}-${day}`
         );
 
     }
@@ -348,18 +542,20 @@ document.addEventListener(
 
         if (!value) {
 
-            return "";
+            return "—";
 
         }
 
 
-        return new Date(
-            value +
-            "T00:00:00"
-        ).toLocaleDateString(
+        const date =
+            new Date(
+                `${value}T00:00:00`
+            );
+
+
+        return date.toLocaleDateString(
             "en-GB",
             {
-
                 day:
                     "2-digit",
 
@@ -368,1220 +564,276 @@ document.addEventListener(
 
                 year:
                     "numeric"
-
             }
         );
 
     }
 
 
-    // ==========================================
-    // PRODUCT
-    // ==========================================
+    function formatDateTime(value) {
 
-    function getProductName(value) {
+        if (!value) {
 
-        if (value === "rice") {
-            return "Rice";
+            return "—";
+
         }
 
 
-        if (value === "khud") {
-            return "Khud";
-        }
+        const date =
+            new Date(
+                value
+            );
 
 
-        if (value === "tush") {
-            return "Tush";
-        }
+        return date.toLocaleString(
+            "en-GB",
+            {
+                day:
+                    "2-digit",
 
+                month:
+                    "short",
 
-        return value || "";
+                year:
+                    "numeric",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit"
+            }
+        );
 
     }
 
 
-    // ==========================================
-    // DRIVER
-    // ==========================================
+    /* =========================================
+       NUMBER
+    ========================================= */
 
-    function getDriverName(value) {
+    function formatNumber(value) {
 
-        if (value === "kamal") {
-            return "Kamal";
-        }
-
-
-        if (value === "jalal") {
-            return "Jalal";
-        }
-
-
-        if (value === "rahim") {
-            return "Rahim";
-        }
-
-
-        return value || "";
+        return Number(
+            value || 0
+        ).toLocaleString(
+            "en-US",
+            {
+                maximumFractionDigits:
+                    2
+            }
+        );
 
     }
 
 
-    // ==========================================
-    // STATUS
-    // ==========================================
+    /* =========================================
+       SALES RECORDS
+    ========================================= */
 
-    function getStatusText(status) {
+    function getSalesRecords() {
 
-        if (status === "pending") {
-            return "Pending";
-        }
+        let records =
+            safeParseStorage(
+                "salesRecords",
+                null
+            );
 
-
-        if (status === "on-the-way") {
-            return "On the Way";
-        }
-
-
-        if (status === "delivered") {
-            return "Delivered";
-        }
-
-
-        return status || "";
-
-    }
-
-
-    function getStatusClass(status) {
-
-        if (status === "pending") {
-
-            return "status-pending";
-
-        }
-
-
-        if (status === "on-the-way") {
-
-            return "status-on-way";
-
-        }
-
-
-        if (status === "delivered") {
-
-            return "delivery-status-delivered";
-
-        }
-
-
-        return "";
-
-    }
-
-
-    // ==========================================
-    // ROUTE COLOR
-    // ==========================================
-
-    function getRouteColor(status) {
-
-        if (status === "delivered") {
-
-            return "#15913a";
-
-        }
-
-
-        if (status === "on-the-way") {
-
-            return "#f08c00";
-
-        }
-
-
-        return "#607d8b";
-
-    }
-
-
-    // ==========================================
-    // FORMAT DRIVE TIME
-    // ==========================================
-
-    function formatDuration(seconds) {
 
         if (
-            !Number.isFinite(
-                seconds
+            !Array.isArray(
+                records
             )
         ) {
 
-            return "Unavailable";
-
-        }
-
-
-        const totalMinutes =
-            Math.max(
-                1,
-                Math.round(
-                    seconds / 60
-                )
-            );
-
-
-        const hours =
-            Math.floor(
-                totalMinutes / 60
-            );
-
-
-        const minutes =
-            totalMinutes % 60;
-
-
-        if (hours === 0) {
-
-            return (
-                minutes +
-                " min"
-            );
-
-        }
-
-
-        if (minutes === 0) {
-
-            return (
-                hours +
-                " hr"
-            );
-
-        }
-
-
-        return (
-            hours +
-            " hr " +
-            minutes +
-            " min"
-        );
-
-    }
-
-
-    // ==========================================
-    // MIGRATE OLD DELIVERY RECORDS
-    // ==========================================
-
-    deliveries =
-        deliveries.map(
-            function (
-                delivery,
-                index
-            ) {
-
-                if (
-                    delivery.id ===
-                        undefined ||
-                    delivery.id ===
-                        null
-                ) {
-
-                    delivery.id =
-                        Date.now() +
-                        index;
-
-                }
-
-
-                if (!delivery.deliveryId) {
-
-                    delivery.deliveryId =
-                        "DEL-" +
-                        (1001 + index);
-
-                }
-
-
-                if (!delivery.createdDate) {
-
-                    delivery.createdDate =
-                        getTodayDate();
-
-                }
-
-
-                if (!delivery.updatedDate) {
-
-                    delivery.updatedDate =
-                        delivery.createdDate;
-
-                }
-
-
-                return delivery;
-
-            }
-        );
-
-
-    saveDeliveries();
-
-
-    // ==========================================
-    // BANGLADESH LOCATION SERVICE
-    // ==========================================
-
-    if (!window.BDLocations) {
-
-        locationDataMessage.textContent =
-            "Bangladesh location service is missing.";
-
-
-        locationDataMessage.className =
-            "location-message-error";
-
-
-        showToast(
-            "Bangladesh location service is missing.",
-            "error"
-        );
-
-
-        return;
-
-    }
-
-
-    const locationLoaded =
-        await window.BDLocations.init();
-
-
-    if (!locationLoaded) {
-
-        locationDataMessage.textContent =
-            "Bangladesh location data could not be loaded.";
-
-
-        locationDataMessage.className =
-            "location-message-error";
-
-
-        showToast(
-            "Location data could not be loaded.",
-            "error"
-        );
-
-
-        return;
-
-    }
-
-
-    locationDataMessage.textContent =
-        "Bangladesh location data ready.";
-
-
-    locationDataMessage.className =
-        "location-message-success";
-
-
-    // ==========================================
-    // CREATE LOCATION OBJECT
-    // ==========================================
-
-    function createLocationObject(
-        division,
-        district,
-        upazila
-    ) {
-
-        const coordinates =
-            window.BDLocations
-                .getCoordinates(
-                    upazila
+            records =
+                safeParseStorage(
+                    "sales",
+                    []
                 );
 
+        }
 
-        return {
 
-            divisionId:
-                division.id,
-
-            divisionName:
-                window.BDLocations
-                    .getName(
-                        division
-                    ),
-
-            districtId:
-                district.id,
-
-            districtName:
-                window.BDLocations
-                    .getName(
-                        district
-                    ),
-
-            upazilaId:
-                upazila.id,
-
-            upazilaName:
-                window.BDLocations
-                    .getName(
-                        upazila
-                    ),
-
-            lat:
-                coordinates
-                    ? Number(
-                        coordinates.lat
-                    )
-                    : null,
-
-            lng:
-                coordinates
-                    ? Number(
-                        coordinates.lng
-                    )
-                    : null
-
-        };
+        return Array.isArray(
+            records
+        )
+            ? records
+            : [];
 
     }
 
 
-    // ==========================================
-    // RICE MILL LOCATION
-    // ==========================================
-
-    function resolveMillLocation() {
-
-        const settings =
-            JSON.parse(
-                localStorage.getItem(
-                    "riceMillSettings"
-                )
-            ) || {};
+    let salesRecords =
+        getSalesRecords();
 
 
-        // Already saved central location
+    function saveSalesRecords() {
+
+        localStorage.setItem(
+            "salesRecords",
+            JSON.stringify(
+                salesRecords
+            )
+        );
+
+    }
+
+
+    /* =========================================
+       CUSTOMERS
+    ========================================= */
+
+    function getCustomers() {
+
+        let records =
+            safeParseStorage(
+                "customers",
+                null
+            );
+
 
         if (
-            settings.location &&
-            settings.location.divisionId &&
-            settings.location.districtId &&
-            settings.location.upazilaId
+            !Array.isArray(
+                records
+            )
         ) {
 
-            const division =
-                window.BDLocations
-                    .findDivisionById(
-                        settings.location
-                            .divisionId
-                    );
-
-
-            const district =
-                window.BDLocations
-                    .findDistrictById(
-                        settings.location
-                            .districtId
-                    );
-
-
-            const upazila =
-                window.BDLocations
-                    .findUpazilaById(
-                        settings.location
-                            .upazilaId
-                    );
-
-
-            if (
-                division &&
-                district &&
-                upazila
-            ) {
-
-                return createLocationObject(
-                    division,
-                    district,
-                    upazila
+            records =
+                safeParseStorage(
+                    "customerRecords",
+                    []
                 );
-
-            }
 
         }
 
 
-        // Default:
-        // Dhaka → Kishoreganj → Karimganj
+        return Array.isArray(
+            records
+        )
+            ? records
+            : [];
 
-        const division =
-            window.BDLocations
-                .findDivisionByName(
-                    "Dhaka"
-                );
-
-
-        if (!division) {
-
-            return null;
-
-        }
+    }
 
 
-        const district =
-            window.BDLocations
-                .findDistrictByName(
-                    "Kishoreganj",
-                    division.id
-                );
+    let customers =
+        getCustomers();
 
 
-        if (!district) {
+    /* =========================================
+       FLEET
+    ========================================= */
 
-            return null;
+    function loadFleetTrucks() {
 
-        }
-
-
-        const upazila =
-            window.BDLocations
-                .findUpazilaByName(
-                    "Karimganj",
-                    district.id
-                );
-
-
-        if (!upazila) {
-
-            return null;
-
-        }
-
-
-        const location =
-            createLocationObject(
-                division,
-                district,
-                upazila
+        const stored =
+            safeParseStorage(
+                "fleetTrucks",
+                null
             );
 
 
-        settings.location = {
+        if (
+            Array.isArray(stored) &&
+            stored.length >
+            0
+        ) {
 
-            divisionId:
-                location.divisionId,
+            return stored;
 
-            divisionName:
-                location.divisionName,
-
-            districtId:
-                location.districtId,
-
-            districtName:
-                location.districtName,
-
-            upazilaId:
-                location.upazilaId,
-
-            upazilaName:
-                location.upazilaName
-
-        };
+        }
 
 
         localStorage.setItem(
-            "riceMillSettings",
+            "fleetTrucks",
             JSON.stringify(
-                settings
+                DEFAULT_TRUCKS
             )
         );
 
 
-        return location;
+        return [
+            ...DEFAULT_TRUCKS
+        ];
 
     }
 
 
-    millLocation =
-        resolveMillLocation();
+    function loadFleetDrivers() {
 
-
-    if (
-        !millLocation ||
-        !Number.isFinite(
-            millLocation.lat
-        ) ||
-        !Number.isFinite(
-            millLocation.lng
-        )
-    ) {
-
-        showToast(
-            "Rice mill location could not be resolved.",
-            "error"
-        );
-
-
-        return;
-
-    }
-
-
-    // ==========================================
-    // DISPLAY MILL LOCATION
-    // ==========================================
-
-    startLocationText.textContent =
-
-        millLocation.upazilaName +
-        ", " +
-        millLocation.districtName;
-
-
-    startLocationMeta.textContent =
-
-        millLocation.divisionName +
-        " Division, Bangladesh";
-
-
-    millMapText.textContent =
-
-        millLocation.upazilaName +
-        ", " +
-        millLocation.districtName;
-
-
-    // ==========================================
-    // LOAD DIVISION
-    // ==========================================
-
-    function loadDivisionDropdown() {
-
-        destinationDivisionSelect
-            .innerHTML = `
-
-                <option
-                    value=""
-                    selected
-                    disabled
-                >
-                    Select division
-                </option>
-
-            `;
-
-
-        window.BDLocations
-            .getDivisions()
-            .forEach(
-                function (division) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        division.id;
-
-
-                    option.textContent =
-                        window.BDLocations
-                            .getName(
-                                division
-                            );
-
-
-                    destinationDivisionSelect
-                        .appendChild(
-                            option
-                        );
-
-                }
+        const stored =
+            safeParseStorage(
+                "fleetDrivers",
+                null
             );
-
-    }
-
-
-    // ==========================================
-    // LOAD DISTRICT
-    // ==========================================
-
-    function loadDistrictDropdown(
-        divisionId,
-        selectedDistrictId = null
-    ) {
-
-        destinationDistrictSelect
-            .innerHTML = `
-
-                <option
-                    value=""
-                    selected
-                    disabled
-                >
-                    Select district
-                </option>
-
-            `;
-
-
-        destinationUpazilaSelect
-            .innerHTML = `
-
-                <option
-                    value=""
-                    selected
-                    disabled
-                >
-                    Select upazila
-                </option>
-
-            `;
-
-
-        destinationUpazilaSelect.disabled =
-            true;
-
-
-        if (!divisionId) {
-
-            destinationDistrictSelect.disabled =
-                true;
-
-
-            return;
-
-        }
-
-
-        window.BDLocations
-            .getDistrictsByDivision(
-                divisionId
-            )
-            .forEach(
-                function (district) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        district.id;
-
-
-                    option.textContent =
-                        window.BDLocations
-                            .getName(
-                                district
-                            );
-
-
-                    destinationDistrictSelect
-                        .appendChild(
-                            option
-                        );
-
-                }
-            );
-
-
-        destinationDistrictSelect.disabled =
-            false;
-
-
-        if (selectedDistrictId) {
-
-            destinationDistrictSelect.value =
-                selectedDistrictId;
-
-        }
-
-    }
-
-
-    // ==========================================
-    // LOAD UPAZILA
-    // ==========================================
-
-    function loadUpazilaDropdown(
-        districtId,
-        selectedUpazilaId = null
-    ) {
-
-        destinationUpazilaSelect
-            .innerHTML = `
-
-                <option
-                    value=""
-                    selected
-                    disabled
-                >
-                    Select upazila
-                </option>
-
-            `;
-
-
-        if (!districtId) {
-
-            destinationUpazilaSelect.disabled =
-                true;
-
-
-            return;
-
-        }
-
-
-        window.BDLocations
-            .getUpazilasByDistrict(
-                districtId
-            )
-            .forEach(
-                function (upazila) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        upazila.id;
-
-
-                    option.textContent =
-                        window.BDLocations
-                            .getName(
-                                upazila
-                            );
-
-
-                    destinationUpazilaSelect
-                        .appendChild(
-                            option
-                        );
-
-                }
-            );
-
-
-        destinationUpazilaSelect.disabled =
-            false;
-
-
-        if (selectedUpazilaId) {
-
-            destinationUpazilaSelect.value =
-                selectedUpazilaId;
-
-        }
-
-    }
-
-
-    // ==========================================
-    // GET DESTINATION
-    // ==========================================
-
-    function getSelectedDestination() {
-
-        const division =
-            window.BDLocations
-                .findDivisionById(
-                    destinationDivisionSelect
-                        .value
-                );
-
-
-        const district =
-            window.BDLocations
-                .findDistrictById(
-                    destinationDistrictSelect
-                        .value
-                );
-
-
-        const upazila =
-            window.BDLocations
-                .findUpazilaById(
-                    destinationUpazilaSelect
-                        .value
-                );
 
 
         if (
-            !division ||
-            !district ||
-            !upazila
+            Array.isArray(stored) &&
+            stored.length >
+            0
         ) {
 
-            return null;
+            return stored;
 
         }
 
 
-        return createLocationObject(
-            division,
-            district,
-            upazila
+        localStorage.setItem(
+            "fleetDrivers",
+            JSON.stringify(
+                DEFAULT_DRIVERS
+            )
         );
+
+
+        return [
+            ...DEFAULT_DRIVERS
+        ];
 
     }
 
 
-    // ==========================================
-    // SET DESTINATION
-    // ==========================================
-
-    async function setDestinationLocation(
-        divisionId,
-        districtId,
-        upazilaId
-    ) {
-
-        destinationDivisionSelect.value =
-            divisionId;
+    let trucks =
+        loadFleetTrucks();
 
 
-        loadDistrictDropdown(
-            divisionId,
-            districtId
-        );
+    let drivers =
+        loadFleetDrivers();
 
 
-        loadUpazilaDropdown(
-            districtId,
-            upazilaId
-        );
+    /* =========================================
+       DELIVERY RECORDS
+    ========================================= */
 
+    function loadDeliveries() {
 
-        return await showSelectedRoute();
+        let records =
+            safeParseStorage(
+                "deliveryRecords",
+                null
+            );
 
-    }
-
-
-    // ==========================================
-    // LOCATION EVENTS
-    // ==========================================
-
-    destinationDivisionSelect
-        .addEventListener(
-            "change",
-            function () {
-
-                loadDistrictDropdown(
-                    destinationDivisionSelect
-                        .value
-                );
-
-
-                clearDestinationMap();
-
-            }
-        );
-
-
-    destinationDistrictSelect
-        .addEventListener(
-            "change",
-            function () {
-
-                loadUpazilaDropdown(
-                    destinationDistrictSelect
-                        .value
-                );
-
-
-                clearDestinationMap();
-
-            }
-        );
-
-
-    destinationUpazilaSelect
-        .addEventListener(
-            "change",
-            async function () {
-
-                await showSelectedRoute();
-
-            }
-        );
-
-
-    // ==========================================
-    // INITIALIZE MAP
-    // ==========================================
-
-    function initializeMap() {
 
         if (
-            typeof L ===
-            "undefined"
-        ) {
-
-            showToast(
-                "Leaflet map library could not be loaded.",
-                "error"
-            );
-
-
-            return;
-
-        }
-
-
-        deliveryMap =
-            L.map(
-                "deliveryMap",
-                {
-
-                    zoomControl:
-                        true,
-
-                    scrollWheelZoom:
-                        true
-
-                }
-            )
-            .setView(
-                [
-
-                    millLocation.lat,
-
-                    millLocation.lng
-
-                ],
-                9
-            );
-
-
-        // ======================================
-        // CUSTOM PANES
-        // Keeps road line ABOVE map tiles
-        // ======================================
-
-        deliveryMap.createPane(
-            "roadOutlinePane"
-        );
-
-
-        deliveryMap.getPane(
-            "roadOutlinePane"
-        ).style.zIndex =
-            450;
-
-
-        deliveryMap.createPane(
-            "roadRoutePane"
-        );
-
-
-        deliveryMap.getPane(
-            "roadRoutePane"
-        ).style.zIndex =
-            460;
-
-
-        // ======================================
-        // OpenStreetMap Tiles
-        // ======================================
-
-        L.tileLayer(
-
-            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-
-            {
-
-                maxZoom:
-                    19,
-
-                attribution:
-                    "&copy; OpenStreetMap contributors"
-
-            }
-
-        ).addTo(
-            deliveryMap
-        );
-
-
-        // ======================================
-        // Rice Mill Marker
-        // ======================================
-
-        millMarker =
-            L.circleMarker(
-                [
-
-                    millLocation.lat,
-
-                    millLocation.lng
-
-                ],
-                {
-
-                    radius:
-                        10,
-
-                    weight:
-                        3,
-
-                    color:
-                        "#ffffff",
-
-                    fillColor:
-                        "#15913a",
-
-                    fillOpacity:
-                        1
-
-                }
-            )
-            .addTo(
-                deliveryMap
-            )
-            .bindPopup(
-
-                "<strong>Smart Rice Mill</strong><br>" +
-
-                escapeHTML(
-                    millLocation.upazilaName
-                ) +
-
-                ", " +
-
-                escapeHTML(
-                    millLocation.districtName
-                )
-
-            );
-
-
-        millMarker.bindTooltip(
-            "Smart Rice Mill",
-            {
-
-                direction:
-                    "top",
-
-                offset:
-                    [0, -10]
-
-            }
-        );
-
-
-        setTimeout(
-            function () {
-
-                if (deliveryMap) {
-
-                    deliveryMap
-                        .invalidateSize();
-
-                }
-
-            },
-            300
-        );
-
-    }
-
-
-    // ==========================================
-    // REMOVE ROUTE LAYERS
-    // ==========================================
-
-    function removeRouteLayers() {
-
-        if (!deliveryMap) {
-
-            return;
-
-        }
-
-
-        if (destinationMarker) {
-
-            deliveryMap.removeLayer(
-                destinationMarker
-            );
-
-
-            destinationMarker =
-                null;
-
-        }
-
-
-        if (roadRouteLine) {
-
-            deliveryMap.removeLayer(
-                roadRouteLine
-            );
-
-
-            roadRouteLine =
-                null;
-
-        }
-
-
-        if (roadRouteOutline) {
-
-            deliveryMap.removeLayer(
-                roadRouteOutline
-            );
-
-
-            roadRouteOutline =
-                null;
-
-        }
-
-
-        if (fallbackRouteLine) {
-
-            deliveryMap.removeLayer(
-                fallbackRouteLine
-            );
-
-
-            fallbackRouteLine =
-                null;
-
-        }
-
-    }
-
-
-    // ==========================================
-    // CONVERT OSRM GEOJSON → LEAFLET LAT LNG
-    // ==========================================
-
-    function convertRouteCoordinates(
-        geometry
-    ) {
-
-        if (
-            !geometry ||
-            geometry.type !==
-                "LineString" ||
             !Array.isArray(
-                geometry.coordinates
+                records
+            )
+        ) {
+
+            records =
+                safeParseStorage(
+                    "deliveries",
+                    []
+                );
+
+        }
+
+
+        if (
+            !Array.isArray(
+                records
             )
         ) {
 
@@ -1590,1215 +842,707 @@ document.addEventListener(
         }
 
 
-        return geometry.coordinates
-            .map(
-                function (coordinate) {
-
-                    if (
-                        !Array.isArray(
-                            coordinate
-                        ) ||
-                        coordinate.length <
-                            2
-                    ) {
-
-                        return null;
-
-                    }
-
-
-                    // GeoJSON / OSRM:
-                    // [longitude, latitude]
-                    //
-                    // Leaflet Polyline:
-                    // [latitude, longitude]
-
-                    const lng =
-                        Number(
-                            coordinate[0]
-                        );
-
-
-                    const lat =
-                        Number(
-                            coordinate[1]
-                        );
-
-
-                    if (
-                        !Number.isFinite(
-                            lat
-                        ) ||
-                        !Number.isFinite(
-                            lng
-                        )
-                    ) {
-
-                        return null;
-
-                    }
-
-
-                    return [
-                        lat,
-                        lng
-                    ];
-
-                }
-            )
-            .filter(
-                function (item) {
-
-                    return (
-                        item !==
-                        null
-                    );
-
-                }
-            );
-
-    }
-
-
-    // ==========================================
-    // STRAIGHT DISTANCE FALLBACK
-    // ==========================================
-
-    function calculateStraightDistance(
-        lat1,
-        lon1,
-        lat2,
-        lon2
-    ) {
-
-        const earthRadius =
-            6371;
-
-
-        function toRadians(
-            value
-        ) {
-
-            return (
-                value *
-                Math.PI /
-                180
-            );
-
-        }
-
-
-        const dLat =
-            toRadians(
-                lat2 -
-                lat1
-            );
-
-
-        const dLon =
-            toRadians(
-                lon2 -
-                lon1
-            );
-
-
-        const a =
-
-            Math.sin(
-                dLat / 2
-            ) ** 2
-
-            +
-
-            Math.cos(
-                toRadians(
-                    lat1
-                )
-            )
-
-            *
-
-            Math.cos(
-                toRadians(
-                    lat2
-                )
-            )
-
-            *
-
-            Math.sin(
-                dLon / 2
-            ) ** 2;
-
-
-        const c =
-            2 *
-            Math.atan2(
-                Math.sqrt(a),
-                Math.sqrt(
-                    1 - a
-                )
-            );
-
-
-        return (
-            earthRadius *
-            c
-        );
-
-    }
-
-
-    // ==========================================
-    // ROUTE CACHE
-    // ==========================================
-
-    const ROUTE_CACHE_KEY =
-        "smartRiceMillRoadRouteCacheV2";
-
-
-    function getRouteCache() {
-
-        try {
-
-            return (
-                JSON.parse(
-                    localStorage.getItem(
-                        ROUTE_CACHE_KEY
-                    )
-                ) || {}
-            );
-
-        } catch (error) {
-
-            return {};
-
-        }
-
-    }
-
-
-    function saveRouteCache(
-        cache
-    ) {
-
-        try {
-
-            localStorage.setItem(
-                ROUTE_CACHE_KEY,
-                JSON.stringify(
-                    cache
-                )
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Route cache error:",
-                error
-            );
-
-        }
-
-    }
-
-
-    function createRouteCacheKey(
-        destination
-    ) {
-
-        return (
-
-            String(
-                millLocation.upazilaId
-            )
-
-            +
-
-            "-"
-
-            +
-
-            String(
-                destination.upazilaId
-            )
-
-        );
-
-    }
-
-
-    // ==========================================
-    // GET ROAD ROUTE FROM OSRM
-    // ==========================================
-
-    async function getRoadRoute(
-        destination
-    ) {
-
-        const cache =
-            getRouteCache();
-
-
-        const cacheKey =
-            createRouteCacheKey(
-                destination
-            );
-
-
-        // Use cached route
-
-        if (
-            cache[cacheKey] &&
-            cache[cacheKey].geometry
-        ) {
-
-            return cache[
-                cacheKey
-            ];
-
-        }
-
-
-        // OSRM requires:
-        // longitude,latitude
-
-        const startCoordinates =
-
-            millLocation.lng +
-
-            "," +
-
-            millLocation.lat;
-
-
-        const destinationCoordinates =
-
-            destination.lng +
-
-            "," +
-
-            destination.lat;
-
-
-        const url =
-
-            "https://router.project-osrm.org/route/v1/driving/" +
-
-            startCoordinates +
-
-            ";" +
-
-            destinationCoordinates +
-
-            "?overview=full" +
-
-            "&geometries=geojson" +
-
-            "&steps=false";
-
-
-        const response =
-            await fetch(
-                url
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "OSRM routing request failed."
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            data.code !==
-                "Ok" ||
-            !Array.isArray(
-                data.routes
-            ) ||
-            data.routes.length ===
-                0
-        ) {
-
-            throw new Error(
-                "No road route found."
-            );
-
-        }
-
-
-        const route =
-            data.routes[0];
-
-
-        if (
-            !route.geometry ||
-            !Array.isArray(
-                route.geometry.coordinates
-            )
-        ) {
-
-            throw new Error(
-                "Route geometry missing."
-            );
-
-        }
-
-
-        const result = {
-
-            geometry:
-                route.geometry,
-
-            distanceMeters:
-                Number(
-                    route.distance
-                ),
-
-            durationSeconds:
-                Number(
-                    route.duration
-                ),
-
-            savedAt:
-                Date.now()
-
-        };
-
-
-        cache[cacheKey] =
-            result;
-
-
-        saveRouteCache(
-            cache
-        );
-
-
-        return result;
-
-    }
-
-
-    // ==========================================
-    // DRAW VISIBLE ROAD ROUTE
-    // ==========================================
-
-    function drawRoadRoute(
-        routeData,
-        status
-    ) {
-
-        const routeCoordinates =
-            convertRouteCoordinates(
-                routeData.geometry
-            );
-
-
-        if (
-            routeCoordinates.length <
-            2
-        ) {
-
-            throw new Error(
-                "Invalid road route coordinates."
-            );
-
-        }
-
-
-        // ======================================
-        // WHITE OUTLINE
-        // Makes route easy to see on roads
-        // ======================================
-
-        roadRouteOutline =
-            L.polyline(
-                routeCoordinates,
-                {
-
-                    pane:
-                        "roadOutlinePane",
-
-                    color:
-                        "#ffffff",
-
-                    weight:
-                        12,
-
-                    opacity:
-                        0.95,
-
-                    lineCap:
-                        "round",
-
-                    lineJoin:
-                        "round",
-
-                    interactive:
-                        false
-
-                }
-            )
-            .addTo(
-                deliveryMap
-            );
-
-
-        // ======================================
-        // MAIN ROAD ROUTE
-        // ======================================
-
-        const lineOptions = {
-
-            pane:
-                "roadRoutePane",
-
-            color:
-                getRouteColor(
-                    status
-                ),
-
-            weight:
-                7,
-
-            opacity:
-                1,
-
-            lineCap:
-                "round",
-
-            lineJoin:
-                "round"
-
-        };
-
-
-        // Pending = dashed road line
-
-        if (
-            status ===
-            "pending"
-        ) {
-
-            lineOptions.dashArray =
-                "13 9";
-
-        }
-
-
-        roadRouteLine =
-            L.polyline(
-                routeCoordinates,
-                lineOptions
-            )
-            .addTo(
-                deliveryMap
-            );
-
-
-        // Route tooltip
-
-        roadRouteLine.bindTooltip(
-
-            "Delivery Route",
-
-            {
-
-                sticky:
-                    true
-
-            }
-
-        );
-
-
-        // Make sure visible
-
-        roadRouteOutline
-            .bringToFront();
-
-
-        roadRouteLine
-            .bringToFront();
-
-
-        // Fit map exactly around road
-
-        const routeBounds =
-            roadRouteLine
-                .getBounds();
-
-
-        deliveryMap
-            .invalidateSize();
-
-
-        deliveryMap.fitBounds(
-            routeBounds,
-            {
-
-                padding:
-                    [55, 55],
-
-                maxZoom:
-                    14
-
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // SHOW SELECTED ROAD ROUTE
-    // ==========================================
-
-    async function showSelectedRoute() {
-
-        const destination =
-            getSelectedDestination();
-
-
-        if (
-            !destination ||
-            !deliveryMap
-        ) {
-
-            return null;
-
-        }
-
-
-        if (
-            !Number.isFinite(
-                destination.lat
-            ) ||
-            !Number.isFinite(
-                destination.lng
-            )
-        ) {
-
-            showToast(
-                "Destination coordinates were not found.",
-                "error"
-            );
-
-
-            return null;
-
-        }
-
-
-        const requestNumber =
-            ++routeRequestNumber;
-
-
-        currentDestination =
-            destination;
-
-
-        currentRouteData =
-            null;
-
-
-        removeRouteLayers();
-
-
-        // ======================================
-        // DESTINATION MARKER
-        // ======================================
-
-        destinationMarker =
-            L.circleMarker(
-                [
-
-                    destination.lat,
-
-                    destination.lng
-
-                ],
-                {
-
-                    radius:
-                        10,
-
-                    weight:
-                        3,
-
-                    color:
-                        "#ffffff",
-
-                    fillColor:
-                        "#f08c00",
-
-                    fillOpacity:
-                        1
-
-                }
-            )
-            .addTo(
-                deliveryMap
-            )
-            .bindPopup(
-
-                "<strong>Destination</strong><br>" +
-
-                escapeHTML(
-                    destination.upazilaName
-                ) +
-
-                ", " +
-
-                escapeHTML(
-                    destination.districtName
-                )
-
-            );
-
-
-        destinationMarker.bindTooltip(
-            "Delivery Destination",
-            {
-
-                direction:
-                    "top",
-
-                offset:
-                    [0, -10]
-
-            }
-        );
-
-
-        // ======================================
-        // LOADING INFORMATION
-        // ======================================
-
-        destinationMapText.textContent =
-
-            destination.upazilaName +
-
-            ", " +
-
-            destination.districtName;
-
-
-        routeDistanceText.textContent =
-            "Calculating...";
-
-
-        routeDurationText.textContent =
-            "Calculating...";
-
-
-        mapRouteInformation.textContent =
-            "Finding the vehicle road route...";
-
-
-        locationDataMessage.textContent =
-            "Calculating road route...";
-
-
-        locationDataMessage.className =
-            "location-message-info";
-
-
-        // ======================================
-        // ROAD ROUTE
-        // ======================================
-
-        try {
-
-            const routeData =
-                await getRoadRoute(
-                    destination
-                );
-
-
-            if (
-                requestNumber !==
-                routeRequestNumber
+        return records.map(
+            function (
+                delivery,
+                index
             ) {
 
-                return null;
+                return {
 
-            }
+                    id:
 
+                        delivery.id ??
+                        Date.now() +
+                        index,
 
-            currentRouteData = {
 
-                ...routeData,
+                    deliveryId:
 
-                source:
-                    "road"
+                        delivery.deliveryId ||
+                        `DLV-${String(
+                            index + 1
+                        ).padStart(
+                            3,
+                            "0"
+                        )}`,
 
-            };
 
+                    invoiceId:
 
-            // ==================================
-            // DRAW ACTUAL ROAD POLYLINE
-            // ==================================
+                        delivery.invoiceId ||
+                        delivery.invoice ||
+                        "",
 
-            drawRoadRoute(
-                routeData,
-                statusSelect.value ||
-                "pending"
-            );
 
+                    saleId:
 
-            // ==================================
-            // DISTANCE
-            // ==================================
+                        delivery.saleId ||
+                        null,
 
-            const distanceKm =
 
-                routeData
-                    .distanceMeters /
+                    customerId:
 
-                1000;
+                        delivery.customerId ||
+                        null,
 
 
-            routeDistanceText.textContent =
+                    customerName:
 
-                distanceKm.toFixed(
-                    1
-                )
+                        delivery.customerName ||
+                        delivery.customer ||
+                        "",
 
-                +
 
-                " km";
+                    customerPhone:
 
+                        delivery.customerPhone ||
+                        "",
 
-            // ==================================
-            // DRIVE TIME
-            // ==================================
 
-            routeDurationText.textContent =
+                    productKey:
 
-                formatDuration(
-                    routeData
-                        .durationSeconds
-                );
+                        delivery.productKey ||
+                        "",
 
 
-            mapRouteInformation.textContent =
+                    product:
 
-                millLocation.upazilaName +
+                        delivery.product ||
+                        "",
 
-                ", " +
 
-                millLocation.districtName +
+                    quantityKg:
 
-                " → " +
+                        Number(
+                            delivery.quantityKg ||
+                            delivery.quantity ||
+                            0
+                        ),
 
-                destination.upazilaName +
 
-                ", " +
+                    truckId:
 
-                destination.districtName +
+                        delivery.truckId ||
+                        "",
 
-                " • " +
 
-                distanceKm.toFixed(
-                    1
-                ) +
+                    truckNumber:
 
-                " km road route";
+                        delivery.truckNumber ||
+                        delivery.truck ||
+                        "",
 
 
-            locationDataMessage.textContent =
-                "Vehicle road route displayed successfully.";
+                    truckCapacityKg:
 
+                        Number(
+                            delivery.truckCapacityKg ||
+                            0
+                        ),
 
-            locationDataMessage.className =
-                "location-message-success";
 
+                    driverId:
 
-            destinationMarker
-                .bringToFront();
+                        delivery.driverId ||
+                        "",
 
 
-            destinationMarker
-                .openPopup();
+                    driverName:
 
+                        delivery.driverName ||
+                        delivery.driver ||
+                        "",
 
-            return currentRouteData;
 
-        } catch (error) {
+                    driverPhone:
 
-            console.error(
-                "Road route error:",
-                error
-            );
+                        delivery.driverPhone ||
+                        "",
 
 
-            if (
-                requestNumber !==
-                routeRequestNumber
-            ) {
+                    division:
 
-                return null;
+                        delivery.division ||
+                        "",
 
-            }
 
+                    district:
 
-            // ==================================
-            // FALLBACK
-            // Only if road service fails
-            // ==================================
+                        delivery.district ||
+                        "",
 
-            const straightDistance =
 
-                calculateStraightDistance(
+                    upazila:
 
-                    millLocation.lat,
+                        delivery.upazila ||
+                        "",
 
-                    millLocation.lng,
 
-                    destination.lat,
+                    address:
 
-                    destination.lng
+                        delivery.address ||
+                        "",
 
-                );
 
+                    destinationLat:
 
-            currentRouteData = {
+                        Number(
+                            delivery.destinationLat ||
+                            0
+                        ),
 
-                source:
-                    "fallback",
 
-                distanceMeters:
-                    straightDistance *
-                    1000,
+                    destinationLng:
 
-                durationSeconds:
-                    null,
+                        Number(
+                            delivery.destinationLng ||
+                            0
+                        ),
 
-                geometry:
-                    null
 
-            };
+                    distanceKm:
 
+                        Number(
+                            delivery.distanceKm ||
+                            0
+                        ),
 
-            fallbackRouteLine =
-                L.polyline(
-                    [
 
-                        [
+                    durationMinutes:
 
-                            millLocation.lat,
+                        Number(
+                            delivery.durationMinutes ||
+                            0
+                        ),
 
-                            millLocation.lng
 
-                        ],
+                    status:
 
-                        [
+                        delivery.status ||
+                        "pending",
 
-                            destination.lat,
 
-                            destination.lng
+                    deliveryDate:
 
-                        ]
+                        delivery.deliveryDate ||
+                        delivery.date ||
+                        getTodayDate(),
 
-                    ],
-                    {
 
-                        color:
-                            "#c62828",
+                    dispatchDate:
 
-                        weight:
-                            5,
+                        delivery.dispatchDate ||
+                        null,
 
-                        opacity:
-                            0.9,
 
-                        dashArray:
-                            "8 8",
+                    startDate:
 
-                        lineCap:
-                            "round"
+                        delivery.startDate ||
+                        null,
 
-                    }
-                )
-                .addTo(
-                    deliveryMap
-                );
 
+                    deliveredDate:
 
-            deliveryMap.fitBounds(
-                fallbackRouteLine
-                    .getBounds(),
-                {
+                        delivery.deliveredDate ||
+                        null,
 
-                    padding:
-                        [55, 55],
 
-                    maxZoom:
-                        12
+                    cancelledDate:
 
-                }
-            );
+                        delivery.cancelledDate ||
+                        null,
 
 
-            routeDistanceText.textContent =
+                    currentLat:
 
-                "~" +
+                        delivery.currentLat !==
+                        undefined
 
-                straightDistance.toFixed(
-                    1
-                )
+                            ?
 
-                +
+                            Number(
+                                delivery.currentLat
+                            )
 
-                " km";
+                            :
 
+                            null,
 
-            routeDurationText.textContent =
-                "Unavailable";
 
+                    currentLng:
 
-            mapRouteInformation.textContent =
-                "Road routing service unavailable — fallback line shown.";
+                        delivery.currentLng !==
+                        undefined
 
+                            ?
 
-            locationDataMessage.textContent =
-                "Road route could not be loaded. Red dashed fallback line is shown.";
+                            Number(
+                                delivery.currentLng
+                            )
 
+                            :
 
-            locationDataMessage.className =
-                "location-message-warning";
+                            null,
 
 
-            return currentRouteData;
+                    lastLocationUpdate:
 
-        }
+                        delivery.lastLocationUpdate ||
+                        null,
 
-    }
 
+                    createdAt:
 
-    // ==========================================
-    // UPDATE ROAD LINE STATUS COLOR
-    // ==========================================
+                        delivery.createdAt ||
+                        delivery.id ||
+                        Date.now()
 
-    function updateRouteColor() {
-
-        if (!roadRouteLine) {
-
-            return;
-
-        }
-
-
-        const status =
-            statusSelect.value ||
-            "pending";
-
-
-        const options = {
-
-            color:
-                getRouteColor(
-                    status
-                ),
-
-            weight:
-                7,
-
-            opacity:
-                1
-
-        };
-
-
-        if (
-            status ===
-            "pending"
-        ) {
-
-            options.dashArray =
-                "13 9";
-
-        } else {
-
-            options.dashArray =
-                null;
-
-        }
-
-
-        roadRouteLine.setStyle(
-            options
-        );
-
-
-        roadRouteLine
-            .bringToFront();
-
-    }
-
-
-    statusSelect
-        .addEventListener(
-            "change",
-            function () {
-
-                updateRouteColor();
+                };
 
             }
         );
 
-
-    // ==========================================
-    // CLEAR MAP
-    // ==========================================
-
-    function clearDestinationMap() {
-
-        routeRequestNumber++;
+    }
 
 
-        currentDestination =
-            null;
+    let deliveryRecords =
+        loadDeliveries();
 
 
-        currentRouteData =
-            null;
+    function saveDeliveries() {
 
-
-        removeRouteLayers();
-
-
-        destinationMapText.textContent =
-            "Not selected";
-
-
-        routeDistanceText.textContent =
-            "—";
-
-
-        routeDurationText.textContent =
-            "—";
-
-
-        mapRouteInformation.textContent =
-            "Select destination location to preview the road route.";
-
-
-        if (deliveryMap) {
-
-            deliveryMap.setView(
-                [
-
-                    millLocation.lat,
-
-                    millLocation.lng
-
-                ],
-                9
-            );
-
-
-            setTimeout(
-                function () {
-
-                    deliveryMap
-                        .invalidateSize();
-
-                },
-                100
-            );
-
-        }
+        localStorage.setItem(
+            "deliveryRecords",
+            JSON.stringify(
+                deliveryRecords
+            )
+        );
 
     }
 
 
-    resetMapBtn
-        .addEventListener(
-            "click",
-            clearDestinationMap
-        );
-
-
-    // ==========================================
-    // GENERATE DELIVERY ID
-    // ==========================================
+    /* =========================================
+       DELIVERY ID
+    ========================================= */
 
     function generateDeliveryId() {
 
-        let highest =
-            1000;
+        const numbers =
+            deliveryRecords
 
-
-        deliveries.forEach(
-            function (delivery) {
-
-                if (
-                    !delivery.deliveryId
-                ) {
-
-                    return;
-
-                }
-
-
-                const number =
-                    Number(
+                .map(
+                    function (
                         delivery
-                            .deliveryId
-                            .replace(
-                                "DEL-",
+                    ) {
+
+                        const match =
+                            String(
+                                delivery.deliveryId ||
                                 ""
-                            )
-                    );
+                            ).match(
+                                /^DLV-(\d+)$/i
+                            );
 
 
-                if (
-                    Number.isFinite(
-                        number
-                    ) &&
-                    number >
-                        highest
-                ) {
+                        return (
+                            match
+                                ? Number(
+                                    match[1]
+                                )
+                                : 0
+                        );
 
-                    highest =
-                        number;
+                    }
+                )
 
-                }
+                .filter(Boolean);
 
-            }
-        );
+
+        const next =
+
+            numbers.length >
+            0
+
+                ?
+
+                Math.max(
+                    ...numbers
+                ) + 1
+
+                :
+
+                1;
 
 
         return (
-            "DEL-" +
-            (highest + 1)
+
+            `DLV-${String(
+                next
+            ).padStart(
+                3,
+                "0"
+            )}`
+
         );
 
     }
 
 
-    // ==========================================
-    // LOAD INVOICES
-    // ==========================================
+    /* =========================================
+       FIND DATA
+    ========================================= */
 
-    function loadInvoices() {
+    function findSaleByInvoice(
+        invoiceId
+    ) {
 
-        invoiceSelect.innerHTML = `
+        return salesRecords.find(
+            function (
+                sale
+            ) {
 
-            <option
-                value=""
-                selected
-                disabled
-            >
+                const code =
+
+                    sale.invoiceId ||
+                    sale.invoiceNumber ||
+                    sale.saleId;
+
+
+                return (
+                    String(
+                        code
+                    )
+
+                    ===
+
+                    String(
+                        invoiceId
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    function findCustomerForSale(
+        sale
+    ) {
+
+        if (!sale) {
+
+            return null;
+
+        }
+
+
+        const byInternalId =
+            customers.find(
+                function (
+                    customer
+                ) {
+
+                    return (
+
+                        sale.customerId !==
+                        undefined
+
+                        &&
+
+                        String(
+                            customer.id
+                        )
+
+                        ===
+
+                        String(
+                            sale.customerId
+                        )
+
+                    );
+
+                }
+            );
+
+
+        if (
+            byInternalId
+        ) {
+
+            return byInternalId;
+
+        }
+
+
+        const saleName =
+            String(
+                sale.customerName ||
+                sale.customer ||
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        return customers.find(
+            function (
+                customer
+            ) {
+
+                return (
+
+                    String(
+                        customer.name ||
+                        customer.customerName ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase()
+
+                    ===
+
+                    saleName
+
+                );
+
+            }
+        ) || null;
+
+    }
+
+
+    function findTruck(
+        id
+    ) {
+
+        return trucks.find(
+            function (
+                truck
+            ) {
+
+                return (
+                    String(
+                        truck.id
+                    )
+
+                    ===
+
+                    String(
+                        id
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    function findDriver(
+        id
+    ) {
+
+        return drivers.find(
+            function (
+                driver
+            ) {
+
+                return (
+                    String(
+                        driver.id
+                    )
+
+                    ===
+
+                    String(
+                        id
+                    )
+                );
+
+            }
+        );
+
+    }
+
+
+    function findDelivery(
+        id
+    ) {
+
+        return deliveryRecords.find(
+            function (
+                delivery
+            ) {
+
+                return (
+
+                    Number(
+                        delivery.id
+                    )
+
+                    ===
+
+                    Number(
+                        id
+                    )
+
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       DELIVERY REQUIRED
+    ========================================= */
+
+    function requiresDelivery(
+        sale
+    ) {
+
+        return (
+
+            sale.deliveryRequired ===
+            true
+
+            ||
+
+            String(
+                sale.deliveryRequired ||
+                sale.delivery ||
+                ""
+            ).toLowerCase() ===
+            "yes"
+
+        );
+
+    }
+
+
+    /* =========================================
+       INVOICE ALREADY ASSIGNED
+    ========================================= */
+
+    function invoiceHasCurrentDelivery(
+        invoiceId
+    ) {
+
+        return deliveryRecords.some(
+            function (
+                delivery
+            ) {
+
+                return (
+
+                    String(
+                        delivery.invoiceId
+                    )
+
+                    ===
+
+                    String(
+                        invoiceId
+                    )
+
+                    &&
+
+                    delivery.status !==
+                    "cancelled"
+
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       ELIGIBLE INVOICES
+    ========================================= */
+
+    function getEligibleInvoices() {
+
+        return salesRecords.filter(
+            function (
+                sale
+            ) {
+
+                const invoiceId =
+
+                    sale.invoiceId ||
+                    sale.invoiceNumber ||
+                    sale.saleId;
+
+
+                if (
+                    !invoiceId
+                ) {
+
+                    return false;
+
+                }
+
+
+                if (
+                    sale.status ===
+                    "voided"
+                ) {
+
+                    return false;
+
+                }
+
+
+                if (
+                    !requiresDelivery(
+                        sale
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+
+                if (
+                    invoiceHasCurrentDelivery(
+                        invoiceId
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       POPULATE INVOICES
+    ========================================= */
+
+    function populateInvoices() {
+
+        const previousValue =
+            deliveryInvoiceSelect.value;
+
+
+        deliveryInvoiceSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
 
                 Select delivery invoice
 
@@ -2807,84 +1551,52 @@ document.addEventListener(
         `;
 
 
-        getSales()
-            .filter(
-                function (sale) {
+        const eligible =
+            getEligibleInvoices();
 
-                    return (
-                        sale.deliveryRequired ===
-                        "yes"
+
+        eligible.forEach(
+            function (
+                sale
+            ) {
+
+                const invoiceId =
+
+                    sale.invoiceId ||
+                    sale.invoiceNumber ||
+                    sale.saleId;
+
+
+                const option =
+                    document.createElement(
+                        "option"
                     );
 
-                }
-            )
-            .forEach(
-                function (sale) {
 
-                    const alreadyUsed =
-                        deliveries.some(
-                            function (delivery) {
-
-                                return (
-
-                                    delivery.invoiceId ===
-                                        sale.invoiceId
-
-                                    &&
-
-                                    delivery.id !==
-                                        editingDeliveryId
-
-                                );
-
-                            }
-                        );
+                option.value =
+                    invoiceId;
 
 
-                    if (alreadyUsed) {
+                option.textContent =
 
-                        return;
-
-                    }
-
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
+                    `${invoiceId} — ${sale.customerName || "Customer"} — ${formatNumber(
+                        sale.quantityKg ||
+                        sale.quantity ||
+                        0
+                    )} kg`;
 
 
-                    option.value =
-                        sale.invoiceId;
+                deliveryInvoiceSelect.appendChild(
+                    option
+                );
 
-
-                    option.textContent =
-
-                        sale.invoiceId +
-
-                        " — " +
-
-                        sale.customerName +
-
-                        " — " +
-
-                        getProductName(
-                            sale.product
-                        );
-
-
-                    invoiceSelect
-                        .appendChild(
-                            option
-                        );
-
-                }
-            );
+            }
+        );
 
 
         if (
-            invoiceSelect.options.length ===
-            1
+            eligible.length ===
+            0
         ) {
 
             const option =
@@ -2898,52 +1610,2253 @@ document.addEventListener(
 
 
             option.textContent =
-                "No delivery invoice available";
+                "No unassigned delivery-required invoices";
 
 
-            invoiceSelect
-                .appendChild(
-                    option
-                );
+            deliveryInvoiceSelect.appendChild(
+                option
+            );
+
+        }
+
+
+        if (
+            previousValue &&
+            eligible.some(
+                function (
+                    sale
+                ) {
+
+                    return (
+
+                        String(
+                            sale.invoiceId
+                        )
+
+                        ===
+
+                        String(
+                            previousValue
+                        )
+
+                    );
+
+                }
+            )
+        ) {
+
+            deliveryInvoiceSelect.value =
+                previousValue;
 
         }
 
     }
 
 
-    // ==========================================
-    // INVOICE CHANGE
-    // ==========================================
+    /* =========================================
+       RESOURCE AVAILABILITY
+    ========================================= */
 
-    invoiceSelect
-        .addEventListener(
-            "change",
-            function () {
+    function isActiveDeliveryStatus(
+        status
+    ) {
 
-                loadSelectedInvoice();
+        return (
+
+            status ===
+            "pending"
+
+            ||
+
+            status ===
+            "dispatched"
+
+            ||
+
+            status ===
+            "on-way"
+
+        );
+
+    }
+
+
+    function isTruckBusy(
+        truckId
+    ) {
+
+        return deliveryRecords.some(
+            function (
+                delivery
+            ) {
+
+                return (
+
+                    String(
+                        delivery.truckId
+                    )
+
+                    ===
+
+                    String(
+                        truckId
+                    )
+
+                    &&
+
+                    isActiveDeliveryStatus(
+                        delivery.status
+                    )
+
+                );
+
+            }
+        );
+
+    }
+
+
+    function isDriverBusy(
+        driverId
+    ) {
+
+        return deliveryRecords.some(
+            function (
+                delivery
+            ) {
+
+                return (
+
+                    String(
+                        delivery.driverId
+                    )
+
+                    ===
+
+                    String(
+                        driverId
+                    )
+
+                    &&
+
+                    isActiveDeliveryStatus(
+                        delivery.status
+                    )
+
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       POPULATE FLEET
+    ========================================= */
+
+    function populateTrucks() {
+
+        deliveryTruckSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select available truck
+
+            </option>
+
+        `;
+
+
+        trucks.forEach(
+            function (
+                truck
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                const busy =
+                    isTruckBusy(
+                        truck.id
+                    );
+
+
+                option.value =
+                    truck.id;
+
+
+                option.disabled =
+                    busy;
+
+
+                option.textContent =
+
+                    `${truck.id} — ${truck.number} — ${formatNumber(
+                        truck.capacityKg
+                    )} kg${
+                        busy
+                            ? " — Busy"
+                            : ""
+                    }`;
+
+
+                deliveryTruckSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    function populateDrivers() {
+
+        deliveryDriverSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select available driver
+
+            </option>
+
+        `;
+
+
+        drivers.forEach(
+            function (
+                driver
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                const busy =
+                    isDriverBusy(
+                        driver.id
+                    );
+
+
+                option.value =
+                    driver.id;
+
+
+                option.disabled =
+                    busy;
+
+
+                option.textContent =
+
+                    `${driver.id} — ${driver.name}${
+                        busy
+                            ? " — Busy"
+                            : ""
+                    }`;
+
+
+                deliveryDriverSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       TRUCK CAPACITY HELP
+    ========================================= */
+
+    deliveryTruckSelect.addEventListener(
+        "change",
+        function () {
+
+            const truck =
+                findTruck(
+                    deliveryTruckSelect.value
+                );
+
+
+            if (!truck) {
+
+                truckCapacityHelp.textContent =
+                    "Select a truck to view capacity.";
+
+
+                return;
+
+            }
+
+
+            truckCapacityHelp.textContent =
+
+                `Maximum payload: ${formatNumber(
+                    truck.capacityKg
+                )} kg`;
+
+        }
+    );
+
+
+    /* =========================================
+       LOCATION DROPDOWNS
+    ========================================= */
+
+    function populateDivisionDropdown() {
+
+        deliveryDivisionSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select division
+
+            </option>
+
+        `;
+
+
+        BANGLADESH_DIVISIONS.forEach(
+            function (
+                division
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    division;
+
+
+                option.textContent =
+                    division;
+
+
+                deliveryDivisionSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    function resetDistrictDropdown() {
+
+        deliveryDistrictSelect.innerHTML = `
+
+            <option value="">
+                Select district
+            </option>
+
+        `;
+
+
+        deliveryDistrictSelect.disabled =
+            true;
+
+    }
+
+
+    function resetUpazilaDropdown() {
+
+        deliveryUpazilaSelect.innerHTML = `
+
+            <option value="">
+                Select upazila
+            </option>
+
+        `;
+
+
+        deliveryUpazilaSelect.disabled =
+            true;
+
+    }
+
+
+    function getDivisionCacheKey(
+        division
+    ) {
+
+        return (
+
+            `bdLocationDivision_${String(
+                division
+            ).toLowerCase()}`
+
+        );
+
+    }
+
+
+    async function loadDivisionData(
+        division
+    ) {
+
+        if (!division) {
+
+            return [];
+
+        }
+
+
+        const cacheKey =
+            getDivisionCacheKey(
+                division
+            );
+
+
+        const cached =
+            safeParseStorage(
+                cacheKey,
+                null
+            );
+
+
+        if (
+            Array.isArray(
+                cached
+            )
+
+            &&
+
+            cached.length >
+            0
+        ) {
+
+            currentDivisionDistricts =
+                cached;
+
+
+            return cached;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+
+                    `${BD_API_BASE}/division/${encodeURIComponent(
+                        division.toLowerCase()
+                    )}`
+
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Location service failed"
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            const data =
+                Array.isArray(
+                    result.data
+                )
+
+                    ?
+
+                    result.data
+
+                    :
+
+                    [];
+
+
+            if (
+                data.length ===
+                0
+            ) {
+
+                throw new Error(
+                    "No location data"
+                );
+
+            }
+
+
+            localStorage.setItem(
+                cacheKey,
+                JSON.stringify(
+                    data
+                )
+            );
+
+
+            currentDivisionDistricts =
+                data;
+
+
+            return data;
+
+        }
+        catch {
+
+            currentDivisionDistricts =
+                [];
+
+
+            showToast(
+                "District data could not be loaded. Check your internet connection.",
+                "error"
+            );
+
+
+            return [];
+
+        }
+
+    }
+
+
+    function populateDistrictDropdown(
+        districts,
+        selectedDistrict = ""
+    ) {
+
+        resetDistrictDropdown();
+
+        resetUpazilaDropdown();
+
+
+        if (
+            !Array.isArray(
+                districts
+            )
+
+            ||
+
+            districts.length ===
+            0
+        ) {
+
+            return;
+
+        }
+
+
+        districts.forEach(
+            function (
+                district
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    district.district;
+
+
+                option.textContent =
+                    district.district;
+
+
+                deliveryDistrictSelect.appendChild(
+                    option
+                );
 
             }
         );
 
 
-    // ==========================================
-    // LOAD SELECTED INVOICE
-    // ==========================================
+        deliveryDistrictSelect.disabled =
+            false;
 
-    async function loadSelectedInvoice() {
+
+        if (
+            selectedDistrict
+        ) {
+
+            deliveryDistrictSelect.value =
+                selectedDistrict;
+
+        }
+
+    }
+
+
+    function populateUpazilaDropdown(
+        districtName,
+        selectedUpazila = ""
+    ) {
+
+        resetUpazilaDropdown();
+
+
+        const district =
+            currentDivisionDistricts.find(
+                function (
+                    item
+                ) {
+
+                    return (
+
+                        String(
+                            item.district
+                        ).toLowerCase()
+
+                        ===
+
+                        String(
+                            districtName
+                        ).toLowerCase()
+
+                    );
+
+                }
+            );
+
+
+        if (
+            !district
+
+            ||
+
+            !Array.isArray(
+                district.upazilla
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        district.upazilla.forEach(
+            function (
+                upazila
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    upazila;
+
+
+                option.textContent =
+                    upazila;
+
+
+                deliveryUpazilaSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        deliveryUpazilaSelect.disabled =
+            false;
+
+
+        if (
+            selectedUpazila
+        ) {
+
+            deliveryUpazilaSelect.value =
+                selectedUpazila;
+
+        }
+
+    }
+
+
+    deliveryDivisionSelect.addEventListener(
+        "change",
+        async function () {
+
+            resetDistrictDropdown();
+
+            resetUpazilaDropdown();
+
+            clearCurrentRoute();
+
+
+            const districts =
+                await loadDivisionData(
+                    deliveryDivisionSelect.value
+                );
+
+
+            populateDistrictDropdown(
+                districts
+            );
+
+        }
+    );
+
+
+    deliveryDistrictSelect.addEventListener(
+        "change",
+        function () {
+
+            populateUpazilaDropdown(
+                deliveryDistrictSelect.value
+            );
+
+
+            clearCurrentRoute();
+
+        }
+    );
+
+
+    deliveryUpazilaSelect.addEventListener(
+        "change",
+        clearCurrentRoute
+    );
+
+
+    deliveryAddressInput.addEventListener(
+        "input",
+        clearCurrentRoute
+    );
+
+
+    /* =========================================
+       LOAD INVOICE
+    ========================================= */
+
+    deliveryInvoiceSelect.addEventListener(
+        "change",
+        async function () {
+
+            const sale =
+                findSaleByInvoice(
+                    deliveryInvoiceSelect.value
+                );
+
+
+            await loadSaleIntoForm(
+                sale
+            );
+
+        }
+    );
+
+
+    async function loadSaleIntoForm(
+        sale
+    ) {
+
+        clearCurrentRoute();
+
+
+        if (!sale) {
+
+            resetInvoiceDetails();
+
+            return;
+
+        }
+
+
+        const customer =
+            findCustomerForSale(
+                sale
+            );
+
+
+        deliveryCustomerInput.value =
+
+            sale.customerName ||
+            customer?.name ||
+            "";
+
+
+        deliveryPhoneInput.value =
+
+            sale.customerPhone ||
+            customer?.phone ||
+            "";
+
+
+        deliveryProductInput.value =
+
+            sale.product ||
+            sale.productName ||
+            sale.productKey ||
+            "";
+
+
+        deliveryQuantityInput.value =
+
+            `${formatNumber(
+                sale.quantityKg ||
+                sale.quantity ||
+                0
+            )} kg`;
+
+
+        if (!customer) {
+
+            resetDestinationFields();
+
+
+            routePlannerDescription.textContent =
+                "Customer profile was not found. Enter the delivery destination manually.";
+
+
+            return;
+
+        }
+
+
+        deliveryAddressInput.value =
+            customer.address ||
+            customer.detailedAddress ||
+            "";
+
+
+        const division =
+            customer.division ||
+            "";
+
+
+        const district =
+            customer.district ||
+            "";
+
+
+        const upazila =
+            customer.upazila ||
+            "";
+
+
+        if (
+            division
+        ) {
+
+            deliveryDivisionSelect.value =
+                division;
+
+
+            const districts =
+                await loadDivisionData(
+                    division
+                );
+
+
+            populateDistrictDropdown(
+                districts,
+                district
+            );
+
+
+            if (
+                district
+            ) {
+
+                populateUpazilaDropdown(
+                    district,
+                    upazila
+                );
+
+            }
+
+        }
+        else {
+
+            resetDistrictDropdown();
+
+            resetUpazilaDropdown();
+
+        }
+
+
+        routePlannerDescription.textContent =
+
+            `${sale.invoiceId || "Invoice"} customer destination loaded. Preview the road route before saving.`;
+
+
+        if (
+            division &&
+            district &&
+            upazila
+        ) {
+
+            await previewCurrentRoute(
+                false
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       RESET INVOICE DETAILS
+    ========================================= */
+
+    function resetInvoiceDetails() {
+
+        deliveryCustomerInput.value =
+            "";
+
+
+        deliveryPhoneInput.value =
+            "";
+
+
+        deliveryProductInput.value =
+            "";
+
+
+        deliveryQuantityInput.value =
+            "";
+
+
+        resetDestinationFields();
+
+
+        clearCurrentRoute();
+
+    }
+
+
+    function resetDestinationFields() {
+
+        deliveryDivisionSelect.value =
+            "";
+
+
+        resetDistrictDropdown();
+
+        resetUpazilaDropdown();
+
+
+        deliveryAddressInput.value =
+            "";
+
+    }
+
+
+    /* =========================================
+       MAP INITIALIZATION
+    ========================================= */
+
+    function initializeMap() {
+
+        const mapElement =
+            document.getElementById(
+                "deliveryMap"
+            );
+
+
+        if (
+            !window.L
+        ) {
+
+            mapElement.innerHTML =
+
+                "<div style='padding:20px;'>Map library could not be loaded.</div>";
+
+
+            return;
+
+        }
+
+
+        map =
+            L.map(
+                "deliveryMap"
+            )
+            .setView(
+                [
+                    MILL_LOCATION.lat,
+                    MILL_LOCATION.lng
+                ],
+                8
+            );
+
+
+        L.tileLayer(
+            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                maxZoom:
+                    19,
+
+                attribution:
+                    "&copy; OpenStreetMap contributors"
+            }
+        )
+        .addTo(
+            map
+        );
+
+
+        millMarker =
+            L.marker(
+                [
+                    MILL_LOCATION.lat,
+                    MILL_LOCATION.lng
+                ]
+            )
+            .addTo(
+                map
+            )
+            .bindPopup(
+                "Smart Rice Mill<br>Karimganj, Kishoreganj"
+            );
+
+    }
+
+
+    /* =========================================
+       MAP LAYERS
+    ========================================= */
+
+    function clearRouteLayers() {
+
+        if (!map) {
+
+            return;
+
+        }
+
+
+        if (
+            routeLayer
+        ) {
+
+            map.removeLayer(
+                routeLayer
+            );
+
+
+            routeLayer =
+                null;
+
+        }
+
+
+        if (
+            destinationMarker
+        ) {
+
+            map.removeLayer(
+                destinationMarker
+            );
+
+
+            destinationMarker =
+                null;
+
+        }
+
+    }
+
+
+    function clearTruckMarker() {
+
+        if (
+            map &&
+            truckMarker
+        ) {
+
+            map.removeLayer(
+                truckMarker
+            );
+
+
+            truckMarker =
+                null;
+
+        }
+
+    }
+
+
+    function clearCurrentRoute() {
+
+        currentRouteInfo =
+            null;
+
+
+        clearRouteLayers();
+
+
+        destinationMetric.textContent =
+            "Not selected";
+
+
+        distanceMetric.textContent =
+            "—";
+
+
+        durationMetric.textContent =
+            "—";
+
+    }
+
+
+    /* =========================================
+       DESTINATION QUERY
+    ========================================= */
+
+    function buildDestinationQuery() {
+
+        const parts = [
+
+            deliveryAddressInput.value
+                .trim(),
+
+            deliveryUpazilaSelect.value,
+
+            deliveryDistrictSelect.value,
+
+            deliveryDivisionSelect.value,
+
+            "Bangladesh"
+
+        ];
+
+
+        return parts
+            .filter(Boolean)
+            .join(
+                ", "
+            );
+
+    }
+
+
+    /* =========================================
+       GEOCODING
+    ========================================= */
+
+    async function geocodeDestination() {
+
+        const query =
+            buildDestinationQuery();
+
+
+        if (!query) {
+
+            return null;
+
+        }
+
+
+        const cacheKey =
+
+            `deliveryGeocode_${query
+                .toLowerCase()
+                .replace(
+                    /[^a-z0-9]+/g,
+                    "_"
+                )}`;
+
+
+        const cached =
+            safeParseStorage(
+                cacheKey,
+                null
+            );
+
+
+        if (
+            cached &&
+            cached.lat &&
+            cached.lng
+        ) {
+
+            return cached;
+
+        }
+
+
+        const queries = [
+
+            query,
+
+
+            [
+                deliveryUpazilaSelect.value,
+                deliveryDistrictSelect.value,
+                deliveryDivisionSelect.value,
+                "Bangladesh"
+            ]
+            .filter(Boolean)
+            .join(
+                ", "
+            ),
+
+
+            [
+                deliveryDistrictSelect.value,
+                deliveryDivisionSelect.value,
+                "Bangladesh"
+            ]
+            .filter(Boolean)
+            .join(
+                ", "
+            )
+
+        ];
+
+
+        for (
+            const currentQuery of
+            queries
+        ) {
+
+            if (!currentQuery) {
+
+                continue;
+
+            }
+
+
+            try {
+
+                const url =
+
+                    `${NOMINATIM_URL}?format=jsonv2&limit=1&countrycodes=bd&q=${encodeURIComponent(
+                        currentQuery
+                    )}`;
+
+
+                const response =
+                    await fetch(
+                        url
+                    );
+
+
+                if (!response.ok) {
+
+                    continue;
+
+                }
+
+
+                const result =
+                    await response.json();
+
+
+                if (
+                    !Array.isArray(
+                        result
+                    )
+
+                    ||
+
+                    result.length ===
+                    0
+                ) {
+
+                    continue;
+
+                }
+
+
+                const location = {
+
+                    lat:
+                        Number(
+                            result[0].lat
+                        ),
+
+
+                    lng:
+                        Number(
+                            result[0].lon
+                        ),
+
+
+                    displayName:
+                        result[0].display_name ||
+                        currentQuery
+
+                };
+
+
+                localStorage.setItem(
+                    cacheKey,
+                    JSON.stringify(
+                        location
+                    )
+                );
+
+
+                return location;
+
+            }
+            catch {
+
+                continue;
+
+            }
+
+        }
+
+
+        return null;
+
+    }
+
+
+    /* =========================================
+       ROAD ROUTE
+    ========================================= */
+
+    async function fetchRoadRoute(
+        destination
+    ) {
+
+        const url =
+
+            `${OSRM_URL}/${MILL_LOCATION.lng},${MILL_LOCATION.lat};${destination.lng},${destination.lat}?overview=full&geometries=geojson&steps=false`;
+
+
+        const response =
+            await fetch(
+                url
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Routing service unavailable"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            data.code !==
+            "Ok"
+
+            ||
+
+            !Array.isArray(
+                data.routes
+            )
+
+            ||
+
+            data.routes.length ===
+            0
+        ) {
+
+            throw new Error(
+                "No road route found"
+            );
+
+        }
+
+
+        const route =
+            data.routes[0];
+
+
+        return {
+
+            distanceKm:
+
+                Number(
+                    route.distance
+                ) /
+                1000,
+
+
+            durationMinutes:
+
+                Number(
+                    route.duration
+                ) /
+                60,
+
+
+            geometry:
+                route.geometry
+
+        };
+
+    }
+
+
+    /* =========================================
+       ROUTE COLOR
+    ========================================= */
+
+    function getRouteColor(
+        status
+    ) {
+
+        if (
+            status ===
+            "on-way"
+        ) {
+
+            return "#ef8500";
+
+        }
+
+
+        if (
+            status ===
+            "delivered"
+        ) {
+
+            return "#14933a";
+
+        }
+
+
+        if (
+            status ===
+            "cancelled"
+        ) {
+
+            return "#c74747";
+
+        }
+
+
+        if (
+            status ===
+            "dispatched"
+        ) {
+
+            return "#277cae";
+
+        }
+
+
+        return "#607d8b";
+
+    }
+
+
+    /* =========================================
+       DRAW ROUTE
+    ========================================= */
+
+    function drawRoute(
+        destination,
+        route,
+        status = "pending"
+    ) {
+
+        if (!map) {
+
+            return;
+
+        }
+
+
+        clearRouteLayers();
+
+
+        destinationMarker =
+            L.marker(
+                [
+                    destination.lat,
+                    destination.lng
+                ]
+            )
+            .addTo(
+                map
+            )
+            .bindPopup(
+                "Delivery Destination"
+            );
+
+
+        const coordinates =
+
+            route.geometry.coordinates.map(
+                function (
+                    coordinate
+                ) {
+
+                    return [
+
+                        coordinate[1],
+                        coordinate[0]
+
+                    ];
+
+                }
+            );
+
+
+        routeLayer =
+            L.polyline(
+                coordinates,
+                {
+                    color:
+                        getRouteColor(
+                            status
+                        ),
+
+                    weight:
+                        5,
+
+                    opacity:
+                        0.85
+                }
+            )
+            .addTo(
+                map
+            );
+
+
+        const group =
+            L.featureGroup(
+                [
+                    millMarker,
+                    destinationMarker,
+                    routeLayer
+                ]
+            );
+
+
+        map.fitBounds(
+            group.getBounds(),
+            {
+                padding:
+                    [
+                        25,
+                        25
+                    ]
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       PREVIEW CURRENT ROUTE
+    ========================================= */
+
+    async function previewCurrentRoute(
+        showErrors = true
+    ) {
+
+        const division =
+            deliveryDivisionSelect.value;
+
+
+        const district =
+            deliveryDistrictSelect.value;
+
+
+        const upazila =
+            deliveryUpazilaSelect.value;
+
+
+        const address =
+            deliveryAddressInput.value
+                .trim();
+
+
+        if (
+            !division ||
+            !district ||
+            !upazila ||
+            !address
+        ) {
+
+            if (
+                showErrors
+            ) {
+
+                showToast(
+                    "Complete the delivery destination before previewing the route.",
+                    "error"
+                );
+
+            }
+
+
+            return false;
+
+        }
+
+
+        previewRouteBtn.disabled =
+            true;
+
+
+        previewRouteBtn.textContent =
+            "Loading Route...";
+
+
+        try {
+
+            const destination =
+                await geocodeDestination();
+
+
+            if (!destination) {
+
+                throw new Error(
+                    "Destination could not be located on the map."
+                );
+
+            }
+
+
+            const route =
+                await fetchRoadRoute(
+                    destination
+                );
+
+
+            currentRouteInfo = {
+
+                destinationLat:
+                    destination.lat,
+
+
+                destinationLng:
+                    destination.lng,
+
+
+                destinationName:
+                    destination.displayName,
+
+
+                distanceKm:
+                    route.distanceKm,
+
+
+                durationMinutes:
+                    route.durationMinutes
+
+            };
+
+
+            drawRoute(
+                destination,
+                route,
+                "pending"
+            );
+
+
+            destinationMetric.textContent =
+                `${upazila}, ${district}`;
+
+
+            distanceMetric.textContent =
+                `${formatNumber(
+                    route.distanceKm
+                )} km`;
+
+
+            durationMetric.textContent =
+                formatDuration(
+                    route.durationMinutes
+                );
+
+
+            routePlannerDescription.textContent =
+                "Road route calculated from the rice mill to the customer destination.";
+
+
+            return true;
+
+        }
+        catch (
+            error
+        ) {
+
+            clearCurrentRoute();
+
+
+            if (
+                showErrors
+            ) {
+
+                showToast(
+                    error.message ||
+                    "Route could not be calculated.",
+                    "error"
+                );
+
+            }
+
+
+            return false;
+
+        }
+        finally {
+
+            previewRouteBtn.disabled =
+                false;
+
+
+            previewRouteBtn.textContent =
+                "Preview Road Route";
+
+        }
+
+    }
+
+
+    previewRouteBtn.addEventListener(
+        "click",
+        function () {
+
+            previewCurrentRoute(
+                true
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       FORMAT DURATION
+    ========================================= */
+
+    function formatDuration(
+        minutes
+    ) {
+
+        const totalMinutes =
+            Math.round(
+                Number(
+                    minutes ||
+                    0
+                )
+            );
+
+
+        if (
+            totalMinutes <
+            60
+        ) {
+
+            return (
+                `${totalMinutes} min`
+            );
+
+        }
+
+
+        const hours =
+            Math.floor(
+                totalMinutes /
+                60
+            );
+
+
+        const remainingMinutes =
+            totalMinutes %
+            60;
+
+
+        return (
+
+            `${hours} hr ${
+                remainingMinutes >
+                0
+
+                    ?
+
+                    `${remainingMinutes} min`
+
+                    :
+
+                    ""
+            }`
+
+        ).trim();
+
+    }
+
+
+    /* =========================================
+       VALIDATE DELIVERY
+    ========================================= */
+
+    function validateDelivery() {
 
         const sale =
-            getSales()
-                .find(
-                    function (item) {
+            findSaleByInvoice(
+                deliveryInvoiceSelect.value
+            );
 
-                        return (
-                            item.invoiceId ===
-                            invoiceSelect.value
-                        );
 
-                    }
+        if (!sale) {
+
+            return (
+                "Please select a valid sales invoice."
+            );
+
+        }
+
+
+        const truck =
+            findTruck(
+                deliveryTruckSelect.value
+            );
+
+
+        if (!truck) {
+
+            return (
+                "Please select a truck."
+            );
+
+        }
+
+
+        const driver =
+            findDriver(
+                deliveryDriverSelect.value
+            );
+
+
+        if (!driver) {
+
+            return (
+                "Please select a driver."
+            );
+
+        }
+
+
+        if (
+            isTruckBusy(
+                truck.id
+            )
+        ) {
+
+            return (
+                "The selected truck is already assigned to an active delivery."
+            );
+
+        }
+
+
+        if (
+            isDriverBusy(
+                driver.id
+            )
+        ) {
+
+            return (
+                "The selected driver is already assigned to an active delivery."
+            );
+
+        }
+
+
+        const quantity =
+            Number(
+                sale.quantityKg ||
+                sale.quantity ||
+                0
+            );
+
+
+        if (
+            quantity >
+            Number(
+                truck.capacityKg
+            )
+        ) {
+
+            return (
+
+                `Delivery quantity is ${formatNumber(
+                    quantity
+                )} kg, but the selected truck capacity is only ${formatNumber(
+                    truck.capacityKg
+                )} kg.`
+
+            );
+
+        }
+
+
+        if (
+            !deliveryDivisionSelect.value ||
+            !deliveryDistrictSelect.value ||
+            !deliveryUpazilaSelect.value
+        ) {
+
+            return (
+                "Complete the customer delivery location."
+            );
+
+        }
+
+
+        if (
+            deliveryAddressInput.value
+                .trim()
+                .length <
+            3
+        ) {
+
+            return (
+                "Enter the detailed delivery address."
+            );
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================================
+       SAVE DELIVERY
+    ========================================= */
+
+    deliveryForm.addEventListener(
+        "submit",
+        async function (
+            event
+        ) {
+
+            event.preventDefault();
+
+
+            pendingCancelDeliveryId =
+                null;
+
+
+            let error =
+                validateDelivery();
+
+
+            if (error) {
+
+                showToast(
+                    error,
+                    "error"
                 );
+
+
+                return;
+
+            }
+
+
+            if (
+                !currentRouteInfo
+            ) {
+
+                const routeLoaded =
+                    await previewCurrentRoute(
+                        true
+                    );
+
+
+                if (
+                    !routeLoaded
+                ) {
+
+                    return;
+
+                }
+
+            }
+
+
+            error =
+                validateDelivery();
+
+
+            if (error) {
+
+                showToast(
+                    error,
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            const sale =
+                findSaleByInvoice(
+                    deliveryInvoiceSelect.value
+                );
+
+
+            const customer =
+                findCustomerForSale(
+                    sale
+                );
+
+
+            const truck =
+                findTruck(
+                    deliveryTruckSelect.value
+                );
+
+
+            const driver =
+                findDriver(
+                    deliveryDriverSelect.value
+                );
+
+
+            const deliveryId =
+                generateDeliveryId();
+
+
+            const record = {
+
+                id:
+                    Date.now(),
+
+
+                deliveryId:
+                    deliveryId,
+
+
+                invoiceId:
+
+                    sale.invoiceId ||
+                    sale.invoiceNumber ||
+                    sale.saleId,
+
+
+                saleId:
+
+                    sale.id ||
+                    null,
+
+
+                customerId:
+
+                    customer?.id ||
+                    sale.customerId ||
+                    null,
+
+
+                customerName:
+
+                    sale.customerName ||
+                    customer?.name ||
+                    "",
+
+
+                customerPhone:
+
+                    sale.customerPhone ||
+                    customer?.phone ||
+                    "",
+
+
+                productKey:
+
+                    sale.productKey ||
+                    "",
+
+
+                product:
+
+                    sale.product ||
+                    sale.productName ||
+                    sale.productKey ||
+                    "",
+
+
+                quantityKg:
+
+                    Number(
+                        sale.quantityKg ||
+                        sale.quantity ||
+                        0
+                    ),
+
+
+                truckId:
+                    truck.id,
+
+
+                truckNumber:
+                    truck.number,
+
+
+                truckCapacityKg:
+                    Number(
+                        truck.capacityKg
+                    ),
+
+
+                driverId:
+                    driver.id,
+
+
+                driverName:
+                    driver.name,
+
+
+                driverPhone:
+                    driver.phone,
+
+
+                division:
+                    deliveryDivisionSelect.value,
+
+
+                district:
+                    deliveryDistrictSelect.value,
+
+
+                upazila:
+                    deliveryUpazilaSelect.value,
+
+
+                address:
+
+                    deliveryAddressInput.value
+                        .trim(),
+
+
+                destinationLat:
+                    currentRouteInfo.destinationLat,
+
+
+                destinationLng:
+                    currentRouteInfo.destinationLng,
+
+
+                distanceKm:
+                    currentRouteInfo.distanceKm,
+
+
+                durationMinutes:
+                    currentRouteInfo.durationMinutes,
+
+
+                status:
+                    "pending",
+
+
+                deliveryDate:
+                    getTodayDate(),
+
+
+                dispatchDate:
+                    null,
+
+
+                startDate:
+                    null,
+
+
+                deliveredDate:
+                    null,
+
+
+                cancelledDate:
+                    null,
+
+
+                currentLat:
+                    null,
+
+
+                currentLng:
+                    null,
+
+
+                lastLocationUpdate:
+                    null,
+
+
+                createdAt:
+                    Date.now()
+
+            };
+
+
+            deliveryRecords.push(
+                record
+            );
+
+
+            updateSaleDeliveryStatus(
+                record.invoiceId,
+                "pending"
+            );
+
+
+            saveDeliveries();
+
+
+            refreshDeliveryUI();
+
+
+            resetDeliveryForm();
+
+
+            showToast(
+
+                `${deliveryId} created successfully. Delivery status is Pending.`
+
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       UPDATE SALES DELIVERY STATUS
+    ========================================= */
+
+    function updateSaleDeliveryStatus(
+        invoiceId,
+        status
+    ) {
+
+        const sale =
+            findSaleByInvoice(
+                invoiceId
+            );
 
 
         if (!sale) {
@@ -2953,1408 +3866,1752 @@ document.addEventListener(
         }
 
 
-        customerInput.value =
-            sale.customerName;
+        sale.deliveryStatus =
+            status;
 
 
-        productInput.value =
-            getProductName(
-                sale.product
-            );
-
-
-        quantityInput.value =
-
-            Number(
-                sale.quantity
-            ).toLocaleString(
-                "en-US",
-                {
-
-                    maximumFractionDigits:
-                        2
-
-                }
-            )
-
-            +
-
-            " kg";
-
-
-        statusSelect.value =
-            "pending";
-
-
-        const customer =
-            getCustomers()
-                .find(
-                    function (item) {
-
-                        return (
-
-                            Number(
-                                item.id
-                            )
-
-                            ===
-
-                            Number(
-                                sale.customerId
-                            )
-
-                        );
-
-                    }
-                );
-
-
-        // Structured Customer Location
-
-        if (
-            customer &&
-            customer.divisionId &&
-            customer.districtId &&
-            customer.upazilaId
-        ) {
-
-            await setDestinationLocation(
-
-                customer.divisionId,
-
-                customer.districtId,
-
-                customer.upazilaId
-
-            );
-
-
-            return;
-
-        }
-
-
-        // Old customer city support
-
-        if (
-            customer &&
-            customer.city
-        ) {
-
-            const district =
-                window.BDLocations
-                    .findDistrictByName(
-                        customer.city
-                    );
-
-
-            if (district) {
-
-                const division =
-                    window.BDLocations
-                        .getDivisionForDistrict(
-                            district
-                        );
-
-
-                if (division) {
-
-                    destinationDivisionSelect.value =
-                        division.id;
-
-
-                    loadDistrictDropdown(
-
-                        division.id,
-
-                        district.id
-
-                    );
-
-
-                    loadUpazilaDropdown(
-                        district.id
-                    );
-
-
-                    clearDestinationMap();
-
-
-                    locationDataMessage.textContent =
-                        "Customer district loaded. Select destination upazila.";
-
-
-                    locationDataMessage.className =
-                        "location-message-info";
-
-
-                    return;
-
-                }
-
-            }
-
-        }
-
-
-        clearDestinationMap();
-
-
-        locationDataMessage.textContent =
-            "Select the customer's destination location.";
-
-
-        locationDataMessage.className =
-            "location-message-info";
+        saveSalesRecords();
 
     }
 
 
-    // ==========================================
-    // SUMMARY
-    // ==========================================
+    /* =========================================
+       RESET FORM
+    ========================================= */
 
-    function updateSummary() {
+    function resetDeliveryForm() {
+
+        deliveryForm.reset();
+
+
+        resetInvoiceDetails();
+
+
+        populateInvoices();
+
+        populateTrucks();
+
+        populateDrivers();
+
+
+        truckCapacityHelp.textContent =
+            "Select a truck to view capacity.";
+
+    }
+
+
+    /* =========================================
+       SUMMARY
+    ========================================= */
+
+    function updateSummaryCards() {
 
         const today =
             getTodayDate();
 
 
-        let running =
-            0;
-
-
-        let pending =
-            0;
-
-
-        let deliveredToday =
-            0;
-
-
-        deliveries.forEach(
-            function (delivery) {
-
-                if (
-                    delivery.status ===
-                    "on-the-way"
+        const running =
+            deliveryRecords.filter(
+                function (
+                    delivery
                 ) {
 
-                    running++;
+                    return (
+
+                        delivery.status ===
+                        "dispatched"
+
+                        ||
+
+                        delivery.status ===
+                        "on-way"
+
+                    );
 
                 }
+            ).length;
 
 
-                if (
-                    delivery.status ===
-                    "pending"
+        const deliveredToday =
+            deliveryRecords.filter(
+                function (
+                    delivery
                 ) {
 
-                    pending++;
+                    return (
 
-                }
+                        delivery.status ===
+                        "delivered"
 
+                        &&
 
-                if (
-                    delivery.status ===
-                        "delivered" &&
-                    delivery.deliveredDate ===
+                        delivery.deliveredDate ===
                         today
-                ) {
 
-                    deliveredToday++;
+                    );
 
                 }
-
-            }
-        );
+            ).length;
 
 
-        runningValue.textContent =
+        const pending =
+            deliveryRecords.filter(
+                function (
+                    delivery
+                ) {
+
+                    return (
+                        delivery.status ===
+                        "pending"
+                    );
+
+                }
+            ).length;
+
+
+        runningDeliveriesValue.textContent =
             running;
-
-
-        pendingValue.textContent =
-            pending;
 
 
         deliveredTodayValue.textContent =
             deliveredToday;
 
-    }
 
-
-    // ==========================================
-    // TABLE
-    // ==========================================
-
-    function displayDeliveries() {
-
-        deliveryTableBody.innerHTML =
-            "";
-
-
-        deliveries.forEach(
-            function (delivery) {
-
-                const destinationText =
-
-                    delivery.destinationLocation
-
-                        ?
-
-                        (
-
-                            delivery
-                                .destinationLocation
-                                .upazilaName
-
-                            +
-
-                            ", "
-
-                            +
-
-                            delivery
-                                .destinationLocation
-                                .districtName
-
-                        )
-
-                        :
-
-                        (
-                            delivery.destination ||
-                            "Legacy destination"
-                        );
-
-
-                let distanceText =
-                    "";
-
-
-                if (
-                    Number.isFinite(
-                        Number(
-                            delivery.routeDistanceKm
-                        )
-                    )
-                ) {
-
-                    distanceText =
-
-                        Number(
-                            delivery.routeDistanceKm
-                        ).toFixed(
-                            1
-                        )
-
-                        +
-
-                        " km road route";
-
-                }
-
-
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                row.innerHTML = `
-
-                    <td>
-
-                        ${escapeHTML(
-                            delivery.deliveryId
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHTML(
-                            delivery.invoiceId
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHTML(
-                            delivery.customerName
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHTML(
-                            delivery.truckNumber
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHTML(
-                            getDriverName(
-                                delivery.driver
-                            )
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        <strong
-                            class="table-primary-text"
-                        >
-
-                            ${escapeHTML(
-                                destinationText
-                            )}
-
-                        </strong>
-
-
-                        ${
-                            distanceText
-
-                            ?
-
-                            `
-
-                            <span
-                                class="table-secondary-text"
-                            >
-
-                                ${escapeHTML(
-                                    distanceText
-                                )}
-
-                            </span>
-
-                            `
-
-                            :
-
-                            ""
-                        }
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHTML(
-                            getProductName(
-                                delivery.product
-                            )
-                        )}
-
-                        /
-
-                        ${Number(
-                            delivery.quantity
-                        ).toLocaleString(
-                            "en-US",
-                            {
-                                maximumFractionDigits:
-                                    2
-                            }
-                        )}
-
-                        kg
-
-                    </td>
-
-
-                    <td>
-
-                        <span
-                            class="
-                                status-badge
-                                ${getStatusClass(
-                                    delivery.status
-                                )}
-                            "
-                        >
-
-                            ${getStatusText(
-                                delivery.status
-                            )}
-
-                        </span>
-
-                    </td>
-
-
-                    <td>
-
-                        ${formatDate(
-                            delivery.createdDate
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        <div class="table-action-group">
-
-                            <button
-                                type="button"
-                                class="delivery-edit-button"
-                                data-action="edit"
-                                data-id="${delivery.id}"
-                            >
-
-                                Edit
-
-                            </button>
-
-
-                            <button
-                                type="button"
-                                class="delivery-delete-button"
-                                data-action="delete"
-                                data-id="${delivery.id}"
-                            >
-
-                                Delete
-
-                            </button>
-
-                        </div>
-
-                    </td>
-
-                `;
-
-
-                deliveryTableBody
-                    .appendChild(
-                        row
-                    );
-
-            }
-        );
+        pendingDeliveriesValue.textContent =
+            pending;
 
     }
 
 
-    // ==========================================
-    // SAVE / UPDATE
-    // ==========================================
+    /* =========================================
+       STATUS INFO
+    ========================================= */
 
-    deliveryForm
-        .addEventListener(
-            "submit",
-            async function (event) {
+    function getStatusInfo(
+        status
+    ) {
 
-                event.preventDefault();
+        if (
+            status ===
+            "dispatched"
+        ) {
 
+            return {
 
-                const sale =
-                    getSales()
-                        .find(
-                            function (item) {
+                text:
+                    "Dispatched",
 
-                                return (
-                                    item.invoiceId ===
-                                    invoiceSelect.value
-                                );
+                className:
+                    "status-dispatched"
 
-                            }
-                        );
-
-
-                if (!sale) {
-
-                    showToast(
-                        "Please select a sales invoice.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                const destination =
-                    getSelectedDestination();
-
-
-                if (!destination) {
-
-                    showToast(
-                        "Please select Division, District and Upazila.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                if (!truckSelect.value) {
-
-                    showToast(
-                        "Please select a truck.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                if (!driverSelect.value) {
-
-                    showToast(
-                        "Please select a driver.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                if (!statusSelect.value) {
-
-                    showToast(
-                        "Please select delivery status.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                const duplicate =
-                    deliveries.some(
-                        function (delivery) {
-
-                            return (
-
-                                delivery.invoiceId ===
-                                    sale.invoiceId
-
-                                &&
-
-                                delivery.id !==
-                                    editingDeliveryId
-
-                            );
-
-                        }
-                    );
-
-
-                if (duplicate) {
-
-                    showToast(
-                        "Delivery already exists for this invoice.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                const routeMatchesDestination =
-
-                    currentDestination
-
-                    &&
-
-                    String(
-                        currentDestination.upazilaId
-                    )
-
-                    ===
-
-                    String(
-                        destination.upazilaId
-                    );
-
-
-                if (
-                    !currentRouteData ||
-                    !routeMatchesDestination
-                ) {
-
-                    await showSelectedRoute();
-
-                }
-
-
-                const routeDistanceKm =
-
-                    currentRouteData
-
-                    &&
-
-                    Number.isFinite(
-                        currentRouteData
-                            .distanceMeters
-                    )
-
-                        ?
-
-                        currentRouteData
-                            .distanceMeters /
-                        1000
-
-                        :
-
-                        null;
-
-
-                const estimatedDurationMinutes =
-
-                    currentRouteData
-
-                    &&
-
-                    Number.isFinite(
-                        currentRouteData
-                            .durationSeconds
-                    )
-
-                        ?
-
-                        Math.round(
-
-                            currentRouteData
-                                .durationSeconds /
-
-                            60
-
-                        )
-
-                        :
-
-                        null;
-
-
-                // ==================================
-                // UPDATE
-                // ==================================
-
-                if (
-                    editingDeliveryId !==
-                    null
-                ) {
-
-                    const index =
-                        deliveries.findIndex(
-                            function (delivery) {
-
-                                return (
-                                    delivery.id ===
-                                    editingDeliveryId
-                                );
-
-                            }
-                        );
-
-
-                    if (index !== -1) {
-
-                        const old =
-                            deliveries[index];
-
-
-                        deliveries[index] = {
-
-                            id:
-                                old.id,
-
-                            deliveryId:
-                                old.deliveryId,
-
-                            saleId:
-                                sale.id,
-
-                            invoiceId:
-                                sale.invoiceId,
-
-                            customerId:
-                                sale.customerId,
-
-                            customerName:
-                                sale.customerName,
-
-                            product:
-                                sale.product,
-
-                            quantity:
-                                Number(
-                                    sale.quantity
-                                ),
-
-                            truckNumber:
-                                truckSelect.value,
-
-                            driver:
-                                driverSelect.value,
-
-                            startLocation:
-                                millLocation,
-
-                            destinationLocation:
-                                destination,
-
-                            destinationDetails:
-                                destinationDetailsInput
-                                    .value
-                                    .trim(),
-
-                            destination:
-
-                                destination.upazilaName +
-
-                                ", " +
-
-                                destination.districtName,
-
-                            routeDistanceKm:
-                                routeDistanceKm,
-
-                            estimatedDurationMinutes:
-                                estimatedDurationMinutes,
-
-                            routeSource:
-
-                                currentRouteData
-
-                                    ? currentRouteData
-                                        .source
-
-                                    : null,
-
-                            status:
-                                statusSelect.value,
-
-                            createdDate:
-                                old.createdDate,
-
-                            updatedDate:
-                                getTodayDate(),
-
-                            deliveredDate:
-
-                                statusSelect.value ===
-                                "delivered"
-
-                                    ?
-
-                                    (
-
-                                        old.status ===
-                                            "delivered"
-
-                                        &&
-
-                                        old.deliveredDate
-
-                                            ?
-
-                                            old.deliveredDate
-
-                                            :
-
-                                            getTodayDate()
-
-                                    )
-
-                                    :
-
-                                    null
-
-                        };
-
-                    }
-
-
-                    saveDeliveries();
-
-                    displayDeliveries();
-
-                    updateSummary();
-
-                    resetForm();
-
-
-                    showToast(
-                        "Delivery updated successfully!"
-                    );
-
-
-                    return;
-
-                }
-
-
-                // ==================================
-                // NEW DELIVERY
-                // ==================================
-
-                const newDelivery = {
-
-                    id:
-                        Date.now(),
-
-                    deliveryId:
-                        generateDeliveryId(),
-
-                    saleId:
-                        sale.id,
-
-                    invoiceId:
-                        sale.invoiceId,
-
-                    customerId:
-                        sale.customerId,
-
-                    customerName:
-                        sale.customerName,
-
-                    product:
-                        sale.product,
-
-                    quantity:
-                        Number(
-                            sale.quantity
-                        ),
-
-                    truckNumber:
-                        truckSelect.value,
-
-                    driver:
-                        driverSelect.value,
-
-                    startLocation:
-                        millLocation,
-
-                    destinationLocation:
-                        destination,
-
-                    destinationDetails:
-                        destinationDetailsInput
-                            .value
-                            .trim(),
-
-                    destination:
-
-                        destination.upazilaName +
-
-                        ", " +
-
-                        destination.districtName,
-
-                    routeDistanceKm:
-                        routeDistanceKm,
-
-                    estimatedDurationMinutes:
-                        estimatedDurationMinutes,
-
-                    routeSource:
-
-                        currentRouteData
-
-                            ? currentRouteData
-                                .source
-
-                            : null,
-
-                    status:
-                        statusSelect.value,
-
-                    createdDate:
-                        getTodayDate(),
-
-                    updatedDate:
-                        getTodayDate(),
-
-                    deliveredDate:
-
-                        statusSelect.value ===
-                        "delivered"
-
-                            ?
-
-                            getTodayDate()
-
-                            :
-
-                            null
-
-                };
-
-
-                deliveries.push(
-                    newDelivery
-                );
-
-
-                saveDeliveries();
-
-                displayDeliveries();
-
-                updateSummary();
-
-                resetForm();
-
-
-                showToast(
-                    "Delivery saved successfully!"
-                );
-
-            }
-        );
-
-
-    // ==========================================
-    // TABLE ACTION
-    // ==========================================
-
-    deliveryTableBody
-        .addEventListener(
-            "click",
-            function (event) {
-
-                const button =
-                    event.target.closest(
-                        "button"
-                    );
-
-
-                if (!button) {
-
-                    return;
-
-                }
-
-
-                const id =
-                    Number(
-                        button.dataset.id
-                    );
-
-
-                if (
-                    button.dataset.action ===
-                    "edit"
-                ) {
-
-                    editDelivery(
-                        id
-                    );
-
-                }
-
-
-                if (
-                    button.dataset.action ===
-                    "delete"
-                ) {
-
-                    deleteDelivery(
-                        id
-                    );
-
-                }
-
-            }
-        );
-
-
-    // ==========================================
-    // EDIT
-    // ==========================================
-
-    async function editDelivery(id) {
-
-        const delivery =
-            deliveries.find(
-                function (item) {
-
-                    return (
-                        item.id ===
-                        id
-                    );
-
-                }
-            );
-
-
-        if (!delivery) {
-
-            showToast(
-                "Delivery record not found.",
-                "error"
-            );
-
-
-            return;
+            };
 
         }
-
-
-        editingDeliveryId =
-            delivery.id;
-
-
-        loadInvoices();
-
-
-        const invoiceExists =
-            Array.from(
-                invoiceSelect.options
-            )
-            .some(
-                function (option) {
-
-                    return (
-                        option.value ===
-                        delivery.invoiceId
-                    );
-
-                }
-            );
-
-
-        if (!invoiceExists) {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                delivery.invoiceId;
-
-
-            option.textContent =
-
-                delivery.invoiceId +
-
-                " — " +
-
-                delivery.customerName;
-
-
-            invoiceSelect
-                .appendChild(
-                    option
-                );
-
-        }
-
-
-        invoiceSelect.value =
-            delivery.invoiceId;
-
-
-        customerInput.value =
-            delivery.customerName;
-
-
-        productInput.value =
-            getProductName(
-                delivery.product
-            );
-
-
-        quantityInput.value =
-
-            Number(
-                delivery.quantity
-            ).toLocaleString(
-                "en-US",
-                {
-
-                    maximumFractionDigits:
-                        2
-
-                }
-            )
-
-            +
-
-            " kg";
-
-
-        truckSelect.value =
-            delivery.truckNumber;
-
-
-        driverSelect.value =
-            delivery.driver;
-
-
-        statusSelect.value =
-            delivery.status;
-
-
-        destinationDetailsInput.value =
-            delivery.destinationDetails ||
-            "";
 
 
         if (
-            delivery.destinationLocation
+            status ===
+            "on-way"
         ) {
 
-            await setDestinationLocation(
+            return {
 
-                delivery
-                    .destinationLocation
-                    .divisionId,
+                text:
+                    "On the Way",
 
-                delivery
-                    .destinationLocation
-                    .districtId,
+                className:
+                    "status-on-way"
 
-                delivery
-                    .destinationLocation
-                    .upazilaId
-
-            );
-
-        } else {
-
-            destinationDivisionSelect.value =
-                "";
-
-
-            loadDistrictDropdown(
-                null
-            );
-
-
-            clearDestinationMap();
-
-
-            locationDataMessage.textContent =
-                "Old delivery record. Select Division, District and Upazila before updating.";
-
-
-            locationDataMessage.className =
-                "location-message-info";
+            };
 
         }
 
 
-        saveDeliveryBtn.innerHTML = `
+        if (
+            status ===
+            "delivered"
+        ) {
 
-            <span>
-                ▣
-            </span>
+            return {
 
-            Update Delivery
+                text:
+                    "Delivered",
 
-        `;
+                className:
+                    "status-delivered"
+
+            };
+
+        }
 
 
-        window.scrollTo(
-            {
+        if (
+            status ===
+            "cancelled"
+        ) {
 
-                top:
-                    0,
+            return {
 
-                behavior:
-                    "smooth"
+                text:
+                    "Cancelled",
 
-            }
-        );
+                className:
+                    "status-cancelled"
+
+            };
+
+        }
+
+
+        return {
+
+            text:
+                "Pending",
+
+            className:
+                "status-pending"
+
+        };
 
     }
 
 
-    // ==========================================
-    // DELETE
-    // ==========================================
+    /* =========================================
+       STATUS TRANSITION
+    ========================================= */
 
-    function deleteDelivery(id) {
+    function changeDeliveryStatus(
+        delivery,
+        newStatus
+    ) {
 
-        const exists =
-            deliveries.some(
-                function (delivery) {
-
-                    return (
-                        delivery.id ===
-                        id
-                    );
-
-                }
-            );
-
-
-        if (!exists) {
-
-            showToast(
-                "Delivery record not found.",
-                "error"
-            );
-
+        if (!delivery) {
 
             return;
 
         }
 
 
-        deliveries =
-            deliveries.filter(
-                function (delivery) {
+        const now =
+            new Date()
+                .toISOString();
 
-                    return (
-                        delivery.id !==
-                        id
-                    );
 
-                }
+        if (
+            newStatus ===
+            "dispatched"
+        ) {
+
+            if (
+                delivery.status !==
+                "pending"
+            ) {
+
+                return;
+
+            }
+
+
+            delivery.status =
+                "dispatched";
+
+
+            delivery.dispatchDate =
+                now;
+
+
+            updateSaleDeliveryStatus(
+                delivery.invoiceId,
+                "dispatched"
             );
+
+        }
+        else if (
+            newStatus ===
+            "on-way"
+        ) {
+
+            if (
+                delivery.status !==
+                "dispatched"
+            ) {
+
+                return;
+
+            }
+
+
+            delivery.status =
+                "on-way";
+
+
+            delivery.startDate =
+                now;
+
+
+            updateSaleDeliveryStatus(
+                delivery.invoiceId,
+                "on-way"
+            );
+
+        }
+        else if (
+            newStatus ===
+            "delivered"
+        ) {
+
+            if (
+                delivery.status !==
+                "on-way"
+            ) {
+
+                return;
+
+            }
+
+
+            delivery.status =
+                "delivered";
+
+
+            delivery.deliveredDate =
+                getTodayDate();
+
+
+            updateSaleDeliveryStatus(
+                delivery.invoiceId,
+                "delivered"
+            );
+
+        }
 
 
         saveDeliveries();
 
-        displayDeliveries();
 
-        updateSummary();
+        refreshDeliveryUI();
 
 
         if (
-            editingDeliveryId ===
-            id
+            Number(
+                selectedTrackingDeliveryId
+            )
+
+            ===
+
+            Number(
+                delivery.id
+            )
         ) {
 
-            resetForm();
-
-        } else {
-
-            loadInvoices();
+            trackDelivery(
+                delivery.id
+            );
 
         }
 
 
         showToast(
-            "Delivery deleted successfully!"
+
+            `${delivery.deliveryId} updated to ${getStatusInfo(
+                delivery.status
+            ).text}.`
+
         );
 
     }
 
 
-    // ==========================================
-    // RESET FORM
-    // ==========================================
+    /* =========================================
+       CANCEL DELIVERY
+    ========================================= */
 
-    function resetForm() {
+    function requestCancelDelivery(
+        id
+    ) {
 
-        deliveryForm.reset();
-
-
-        editingDeliveryId =
-            null;
-
-
-        customerInput.value =
-            "";
+        pendingCancelDeliveryId =
+            id;
 
 
-        productInput.value =
-            "";
-
-
-        quantityInput.value =
-            "";
-
-
-        destinationDistrictSelect
-            .innerHTML = `
-
-                <option
-                    value=""
-                    selected
-                    disabled
-                >
-                    Select district
-                </option>
-
-            `;
-
-
-        destinationUpazilaSelect
-            .innerHTML = `
-
-                <option
-                    value=""
-                    selected
-                    disabled
-                >
-                    Select upazila
-                </option>
-
-            `;
-
-
-        destinationDistrictSelect.disabled =
-            true;
-
-
-        destinationUpazilaSelect.disabled =
-            true;
-
-
-        clearDestinationMap();
-
-
-        saveDeliveryBtn.innerHTML = `
-
-            <span>
-                ▣
-            </span>
-
-            Save Delivery
-
-        `;
-
-
-        loadInvoices();
-
-
-        locationDataMessage.textContent =
-            "Bangladesh location data ready.";
-
-
-        locationDataMessage.className =
-            "location-message-success";
+        displayDeliveries();
 
     }
 
 
-    // ==========================================
-    // TOAST
-    // ==========================================
+    function keepDelivery() {
+
+        pendingCancelDeliveryId =
+            null;
+
+
+        displayDeliveries();
+
+    }
+
+
+    function confirmCancelDelivery(
+        id
+    ) {
+
+        const delivery =
+            findDelivery(
+                id
+            );
+
+
+        if (!delivery) {
+
+            return;
+
+        }
+
+
+        if (
+            ![
+                "pending",
+                "dispatched"
+            ].includes(
+                delivery.status
+            )
+        ) {
+
+            showToast(
+                "This delivery can no longer be cancelled from its current status.",
+                "error"
+            );
+
+
+            return;
+
+        }
+
+
+        delivery.status =
+            "cancelled";
+
+
+        delivery.cancelledDate =
+            getTodayDate();
+
+
+        /*
+            Invoice remains active and delivery
+            required, so make it available for a
+            new delivery assignment.
+        */
+
+        updateSaleDeliveryStatus(
+            delivery.invoiceId,
+            "pending"
+        );
+
+
+        pendingCancelDeliveryId =
+            null;
+
+
+        saveDeliveries();
+
+
+        refreshDeliveryUI();
+
+
+        if (
+            Number(
+                selectedTrackingDeliveryId
+            )
+
+            ===
+
+            Number(
+                delivery.id
+            )
+        ) {
+
+            trackDelivery(
+                delivery.id
+            );
+
+        }
+
+
+        showToast(
+
+            `${delivery.deliveryId} cancelled. The invoice can be assigned to a new delivery.`
+
+        );
+
+    }
+
+
+    /* =========================================
+       ACTION HTML
+    ========================================= */
+
+    function getDeliveryActionHTML(
+        delivery
+    ) {
+
+        const trackButton = `
+
+            <button
+                class="delivery-action-button track-button"
+                type="button"
+                data-action="track"
+                data-id="${delivery.id}"
+            >
+                Track
+            </button>
+
+        `;
+
+
+        if (
+            delivery.status ===
+            "pending"
+        ) {
+
+            if (
+                Number(
+                    pendingCancelDeliveryId
+                )
+
+                ===
+
+                Number(
+                    delivery.id
+                )
+            ) {
+
+                return `
+
+                    ${trackButton}
+
+                    <span class="cancel-question">
+                        Cancel?
+                    </span>
+
+                    <button
+                        class="delivery-action-button confirm-cancel-button"
+                        type="button"
+                        data-action="confirm-cancel"
+                        data-id="${delivery.id}"
+                    >
+                        Confirm
+                    </button>
+
+                    <button
+                        class="delivery-action-button keep-delivery-button"
+                        type="button"
+                        data-action="keep"
+                        data-id="${delivery.id}"
+                    >
+                        Keep
+                    </button>
+
+                `;
+
+            }
+
+
+            return `
+
+                ${trackButton}
+
+                <button
+                    class="delivery-action-button dispatch-button"
+                    type="button"
+                    data-action="dispatch"
+                    data-id="${delivery.id}"
+                >
+                    Dispatch
+                </button>
+
+                <button
+                    class="delivery-action-button cancel-delivery-button"
+                    type="button"
+                    data-action="request-cancel"
+                    data-id="${delivery.id}"
+                >
+                    Cancel
+                </button>
+
+            `;
+
+        }
+
+
+        if (
+            delivery.status ===
+            "dispatched"
+        ) {
+
+            if (
+                Number(
+                    pendingCancelDeliveryId
+                )
+
+                ===
+
+                Number(
+                    delivery.id
+                )
+            ) {
+
+                return `
+
+                    ${trackButton}
+
+                    <span class="cancel-question">
+                        Cancel?
+                    </span>
+
+                    <button
+                        class="delivery-action-button confirm-cancel-button"
+                        type="button"
+                        data-action="confirm-cancel"
+                        data-id="${delivery.id}"
+                    >
+                        Confirm
+                    </button>
+
+                    <button
+                        class="delivery-action-button keep-delivery-button"
+                        type="button"
+                        data-action="keep"
+                        data-id="${delivery.id}"
+                    >
+                        Keep
+                    </button>
+
+                `;
+
+            }
+
+
+            return `
+
+                ${trackButton}
+
+                <button
+                    class="delivery-action-button start-trip-button"
+                    type="button"
+                    data-action="start-trip"
+                    data-id="${delivery.id}"
+                >
+                    Start Trip
+                </button>
+
+                <button
+                    class="delivery-action-button cancel-delivery-button"
+                    type="button"
+                    data-action="request-cancel"
+                    data-id="${delivery.id}"
+                >
+                    Cancel
+                </button>
+
+            `;
+
+        }
+
+
+        if (
+            delivery.status ===
+            "on-way"
+        ) {
+
+            return `
+
+                ${trackButton}
+
+                <button
+                    class="delivery-action-button delivered-button"
+                    type="button"
+                    data-action="delivered"
+                    data-id="${delivery.id}"
+                >
+                    Delivered
+                </button>
+
+            `;
+
+        }
+
+
+        return trackButton;
+
+    }
+
+
+    /* =========================================
+       DISPLAY DELIVERIES
+    ========================================= */
+
+    function displayDeliveries() {
+
+        const searchText =
+            deliverySearch.value
+                .trim()
+                .toLowerCase();
+
+
+        const statusFilter =
+            deliveryStatusFilter.value;
+
+
+        const filtered =
+            deliveryRecords.filter(
+                function (
+                    delivery
+                ) {
+
+                    const searchable = `
+
+                        ${delivery.deliveryId}
+                        ${delivery.invoiceId}
+                        ${delivery.customerName}
+                        ${delivery.truckNumber}
+                        ${delivery.driverName}
+                        ${delivery.district}
+                        ${delivery.upazila}
+                        ${delivery.product}
+
+                    `.toLowerCase();
+
+
+                    const matchesSearch =
+                        searchable.includes(
+                            searchText
+                        );
+
+
+                    const matchesStatus =
+
+                        statusFilter ===
+                        "all"
+
+                        ||
+
+                        delivery.status ===
+                        statusFilter;
+
+
+                    return (
+
+                        matchesSearch &&
+                        matchesStatus
+
+                    );
+
+                }
+            );
+
+
+        deliveryTableBody.innerHTML =
+            "";
+
+
+        if (
+            filtered.length ===
+            0
+        ) {
+
+            deliveryTableBody.innerHTML = `
+
+                <tr class="delivery-empty-row">
+
+                    <td colspan="12">
+
+                        No delivery records match the current filter.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        [
+            ...filtered
+        ]
+
+            .sort(
+                function (
+                    a,
+                    b
+                ) {
+
+                    return (
+
+                        Number(
+                            b.createdAt
+                        )
+
+                        -
+
+                        Number(
+                            a.createdAt
+                        )
+
+                    );
+
+                }
+            )
+
+            .forEach(
+                function (
+                    delivery
+                ) {
+
+                    const status =
+                        getStatusInfo(
+                            delivery.status
+                        );
+
+
+                    const destination =
+
+                        `${delivery.upazila || ""}${
+                            delivery.upazila
+                                ? ", "
+                                : ""
+                        }${delivery.district || ""}`;
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            <span class="delivery-code">
+
+                                ${escapeHTML(
+                                    delivery.deliveryId
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="delivery-invoice-code">
+
+                                ${escapeHTML(
+                                    delivery.invoiceId
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                delivery.customerName
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                delivery.truckNumber
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                delivery.driverName
+                            )}
+
+                        </td>
+
+
+                        <td class="delivery-destination-text"
+                            title="${escapeHTML(
+                                delivery.address
+                            )}">
+
+                            ${escapeHTML(
+                                destination ||
+                                delivery.address
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                delivery.product
+                            )}
+
+                            /
+
+                            ${formatNumber(
+                                delivery.quantityKg
+                            )} kg
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                delivery.distanceKm >
+                                0
+
+                                    ?
+
+                                    `${formatNumber(
+                                        delivery.distanceKm
+                                    )} km`
+
+                                    :
+
+                                    "—"
+                            }
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                delivery.lastLocationUpdate
+
+                                    ?
+
+                                    formatDateTime(
+                                        delivery.lastLocationUpdate
+                                    )
+
+                                    :
+
+                                    "Not updated"
+                            }
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    delivery-status-badge
+                                    ${status.className}
+                                "
+                            >
+
+                                ${status.text}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatDate(
+                                delivery.deliveryDate
+                            )}
+
+                        </td>
+
+
+                        <td class="delivery-action-cell">
+
+                            ${getDeliveryActionHTML(
+                                delivery
+                            )}
+
+                        </td>
+
+                    `;
+
+
+                    deliveryTableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================================
+       TABLE ACTIONS
+    ========================================= */
+
+    deliveryTableBody.addEventListener(
+        "click",
+        function (
+            event
+        ) {
+
+            const button =
+                event.target.closest(
+                    "button[data-action]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            const id =
+                Number(
+                    button.dataset.id
+                );
+
+
+            const action =
+                button.dataset.action;
+
+
+            const delivery =
+                findDelivery(
+                    id
+                );
+
+
+            if (
+                action ===
+                "track"
+            ) {
+
+                trackDelivery(
+                    id
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "dispatch"
+            ) {
+
+                changeDeliveryStatus(
+                    delivery,
+                    "dispatched"
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "start-trip"
+            ) {
+
+                changeDeliveryStatus(
+                    delivery,
+                    "on-way"
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "delivered"
+            ) {
+
+                changeDeliveryStatus(
+                    delivery,
+                    "delivered"
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "request-cancel"
+            ) {
+
+                requestCancelDelivery(
+                    id
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "confirm-cancel"
+            ) {
+
+                confirmCancelDelivery(
+                    id
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                action ===
+                "keep"
+            ) {
+
+                keepDelivery();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       TRACK DELIVERY
+    ========================================= */
+
+    async function trackDelivery(
+        id
+    ) {
+
+        const delivery =
+            findDelivery(
+                id
+            );
+
+
+        if (!delivery) {
+
+            return;
+
+        }
+
+
+        selectedTrackingDeliveryId =
+            delivery.id;
+
+
+        trackingDeliveryValue.textContent =
+            `${delivery.deliveryId} · ${getStatusInfo(
+                delivery.status
+            ).text}`;
+
+
+        if (
+            delivery.currentLat !==
+            null
+
+            &&
+
+            delivery.currentLng !==
+            null
+        ) {
+
+            currentPositionValue.textContent =
+
+                `${Number(
+                    delivery.currentLat
+                ).toFixed(
+                    5
+                )}, ${Number(
+                    delivery.currentLng
+                ).toFixed(
+                    5
+                )}`;
+
+
+            gpsUpdateValue.textContent =
+                formatDateTime(
+                    delivery.lastLocationUpdate
+                );
+
+        }
+        else {
+
+            currentPositionValue.textContent =
+                "Not updated";
+
+
+            gpsUpdateValue.textContent =
+                "—";
+
+        }
+
+
+        captureGpsBtn.disabled =
+
+            ![
+                "dispatched",
+                "on-way"
+            ].includes(
+                delivery.status
+            );
+
+
+        destinationMetric.textContent =
+
+            `${delivery.upazila || ""}${
+                delivery.upazila
+                    ? ", "
+                    : ""
+            }${delivery.district || ""}`;
+
+
+        distanceMetric.textContent =
+
+            delivery.distanceKm >
+            0
+
+                ?
+
+                `${formatNumber(
+                    delivery.distanceKm
+                )} km`
+
+                :
+
+                "—";
+
+
+        durationMetric.textContent =
+
+            delivery.durationMinutes >
+            0
+
+                ?
+
+                formatDuration(
+                    delivery.durationMinutes
+                )
+
+                :
+
+                "—";
+
+
+        routePlannerDescription.textContent =
+
+            `Tracking ${delivery.deliveryId} for ${delivery.customerName}.`;
+
+
+        try {
+
+            const destination = {
+
+                lat:
+                    delivery.destinationLat,
+
+                lng:
+                    delivery.destinationLng
+
+            };
+
+
+            const route =
+                await fetchRoadRoute(
+                    destination
+                );
+
+
+            drawRoute(
+                destination,
+                route,
+                delivery.status
+            );
+
+
+            drawTruckMarker(
+                delivery
+            );
+
+        }
+        catch {
+
+            if (
+                map &&
+                delivery.destinationLat &&
+                delivery.destinationLng
+            ) {
+
+                clearRouteLayers();
+
+
+                destinationMarker =
+                    L.marker(
+                        [
+                            delivery.destinationLat,
+                            delivery.destinationLng
+                        ]
+                    )
+                    .addTo(
+                        map
+                    );
+
+
+                map.fitBounds(
+                    [
+
+                        [
+                            MILL_LOCATION.lat,
+                            MILL_LOCATION.lng
+                        ],
+
+                        [
+                            delivery.destinationLat,
+                            delivery.destinationLng
+                        ]
+
+                    ],
+                    {
+                        padding:
+                            [
+                                25,
+                                25
+                            ]
+                    }
+                );
+
+
+                drawTruckMarker(
+                    delivery
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* =========================================
+       DRAW TRUCK GPS MARKER
+    ========================================= */
+
+    function drawTruckMarker(
+        delivery
+    ) {
+
+        clearTruckMarker();
+
+
+        if (
+            !map ||
+            delivery.currentLat ===
+            null ||
+            delivery.currentLng ===
+            null
+        ) {
+
+            return;
+
+        }
+
+
+        truckMarker =
+            L.circleMarker(
+                [
+                    delivery.currentLat,
+                    delivery.currentLng
+                ],
+                {
+                    radius:
+                        9,
+
+                    color:
+                        "#ffffff",
+
+                    weight:
+                        3,
+
+                    fillColor:
+                        "#e67900",
+
+                    fillOpacity:
+                        1
+                }
+            )
+            .addTo(
+                map
+            )
+            .bindPopup(
+
+                `${escapeHTML(
+                    delivery.deliveryId
+                )}<br>Current Truck Position`
+
+            );
+
+
+        truckMarker.openPopup();
+
+    }
+
+
+    /* =========================================
+       GPS CAPTURE
+    ========================================= */
+
+    captureGpsBtn.addEventListener(
+        "click",
+        function () {
+
+            if (
+                selectedTrackingDeliveryId ===
+                null
+            ) {
+
+                showToast(
+                    "Select Track on a delivery record first.",
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            const delivery =
+                findDelivery(
+                    selectedTrackingDeliveryId
+                );
+
+
+            if (!delivery) {
+
+                return;
+
+            }
+
+
+            if (
+                ![
+                    "dispatched",
+                    "on-way"
+                ].includes(
+                    delivery.status
+                )
+            ) {
+
+                showToast(
+                    "GPS updates are enabled only for dispatched or on-the-way deliveries.",
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            if (
+                !navigator.geolocation
+            ) {
+
+                showToast(
+                    "This browser does not support GPS location capture.",
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            captureGpsBtn.disabled =
+                true;
+
+
+            captureGpsBtn.textContent =
+                "Capturing GPS...";
+
+
+            navigator.geolocation.getCurrentPosition(
+
+                function (
+                    position
+                ) {
+
+                    delivery.currentLat =
+                        position.coords.latitude;
+
+
+                    delivery.currentLng =
+                        position.coords.longitude;
+
+
+                    delivery.lastLocationUpdate =
+                        new Date()
+                            .toISOString();
+
+
+                    saveDeliveries();
+
+
+                    displayDeliveries();
+
+
+                    trackDelivery(
+                        delivery.id
+                    );
+
+
+                    showToast(
+                        `${delivery.deliveryId} GPS position updated successfully.`
+                    );
+
+
+                    captureGpsBtn.textContent =
+                        "Capture Current Device GPS";
+
+
+                    captureGpsBtn.disabled =
+                        false;
+
+                },
+
+
+                function (
+                    error
+                ) {
+
+                    captureGpsBtn.textContent =
+                        "Capture Current Device GPS";
+
+
+                    captureGpsBtn.disabled =
+                        false;
+
+
+                    let message =
+                        "GPS position could not be captured.";
+
+
+                    if (
+                        error.code ===
+                        1
+                    ) {
+
+                        message =
+                            "Location permission was denied.";
+
+                    }
+                    else if (
+                        error.code ===
+                        2
+                    ) {
+
+                        message =
+                            "Device location is currently unavailable.";
+
+                    }
+                    else if (
+                        error.code ===
+                        3
+                    ) {
+
+                        message =
+                            "GPS location request timed out.";
+
+                    }
+
+
+                    showToast(
+                        message,
+                        "error"
+                    );
+
+                },
+
+
+                {
+                    enableHighAccuracy:
+                        true,
+
+                    timeout:
+                        10000,
+
+                    maximumAge:
+                        30000
+                }
+
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       RESET MAP
+    ========================================= */
+
+    function resetMap() {
+
+        selectedTrackingDeliveryId =
+            null;
+
+
+        clearRouteLayers();
+
+        clearTruckMarker();
+
+
+        destinationMetric.textContent =
+            "Not selected";
+
+
+        distanceMetric.textContent =
+            "—";
+
+
+        durationMetric.textContent =
+            "—";
+
+
+        trackingDeliveryValue.textContent =
+            "None";
+
+
+        currentPositionValue.textContent =
+            "Not updated";
+
+
+        gpsUpdateValue.textContent =
+            "—";
+
+
+        captureGpsBtn.disabled =
+            true;
+
+
+        routePlannerDescription.textContent =
+            "Select an invoice to preview its customer delivery route.";
+
+
+        if (
+            map
+        ) {
+
+            map.setView(
+                [
+                    MILL_LOCATION.lat,
+                    MILL_LOCATION.lng
+                ],
+                8
+            );
+
+        }
+
+    }
+
+
+    resetMapBtn.addEventListener(
+        "click",
+        resetMap
+    );
+
+
+    /* =========================================
+       FILTERS
+    ========================================= */
+
+    deliverySearch.addEventListener(
+        "input",
+        function () {
+
+            pendingCancelDeliveryId =
+                null;
+
+
+            displayDeliveries();
+
+        }
+    );
+
+
+    deliveryStatusFilter.addEventListener(
+        "change",
+        function () {
+
+            pendingCancelDeliveryId =
+                null;
+
+
+            displayDeliveries();
+
+        }
+    );
+
+
+    /* =========================================
+       REFRESH UI
+    ========================================= */
+
+    function refreshDeliveryUI() {
+
+        salesRecords =
+            getSalesRecords();
+
+
+        customers =
+            getCustomers();
+
+
+        updateSummaryCards();
+
+        populateInvoices();
+
+        populateTrucks();
+
+        populateDrivers();
+
+        displayDeliveries();
+
+    }
+
+
+    /* =========================================
+       TOAST
+    ========================================= */
 
     function showToast(
         message,
@@ -4367,7 +5624,9 @@ document.addEventListener(
             );
 
 
-        if (oldToast) {
+        if (
+            oldToast
+        ) {
 
             oldToast.remove();
 
@@ -4381,26 +5640,28 @@ document.addEventListener(
 
 
         toast.className =
-
-            "delivery-toast " +
-
-            type;
+            `delivery-toast ${type}`;
 
 
         toast.innerHTML = `
 
-            <span class="toast-icon">
+            <span class="delivery-toast-icon">
 
                 ${
                     type ===
-                    "success"
+                    "error"
 
-                        ? "✓"
+                        ?
 
-                        : "!"
+                        "!"
+
+                        :
+
+                        "✓"
                 }
 
             </span>
+
 
             <span>
 
@@ -4413,32 +5674,28 @@ document.addEventListener(
         `;
 
 
-        document.body
-            .appendChild(
-                toast
-            );
+        document.body.appendChild(
+            toast
+        );
 
 
-        setTimeout(
+        requestAnimationFrame(
             function () {
 
-                toast.classList
-                    .add(
-                        "show"
-                    );
+                toast.classList.add(
+                    "show"
+                );
 
-            },
-            50
+            }
         );
 
 
         setTimeout(
             function () {
 
-                toast.classList
-                    .remove(
-                        "show"
-                    );
+                toast.classList.remove(
+                    "show"
+                );
 
 
                 setTimeout(
@@ -4447,37 +5704,186 @@ document.addEventListener(
                         toast.remove();
 
                     },
-                    300
+                    250
                 );
 
             },
-            2500
+            3000
         );
 
     }
 
 
-    // ==========================================
-    // MAP RESIZE FIX
-    // ==========================================
+    /* =========================================
+       SIDEBAR
+    ========================================= */
 
-    window.addEventListener(
-        "load",
-        function () {
+    function openSidebar() {
 
-            setTimeout(
-                function () {
+        if (
+            !sidebar
+        ) {
 
-                    if (deliveryMap) {
+            return;
 
-                        deliveryMap
-                            .invalidateSize();
+        }
 
-                    }
 
-                },
-                500
+        sidebar.classList.add(
+            "open"
+        );
+
+
+        if (
+            sidebarBackdrop
+        ) {
+
+            sidebarBackdrop.classList.add(
+                "show"
             );
+
+        }
+
+
+        if (
+            menuButton
+        ) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeSidebar() {
+
+        if (
+            !sidebar
+        ) {
+
+            return;
+
+        }
+
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        if (
+            sidebarBackdrop
+        ) {
+
+            sidebarBackdrop.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        if (
+            menuButton
+        ) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    if (
+        menuButton
+    ) {
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "open"
+                    )
+                ) {
+
+                    closeSidebar();
+
+                }
+                else {
+
+                    openSidebar();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    if (
+        sidebarBackdrop
+    ) {
+
+        sidebarBackdrop.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        function (
+            event
+        ) {
+
+            if (
+                event.key !==
+                "Escape"
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                pendingCancelDeliveryId !==
+                null
+            ) {
+
+                pendingCancelDeliveryId =
+                    null;
+
+
+                displayDeliveries();
+
+
+                return;
+
+            }
+
+
+            closeSidebar();
 
         }
     );
@@ -4487,10 +5893,28 @@ document.addEventListener(
         "resize",
         function () {
 
-            if (deliveryMap) {
+            if (
+                window.innerWidth >
+                1000
+            ) {
 
-                deliveryMap
-                    .invalidateSize();
+                closeSidebar();
+
+            }
+
+
+            if (
+                map
+            ) {
+
+                setTimeout(
+                    function () {
+
+                        map.invalidateSize();
+
+                    },
+                    100
+                );
 
             }
 
@@ -4498,18 +5922,20 @@ document.addEventListener(
     );
 
 
-    // ==========================================
-    // INITIAL LOAD
-    // ==========================================
+    /* =========================================
+       INITIALIZE
+    ========================================= */
 
-    loadDivisionDropdown();
+    populateDivisionDropdown();
+
+    resetDistrictDropdown();
+
+    resetUpazilaDropdown();
+
 
     initializeMap();
 
-    loadInvoices();
 
-    displayDeliveries();
-
-    updateSummary();
+    refreshDeliveryUI();
 
 });
