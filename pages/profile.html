@@ -7,670 +7,920 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Profile and System Settings - Smart Rice Mill ERP & Logistics Management System">
+
     <title>Profile & Settings | Smart Rice Mill ERP</title>
 
-    <!-- Common Dashboard CSS -->
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 
-    <!-- Profile Page CSS -->
-    <link rel="stylesheet" href="../styles/profile.css">
+    <link rel="stylesheet"
+          href="../styles/profile.css">
 </head>
+
 
 <body>
 
-    <div class="dashboard-layout">
-
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
-        <aside class="sidebar">
-
-            <div class="sidebar-header">
-
-                <div class="sidebar-logo"
-                     aria-hidden="true">
-
-                    <span class="logo-shape logo-shape-one"></span>
-                    <span class="logo-shape logo-shape-two"></span>
-
-                </div>
+<div class="dashboard-layout">
 
 
-                <div class="sidebar-brand">
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
 
-                    <h2>Smart Rice Mill</h2>
+    <aside class="sidebar"
+           id="sidebar">
 
-                    <p>
-                        ERP &amp; Logistics<br>
-                        Management System
-                    </p>
+        <div class="sidebar-header">
 
-                </div>
+            <div class="sidebar-logo"
+                 aria-hidden="true">
+
+                <span class="logo-shape logo-shape-one"></span>
+                <span class="logo-shape logo-shape-two"></span>
 
             </div>
 
 
-            <nav class="sidebar-navigation"
-                 aria-label="Main navigation">
+            <div class="sidebar-brand">
 
-                <a class="navigation-link"
-                   href="dashboard.html">
+                <h2 id="sidebarMillName">
+                    Smart Rice Mill
+                </h2>
 
-                    <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
-                    <span class="navigation-arrow">›</span>
+                <p>
+                    ERP &amp; Logistics<br>
+                    Management System
+                </p>
 
-                </a>
+            </div>
 
-
-                <a class="navigation-link"
-                   href="purchase.html">
-
-                    <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
+        </div>
 
 
-                <a class="navigation-link"
-                   href="production.html">
-
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
+        <nav class="sidebar-navigation"
+             aria-label="Main navigation">
 
 
-                <a class="navigation-link"
-                   href="inventory.html">
+            <a class="navigation-link"
+               href="dashboard.html">
 
-                    <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
-                    <span class="navigation-arrow">›</span>
+                <span class="navigation-icon">
+                    ⌂
+                </span>
 
-                </a>
+                <span class="navigation-text">
+                    Dashboard
+                </span>
 
-
-                <a class="navigation-link"
-                   href="sales.html">
-
-                    <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="delivery.html">
-
-                    <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="reports.html">
-
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link active"
-                   href="profile.html">
-
-                    <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-            </nav>
-
-
-            <a class="logout-link"
-               href="../index.html">
-
-                <span class="logout-icon">↪</span>
-                <span>Logout</span>
+                <span class="navigation-arrow">
+                    ›
+                </span>
 
             </a>
 
-        </aside>
+
+            <a class="navigation-link"
+               href="notifications.html">
+
+                <span class="navigation-icon">
+                    🔔
+                </span>
+
+                <span class="navigation-text">
+                    Notifications
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
 
 
-        <!-- =====================================
-             Main Area
-        ====================================== -->
-        <main class="main-area">
+            <a class="navigation-link"
+               href="purchase.html">
 
-            <!-- =====================================
-                 Topbar
-            ====================================== -->
-            <header class="topbar">
+                <span class="navigation-icon">
+                    🛒
+                </span>
 
-                <div class="topbar-left">
+                <span class="navigation-text">
+                    Purchase
+                </span>
 
-                    <button class="menu-button"
-                            type="button"
-                            aria-label="Open navigation menu">
-                        ☰
-                    </button>
+                <span class="navigation-arrow">
+                    ›
+                </span>
 
-                    <h1>Profile &amp; Settings</h1>
-
-                </div>
+            </a>
 
 
-                <div class="topbar-right">
+            <a class="navigation-link"
+               href="production.html">
 
-                    <a class="notification-area profile-notification-link"
-                       href="notifications.html"
-                       aria-label="View notifications">
+                <span class="navigation-icon">
+                    ▥
+                </span>
 
-                        <span class="notification-icon">♧</span>
+                <span class="navigation-text">
+                    Production
+                </span>
 
-                        <span class="notification-count">
-                            3
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="inventory.html">
+
+                <span class="navigation-icon">
+                    ▣
+                </span>
+
+                <span class="navigation-text">
+                    Inventory
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="sales.html">
+
+                <span class="navigation-icon">
+                    ◇
+                </span>
+
+                <span class="navigation-text">
+                    Sales
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="delivery.html">
+
+                <span class="navigation-icon">
+                    ▱
+                </span>
+
+                <span class="navigation-text">
+                    Delivery
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- FIXED SERIAL -->
+
+            <a class="navigation-link"
+               href="reports.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Reports
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="expense.html">
+
+                <span class="navigation-icon">
+                    ৳
+                </span>
+
+                <span class="navigation-text">
+                    Expense &amp; Salary
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- SETTINGS ACTIVE -->
+
+            <a class="navigation-link active"
+               href="profile.html">
+
+                <span class="navigation-icon">
+                    ⚙
+                </span>
+
+                <span class="navigation-text">
+                    Settings
+                </span>
+
+                <span class="navigation-arrow">
+                    ⌄
+                </span>
+
+            </a>
+
+
+            <!-- SETTINGS SUBMENU -->
+
+            <a class="navigation-link sub-navigation-link"
+               href="users.html">
+
+                <span class="navigation-icon">
+                    👥
+                </span>
+
+                <span class="navigation-text">
+                    User Roles
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="maintenance.html">
+
+                <span class="navigation-icon">
+                    🔧
+                </span>
+
+                <span class="navigation-text">
+                    Maintenance
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <a class="logout-link"
+           href="#"
+           id="logoutBtn">
+
+            <span class="logout-icon">
+                ↪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </aside>
+
+
+    <div class="sidebar-backdrop"
+         id="sidebarBackdrop">
+    </div>
+
+
+    <!-- =========================================
+         MAIN AREA
+    ========================================== -->
+
+    <main class="main-area">
+
+
+        <!-- =========================================
+             TOPBAR
+        ========================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button"
+                        id="menuButton"
+                        type="button"
+                        aria-label="Open navigation menu"
+                        aria-expanded="false">
+
+                    ☰
+
+                </button>
+
+
+                <h1>
+                    Profile &amp; Settings
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <a class="notification-area"
+                   href="notifications.html"
+                   aria-label="Open notifications">
+
+                    <span class="notification-icon">
+                        ♧
+                    </span>
+
+                    <span class="notification-count">
+                        3
+                    </span>
+
+                </a>
+
+
+                <a class="user-profile"
+                   href="profile.html">
+
+                    <div class="user-avatar"
+                         id="topbarAvatar">
+
+                        👤
+
+                    </div>
+
+
+                    <div class="user-information">
+
+                        <strong id="topbarUserName">
+                            Admin User
+                        </strong>
+
+                        <span>
+                            Rice Mill Owner
                         </span>
 
-                    </a>
+                    </div>
 
 
-                    <a class="user-profile profile-topbar-link"
-                       href="profile.html">
+                    <span class="profile-arrow">
+                        ⌄
+                    </span>
 
-                        <div class="user-avatar"
-                             aria-hidden="true">
-                            👤
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================================
+             PAGE CONTENT
+        ========================================== -->
+
+        <section class="dashboard-content settings-content">
+
+
+            <section class="settings-grid">
+
+
+                <!-- =====================================
+                     PROFILE INFORMATION
+                ====================================== -->
+
+                <section class="content-card settings-card profile-card">
+
+
+                    <div class="settings-card-heading">
+
+                        <h2>
+                            Profile Information
+                        </h2>
+
+                        <p>
+                            Manage administrator contact information and account security.
+                        </p>
+
+                    </div>
+
+
+                    <!-- PROFILE AVATAR -->
+
+                    <div class="profile-avatar-section">
+
+                        <div class="profile-avatar-large"
+                             id="profileAvatarPreview">
+
+                            <span id="profileAvatarFallback">
+                                👤
+                            </span>
+
+                            <img
+                                id="profileAvatarImage"
+                                alt="Administrator profile"
+                                hidden
+                            >
+
+
+                            <button
+                                class="avatar-upload-button"
+                                id="avatarUploadButton"
+                                type="button"
+                                aria-label="Change profile picture"
+                                title="Change profile picture"
+                            >
+                                📷
+                            </button>
+
                         </div>
 
-                        <div class="user-information">
 
-                            <strong id="topbarProfileName">
-                                Admin User
+                        <input
+                            type="file"
+                            id="profilePhotoInput"
+                            accept="image/png,image/jpeg,image/webp"
+                            hidden
+                        >
+
+
+                        <h3 id="profileDisplayName">
+                            Admin User
+                        </h3>
+
+                        <span class="profile-role">
+                            Rice Mill Owner
+                        </span>
+
+                    </div>
+
+
+                    <!-- PROFILE FORM -->
+
+                    <form id="profileForm"
+                          class="settings-form"
+                          novalidate>
+
+
+                        <div class="settings-field">
+
+                            <label for="fullName">
+                                Full Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="fullName"
+                                maxlength="80"
+                                placeholder="Enter full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="settings-field">
+
+                            <label for="profileEmail">
+                                Email *
+                            </label>
+
+                            <input
+                                type="email"
+                                id="profileEmail"
+                                maxlength="120"
+                                placeholder="Enter email address"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="settings-field">
+
+                            <label for="profilePhone">
+                                Phone Number *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="profilePhone"
+                                maxlength="20"
+                                placeholder="e.g. 01712345678"
+                                autocomplete="tel"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- PASSWORD SECTION -->
+
+                        <div class="password-section-title">
+
+                            <strong>
+                                Change Password
                             </strong>
 
                             <span>
-                                Rice Mill Owner
+                                Optional — leave blank if you do not want to change it.
                             </span>
 
                         </div>
 
-                        <span class="profile-arrow">⌄</span>
 
-                    </a>
+                        <div class="settings-field">
 
-                </div>
+                            <label for="currentPassword">
+                                Current Password
+                            </label>
 
-            </header>
+                            <div class="password-input-wrapper">
 
-
-            <!-- =====================================
-                 Profile Content
-            ====================================== -->
-            <section class="dashboard-content profile-page">
-
-                <section class="profile-settings-grid">
-
-                    <!-- =====================================
-                         Profile Information
-                    ====================================== -->
-                    <section class="content-card profile-information-card">
-
-                        <h2>Profile Information</h2>
-
-
-                        <div class="profile-avatar-section">
-
-                            <div class="profile-large-avatar">
-
-                                👤
+                                <input
+                                    type="password"
+                                    id="currentPassword"
+                                    minlength="6"
+                                    placeholder="Enter current password"
+                                    autocomplete="current-password"
+                                >
 
                                 <button
-                                    class="profile-camera-button"
+                                    class="password-toggle"
                                     type="button"
-                                    id="profileCameraButton"
-                                    aria-label="Change profile picture"
+                                    data-password-target="currentPassword"
+                                    aria-label="Show current password"
                                 >
-                                    📷
+                                    ◉
                                 </button>
 
                             </div>
 
+                        </div>
 
-                            <h3 id="profileDisplayName">
-                                Admin User
-                            </h3>
 
-                            <p>
-                                Rice Mill Owner
-                            </p>
+                        <div class="settings-field">
+
+                            <label for="newPassword">
+                                New Password
+                            </label>
+
+                            <div class="password-input-wrapper">
+
+                                <input
+                                    type="password"
+                                    id="newPassword"
+                                    minlength="6"
+                                    placeholder="Enter new password"
+                                    autocomplete="new-password"
+                                >
+
+                                <button
+                                    class="password-toggle"
+                                    type="button"
+                                    data-password-target="newPassword"
+                                    aria-label="Show new password"
+                                >
+                                    ◉
+                                </button>
+
+                            </div>
 
                         </div>
 
 
-                        <form
-                            class="profile-information-form"
-                            id="profileInformationForm"
-                        >
+                        <div class="settings-field">
 
-                            <!-- Full Name -->
-                            <div class="profile-form-field">
+                            <label for="confirmPassword">
+                                Confirm Password
+                            </label>
 
-                                <label for="profile-full-name">
-                                    Full Name
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="profile-full-name"
-                                    name="profileFullName"
-                                    value="Admin User"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Email -->
-                            <div class="profile-form-field">
-
-                                <label for="profile-email">
-                                    Email
-                                </label>
-
-                                <input
-                                    type="email"
-                                    id="profile-email"
-                                    name="profileEmail"
-                                    value="admin@ricemill.com"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Phone -->
-                            <div class="profile-form-field">
-
-                                <label for="profile-phone">
-                                    Phone Number
-                                </label>
-
-                                <input
-                                    type="tel"
-                                    id="profile-phone"
-                                    name="profilePhone"
-                                    value="+880 1712 345678"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Current Password -->
-                            <div class="profile-form-field">
-
-                                <label for="current-password">
-                                    Current Password
-                                </label>
+                            <div class="password-input-wrapper">
 
                                 <input
                                     type="password"
-                                    id="current-password"
-                                    name="currentPassword"
-                                    placeholder="••••••••"
+                                    id="confirmPassword"
+                                    minlength="6"
+                                    placeholder="Confirm new password"
+                                    autocomplete="new-password"
                                 >
+
+                                <button
+                                    class="password-toggle"
+                                    type="button"
+                                    data-password-target="confirmPassword"
+                                    aria-label="Show confirmed password"
+                                >
+                                    ◉
+                                </button>
 
                             </div>
 
-
-                            <!-- New Password -->
-                            <div class="profile-form-field">
-
-                                <label for="new-password">
-                                    New Password
-                                </label>
-
-                                <input
-                                    type="password"
-                                    id="new-password"
-                                    name="newPassword"
-                                    placeholder="••••••••"
-                                >
-
-                            </div>
+                        </div>
 
 
-                            <!-- Confirm Password -->
-                            <div class="profile-form-field">
-
-                                <label for="confirm-password">
-                                    Confirm Password
-                                </label>
-
-                                <input
-                                    type="password"
-                                    id="confirm-password"
-                                    name="confirmPassword"
-                                    placeholder="••••••••"
-                                >
-
-                            </div>
-
+                        <div class="settings-form-action">
 
                             <button
-                                class="profile-save-button"
+                                class="settings-primary-button"
                                 type="submit"
-                                id="updateProfileButton"
                             >
 
-                                <span aria-hidden="true">▣</span>
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
 
                                 Update Profile
 
                             </button>
 
-                        </form>
+                        </div>
 
-                    </section>
+                    </form>
 
+                </section>
 
-                    <!-- =====================================
-                         System Settings
-                    ====================================== -->
-                    <section class="content-card system-settings-card">
 
-                        <h2>System Settings</h2>
+                <!-- =====================================
+                     SYSTEM SETTINGS
+                ====================================== -->
 
+                <section class="content-card settings-card system-settings-card">
 
-                        <form
-                            class="system-settings-form"
-                            id="systemSettingsForm"
-                        >
 
-                            <!-- Rice Mill Name -->
-                            <div class="settings-form-field">
+                    <div class="settings-card-heading">
 
-                                <label for="rice-mill-name">
-                                    Rice Mill Name
-                                </label>
+                        <h2>
+                            System Settings
+                        </h2>
 
-                                <input
-                                    type="text"
-                                    id="rice-mill-name"
-                                    name="riceMillName"
-                                    value="Smart Rice Mill"
-                                    required
-                                >
+                        <p>
+                            Configure rice mill information used across ERP modules.
+                        </p>
 
-                            </div>
+                    </div>
 
 
-                            <!-- =================================
-                                 Mill Location Section
-                            ================================== -->
-                            <div class="mill-location-section">
+                    <form id="systemSettingsForm"
+                          class="settings-form"
+                          novalidate>
 
-                                <div class="settings-section-heading">
 
-                                    <div>
+                        <div class="settings-field">
 
-                                        <h3>
-                                            Rice Mill Location
-                                        </h3>
+                            <label for="riceMillName">
+                                Rice Mill Name *
+                            </label>
 
-                                        <p>
-                                            This location is used as the
-                                            starting point for deliveries.
-                                        </p>
-
-                                    </div>
-
-                                    <span class="settings-location-icon">
-                                        ⌖
-                                    </span>
-
-                                </div>
-
-
-                                <div class="mill-location-grid">
-
-                                    <!-- Division -->
-                                    <div class="settings-form-field">
-
-                                        <label for="mill-division">
-                                            Division
-                                        </label>
-
-                                        <select
-                                            id="mill-division"
-                                            name="millDivision"
-                                            required
-                                            disabled
-                                        >
-
-                                            <option
-                                                value=""
-                                                selected
-                                                disabled
-                                            >
-                                                Loading divisions...
-                                            </option>
-
-                                        </select>
-
-                                    </div>
-
-
-                                    <!-- District -->
-                                    <div class="settings-form-field">
-
-                                        <label for="mill-district">
-                                            District
-                                        </label>
-
-                                        <select
-                                            id="mill-district"
-                                            name="millDistrict"
-                                            required
-                                            disabled
-                                        >
-
-                                            <option
-                                                value=""
-                                                selected
-                                                disabled
-                                            >
-                                                Select district
-                                            </option>
-
-                                        </select>
-
-                                    </div>
-
-
-                                    <!-- Upazila -->
-                                    <div class="settings-form-field">
-
-                                        <label for="mill-upazila">
-                                            Upazila
-                                        </label>
-
-                                        <select
-                                            id="mill-upazila"
-                                            name="millUpazila"
-                                            required
-                                            disabled
-                                        >
-
-                                            <option
-                                                value=""
-                                                selected
-                                                disabled
-                                            >
-                                                Select upazila
-                                            </option>
-
-                                        </select>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div
-                                    class="mill-location-message"
-                                    id="millLocationMessage"
-                                    aria-live="polite"
-                                >
-                                    Loading Bangladesh location data...
-                                </div>
-
-                            </div>
-
-
-                            <!-- Detailed Address -->
-                            <div class="settings-form-field">
-
-                                <label for="rice-mill-address">
-                                    Detailed Mill Address
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="rice-mill-address"
-                                    name="riceMillAddress"
-                                    placeholder="Village / Road / Market / Area"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Contact -->
-                            <div class="settings-form-field">
-
-                                <label for="rice-mill-contact">
-                                    Contact Number
-                                </label>
-
-                                <input
-                                    type="tel"
-                                    id="rice-mill-contact"
-                                    name="riceMillContact"
-                                    value="+880 1712 345678"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Currency -->
-                            <div class="settings-form-field">
-
-                                <label for="default-currency">
-                                    Default Currency
-                                </label>
-
-                                <select
-                                    id="default-currency"
-                                    name="defaultCurrency"
-                                >
-
-                                    <option
-                                        value="BDT"
-                                        selected
-                                    >
-                                        BDT (Bangladeshi Taka)
-                                    </option>
-
-                                    <option value="USD">
-                                        USD (US Dollar)
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                            <!-- Notifications -->
-                            <div class="settings-form-field">
-
-                                <label for="notification-preference">
-                                    Notification Preferences
-                                </label>
-
-                                <select
-                                    id="notification-preference"
-                                    name="notificationPreference"
-                                >
-
-                                    <option
-                                        value="email-in-app"
-                                        selected
-                                    >
-                                        Email and In-App Notifications
-                                    </option>
-
-                                    <option value="in-app">
-                                        In-App Notifications Only
-                                    </option>
-
-                                    <option value="email">
-                                        Email Notifications Only
-                                    </option>
-
-                                    <option value="none">
-                                        Turn Off Notifications
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                            <button
-                                class="settings-save-button"
-                                type="submit"
-                                id="saveSettingsButton"
+                            <input
+                                type="text"
+                                id="riceMillName"
+                                maxlength="100"
+                                placeholder="Enter rice mill name"
+                                required
                             >
 
-                                <span aria-hidden="true">▣</span>
+                        </div>
+
+
+                        <!-- MILL LOCATION -->
+
+                        <section class="mill-location-panel">
+
+
+                            <div class="mill-location-heading">
+
+                                <div>
+
+                                    <h3>
+                                        Rice Mill Location
+                                    </h3>
+
+                                    <p>
+                                        This location is used as the starting point for deliveries.
+                                    </p>
+
+                                </div>
+
+
+                                <span class="location-icon"
+                                      aria-hidden="true">
+
+                                    ⌖
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="location-grid">
+
+
+                                <div class="settings-field">
+
+                                    <label for="millDivision">
+                                        Division *
+                                    </label>
+
+                                    <select id="millDivision"
+                                            required>
+
+                                        <option value="">
+                                            Loading divisions...
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="settings-field">
+
+                                    <label for="millDistrict">
+                                        District *
+                                    </label>
+
+                                    <select id="millDistrict"
+                                            disabled
+                                            required>
+
+                                        <option value="">
+                                            Select division first
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="settings-field">
+
+                                    <label for="millUpazila">
+                                        Upazila *
+                                    </label>
+
+                                    <select id="millUpazila"
+                                            disabled
+                                            required>
+
+                                        <option value="">
+                                            Select district first
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="location-status"
+                                 id="locationStatus">
+
+                                Loading Bangladesh location data...
+
+                            </div>
+
+                        </section>
+
+
+                        <div class="settings-field">
+
+                            <label for="detailedMillAddress">
+                                Detailed Mill Address
+                            </label>
+
+                            <input
+                                type="text"
+                                id="detailedMillAddress"
+                                maxlength="180"
+                                placeholder="Village / Road / Market / Area"
+                            >
+
+                        </div>
+
+
+                        <div class="settings-field">
+
+                            <label for="millContactNumber">
+                                Contact Number *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="millContactNumber"
+                                maxlength="20"
+                                placeholder="e.g. 01712345678"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="settings-field">
+
+                            <label for="defaultCurrency">
+                                Default Currency *
+                            </label>
+
+                            <select id="defaultCurrency"
+                                    required>
+
+                                <option value="BDT">
+                                    BDT (Bangladeshi Taka)
+                                </option>
+
+                                <option value="USD">
+                                    USD (US Dollar)
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="settings-field">
+
+                            <label for="notificationPreference">
+                                Notification Preferences *
+                            </label>
+
+                            <select id="notificationPreference"
+                                    required>
+
+                                <option value="email-in-app">
+                                    Email and In-App Notifications
+                                </option>
+
+                                <option value="in-app">
+                                    In-App Notifications Only
+                                </option>
+
+                                <option value="email">
+                                    Email Notifications Only
+                                </option>
+
+                                <option value="none">
+                                    Notifications Disabled
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="settings-form-action">
+
+                            <button
+                                class="settings-primary-button"
+                                type="submit"
+                            >
+
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
 
                                 Save Settings
 
                             </button>
 
-                        </form>
+                        </div>
 
-                    </section>
+                    </form>
 
                 </section>
 
             </section>
 
-        </main>
+        </section>
 
-    </div>
+    </main>
+
+</div>
 
 
-    <!-- Authentication -->
-    <script src="../scripts/auth.js"></script>
-
-    <!-- Central Bangladesh Location Service -->
-    <script src="../scripts/bangladesh-locations.js"></script>
-
-    <!-- Profile & Settings -->
-    <script src="../scripts/profile.js"></script>
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/profile.js"></script>
 
 </body>
 
