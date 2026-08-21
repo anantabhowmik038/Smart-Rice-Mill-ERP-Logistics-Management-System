@@ -1,23 +1,85 @@
 /* =========================================
-   Smart Rice Mill ERP
-   Machine Maintenance Page
-   ========================================= */
+   SMART RICE MILL ERP
+   MACHINE MAINTENANCE
+========================================= */
 
 
-/* =========================================
-   Topbar Links
-   ========================================= */
-
-.notification-page-link,
-.profile-topbar-link {
-    color: inherit;
-    text-decoration: none;
+[hidden] {
+    display: none !important;
 }
 
 
 /* =========================================
-   Summary Cards
-   ========================================= */
+   PAGE
+========================================= */
+
+.maintenance-content {
+    padding-top: 25px;
+}
+
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.maintenance-page-heading {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.maintenance-page-heading h2 {
+    color: #17231c;
+
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+
+.maintenance-page-heading p {
+    margin-top: 5px;
+
+    max-width: 760px;
+
+    color: #78847c;
+
+    font-size: 0.75rem;
+    line-height: 1.45;
+}
+
+
+.maintenance-heading-badges {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.maintenance-heading-badge {
+    padding: 7px 10px;
+
+    color: #147c35;
+    background: #edf8ef;
+
+    border: 1px solid #bedfc6;
+    border-radius: 15px;
+
+    font-size: 0.61rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
 
 .maintenance-summary-grid {
     display: grid;
@@ -25,94 +87,226 @@
     grid-template-columns:
         repeat(3, minmax(0, 1fr));
 
-    gap: 28px;
+    gap: 22px;
 }
 
-.maintenance-summary-grid .summary-icon {
-    font-size: 2rem;
+
+.maintenance-summary-card {
+    min-height: 112px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #d9e2dc;
+    border-radius: 10px;
+
+    box-shadow:
+        0 7px 18px
+        rgba(24, 45, 30, 0.055);
+}
+
+
+.maintenance-summary-icon {
+    flex: 0 0 auto;
+
+    width: 58px;
+    height: 58px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 1.45rem;
+}
+
+
+.active-machine-icon {
+    color: #14883a;
+    background: #e9f6ec;
+}
+
+
+.due-machine-icon {
+    color: #d27a00;
+    background: #fff3df;
+}
+
+
+.last-service-icon {
+    color: #176dbe;
+    background: #eaf3fb;
+}
+
+
+.maintenance-summary-card span {
+    color: #4f5b53;
+
+    font-size: 0.76rem;
+}
+
+
+.maintenance-summary-card h2 {
+    margin-top: 5px;
+
+    color: #17231c;
+
+    font-size: 1.35rem;
+}
+
+
+.maintenance-summary-card small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #89938d;
+
+    font-size: 0.61rem;
+}
+
+
+#activeMachinesValue {
+    color: #14883a;
+}
+
+
+#maintenanceDueValue {
+    color: #d27a00;
+}
+
+
+#lastServiceValue {
+    color: #176dbe;
+
+    font-size: 1.08rem;
+}
+
+
+/* =========================================
+   ATTENTION ALERT
+========================================= */
+
+.maintenance-alert {
+    margin-top: 20px;
+
+    padding: 14px 16px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color: #805000;
+    background: #fff8e9;
+
+    border: 1px solid #edc36c;
+    border-radius: 8px;
+}
+
+
+.maintenance-alert-icon {
+    flex: 0 0 auto;
+
+    width: 29px;
+    height: 29px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+    background: #dc8a00;
+
+    border-radius: 50%;
+
+    font-size: 0.8rem;
     font-weight: 700;
 }
 
-.last-service-value {
+
+.maintenance-alert strong {
+    color: #734700;
+
+    font-size: 0.78rem;
+}
+
+
+.maintenance-alert p {
+    margin-top: 4px;
+
+    color: #92611b;
+
+    font-size: 0.68rem;
+    line-height: 1.4;
+}
+
+
+/* =========================================
+   FORM CARD
+========================================= */
+
+.maintenance-form-card {
+    margin-top: 28px;
+
+    padding: 24px;
+}
+
+
+.maintenance-form-heading {
+    margin-bottom: 22px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 18px;
+}
+
+
+.maintenance-form-heading h2 {
+    color: #17231c;
+
+    font-size: 1.08rem;
+}
+
+
+.maintenance-form-heading p {
+    margin-top: 5px;
+
+    color: #7d8881;
+
+    font-size: 0.68rem;
+    line-height: 1.4;
+}
+
+
+.research-based-badge {
+    padding: 6px 9px;
+
+    color: #147c35;
+    background: #edf8ef;
+
+    border: 1px solid #bfdfc7;
+    border-radius: 15px;
+
+    font-size: 0.59rem;
+    font-weight: 600;
+
     white-space: nowrap;
 }
 
 
 /* =========================================
-   Reminder Box
-   ========================================= */
-
-.maintenance-alert-box {
-    margin-top: 24px;
-
-    display: flex;
-    align-items: flex-start;
-
-    gap: 13px;
-
-    padding: 16px 18px;
-
-    color: #7c4b00;
-    background-color: #fff8e9;
-
-    border: 1px solid #efd18f;
-    border-radius: 9px;
-}
-
-.maintenance-alert-box[hidden] {
-    display: none;
-}
-
-.maintenance-alert-icon {
-    width: 30px;
-    height: 30px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #ffffff;
-    background-color: #e49000;
-
-    border-radius: 50%;
-
-    font-weight: 700;
-}
-
-.maintenance-alert-box strong {
-    display: block;
-
-    margin-bottom: 3px;
-}
-
-.maintenance-alert-box p {
-    margin: 0;
-
-    font-size: 0.84rem;
-    line-height: 1.5;
-}
-
-
-/* =========================================
-   Maintenance Form Card
-   ========================================= */
-
-.maintenance-form-card {
-    margin-top: 36px;
-
-    padding: 24px 25px 26px;
-}
-
-.maintenance-form-card h2 {
-    margin-bottom: 25px;
-}
-
-
-/* =========================================
-   Maintenance Form
-   ========================================= */
+   FORM GRID
+========================================= */
 
 .maintenance-form {
     display: grid;
@@ -120,134 +314,109 @@
     grid-template-columns:
         repeat(3, minmax(0, 1fr));
 
-    column-gap: 30px;
-    row-gap: 20px;
+    column-gap: 22px;
+    row-gap: 18px;
 }
 
 
-/* =========================================
-   Form Fields
-   ========================================= */
-
-.form-field {
+.maintenance-field {
     min-width: 0;
 }
 
-.form-field label {
+
+.maintenance-field label {
     display: block;
 
-    margin-bottom: 9px;
+    margin-bottom: 7px;
 
-    font-size: 0.9rem;
-    font-weight: 500;
+    color: #202b24;
 
-    color: #171e29;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-.form-field input,
-.form-field select,
-.form-field textarea {
+
+.maintenance-field input,
+.maintenance-field select,
+.maintenance-field textarea {
     width: 100%;
 
-    padding: 0 14px;
+    color: #17231c;
+    background: #ffffff;
 
-    font-family: inherit;
-    font-size: 0.9rem;
-
-    color: #171e29;
-    background-color: #ffffff;
-
-    border: 1px solid #d7dee4;
+    border: 1px solid #d4ded7;
     border-radius: 7px;
 
     outline: none;
 
+    font-family: inherit;
+    font-size: 0.74rem;
+
     transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background-color 0.2s ease;
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
-.form-field input,
-.form-field select {
-    height: 46px;
+
+.maintenance-field input,
+.maintenance-field select {
+    height: 43px;
+
+    padding: 0 12px;
 }
 
-.form-field textarea {
-    min-height: 105px;
 
-    padding-top: 12px;
-    padding-bottom: 12px;
+.maintenance-field textarea {
+    min-height: 95px;
 
-    line-height: 1.5;
+    padding: 11px 12px;
 
     resize: vertical;
+
+    line-height: 1.45;
 }
 
-.form-field input::placeholder,
-.form-field textarea::placeholder {
-    color: #929aa6;
-}
 
-.form-field select {
-    cursor: pointer;
-}
-
-.form-field input[type="date"] {
-    cursor: pointer;
-
-    color: #66717b;
-}
-
-.form-field input:hover:not(:disabled),
-.form-field select:hover:not(:disabled),
-.form-field textarea:hover {
-    border-color: #b9c2ca;
-}
-
-.form-field input:focus,
-.form-field select:focus,
-.form-field textarea:focus {
-    border-color: #139536;
+.maintenance-field input:focus,
+.maintenance-field select:focus,
+.maintenance-field textarea:focus {
+    border-color: #15913a;
 
     box-shadow:
         0 0 0 3px
-        rgba(19, 149, 54, 0.11);
+        rgba(21, 145, 58, 0.09);
 }
 
-.form-field input[readonly] {
-    color: #66717b;
-    background-color: #f5f7f8;
 
-    cursor: default;
+.maintenance-field input::placeholder,
+.maintenance-field textarea::placeholder {
+    color: #98a29b;
 }
 
-.form-field select:disabled {
-    color: #8c949c;
-    background-color: #f5f7f8;
+
+.maintenance-field input[readonly],
+.maintenance-field select:disabled {
+    color: #79847c;
+    background: #f4f7f5;
 
     cursor: not-allowed;
 }
 
 
-/* =========================================
-   Conditional Fields
-   ========================================= */
+.maintenance-field small {
+    display: block;
 
-.conditional-field {
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
-}
+    margin-top: 5px;
 
-.conditional-field.hidden {
-    display: none;
+    color: #8a948e;
+
+    font-size: 0.58rem;
 }
 
 
 /* =========================================
-   Notes Full Width
-   ========================================= */
+   NOTES
+========================================= */
 
 .maintenance-notes-field {
     grid-column: 1 / -1;
@@ -255,113 +424,154 @@
 
 
 /* =========================================
-   Save Button
-   ========================================= */
+   FORM ACTIONS
+========================================= */
 
-.form-action {
+.maintenance-form-actions {
     grid-column: 1 / -1;
 
+    margin-top: 8px;
+
     display: flex;
+    align-items: center;
     justify-content: center;
 
-    margin-top: 18px;
+    gap: 10px;
 }
 
-.primary-action-button {
-    min-width: 220px;
-    height: 48px;
 
-    padding: 0 25px;
+.maintenance-primary-button,
+.maintenance-secondary-button {
+    min-width: 175px;
+    height: 44px;
+
+    padding: 0 19px;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    gap: 8px;
+    gap: 7px;
 
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-
-    color: #ffffff;
-    background-color: #129238;
-
-    border: none;
     border-radius: 7px;
 
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+
     cursor: pointer;
+}
+
+
+.maintenance-primary-button {
+    color: #ffffff;
+    background: #129238;
 
     box-shadow:
         0 6px 14px
         rgba(18, 146, 56, 0.16);
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
 }
 
-.primary-action-button:hover {
-    background-color: #0e7f30;
 
-    box-shadow:
-        0 8px 17px
-        rgba(18, 146, 56, 0.22);
-
-    transform: translateY(-1px);
+.maintenance-primary-button:hover {
+    background: #0e7f30;
 }
 
-.primary-action-button:active {
-    transform: translateY(0);
+
+.maintenance-secondary-button {
+    color: #536058;
+    background: #ffffff;
+
+    border: 1px solid #cad5ce;
 }
 
-.primary-action-button:focus-visible {
-    outline:
-        3px solid
-        rgba(18, 146, 56, 0.24);
 
-    outline-offset: 3px;
+.maintenance-secondary-button:hover {
+    background: #f4f7f5;
 }
 
 
 /* =========================================
-   Maintenance Records
-   ========================================= */
+   RECORD CARD
+========================================= */
 
-.maintenance-list-card {
-    margin-top: 55px;
+.maintenance-record-card {
+    margin-top: 30px;
+    margin-bottom: 25px;
 
-    padding: 23px 21px 10px;
+    padding: 22px 20px 14px;
 }
 
-.maintenance-list-header {
+
+.maintenance-record-heading {
+    margin-bottom: 18px;
+
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
 
     gap: 20px;
-
-    margin-bottom: 24px;
 }
 
-.maintenance-list-header h2 {
-    margin: 0 0 4px;
+
+.maintenance-record-heading h2 {
+    color: #17231c;
+
+    font-size: 1.08rem;
 }
 
-.maintenance-list-header p {
-    margin: 0;
 
-    font-size: 0.8rem;
+.maintenance-record-heading p {
+    margin-top: 5px;
 
-    color: #7a848d;
+    color: #7c8780;
+
+    font-size: 0.68rem;
+}
+
+
+.maintenance-record-tools {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.maintenance-record-tools input,
+.maintenance-record-tools select {
+    height: 36px;
+
+    padding: 0 10px;
+
+    color: #28352c;
+    background: #ffffff;
+
+    border: 1px solid #d3ddd6;
+    border-radius: 6px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.64rem;
+}
+
+
+.maintenance-record-tools input {
+    width: 190px;
+}
+
+
+.maintenance-record-tools select {
+    width: 125px;
 }
 
 
 /* =========================================
-   Table Wrapper
-   ========================================= */
+   TABLE
+========================================= */
 
-.table-wrapper {
+.maintenance-table-wrapper {
     width: 100%;
 
     overflow-x: auto;
@@ -370,408 +580,415 @@
 }
 
 
-/* =========================================
-   Maintenance Table
-   ========================================= */
-
 .maintenance-table {
     width: 100%;
-    min-width: 1320px;
+    min-width: 1500px;
 
-    border-collapse: separate;
-    border-spacing: 0;
+    border-collapse: collapse;
 
-    font-size: 0.84rem;
+    font-size: 0.68rem;
 }
+
+
+.maintenance-table thead {
+    background: #fafcfa;
+
+    border: 1px solid #d7dfd9;
+}
+
 
 .maintenance-table th,
 .maintenance-table td {
-    padding: 14px 14px;
+    padding: 11px 10px;
 
     text-align: left;
     vertical-align: middle;
 }
 
 
-/* Header */
+.maintenance-table th {
+    color: #344038;
 
-.maintenance-table thead th {
-    font-weight: 500;
-
-    color: #171e29;
-    background-color: #fafcfc;
-
-    border-top: 1px solid #d8dee3;
-    border-bottom: 1px solid #d8dee3;
-}
-
-.maintenance-table thead th:first-child {
-    border-left: 1px solid #d8dee3;
-
-    border-radius: 8px 0 0 8px;
-}
-
-.maintenance-table thead th:last-child {
-    border-right: 1px solid #d8dee3;
-
-    border-radius: 0 8px 8px 0;
-}
-
-
-/* Body */
-
-.maintenance-table tbody td {
-    border-bottom: 1px solid #e1e5e8;
-}
-
-.maintenance-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.maintenance-table tbody tr:hover td {
-    background-color: #fafcfa;
-}
-
-
-/* =========================================
-   Record Text
-   ========================================= */
-
-.maintenance-primary-text {
-    display: block;
-
+    font-size: 0.64rem;
     font-weight: 600;
 
-    color: #27323c;
+    white-space: nowrap;
 }
+
+
+.maintenance-table tbody tr {
+    border-bottom: 1px solid #e1e7e3;
+}
+
+
+.maintenance-table tbody tr:hover {
+    background: #fbfdfb;
+}
+
+
+.maintenance-primary-text {
+    color: #1e2922;
+
+    font-weight: 600;
+}
+
 
 .maintenance-secondary-text {
     display: block;
 
     margin-top: 3px;
 
-    font-size: 0.75rem;
+    color: #818b85;
 
-    color: #7b858e;
+    font-size: 0.58rem;
+}
+
+
+.maintenance-id {
+    color: #0867ad;
+
+    font-weight: 700;
 }
 
 
 /* =========================================
-   Status Badges
-   ========================================= */
+   BADGES
+========================================= */
 
 .maintenance-badge {
+    min-width: 70px;
+
+    padding: 5px 9px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    min-width: 72px;
+    border-radius: 14px;
 
-    padding: 5px 9px;
-
-    font-size: 0.73rem;
+    font-size: 0.58rem;
     font-weight: 600;
 
-    border-radius: 20px;
+    white-space: nowrap;
 }
 
-
-/* Machine */
 
 .machine-operational {
-    color: #157336;
-    background-color: #eaf7ed;
+    color: #147d35;
+    background: #e9f7ed;
+
+    border: 1px solid #79bf8b;
 }
+
 
 .machine-maintenance {
-    color: #176cc8;
-    background-color: #eef5fd;
-}
+    color: #176bb1;
+    background: #eaf3fb;
 
-.machine-breakdown {
-    color: #a12626;
-    background-color: #fdecec;
+    border: 1px solid #8bb8df;
 }
 
 
-/* Schedule */
+.machine-out {
+    color: #bd3838;
+    background: #fff0f0;
 
-.schedule-ok {
-    color: #157336;
-    background-color: #eaf7ed;
+    border: 1px solid #e1a6a6;
 }
 
-.schedule-soon {
-    color: #8a6600;
-    background-color: #fff5d8;
-}
-
-.schedule-due {
-    color: #b45b00;
-    background-color: #fff0df;
-}
 
 .schedule-overdue {
-    color: #a12626;
-    background-color: #fdecec;
+    color: #bd3838;
+    background: #fff0f0;
+
+    border: 1px solid #e2a6a6;
+}
+
+
+.schedule-due {
+    color: #bd7000;
+    background: #fff4e3;
+
+    border: 1px solid #e2b360;
+}
+
+
+.schedule-scheduled {
+    color: #147d35;
+    background: #eaf7ed;
+
+    border: 1px solid #7dc08d;
 }
 
 
 /* =========================================
-   Action Buttons
-   ========================================= */
+   TABLE ACTIONS
+========================================= */
 
-.maintenance-action-group {
+.maintenance-table-actions {
     display: flex;
     align-items: center;
 
     gap: 6px;
 }
 
+
 .maintenance-edit-button,
-.maintenance-delete-button {
-    height: 32px;
+.maintenance-delete-button,
+.maintenance-confirm-button,
+.maintenance-cancel-button {
+    height: 30px;
 
     padding: 0 10px;
 
-    font-family: inherit;
-    font-size: 0.76rem;
-    font-weight: 600;
-
     border-radius: 6px;
 
-    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.61rem;
+    font-weight: 600;
 
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease,
-        border-color 0.2s ease;
+    cursor: pointer;
 }
+
 
 .maintenance-edit-button {
-    color: #148d35;
-    background-color: #ffffff;
+    color: #148039;
+    background: #ffffff;
 
-    border: 1px solid #148d35;
+    border: 1px solid #40a65c;
 }
+
 
 .maintenance-edit-button:hover {
     color: #ffffff;
-    background-color: #148d35;
+    background: #168c3b;
 }
+
 
 .maintenance-delete-button {
-    color: #c62828;
-    background-color: #fff8f8;
+    color: #c43c3c;
+    background: #ffffff;
 
-    border: 1px solid #e4aaaa;
+    border: 1px solid #e0a4a4;
 }
+
 
 .maintenance-delete-button:hover {
     color: #ffffff;
-    background-color: #c62828;
+    background: #c83d3d;
+}
 
-    border-color: #c62828;
+
+.maintenance-confirm-button {
+    color: #ffffff;
+    background: #c83d3d;
+
+    border: 1px solid #c83d3d;
+}
+
+
+.maintenance-cancel-button {
+    color: #536058;
+    background: #ffffff;
+
+    border: 1px solid #cad4cd;
+}
+
+
+.maintenance-delete-question {
+    color: #b63a3a;
+
+    font-size: 0.59rem;
+    font-weight: 600;
 }
 
 
 /* =========================================
-   Empty Row
-   ========================================= */
+   EMPTY
+========================================= */
 
 .maintenance-empty-row td {
-    padding: 38px 20px;
+    padding: 35px 15px;
+
+    color: #818c85;
 
     text-align: center;
-
-    color: #7c868f;
-    background-color: #fafcfc;
 }
 
 
 /* =========================================
-   Toast
-   ========================================= */
+   TOAST
+========================================= */
 
 .maintenance-toast {
     position: fixed;
 
-    top: 25px;
-    right: 25px;
+    top: 94px;
+    right: 24px;
 
-    min-width: 290px;
-    max-width: 420px;
+    z-index: 8000;
+
+    max-width: 440px;
+
+    padding: 12px 15px;
 
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
-    gap: 12px;
+    gap: 10px;
 
-    padding: 14px 18px;
+    color: #24512f;
+    background: #f0faf2;
 
-    color: #17351f;
-    background-color: #ffffff;
-
-    border-left: 5px solid #15913a;
+    border: 1px solid #b8dec1;
     border-radius: 8px;
 
     box-shadow:
-        0 6px 20px
-        rgba(0, 0, 0, 0.15);
+        0 12px 28px
+        rgba(20, 38, 25, 0.14);
 
-    font-size: 14px;
-    font-weight: 600;
-
-    z-index: 9999;
+    font-size: 0.74rem;
+    line-height: 1.45;
 
     opacity: 0;
 
-    transform: translateX(30px);
+    transform: translateY(-8px);
+
+    pointer-events: none;
 
     transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
+        opacity 0.2s ease,
+        transform 0.2s ease;
 }
+
 
 .maintenance-toast.show {
     opacity: 1;
 
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
-.maintenance-toast .toast-icon {
-    width: 26px;
-    height: 26px;
 
-    flex-shrink: 0;
+.maintenance-toast.error {
+    color: #8d2b2b;
+    background: #fff1f1;
 
-    display: flex;
+    border-color: #e5b0b0;
+}
+
+
+.maintenance-toast-icon {
+    flex: 0 0 auto;
+
+    width: 20px;
+    height: 20px;
+
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    color: #15913a;
-    background-color: #e7f5eb;
+    color: #ffffff;
+    background: #15913a;
 
     border-radius: 50%;
 
+    font-size: 0.68rem;
     font-weight: 700;
 }
 
-.maintenance-toast.error {
-    color: #8f1d1d;
 
-    border-left-color: #d32f2f;
-}
-
-.maintenance-toast.error .toast-icon {
-    color: #d32f2f;
-    background-color: #fdeaea;
+.maintenance-toast.error
+.maintenance-toast-icon {
+    background: #c83a3a;
 }
 
 
 /* =========================================
-   Responsive
-   ========================================= */
+   RESPONSIVE
+========================================= */
 
-@media screen and (max-width: 1250px) {
-
-    .maintenance-summary-grid {
-        gap: 20px;
-    }
-
-    .maintenance-form {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
-        column-gap: 22px;
-    }
-
-}
-
-
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
 
     .maintenance-summary-grid {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
     }
 
-    .maintenance-summary-grid
-    .summary-card:last-child {
-        grid-column: 1 / -1;
+
+    .maintenance-form {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
 }
 
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 760px) {
+
+    .maintenance-page-heading,
+    .maintenance-form-heading,
+    .maintenance-record-heading {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .maintenance-heading-badges {
+        flex-wrap: wrap;
+    }
+
 
     .maintenance-summary-grid {
         grid-template-columns: 1fr;
-
-        gap: 16px;
     }
 
-    .maintenance-summary-grid
-    .summary-card:last-child {
-        grid-column: auto;
-    }
-
-    .maintenance-form-card {
-        margin-top: 25px;
-
-        padding: 21px 18px;
-    }
 
     .maintenance-form {
         grid-template-columns: 1fr;
-
-        gap: 18px;
     }
 
-    .maintenance-notes-field {
+
+    .maintenance-notes-field,
+    .maintenance-form-actions {
         grid-column: auto;
     }
 
-    .form-action {
-        margin-top: 8px;
+
+    .maintenance-form-actions {
+        flex-direction: column-reverse;
+
+        align-items: stretch;
     }
 
-    .primary-action-button {
+
+    .maintenance-primary-button,
+    .maintenance-secondary-button {
         width: 100%;
     }
 
-    .maintenance-list-card {
-        margin-top: 30px;
 
-        padding: 20px 16px 8px;
+    .maintenance-record-tools {
+        width: 100%;
+
+        flex-direction: column;
+
+        align-items: stretch;
     }
 
-}
 
-
-@media screen and (max-width: 440px) {
-
-    .maintenance-form-card h2,
-    .maintenance-list-card h2 {
-        font-size: 1.15rem;
+    .maintenance-record-tools input,
+    .maintenance-record-tools select {
+        width: 100%;
     }
 
-    .form-field input,
-    .form-field select {
-        height: 45px;
-    }
-
-    .maintenance-table th,
-    .maintenance-table td {
-        padding: 12px 13px;
-    }
 
     .maintenance-toast {
-        left: 15px;
-        right: 15px;
+        top: 82px;
 
-        min-width: auto;
+        left: 14px;
+        right: 14px;
+
         max-width: none;
     }
 

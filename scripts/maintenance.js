@@ -1,1676 +1,2370 @@
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        // ==========================================
-        // FORM ELEMENTS
-        // ==========================================
-
-        const maintenanceForm =
-            document.getElementById(
-                "maintenanceForm"
-            );
-
-        const maintenanceFormTitle =
-            document.getElementById(
-                "maintenanceFormTitle"
-            );
-
-        const machineName =
-            document.getElementById(
-                "machine-name"
-            );
-
-        const componentName =
-            document.getElementById(
-                "component-name"
-            );
-
-        const maintenanceType =
-            document.getElementById(
-                "maintenance-type"
-            );
-
-        const serviceType =
-            document.getElementById(
-                "service-type"
-            );
-
-        const lastServiceDate =
-            document.getElementById(
-                "last-service-date"
-            );
-
-        const maintenanceInterval =
-            document.getElementById(
-                "maintenance-interval"
-            );
-
-        const nextServiceDate =
-            document.getElementById(
-                "next-service-date"
-            );
-
-        const machineStatus =
-            document.getElementById(
-                "machine-status"
-            );
-
-        const damageSeverity =
-            document.getElementById(
-                "damage-severity"
-            );
-
-        const downtimeHours =
-            document.getElementById(
-                "downtime-hours"
-            );
-
-
-        // ==========================================
-        // SPARE PART ELEMENTS
-        // ==========================================
-
-        const sparePartSelect =
-            document.getElementById(
-                "spare-part-select"
-            );
-
-        const otherSparePartField =
-            document.getElementById(
-                "otherSparePartField"
-            );
-
-        const otherSparePart =
-            document.getElementById(
-                "other-spare-part"
-            );
-
-
-        // ==========================================
-        // MAINTENANCE COST
-        // ==========================================
-
-        const maintenanceCost =
-            document.getElementById(
-                "maintenance-cost"
-            );
-
-
-        // ==========================================
-        // TECHNICIAN ELEMENTS
-        // ==========================================
-
-        const technicianSelect =
-            document.getElementById(
-                "technician-select"
-            );
+document.addEventListener("DOMContentLoaded", function () {
 
-        const externalTechnicianField =
-            document.getElementById(
-                "externalTechnicianField"
-            );
+    /* =========================================
+       SMART RICE MILL ERP
+       MACHINE MAINTENANCE MANAGEMENT
 
-        const externalTechnicianName =
-            document.getElementById(
-                "external-technician-name"
-            );
+       RESEARCH BASIS
+       --------------
+       1. Pertiwi, Hermawan & Prahmawati (2019)
+          Preventive maintenance for paddy seed
+          production machinery.
 
+          DOI:
+          10.1088/1757-899X/557/1/012075
 
-        // ==========================================
-        // PAYMENT / STATUS
-        // ==========================================
+       2. Wahab et al. (2026)
+          Rice milling machine maintenance:
+          preventive + corrective maintenance.
 
-        const maintenancePaymentMethod =
-            document.getElementById(
-                "maintenance-payment-method"
-            );
+          DOI:
+          10.24256/kharaj.v8i1.8905
 
-        const maintenancePaymentStatus =
-            document.getElementById(
-                "maintenance-payment-status"
-            );
+       3. Igbokwe & Harold (2022)
+          Food manufacturing maintenance:
+          preventive maintenance,
+          corrective maintenance,
+          downtime cost,
+          equipment-failure cost,
+          maintenance reliability.
 
-        const maintenanceStatus =
-            document.getElementById(
-                "maintenance-status"
-            );
-
-        const maintenanceNotes =
-            document.getElementById(
-                "maintenance-notes"
-            );
-
-        const saveMaintenanceButton =
-            document.getElementById(
-                "saveMaintenanceButton"
-            );
-
-
-        // ==========================================
-        // TABLE
-        // ==========================================
-
-        const maintenanceTableBody =
-            document.getElementById(
-                "maintenanceTableBody"
-            );
-
-
-        // ==========================================
-        // SUMMARY
-        // ==========================================
-
-        const activeMachinesValue =
-            document.getElementById(
-                "activeMachinesValue"
-            );
-
-        const maintenanceDueValue =
-            document.getElementById(
-                "maintenanceDueValue"
-            );
-
-        const lastServiceValue =
-            document.getElementById(
-                "lastServiceValue"
-            );
-
-
-        // ==========================================
-        // ALERT
-        // ==========================================
-
-        const maintenanceAlertBox =
-            document.getElementById(
-                "maintenanceAlertBox"
-            );
-
-        const maintenanceAlertText =
-            document.getElementById(
-                "maintenanceAlertText"
-            );
-
-
-        // ==========================================
-        // TOPBAR
-        // ==========================================
-
-        const maintenanceTopbarUserName =
-            document.getElementById(
-                "maintenanceTopbarUserName"
-            );
-
-
-        // ==========================================
-        // EDIT STATE
-        // ==========================================
-
-        let editingMaintenanceId =
-            null;
-
-
-        // ==========================================
-        // DEFAULT EMPLOYEES
-        // Used only if central employees
-        // data does not exist yet.
-        // ==========================================
-
-        const defaultEmployees = [
-
-            {
-                id: 1001,
-                name: "Kamal",
-                role: "driver",
-                phone: "01700000001",
-                status: "active"
-            },
-
-            {
-                id: 1002,
-                name: "Rahim",
-                role: "labour",
-                phone: "01700000002",
-                status: "active"
-            },
-
-            {
-                id: 1003,
-                name: "Karim",
-                role: "operator",
-                phone: "01700000003",
-                status: "active"
-            },
-
-            {
-                id: 1004,
-                name: "Hasan",
-                role: "manager",
-                phone: "01700000004",
-                status: "active"
-            },
-
-            {
-                id: 1005,
-                name: "Salma",
-                role: "accountant",
-                phone: "01700000005",
-                status: "active"
-            }
-
-        ];
-
-
-        // ==========================================
-        // MACHINE MASTER DATA
-        // ==========================================
-
-        const machines = [
-
-            {
-                id:
-                    "polishing-machine",
-
-                name:
-                    "Polishing Machine",
-
-                active:
-                    true,
-
-                components: [
-                    "Polishing Roller",
-                    "Abrasive Stone",
-                    "Belt",
-                    "Bearing"
-                ],
-
-                spareParts: [
-                    "Polishing Roller",
-                    "Abrasive Stone",
-                    "Drive Belt",
-                    "Bearing"
-                ]
-            },
-
-
-            {
-                id:
-                    "dryer-machine",
-
-                name:
-                    "Dryer Machine",
-
-                active:
-                    true,
-
-                components: [
-                    "Burner",
-                    "Blower Fan",
-                    "Conveyor",
-                    "Temperature Unit"
-                ],
-
-                spareParts: [
-                    "Burner Nozzle",
-                    "Blower Fan",
-                    "Fan Bearing",
-                    "Conveyor Belt",
-                    "Temperature Sensor"
-                ]
-            },
-
-
-            {
-                id:
-                    "husker-machine",
-
-                name:
-                    "Husker Machine",
-
-                active:
-                    true,
-
-                components: [
-                    "Rubber Roll",
-                    "Husking Chamber",
-                    "Belt",
-                    "Bearing"
-                ],
-
-                spareParts: [
-                    "Rubber Roll",
-                    "Drive Belt",
-                    "Bearing",
-                    "Husking Chamber Part"
-                ]
-            },
-
-
-            {
-                id:
-                    "separator-machine",
-
-                name:
-                    "Separator Machine",
-
-                active:
-                    true,
-
-                components: [
-                    "Screen",
-                    "Separator Motor",
-                    "Belt",
-                    "Bearing"
-                ],
-
-                spareParts: [
-                    "Separator Screen",
-                    "Motor",
-                    "Drive Belt",
-                    "Bearing"
-                ]
-            },
-
-
-            {
-                id:
-                    "grader-machine",
-
-                name:
-                    "Grader Machine",
+          DOI:
+          10.9734/acri/2022/v22i8543
 
-                active:
-                    true,
+       SYSTEM LOGIC
+       ------------
+       Next Service Date
+       = Last Service Date
+       + Maintenance Interval
 
-                components: [
-                    "Grading Screen",
-                    "Vibrator Motor",
-                    "Belt",
-                    "Bearing"
-                ],
+       Maintenance records remain separate from
+       ordinary expense records to avoid duplicate
+       financial transactions.
 
-                spareParts: [
-                    "Grading Screen",
-                    "Vibrator Motor",
-                    "Drive Belt",
-                    "Bearing"
-                ]
-            },
+       Expense & Salary and Reports can read
+       maintenanceRecords directly.
+    ========================================= */
 
 
-            {
-                id:
-                    "packaging-machine",
+    /* =========================================
+       ELEMENTS
+    ========================================= */
 
-                name:
-                    "Packaging Machine",
+    const maintenanceForm =
+        document.getElementById(
+            "maintenanceForm"
+        );
 
-                active:
-                    true,
 
-                components: [
-                    "Sealing Unit",
-                    "Weighing Unit",
-                    "Conveyor Belt",
-                    "Sensor"
-                ],
+    if (!maintenanceForm) {
+        return;
+    }
 
-                spareParts: [
-                    "Sealing Element",
-                    "Weighing Sensor",
-                    "Conveyor Belt",
-                    "Control Sensor"
-                ]
-            }
 
-        ];
+    const machineNameSelect =
+        document.getElementById(
+            "machineName"
+        );
 
 
-        // ==========================================
-        // DEFAULT MAINTENANCE DATA
-        // ==========================================
+    const machineComponentSelect =
+        document.getElementById(
+            "machineComponent"
+        );
 
-        const defaultMaintenanceRecords = [
 
-            {
-                id:
-                    1,
+    const maintenanceTypeSelect =
+        document.getElementById(
+            "maintenanceType"
+        );
 
-                machineId:
-                    "polishing-machine",
 
-                machineName:
-                    "Polishing Machine",
+    const serviceActivitySelect =
+        document.getElementById(
+            "serviceActivity"
+        );
 
-                component:
-                    "Belt",
 
-                maintenanceType:
-                    "preventive",
+    const lastServiceDateInput =
+        document.getElementById(
+            "lastServiceDate"
+        );
 
-                serviceType:
-                    "inspection",
 
-                lastServiceDate:
-                    "2026-06-25",
+    const maintenanceIntervalInput =
+        document.getElementById(
+            "maintenanceInterval"
+        );
 
-                maintenanceInterval:
-                    30,
 
-                nextServiceDate:
-                    "2026-07-25",
+    const nextServiceDateInput =
+        document.getElementById(
+            "nextServiceDate"
+        );
 
-                machineStatus:
-                    "operational",
 
-                damageSeverity:
-                    "minor",
+    const machineStatusSelect =
+        document.getElementById(
+            "machineStatus"
+        );
 
-                downtimeHours:
-                    1,
 
-                sparePart:
-                    "None",
+    const damageSeveritySelect =
+        document.getElementById(
+            "damageSeverity"
+        );
 
-                sparePartType:
-                    "none",
 
-                cost:
-                    5000,
+    const downtimeHoursInput =
+        document.getElementById(
+            "downtimeHours"
+        );
 
-                technicianType:
-                    "employee",
 
-                technicianEmployeeId:
-                    1004,
+    const sparePartSelect =
+        document.getElementById(
+            "sparePartUsed"
+        );
 
-                technicianName:
-                    "Hasan",
 
-                paymentMethod:
-                    "cash",
+    const maintenanceCostInput =
+        document.getElementById(
+            "maintenanceCost"
+        );
 
-                paymentStatus:
-                    "paid",
 
-                status:
-                    "completed",
+    const responsiblePersonSelect =
+        document.getElementById(
+            "responsiblePerson"
+        );
 
-                notes:
-                    "Routine inspection completed."
-            },
 
+    const paymentMethodSelect =
+        document.getElementById(
+            "paymentMethod"
+        );
 
-            {
-                id:
-                    2,
 
-                machineId:
-                    "dryer-machine",
+    const paymentStatusSelect =
+        document.getElementById(
+            "paymentStatus"
+        );
 
-                machineName:
-                    "Dryer Machine",
 
-                component:
-                    "Blower Fan",
+    const maintenanceStatusSelect =
+        document.getElementById(
+            "maintenanceStatus"
+        );
 
-                maintenanceType:
-                    "corrective",
 
-                serviceType:
-                    "repair",
+    const maintenanceNotesInput =
+        document.getElementById(
+            "maintenanceNotes"
+        );
 
-                lastServiceDate:
-                    "2026-06-20",
 
-                maintenanceInterval:
-                    30,
+    const maintenanceFormTitle =
+        document.getElementById(
+            "maintenanceFormTitle"
+        );
 
-                nextServiceDate:
-                    "2026-07-20",
 
-                machineStatus:
-                    "under-maintenance",
+    const saveMaintenanceBtn =
+        document.getElementById(
+            "saveMaintenanceBtn"
+        );
 
-                damageSeverity:
-                    "moderate",
 
-                downtimeHours:
-                    4,
+    const cancelMaintenanceEditBtn =
+        document.getElementById(
+            "cancelMaintenanceEditBtn"
+        );
 
-                sparePart:
-                    "Fan Bearing",
 
-                sparePartType:
-                    "catalog",
+    const activeMachinesValue =
+        document.getElementById(
+            "activeMachinesValue"
+        );
 
-                cost:
-                    8000,
 
-                technicianType:
-                    "employee",
+    const maintenanceDueValue =
+        document.getElementById(
+            "maintenanceDueValue"
+        );
 
-                technicianEmployeeId:
-                    1003,
 
-                technicianName:
-                    "Karim",
+    const lastServiceValue =
+        document.getElementById(
+            "lastServiceValue"
+        );
 
-                paymentMethod:
-                    "cash",
 
-                paymentStatus:
-                    "due",
+    const lastServiceMachine =
+        document.getElementById(
+            "lastServiceMachine"
+        );
 
-                status:
-                    "pending",
 
-                notes:
-                    "Repair follow-up required."
-            }
+    const maintenanceAlert =
+        document.getElementById(
+            "maintenanceAlert"
+        );
 
-        ];
 
+    const maintenanceAlertText =
+        document.getElementById(
+            "maintenanceAlertText"
+        );
 
-        // ==========================================
-        // ID COMPARISON
-        // ==========================================
 
-        function sameId(
-            first,
-            second
-        ) {
+    const maintenanceTableBody =
+        document.getElementById(
+            "maintenanceTableBody"
+        );
 
-            return (
-                String(first) ===
-                String(second)
-            );
 
-        }
+    const maintenanceSearch =
+        document.getElementById(
+            "maintenanceSearch"
+        );
 
 
-        // ==========================================
-        // TODAY
-        // ==========================================
+    const scheduleFilter =
+        document.getElementById(
+            "scheduleFilter"
+        );
 
-        function getTodayDate() {
 
-            const today =
-                new Date();
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
 
 
-            const year =
-                today.getFullYear();
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
 
 
-            const month =
-                String(
-                    today.getMonth() + 1
-                ).padStart(
-                    2,
-                    "0"
+    const sidebarBackdrop =
+        document.getElementById(
+            "sidebarBackdrop"
+        );
+
+
+    /* =========================================
+       STATE
+    ========================================= */
+
+    let editingMaintenanceId =
+        null;
+
+
+    let pendingDeleteId =
+        null;
+
+
+    /* =========================================
+       STORAGE
+    ========================================= */
+
+    function safeParseStorage(
+        key,
+        fallback = []
+    ) {
+
+        try {
+
+            const value =
+                localStorage.getItem(
+                    key
                 );
 
 
-            const day =
-                String(
-                    today.getDate()
-                ).padStart(
-                    2,
-                    "0"
-                );
+            if (value === null) {
+                return fallback;
+            }
 
 
             return (
-                year +
-                "-" +
-                month +
-                "-" +
-                day
+                JSON.parse(value) ??
+                fallback
             );
 
         }
+        catch {
+
+            return fallback;
+
+        }
+
+    }
 
 
-        // ==========================================
-        // DATE FORMAT
-        // ==========================================
+    /* =========================================
+       MACHINE MASTER
 
-        function formatDate(
-            dateString
+       Six core prototype machines.
+    ========================================= */
+
+    const DEFAULT_MACHINES = [
+
+        {
+            id: "MAC-001",
+
+            name: "Rice Huller",
+
+            components: [
+                "Rubber Roll",
+                "Drive Belt",
+                "Bearing",
+                "Motor"
+            ],
+
+            spareParts: [
+                "Rubber Roll",
+                "Drive Belt",
+                "Bearing Set",
+                "Motor Coupling"
+            ]
+        },
+
+
+        {
+            id: "MAC-002",
+
+            name: "Polishing Machine",
+
+            components: [
+                "Polishing Roller",
+                "Drive Belt",
+                "Bearing",
+                "Motor"
+            ],
+
+            spareParts: [
+                "Polishing Roller",
+                "Drive Belt",
+                "Bearing Set",
+                "Motor Coupling"
+            ]
+        },
+
+
+        {
+            id: "MAC-003",
+
+            name: "Dryer Machine",
+
+            components: [
+                "Blower Fan",
+                "Burner",
+                "Motor",
+                "Temperature Sensor"
+            ],
+
+            spareParts: [
+                "Fan Bearing",
+                "Burner Nozzle",
+                "Motor Belt",
+                "Temperature Sensor"
+            ]
+        },
+
+
+        {
+            id: "MAC-004",
+
+            name: "De-stoner",
+
+            components: [
+                "Screen",
+                "Vibrating Motor",
+                "Bearing"
+            ],
+
+            spareParts: [
+                "Screen Mesh",
+                "Bearing Set",
+                "Motor Mount"
+            ]
+        },
+
+
+        {
+            id: "MAC-005",
+
+            name: "Grading Machine",
+
+            components: [
+                "Sieve",
+                "Motor",
+                "Drive Belt",
+                "Bearing"
+            ],
+
+            spareParts: [
+                "Sieve Screen",
+                "Drive Belt",
+                "Bearing Set"
+            ]
+        },
+
+
+        {
+            id: "MAC-006",
+
+            name: "Packaging Machine",
+
+            components: [
+                "Conveyor",
+                "Sealing Unit",
+                "Load Cell",
+                "Motor"
+            ],
+
+            spareParts: [
+                "Conveyor Belt",
+                "Sealing Element",
+                "Load Cell",
+                "Motor Coupling"
+            ]
+        }
+
+    ];
+
+
+    function loadMachines() {
+
+        const stored =
+            safeParseStorage(
+                "machineMaster",
+                null
+            );
+
+
+        if (
+            Array.isArray(stored) &&
+            stored.length > 0
         ) {
 
-            if (!dateString) {
-
-                return "—";
-
-            }
+            return stored;
+        }
 
 
-            const date =
-                new Date(
-                    dateString +
-                    "T00:00:00"
+        localStorage.setItem(
+            "machineMaster",
+            JSON.stringify(
+                DEFAULT_MACHINES
+            )
+        );
+
+
+        return [
+            ...DEFAULT_MACHINES
+        ];
+
+    }
+
+
+    let machines =
+        loadMachines();
+
+
+    /* =========================================
+       RESPONSIBLE PERSONS
+    ========================================= */
+
+    const DEFAULT_RESPONSIBLE_PEOPLE = [
+
+        {
+            name: "Hasan",
+            role: "Maintenance Technician"
+        },
+
+        {
+            name: "Karim",
+            role: "Technician"
+        },
+
+        {
+            name: "Rahim",
+            role: "Machine Operator"
+        },
+
+        {
+            name: "Kamal",
+            role: "Driver / Operator"
+        }
+
+    ];
+
+
+    function loadResponsiblePeople() {
+
+        const peopleMap =
+            new Map();
+
+
+        DEFAULT_RESPONSIBLE_PEOPLE.forEach(
+            function (person) {
+
+                peopleMap.set(
+                    person.name.toLowerCase(),
+                    person
                 );
 
+            }
+        );
 
-            return date.toLocaleDateString(
-                "en-GB",
-                {
-                    day:
-                        "2-digit",
 
-                    month:
-                        "short",
+        const employees =
+            safeParseStorage(
+                "employees",
+                []
+            );
 
-                    year:
-                        "numeric"
+
+        if (Array.isArray(employees)) {
+
+            employees.forEach(
+                function (employee) {
+
+                    const name =
+                        String(
+                            employee.name ||
+                            employee.employeeName ||
+                            ""
+                        ).trim();
+
+
+                    if (!name) {
+                        return;
+                    }
+
+
+                    peopleMap.set(
+                        name.toLowerCase(),
+                        {
+                            name: name,
+
+                            role:
+                                employee.role ||
+                                employee.designation ||
+                                "Employee"
+                        }
+                    );
+
                 }
             );
 
         }
 
 
-        // ==========================================
-        // ADD DAYS
-        // ==========================================
+        return Array.from(
+            peopleMap.values()
+        );
 
-        function addDays(
-            dateString,
-            days
+    }
+
+
+    let responsiblePeople =
+        loadResponsiblePeople();
+
+
+    /* =========================================
+       DATE HELPERS
+    ========================================= */
+
+    function getTodayDate() {
+
+        const date =
+            new Date();
+
+
+        const year =
+            date.getFullYear();
+
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        return (
+            `${year}-${month}-${day}`
+        );
+
+    }
+
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "—";
+        }
+
+
+        const date =
+            new Date(
+                `${value}T00:00:00`
+            );
+
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    function calculateNextServiceDate(
+        lastServiceDate,
+        intervalDays
+    ) {
+
+        if (
+            !lastServiceDate ||
+            !intervalDays
         ) {
 
-            const numberOfDays =
-                Number(days);
+            return "";
+        }
 
 
-            if (
-                !dateString ||
-                !Number.isFinite(
-                    numberOfDays
-                ) ||
-                numberOfDays <= 0
+        const date =
+            new Date(
+                `${lastServiceDate}T00:00:00`
+            );
+
+
+        date.setDate(
+            date.getDate() +
+            Number(intervalDays)
+        );
+
+
+        const year =
+            date.getFullYear();
+
+
+        const month =
+            String(
+                date.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const day =
+            String(
+                date.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        return (
+            `${year}-${month}-${day}`
+        );
+
+    }
+
+
+    function daysBetween(
+        fromDate,
+        toDate
+    ) {
+
+        const from =
+            new Date(
+                `${fromDate}T00:00:00`
+            );
+
+
+        const to =
+            new Date(
+                `${toDate}T00:00:00`
+            );
+
+
+        return Math.round(
+            (
+                to.getTime() -
+                from.getTime()
+            )
+            /
+            86400000
+        );
+
+    }
+
+
+    /* =========================================
+       SCHEDULE STATUS
+
+       < 0 days  = Overdue
+       0 days    = Due Today
+       1-7 days  = Due Soon
+       > 7 days  = Scheduled
+    ========================================= */
+
+    function getScheduleStatus(
+        nextServiceDate
+    ) {
+
+        if (!nextServiceDate) {
+
+            return {
+                key: "scheduled",
+                label: "Not Set"
+            };
+
+        }
+
+
+        const difference =
+            daysBetween(
+                getTodayDate(),
+                nextServiceDate
+            );
+
+
+        if (difference < 0) {
+
+            return {
+                key: "overdue",
+                label: "Overdue"
+            };
+
+        }
+
+
+        if (difference === 0) {
+
+            return {
+                key: "due",
+                label: "Due Today"
+            };
+
+        }
+
+
+        if (difference <= 7) {
+
+            return {
+                key: "due",
+                label: "Due Soon"
+            };
+
+        }
+
+
+        return {
+            key: "scheduled",
+            label: "Scheduled"
+        };
+
+    }
+
+
+    /* =========================================
+       MONEY
+    ========================================= */
+
+    function formatMoney(value) {
+
+        return (
+            `৳${Number(
+                value || 0
+            ).toLocaleString(
+                "en-US",
+                {
+                    maximumFractionDigits: 2
+                }
+            )}`
+        );
+
+    }
+
+
+    /* =========================================
+       SAFE HTML
+    ========================================= */
+
+    function escapeHTML(value) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            String(
+                value ?? ""
+            );
+
+
+        return div.innerHTML;
+
+    }
+
+
+    /* =========================================
+       RECORD NORMALIZATION
+    ========================================= */
+
+    function loadMaintenanceRecords() {
+
+        let records =
+            safeParseStorage(
+                "maintenanceRecords",
+                null
+            );
+
+
+        if (!Array.isArray(records)) {
+
+            records =
+                safeParseStorage(
+                    "maintenance",
+                    []
+                );
+
+        }
+
+
+        if (!Array.isArray(records)) {
+            return [];
+        }
+
+
+        return records.map(
+            function (
+                record,
+                index
             ) {
 
-                return "";
+                const lastDate =
+
+                    record.lastServiceDate ||
+                    record.maintenanceDate ||
+                    record.serviceDate ||
+                    record.date ||
+                    getTodayDate();
+
+
+                let interval =
+                    Number(
+                        record.maintenanceInterval ??
+                        record.intervalDays ??
+                        0
+                    );
+
+
+                if (
+                    interval <= 0 &&
+                    record.nextServiceDate &&
+                    record.nextServiceDate >
+                    lastDate
+                ) {
+
+                    interval =
+                        daysBetween(
+                            lastDate,
+                            record.nextServiceDate
+                        );
+
+                }
+
+
+                if (interval <= 0) {
+
+                    interval = 30;
+
+                }
+
+
+                const nextDate =
+
+                    record.nextServiceDate ||
+
+                    calculateNextServiceDate(
+                        lastDate,
+                        interval
+                    );
+
+
+                const cost =
+                    Number(
+                        record.maintenanceCost ??
+                        record.cost ??
+                        record.totalCost ??
+                        0
+                    );
+
+
+                return {
+
+                    id:
+                        record.id ??
+                        Date.now() + index,
+
+
+                    maintenanceId:
+
+                        record.maintenanceId ||
+                        `MNT-${String(
+                            index + 1
+                        ).padStart(
+                            3,
+                            "0"
+                        )}`,
+
+
+                    machineName:
+
+                        record.machineName ||
+                        record.machine ||
+                        "Unknown Machine",
+
+
+                    component:
+
+                        record.component ||
+                        record.machineComponent ||
+                        "General",
+
+
+                    maintenanceType:
+
+                        record.maintenanceType ||
+                        record.type ||
+                        "Preventive",
+
+
+                    serviceActivity:
+
+                        record.serviceActivity ||
+                        record.activity ||
+                        "Inspection",
+
+
+                    lastServiceDate:
+                        lastDate,
+
+
+                    maintenanceInterval:
+                        interval,
+
+
+                    nextServiceDate:
+                        nextDate,
+
+
+                    machineStatus:
+
+                        record.machineStatus ||
+                        "Operational",
+
+
+                    damageSeverity:
+
+                        record.damageSeverity ||
+                        "None",
+
+
+                    downtimeHours:
+
+                        Number(
+                            record.downtimeHours ||
+                            record.downtime ||
+                            0
+                        ),
+
+
+                    sparePartUsed:
+
+                        record.sparePartUsed ||
+                        record.sparePart ||
+                        "None",
+
+
+                    maintenanceCost:
+                        cost,
+
+
+                    cost:
+                        cost,
+
+
+                    responsiblePerson:
+
+                        record.responsiblePerson ||
+                        record.technician ||
+                        record.responsible ||
+                        "Not Assigned",
+
+
+                    paymentMethod:
+
+                        record.paymentMethod ||
+                        "Not Applicable",
+
+
+                    paymentStatus:
+
+                        record.paymentStatus ||
+                        "Not Applicable",
+
+
+                    maintenanceStatus:
+
+                        record.maintenanceStatus ||
+                        record.status ||
+                        "Completed",
+
+
+                    notes:
+
+                        record.notes ||
+                        "",
+
+
+                    maintenanceDate:
+                        lastDate,
+
+
+                    serviceDate:
+                        lastDate,
+
+
+                    date:
+                        lastDate,
+
+
+                    createdAt:
+
+                        Number(
+                            record.createdAt ||
+                            record.id ||
+                            Date.now()
+                        )
+
+                };
 
             }
+        );
+
+    }
 
 
-            const date =
-                new Date(
-                    dateString +
-                    "T00:00:00"
-                );
+    let maintenanceRecords =
+        loadMaintenanceRecords();
 
 
-            date.setDate(
-                date.getDate() +
-                numberOfDays
-            );
+    function saveMaintenanceRecords() {
+
+        localStorage.setItem(
+            "maintenanceRecords",
+            JSON.stringify(
+                maintenanceRecords
+            )
+        );
+
+    }
 
 
-            const year =
-                date.getFullYear();
+    /* =========================================
+       ID GENERATOR
+    ========================================= */
+
+    function generateMaintenanceId() {
+
+        const numbers =
+            maintenanceRecords
+
+                .map(
+                    function (record) {
+
+                        const match =
+                            String(
+                                record.maintenanceId ||
+                                ""
+                            ).match(
+                                /^MNT-(\d+)$/i
+                            );
 
 
-            const month =
-                String(
-                    date.getMonth() + 1
-                ).padStart(
-                    2,
-                    "0"
-                );
+                        return (
+                            match
+                                ? Number(match[1])
+                                : 0
+                        );
 
-
-            const day =
-                String(
-                    date.getDate()
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-
-            return (
-                year +
-                "-" +
-                month +
-                "-" +
-                day
-            );
-
-        }
-
-
-        // ==========================================
-        // DAYS BETWEEN
-        // ==========================================
-
-        function daysBetween(
-            firstDate,
-            secondDate
-        ) {
-
-            const first =
-                new Date(
-                    firstDate +
-                    "T00:00:00"
-                );
-
-
-            const second =
-                new Date(
-                    secondDate +
-                    "T00:00:00"
-                );
-
-
-            const difference =
-                second.getTime() -
-                first.getTime();
-
-
-            return Math.ceil(
-                difference /
-                (
-                    1000 *
-                    60 *
-                    60 *
-                    24
-                )
-            );
-
-        }
-
-
-        // ==========================================
-        // MONEY
-        // ==========================================
-
-        function formatMoney(
-            amount
-        ) {
-
-            const value =
-                Number(amount) || 0;
-
-
-            return (
-                "৳" +
-                value.toLocaleString(
-                    "en-BD",
-                    {
-                        maximumFractionDigits:
-                            2
                     }
                 )
-            );
 
-        }
+                .filter(Boolean);
 
 
-        // ==========================================
-        // SAFE HTML
-        // ==========================================
+        const next =
 
-        function escapeHTML(
-            value
-        ) {
+            numbers.length > 0
 
-            const element =
-                document.createElement(
-                    "div"
+                ?
+
+                Math.max(
+                    ...numbers
+                ) + 1
+
+                :
+
+                1;
+
+
+        return (
+            `MNT-${String(
+                next
+            ).padStart(
+                3,
+                "0"
+            )}`
+        );
+
+    }
+
+
+    /* =========================================
+       POPULATE MACHINES
+    ========================================= */
+
+    function populateMachines() {
+
+        machineNameSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select machine
+
+            </option>
+
+        `;
+
+
+        machines.forEach(
+            function (machine) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    machine.name;
+
+
+                option.textContent =
+                    machine.name;
+
+
+                machineNameSelect.appendChild(
+                    option
                 );
-
-
-            element.textContent =
-                String(
-                    value ?? ""
-                );
-
-
-            return element.innerHTML;
-
-        }
-
-
-        // ==========================================
-        // TOAST
-        // ==========================================
-
-        function showToast(
-            message,
-            type = "success"
-        ) {
-
-            const oldToast =
-                document.querySelector(
-                    ".maintenance-toast"
-                );
-
-
-            if (oldToast) {
-
-                oldToast.remove();
 
             }
+        );
+
+    }
 
 
-            const toast =
-                document.createElement(
-                    "div"
-                );
+    /* =========================================
+       MACHINE DEPENDENCIES
+    ========================================= */
+
+    function loadMachineDependencies(
+        machineName
+    ) {
+
+        const machine =
+            machines.find(
+                function (item) {
+
+                    return (
+                        item.name ===
+                        machineName
+                    );
+
+                }
+            );
 
 
-            toast.className =
-                "maintenance-toast " +
-                type;
+        machineComponentSelect.innerHTML =
+            "";
 
 
-            toast.innerHTML = `
+        sparePartSelect.innerHTML =
+            "";
 
-                <span class="toast-icon">
 
-                    ${
-                        type ===
-                        "success"
-                            ? "✓"
-                            : "!"
-                    }
+        if (!machine) {
 
-                </span>
+            machineComponentSelect.disabled =
+                true;
 
-                <span>
-                    ${escapeHTML(message)}
-                </span>
+
+            sparePartSelect.disabled =
+                true;
+
+
+            machineComponentSelect.innerHTML = `
+
+                <option value="">
+                    Select machine first
+                </option>
 
             `;
 
 
-            document.body.appendChild(
-                toast
-            );
+            sparePartSelect.innerHTML = `
+
+                <option value="">
+                    Select machine first
+                </option>
+
+            `;
 
 
-            setTimeout(
-                function () {
-
-                    toast.classList.add(
-                        "show"
-                    );
-
-                },
-                50
-            );
-
-
-            setTimeout(
-                function () {
-
-                    toast.classList.remove(
-                        "show"
-                    );
-
-
-                    setTimeout(
-                        function () {
-
-                            toast.remove();
-
-                        },
-                        300
-                    );
-
-                },
-                2500
-            );
+            return;
 
         }
 
 
-        // ==========================================
-        // ROLE TEXT
-        // ==========================================
+        machineComponentSelect.disabled =
+            false;
 
-        function getRoleText(
-            role
+
+        sparePartSelect.disabled =
+            false;
+
+
+        machineComponentSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select component
+
+            </option>
+
+        `;
+
+
+        machine.components.forEach(
+            function (component) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    component;
+
+
+                option.textContent =
+                    component;
+
+
+                machineComponentSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        sparePartSelect.innerHTML = `
+
+            <option value="None">
+                None
+            </option>
+
+        `;
+
+
+        machine.spareParts.forEach(
+            function (sparePart) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    sparePart;
+
+
+                option.textContent =
+                    sparePart;
+
+
+                sparePartSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    machineNameSelect.addEventListener(
+        "change",
+        function () {
+
+            loadMachineDependencies(
+                machineNameSelect.value
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       MAINTENANCE ACTIVITIES
+    ========================================= */
+
+    const ACTIVITIES = {
+
+        Preventive: [
+
+            "Inspection",
+            "Cleaning",
+            "Lubrication",
+            "Calibration",
+            "Routine Part Replacement"
+
+        ],
+
+
+        Corrective: [
+
+            "Repair",
+            "Emergency Repair",
+            "Component Replacement",
+            "Electrical Repair",
+            "Mechanical Adjustment"
+
+        ]
+
+    };
+
+
+    function loadServiceActivities(
+        type
+    ) {
+
+        serviceActivitySelect.innerHTML =
+            "";
+
+
+        if (!ACTIVITIES[type]) {
+
+            serviceActivitySelect.disabled =
+                true;
+
+
+            serviceActivitySelect.innerHTML = `
+
+                <option value="">
+                    Select maintenance type first
+                </option>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        serviceActivitySelect.disabled =
+            false;
+
+
+        serviceActivitySelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select service activity
+
+            </option>
+
+        `;
+
+
+        ACTIVITIES[type].forEach(
+            function (activity) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    activity;
+
+
+                option.textContent =
+                    activity;
+
+
+                serviceActivitySelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    maintenanceTypeSelect.addEventListener(
+        "change",
+        function () {
+
+            loadServiceActivities(
+                maintenanceTypeSelect.value
+            );
+
+        }
+    );
+
+
+    /* =========================================
+       RESPONSIBLE PEOPLE
+    ========================================= */
+
+    function populateResponsiblePeople() {
+
+        responsiblePersonSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select responsible person
+
+            </option>
+
+        `;
+
+
+        responsiblePeople.forEach(
+            function (person) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    person.name;
+
+
+                option.textContent =
+                    `${person.name} — ${person.role}`;
+
+
+                responsiblePersonSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       NEXT SERVICE AUTO-CALCULATION
+    ========================================= */
+
+    function updateNextServiceDate() {
+
+        const lastDate =
+            lastServiceDateInput.value;
+
+
+        const interval =
+            Number(
+                maintenanceIntervalInput.value
+            );
+
+
+        nextServiceDateInput.value =
+
+            calculateNextServiceDate(
+                lastDate,
+                interval
+            );
+
+    }
+
+
+    lastServiceDateInput.addEventListener(
+        "change",
+        updateNextServiceDate
+    );
+
+
+    maintenanceIntervalInput.addEventListener(
+        "input",
+        updateNextServiceDate
+    );
+
+
+    /* =========================================
+       PAYMENT LOGIC
+    ========================================= */
+
+    function updatePaymentLogic() {
+
+        const cost =
+            Number(
+                maintenanceCostInput.value ||
+                0
+            );
+
+
+        if (cost === 0) {
+
+            if (
+                !paymentStatusSelect.value ||
+                paymentStatusSelect.value ===
+                "Not Applicable"
+            ) {
+
+                paymentStatusSelect.value =
+                    "Not Applicable";
+
+
+                paymentMethodSelect.value =
+                    "Not Applicable";
+
+            }
+
+        }
+
+    }
+
+
+    maintenanceCostInput.addEventListener(
+        "input",
+        updatePaymentLogic
+    );
+
+
+    paymentStatusSelect.addEventListener(
+        "change",
+        function () {
+
+            if (
+                paymentStatusSelect.value ===
+                "Not Applicable"
+            ) {
+
+                paymentMethodSelect.value =
+                    "Not Applicable";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       VALIDATION
+    ========================================= */
+
+    function validateForm() {
+
+        if (!machineNameSelect.value) {
+            return "Please select a machine.";
+        }
+
+
+        if (!machineComponentSelect.value) {
+            return "Please select a machine component.";
+        }
+
+
+        if (!maintenanceTypeSelect.value) {
+            return "Please select a maintenance type.";
+        }
+
+
+        if (!serviceActivitySelect.value) {
+            return "Please select a service activity.";
+        }
+
+
+        if (!lastServiceDateInput.value) {
+            return "Please select the last service date.";
+        }
+
+
+        if (
+            lastServiceDateInput.value >
+            getTodayDate()
         ) {
 
-            const labels = {
+            return "Last service date cannot be in the future.";
 
-                labour:
-                    "Labour",
+        }
 
-                driver:
-                    "Driver",
 
-                operator:
-                    "Machine Operator",
+        const interval =
+            Number(
+                maintenanceIntervalInput.value
+            );
 
-                manager:
-                    "Manager",
 
-                accountant:
-                    "Accountant",
+        if (
+            !Number.isInteger(interval) ||
+            interval < 1 ||
+            interval > 3650
+        ) {
 
-                technician:
-                    "Technician"
+            return "Maintenance interval must be between 1 and 3650 days.";
+
+        }
+
+
+        if (!machineStatusSelect.value) {
+            return "Please select the machine status.";
+        }
+
+
+        if (!damageSeveritySelect.value) {
+            return "Please select the damage severity.";
+        }
+
+
+        if (
+            damageSeveritySelect.value ===
+            "Critical"
+
+            &&
+
+            machineStatusSelect.value ===
+            "Operational"
+        ) {
+
+            return "A machine with Critical damage cannot remain Operational.";
+
+        }
+
+
+        const downtime =
+            Number(
+                downtimeHoursInput.value
+            );
+
+
+        if (
+            !Number.isFinite(downtime) ||
+            downtime < 0
+        ) {
+
+            return "Downtime cannot be negative.";
+
+        }
+
+
+        const cost =
+            Number(
+                maintenanceCostInput.value
+            );
+
+
+        if (
+            !Number.isFinite(cost) ||
+            cost < 0
+        ) {
+
+            return "Maintenance cost cannot be negative.";
+
+        }
+
+
+        if (!responsiblePersonSelect.value) {
+            return "Please select a responsible person.";
+        }
+
+
+        if (!paymentStatusSelect.value) {
+            return "Please select a payment status.";
+        }
+
+
+        if (!paymentMethodSelect.value) {
+            return "Please select a payment method.";
+        }
+
+
+        if (
+            cost > 0
+
+            &&
+
+            paymentStatusSelect.value ===
+            "Not Applicable"
+        ) {
+
+            return "A maintenance record with cost must have Paid or Due payment status.";
+
+        }
+
+
+        if (
+            cost > 0
+
+            &&
+
+            paymentMethodSelect.value ===
+            "Not Applicable"
+        ) {
+
+            return "Please select a valid payment method for a paid maintenance cost.";
+
+        }
+
+
+        if (!maintenanceStatusSelect.value) {
+            return "Please select the maintenance status.";
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================================
+       SAVE / UPDATE
+    ========================================= */
+
+    maintenanceForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            const error =
+                validateForm();
+
+
+            if (error) {
+
+                showToast(
+                    error,
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            const cost =
+                Number(
+                    maintenanceCostInput.value
+                );
+
+
+            const existingIndex =
+                maintenanceRecords.findIndex(
+                    function (record) {
+
+                        return (
+                            Number(record.id) ===
+                            Number(editingMaintenanceId)
+                        );
+
+                    }
+                );
+
+
+            const existing =
+
+                existingIndex >= 0
+
+                    ?
+
+                    maintenanceRecords[
+                        existingIndex
+                    ]
+
+                    :
+
+                    null;
+
+
+            const record = {
+
+                id:
+
+                    existing
+                        ? existing.id
+                        : Date.now(),
+
+
+                maintenanceId:
+
+                    existing
+                        ? existing.maintenanceId
+                        : generateMaintenanceId(),
+
+
+                machineName:
+                    machineNameSelect.value,
+
+
+                component:
+                    machineComponentSelect.value,
+
+
+                maintenanceType:
+                    maintenanceTypeSelect.value,
+
+
+                serviceActivity:
+                    serviceActivitySelect.value,
+
+
+                lastServiceDate:
+                    lastServiceDateInput.value,
+
+
+                maintenanceInterval:
+
+                    Number(
+                        maintenanceIntervalInput.value
+                    ),
+
+
+                nextServiceDate:
+                    nextServiceDateInput.value,
+
+
+                machineStatus:
+                    machineStatusSelect.value,
+
+
+                damageSeverity:
+                    damageSeveritySelect.value,
+
+
+                downtimeHours:
+
+                    Number(
+                        downtimeHoursInput.value
+                    ),
+
+
+                sparePartUsed:
+
+                    sparePartSelect.value ||
+                    "None",
+
+
+                maintenanceCost:
+                    cost,
+
+
+                cost:
+                    cost,
+
+
+                responsiblePerson:
+                    responsiblePersonSelect.value,
+
+
+                paymentMethod:
+                    paymentMethodSelect.value,
+
+
+                paymentStatus:
+                    paymentStatusSelect.value,
+
+
+                maintenanceStatus:
+                    maintenanceStatusSelect.value,
+
+
+                notes:
+
+                    maintenanceNotesInput.value
+                        .trim(),
+
+
+                maintenanceDate:
+                    lastServiceDateInput.value,
+
+
+                serviceDate:
+                    lastServiceDateInput.value,
+
+
+                date:
+                    lastServiceDateInput.value,
+
+
+                createdAt:
+
+                    existing
+                        ? existing.createdAt
+                        : Date.now()
 
             };
 
 
-            return (
-                labels[role] ||
-                role ||
-                "Employee"
-            );
+            if (existing) {
 
-        }
+                maintenanceRecords[
+                    existingIndex
+                ] =
+                    record;
 
 
-        // ==========================================
-        // LOAD EMPLOYEES
-        // ==========================================
-
-        function loadEmployees() {
-
-            const stored =
-                localStorage.getItem(
-                    "employees"
+                showToast(
+                    `${record.maintenanceId} updated successfully.`
                 );
-
-
-            if (
-                stored === null
-            ) {
-
-                const initialEmployees =
-                    defaultEmployees.map(
-                        function (
-                            employee
-                        ) {
-
-                            return {
-                                ...employee
-                            };
-
-                        }
-                    );
-
-
-                localStorage.setItem(
-                    "employees",
-                    JSON.stringify(
-                        initialEmployees
-                    )
-                );
-
-
-                return initialEmployees;
 
             }
+            else {
+
+                maintenanceRecords.push(
+                    record
+                );
 
 
-            try {
-
-                const parsed =
-                    JSON.parse(
-                        stored
-                    );
-
-
-                if (
-                    Array.isArray(
-                        parsed
-                    )
-                ) {
-
-                    return parsed;
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Employee data could not be parsed:",
-                    error
+                showToast(
+                    `${record.maintenanceId} saved successfully.`
                 );
 
             }
 
 
-            return [];
+            saveMaintenanceRecords();
+
+            resetMaintenanceForm();
+
+            refreshMaintenancePage();
 
         }
+    );
 
 
-        let employees =
-            loadEmployees();
+    /* =========================================
+       RESET FORM
+    ========================================= */
+
+    function resetMaintenanceForm() {
+
+        editingMaintenanceId =
+            null;
 
 
-        // ==========================================
-        // TECHNICIAN DROPDOWN
-        // ==========================================
-
-        function populateTechnicianDropdown(
-            selectedValue = ""
-        ) {
-
-            technicianSelect.innerHTML = `
-
-                <option
-                    value=""
-                    disabled
-                    ${
-                        selectedValue
-                            ? ""
-                            : "selected"
-                    }
-                >
-                    Select responsible person
-                </option>
-
-            `;
+        maintenanceForm.reset();
 
 
-            const activeEmployees =
-                employees
-                    .filter(
-                        function (
-                            employee
-                        ) {
+        lastServiceDateInput.value =
+            getTodayDate();
 
-                            return (
-                                employee.status !==
-                                "inactive"
-                            );
 
-                        }
-                    )
-                    .sort(
-                        function (
-                            first,
-                            second
-                        ) {
+        downtimeHoursInput.value =
+            0;
 
-                            return String(
-                                first.name
-                            ).localeCompare(
-                                String(
-                                    second.name
-                                )
-                            );
 
-                        }
+        maintenanceCostInput.value =
+            0;
+
+
+        nextServiceDateInput.value =
+            "";
+
+
+        machineComponentSelect.disabled =
+            true;
+
+
+        machineComponentSelect.innerHTML = `
+
+            <option value="">
+                Select machine first
+            </option>
+
+        `;
+
+
+        sparePartSelect.disabled =
+            true;
+
+
+        sparePartSelect.innerHTML = `
+
+            <option value="">
+                Select machine first
+            </option>
+
+        `;
+
+
+        serviceActivitySelect.disabled =
+            true;
+
+
+        serviceActivitySelect.innerHTML = `
+
+            <option value="">
+                Select maintenance type first
+            </option>
+
+        `;
+
+
+        maintenanceFormTitle.textContent =
+            "Add Maintenance Record";
+
+
+        saveMaintenanceBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ▣
+            </span>
+
+            Save Maintenance
+
+        `;
+
+
+        cancelMaintenanceEditBtn.hidden =
+            true;
+
+    }
+
+
+    cancelMaintenanceEditBtn.addEventListener(
+        "click",
+        resetMaintenanceForm
+    );
+
+
+    /* =========================================
+       EDIT RECORD
+    ========================================= */
+
+    function editMaintenanceRecord(id) {
+
+        const record =
+            maintenanceRecords.find(
+                function (item) {
+
+                    return (
+                        Number(item.id) ===
+                        Number(id)
                     );
-
-
-            activeEmployees.forEach(
-                function (
-                    employee
-                ) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        "employee:" +
-                        employee.id;
-
-
-                    option.textContent =
-                        employee.name +
-                        " — " +
-                        getRoleText(
-                            employee.role
-                        );
-
-
-                    if (
-                        selectedValue ===
-                        option.value
-                    ) {
-
-                        option.selected =
-                            true;
-
-                    }
-
-
-                    technicianSelect
-                        .appendChild(
-                            option
-                        );
 
                 }
             );
 
 
-            const externalOption =
-                document.createElement(
-                    "option"
-                );
-
-
-            externalOption.value =
-                "external";
-
-
-            externalOption.textContent =
-                "External Technician / Other";
-
-
-            if (
-                selectedValue ===
-                "external"
-            ) {
-
-                externalOption.selected =
-                    true;
-
-            }
-
-
-            technicianSelect
-                .appendChild(
-                    externalOption
-                );
-
+        if (!record) {
+            return;
         }
 
 
-        // ==========================================
-        // EXTERNAL TECHNICIAN FIELD
-        // ==========================================
-
-        function updateExternalTechnicianField() {
-
-            if (
-                technicianSelect.value ===
-                "external"
-            ) {
-
-                externalTechnicianField
-                    .classList
-                    .remove(
-                        "hidden"
-                    );
+        editingMaintenanceId =
+            record.id;
 
 
-                externalTechnicianName.required =
-                    true;
+        machineNameSelect.value =
+            record.machineName;
 
 
-                return;
-
-            }
-
-
-            externalTechnicianField
-                .classList
-                .add(
-                    "hidden"
-                );
-
-
-            externalTechnicianName.required =
-                false;
-
-
-            externalTechnicianName.value =
-                "";
-
-        }
-
-
-        technicianSelect.addEventListener(
-            "change",
-            updateExternalTechnicianField
+        loadMachineDependencies(
+            record.machineName
         );
 
 
-        // ==========================================
-        // MACHINE DROPDOWN
-        // ==========================================
-
-        function populateMachineDropdown(
-            selectedMachineId = ""
+        if (
+            !Array.from(
+                machineComponentSelect.options
+            ).some(
+                option =>
+                    option.value ===
+                    record.component
+            )
         ) {
 
-            machineName.innerHTML = `
-
-                <option
-                    value=""
-                    disabled
-                    ${
-                        selectedMachineId
-                            ? ""
-                            : "selected"
-                    }
-                >
-                    Select machine
-                </option>
-
-            `;
+            const option =
+                new Option(
+                    record.component,
+                    record.component
+                );
 
 
-            machines.forEach(
-                function (
-                    machine
-                ) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        machine.id;
-
-
-                    option.textContent =
-                        machine.name;
-
-
-                    if (
-                        sameId(
-                            machine.id,
-                            selectedMachineId
-                        )
-                    ) {
-
-                        option.selected =
-                            true;
-
-                    }
-
-
-                    machineName.appendChild(
-                        option
-                    );
-
-                }
+            machineComponentSelect.add(
+                option
             );
 
         }
 
 
-        // ==========================================
-        // COMPONENT DROPDOWN
-        // ==========================================
+        machineComponentSelect.value =
+            record.component;
 
-        function populateComponentDropdown(
-            machineId,
-            selectedComponent = ""
+
+        maintenanceTypeSelect.value =
+            record.maintenanceType;
+
+
+        loadServiceActivities(
+            record.maintenanceType
+        );
+
+
+        if (
+            !Array.from(
+                serviceActivitySelect.options
+            ).some(
+                option =>
+                    option.value ===
+                    record.serviceActivity
+            )
         ) {
 
-            componentName.innerHTML = `
-
-                <option
-                    value=""
-                    disabled
-                    ${
-                        selectedComponent
-                            ? ""
-                            : "selected"
-                    }
-                >
-                    Select component
-                </option>
-
-            `;
-
-
-            const machine =
-                machines.find(
-                    function (
-                        machine
-                    ) {
-
-                        return sameId(
-                            machine.id,
-                            machineId
-                        );
-
-                    }
-                );
-
-
-            if (!machine) {
-
-                componentName.disabled =
-                    true;
-
-                return;
-
-            }
-
-
-            machine.components.forEach(
-                function (
-                    component
-                ) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        component;
-
-
-                    option.textContent =
-                        component;
-
-
-                    if (
-                        component ===
-                        selectedComponent
-                    ) {
-
-                        option.selected =
-                            true;
-
-                    }
-
-
-                    componentName.appendChild(
-                        option
-                    );
-
-                }
+            serviceActivitySelect.add(
+                new Option(
+                    record.serviceActivity,
+                    record.serviceActivity
+                )
             );
-
-
-            componentName.disabled =
-                false;
 
         }
 
 
-        // ==========================================
-        // SPARE PART DROPDOWN
-        // ==========================================
+        serviceActivitySelect.value =
+            record.serviceActivity;
 
-        function populateSparePartDropdown(
-            machineId,
-            selectedSparePart = ""
+
+        lastServiceDateInput.value =
+            record.lastServiceDate;
+
+
+        maintenanceIntervalInput.value =
+            record.maintenanceInterval;
+
+
+        nextServiceDateInput.value =
+            record.nextServiceDate;
+
+
+        machineStatusSelect.value =
+            record.machineStatus;
+
+
+        damageSeveritySelect.value =
+            record.damageSeverity;
+
+
+        downtimeHoursInput.value =
+            record.downtimeHours;
+
+
+        if (
+            !Array.from(
+                sparePartSelect.options
+            ).some(
+                option =>
+                    option.value ===
+                    record.sparePartUsed
+            )
         ) {
 
-            sparePartSelect.innerHTML =
-                "";
+            sparePartSelect.add(
+                new Option(
+                    record.sparePartUsed,
+                    record.sparePartUsed
+                )
+            );
+
+        }
 
 
-            const machine =
-                machines.find(
-                    function (
-                        machine
-                    ) {
-
-                        return sameId(
-                            machine.id,
-                            machineId
-                        );
-
-                    }
-                );
+        sparePartSelect.value =
+            record.sparePartUsed;
 
 
-            if (!machine) {
-
-                sparePartSelect.innerHTML = `
-
-                    <option
-                        value=""
-                        selected
-                        disabled
-                    >
-                        Select machine first
-                    </option>
-
-                `;
+        maintenanceCostInput.value =
+            record.maintenanceCost;
 
 
-                sparePartSelect.disabled =
-                    true;
+        ensureResponsiblePersonOption(
+            record.responsiblePerson
+        );
 
 
-                hideOtherSparePartField();
+        responsiblePersonSelect.value =
+            record.responsiblePerson;
 
 
-                return;
+        paymentMethodSelect.value =
+            record.paymentMethod;
 
+
+        paymentStatusSelect.value =
+            record.paymentStatus;
+
+
+        maintenanceStatusSelect.value =
+            record.maintenanceStatus;
+
+
+        maintenanceNotesInput.value =
+            record.notes;
+
+
+        maintenanceFormTitle.textContent =
+
+            `Edit Maintenance — ${record.maintenanceId}`;
+
+
+        saveMaintenanceBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ✓
+            </span>
+
+            Update Maintenance
+
+        `;
+
+
+        cancelMaintenanceEditBtn.hidden =
+            false;
+
+
+        maintenanceForm.scrollIntoView(
+            {
+                behavior: "smooth",
+                block: "start"
             }
+        );
+
+    }
 
 
-            const defaultOption =
-                document.createElement(
-                    "option"
-                );
+    function ensureResponsiblePersonOption(
+        personName
+    ) {
+
+        if (!personName) {
+            return;
+        }
 
 
-            defaultOption.value =
-                "";
+        const exists =
+            Array.from(
+                responsiblePersonSelect.options
+            ).some(
+                function (option) {
 
-
-            defaultOption.disabled =
-                true;
-
-
-            defaultOption.textContent =
-                "Select spare part";
-
-
-            sparePartSelect.appendChild(
-                defaultOption
-            );
-
-
-            // None
-            const noneOption =
-                document.createElement(
-                    "option"
-                );
-
-
-            noneOption.value =
-                "none";
-
-
-            noneOption.textContent =
-                "None";
-
-
-            sparePartSelect.appendChild(
-                noneOption
-            );
-
-
-            // Machine Specific Parts
-            machine.spareParts.forEach(
-                function (
-                    part
-                ) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        part;
-
-
-                    option.textContent =
-                        part;
-
-
-                    sparePartSelect.appendChild(
-                        option
+                    return (
+                        option.value ===
+                        personName
                     );
 
                 }
             );
 
 
-            // Other
-            const otherOption =
-                document.createElement(
-                    "option"
-                );
+        if (!exists) {
 
-
-            otherOption.value =
-                "other";
-
-
-            otherOption.textContent =
-                "Other";
-
-
-            sparePartSelect.appendChild(
-                otherOption
+            responsiblePersonSelect.add(
+                new Option(
+                    personName,
+                    personName
+                )
             );
 
+        }
 
-            sparePartSelect.disabled =
-                false;
-
-
-            // ======================================
-            // Existing / Edit Selection
-            // ======================================
-
-            if (
-                !selectedSparePart
-            ) {
-
-                defaultOption.selected =
-                    true;
+    }
 
 
-                hideOtherSparePartField();
+    /* =========================================
+       LATEST RECORD BY MACHINE
+    ========================================= */
+
+    function getLatestRecordByMachine() {
+
+        const map =
+            new Map();
 
 
-                return;
+        maintenanceRecords.forEach(
+            function (record) {
 
-            }
-
-
-            if (
-                selectedSparePart ===
-                "None"
-            ) {
-
-                sparePartSelect.value =
-                    "none";
-
-
-                hideOtherSparePartField();
-
-
-                return;
-
-            }
-
-
-            const catalogMatch =
-                machine.spareParts
-                    .includes(
-                        selectedSparePart
+                const current =
+                    map.get(
+                        record.machineName
                     );
 
 
-            if (
-                catalogMatch
-            ) {
+                if (!current) {
 
-                sparePartSelect.value =
-                    selectedSparePart;
-
-
-                hideOtherSparePartField();
-
-
-                return;
-
-            }
-
-
-            // Legacy / custom part
-            sparePartSelect.value =
-                "other";
-
-
-            showOtherSparePartField(
-                selectedSparePart
-            );
-
-        }
-
-
-        // ==========================================
-        // OTHER SPARE PART FIELD
-        // ==========================================
-
-        function showOtherSparePartField(
-            value = ""
-        ) {
-
-            otherSparePartField
-                .classList
-                .remove(
-                    "hidden"
-                );
-
-
-            otherSparePart.required =
-                true;
-
-
-            otherSparePart.value =
-                value;
-
-        }
-
-
-        function hideOtherSparePartField() {
-
-            otherSparePartField
-                .classList
-                .add(
-                    "hidden"
-                );
-
-
-            otherSparePart.required =
-                false;
-
-
-            otherSparePart.value =
-                "";
-
-        }
-
-
-        sparePartSelect.addEventListener(
-            "change",
-            function () {
-
-                if (
-                    sparePartSelect.value ===
-                    "other"
-                ) {
-
-                    showOtherSparePartField();
+                    map.set(
+                        record.machineName,
+                        record
+                    );
 
 
                     return;
@@ -1678,703 +2372,365 @@ document.addEventListener(
                 }
 
 
-                hideOtherSparePartField();
-
-            }
-        );
-
-
-        // ==========================================
-        // MACHINE CHANGE
-        // ==========================================
-
-        machineName.addEventListener(
-            "change",
-            function () {
-
-                populateComponentDropdown(
-                    machineName.value
-                );
-
-
-                populateSparePartDropdown(
-                    machineName.value
-                );
-
-            }
-        );
-
-
-        // ==========================================
-        // NEXT SERVICE AUTO CALCULATION
-        // ==========================================
-
-        function calculateNextServiceDate() {
-
-            nextServiceDate.value =
-                addDays(
-                    lastServiceDate.value,
-                    maintenanceInterval.value
-                );
-
-        }
-
-
-        lastServiceDate.addEventListener(
-            "change",
-            calculateNextServiceDate
-        );
-
-
-        maintenanceInterval.addEventListener(
-            "input",
-            calculateNextServiceDate
-        );
-
-
-        // ==========================================
-        // LABEL HELPERS
-        // ==========================================
-
-        function getMaintenanceTypeText(
-            type
-        ) {
-
-            if (
-                type ===
-                "preventive"
-            ) {
-
-                return "Preventive";
-
-            }
-
-
-            if (
-                type ===
-                "corrective"
-            ) {
-
-                return "Corrective";
-
-            }
-
-
-            return "—";
-
-        }
-
-
-        function getServiceText(
-            type
-        ) {
-
-            const labels = {
-
-                inspection:
-                    "Inspection",
-
-                cleaning:
-                    "Cleaning",
-
-                lubrication:
-                    "Lubrication",
-
-                "oil-change":
-                    "Oil Change",
-
-                repair:
-                    "Repair",
-
-                "parts-replacement":
-                    "Parts Replacement"
-
-            };
-
-
-            return (
-                labels[type] ||
-                type ||
-                "—"
-            );
-
-        }
-
-
-        function getMachineStatusText(
-            status
-        ) {
-
-            const labels = {
-
-                operational:
-                    "Operational",
-
-                "under-maintenance":
-                    "Maintenance",
-
-                breakdown:
-                    "Breakdown"
-
-            };
-
-
-            return (
-                labels[status] ||
-                status ||
-                "—"
-            );
-
-        }
-
-
-        function getMachineStatusClass(
-            status
-        ) {
-
-            if (
-                status ===
-                "operational"
-            ) {
-
-                return "machine-operational";
-
-            }
-
-
-            if (
-                status ===
-                "under-maintenance"
-            ) {
-
-                return "machine-maintenance";
-
-            }
-
-
-            return "machine-breakdown";
-
-        }
-
-
-        // ==========================================
-        // LOAD MAINTENANCE RECORDS
-        // ==========================================
-
-        function loadMaintenanceRecords() {
-
-            const stored =
-                localStorage.getItem(
-                    "maintenanceRecords"
-                );
-
-
-            if (
-                stored === null
-            ) {
-
-                const initialRecords =
-                    defaultMaintenanceRecords.map(
-                        function (
-                            record
-                        ) {
-
-                            return {
-                                ...record
-                            };
-
-                        }
+                if (
+                    record.lastServiceDate >
+                    current.lastServiceDate
+                ) {
+
+                    map.set(
+                        record.machineName,
+                        record
                     );
 
 
-                localStorage.setItem(
-                    "maintenanceRecords",
-                    JSON.stringify(
-                        initialRecords
-                    )
-                );
+                    return;
+
+                }
 
 
-                return initialRecords;
+                if (
+                    record.lastServiceDate ===
+                    current.lastServiceDate
+
+                    &&
+
+                    Number(record.createdAt) >
+                    Number(current.createdAt)
+                ) {
+
+                    map.set(
+                        record.machineName,
+                        record
+                    );
+
+                }
 
             }
+        );
 
 
-            try {
+        return map;
 
-                const parsed =
-                    JSON.parse(
-                        stored
+    }
+
+
+    /* =========================================
+       SUMMARY + ALERT
+    ========================================= */
+
+    function updateSummary() {
+
+        const latestRecords =
+            getLatestRecordByMachine();
+
+
+        let activeMachineCount =
+            0;
+
+
+        machines.forEach(
+            function (machine) {
+
+                const latest =
+                    latestRecords.get(
+                        machine.name
                     );
 
 
                 if (
-                    Array.isArray(
-                        parsed
-                    )
+                    !latest ||
+                    latest.machineStatus !==
+                    "Out of Service"
                 ) {
 
-                    return parsed;
+                    activeMachineCount += 1;
 
                 }
 
-            } catch (error) {
-
-                console.error(
-                    "Maintenance data could not be parsed:",
-                    error
-                );
-
             }
+        );
 
 
-            return [];
+        const attentionRecords =
+            [];
 
-        }
 
+        latestRecords.forEach(
+            function (record) {
 
-        let maintenanceRecords =
-            loadMaintenanceRecords();
-
-
-        // ==========================================
-        // MIGRATE OLD RECORDS
-        // ==========================================
-
-        maintenanceRecords =
-            maintenanceRecords.map(
-                function (
-                    record,
-                    index
-                ) {
-
-                    if (
-                        record.id ===
-                            undefined ||
-                        record.id ===
-                            null
-                    ) {
-
-                        record.id =
-                            Date.now() +
-                            index;
-
-                    }
-
-
-                    record.cost =
-                        Number(
-                            record.cost
-                        ) || 0;
-
-
-                    record.downtimeHours =
-                        Number(
-                            record.downtimeHours
-                        ) || 0;
-
-
-                    record.maintenanceInterval =
-                        Number(
-                            record.maintenanceInterval
-                        ) || 30;
-
-
-                    if (
-                        !record.nextServiceDate &&
-                        record.lastServiceDate
-                    ) {
-
-                        record.nextServiceDate =
-                            addDays(
-                                record.lastServiceDate,
-                                record.maintenanceInterval
-                            );
-
-                    }
-
-
-                    if (
-                        !record.sparePart
-                    ) {
-
-                        record.sparePart =
-                            "None";
-
-                    }
-
-
-                    // ==================================
-                    // Migrate old technician text
-                    // ==================================
-
-                    if (
-                        !record.technicianName &&
-                        record.technician
-                    ) {
-
-                        record.technicianName =
-                            record.technician;
-
-                    }
-
-
-                    if (
-                        !record.technicianName
-                    ) {
-
-                        record.technicianName =
-                            "Unknown";
-
-                    }
-
-
-                    if (
-                        !record.technicianType
-                    ) {
-
-                        const matchingEmployee =
-                            employees.find(
-                                function (
-                                    employee
-                                ) {
-
-                                    return (
-                                        employee.name
-                                            .trim()
-                                            .toLowerCase() ===
-
-                                        record
-                                            .technicianName
-                                            .trim()
-                                            .toLowerCase()
-                                    );
-
-                                }
-                            );
-
-
-                        if (
-                            matchingEmployee
-                        ) {
-
-                            record.technicianType =
-                                "employee";
-
-
-                            record.technicianEmployeeId =
-                                matchingEmployee.id;
-
-                        } else {
-
-                            record.technicianType =
-                                "external";
-
-
-                            record.technicianEmployeeId =
-                                null;
-
-                        }
-
-                    }
-
-
-                    return record;
-
-                }
-            );
-
-
-        // ==========================================
-        // SAVE RECORDS
-        // ==========================================
-
-        function saveMaintenanceRecords() {
-
-            localStorage.setItem(
-                "maintenanceRecords",
-                JSON.stringify(
-                    maintenanceRecords
-                )
-            );
-
-        }
-
-
-        saveMaintenanceRecords();
-
-
-        // ==========================================
-        // SCHEDULE STATUS
-        // ==========================================
-
-        function getScheduleStatus(
-            record
-        ) {
-
-            const today =
-                getTodayDate();
-
-
-            if (
-                !record.nextServiceDate
-            ) {
-
-                return {
-
-                    text:
-                        "Unknown",
-
-                    className:
-                        ""
-
-                };
-
-            }
-
-
-            if (
-                record.nextServiceDate <
-                today
-            ) {
-
-                return {
-
-                    text:
-                        "Overdue",
-
-                    className:
-                        "schedule-overdue"
-
-                };
-
-            }
-
-
-            if (
-                record.nextServiceDate ===
-                today
-            ) {
-
-                return {
-
-                    text:
-                        "Due Today",
-
-                    className:
-                        "schedule-due"
-
-                };
-
-            }
-
-
-            const remainingDays =
-                daysBetween(
-                    today,
-                    record.nextServiceDate
-                );
-
-
-            if (
-                remainingDays <= 7
-            ) {
-
-                return {
-
-                    text:
-                        "Due in " +
-                        remainingDays +
-                        "d",
-
-                    className:
-                        "schedule-soon"
-
-                };
-
-            }
-
-
-            return {
-
-                text:
-                    "Scheduled",
-
-                className:
-                    "schedule-ok"
-
-            };
-
-        }
-
-
-        // ==========================================
-        // LATEST RECORD PER MACHINE
-        // ==========================================
-
-        function getLatestRecordsByMachine() {
-
-            const latestMap =
-                new Map();
-
-
-            maintenanceRecords.forEach(
-                function (
-                    record
-                ) {
-
-                    const existing =
-                        latestMap.get(
-                            record.machineId
-                        );
-
-
-                    if (
-                        !existing ||
-                        String(
-                            record.lastServiceDate
-                        ) >
-                        String(
-                            existing.lastServiceDate
-                        )
-                    ) {
-
-                        latestMap.set(
-                            record.machineId,
-                            record
-                        );
-
-                    }
-
-                }
-            );
-
-
-            return Array.from(
-                latestMap.values()
-            );
-
-        }
-
-
-        // ==========================================
-        // SUMMARY
-        // ==========================================
-
-        function updateSummary() {
-
-            const activeMachines =
-                machines.filter(
-                    function (
-                        machine
-                    ) {
-
-                        return machine.active;
-
-                    }
-                ).length;
-
-
-            const latestRecords =
-                getLatestRecordsByMachine();
-
-
-            const today =
-                getTodayDate();
-
-
-            const dueRecords =
-                latestRecords.filter(
-                    function (
-                        record
-                    ) {
-
-                        return (
-                            record.nextServiceDate &&
-                            record.nextServiceDate <=
-                                today
-                        );
-
-                    }
-                );
-
-
-            const completedRecords =
-                maintenanceRecords
-                    .filter(
-                        function (
-                            record
-                        ) {
-
-                            return (
-                                record.status ===
-                                "completed"
-                            );
-
-                        }
-                    )
-                    .sort(
-                        function (
-                            first,
-                            second
-                        ) {
-
-                            return String(
-                                second.lastServiceDate
-                            ).localeCompare(
-                                String(
-                                    first.lastServiceDate
-                                )
-                            );
-
-                        }
+                const schedule =
+                    getScheduleStatus(
+                        record.nextServiceDate
                     );
 
 
-            activeMachinesValue.textContent =
-                activeMachines;
+                if (
+                    schedule.key ===
+                    "overdue"
+
+                    ||
+
+                    schedule.key ===
+                    "due"
+                ) {
+
+                    attentionRecords.push(
+                        {
+                            record,
+                            schedule
+                        }
+                    );
+
+                }
+
+            }
+        );
 
 
-            maintenanceDueValue.textContent =
-                dueRecords.length;
+        activeMachinesValue.textContent =
+            activeMachineCount;
+
+
+        maintenanceDueValue.textContent =
+            attentionRecords.length;
+
+
+        const completedRecords =
+            maintenanceRecords
+
+                .filter(
+                    function (record) {
+
+                        return (
+                            record.maintenanceStatus ===
+                            "Completed"
+                        );
+
+                    }
+                )
+
+                .sort(
+                    function (a, b) {
+
+                        return (
+                            b.lastServiceDate
+                                .localeCompare(
+                                    a.lastServiceDate
+                                )
+                        );
+
+                    }
+                );
+
+
+        if (
+            completedRecords.length > 0
+        ) {
+
+            const latestCompleted =
+                completedRecords[0];
 
 
             lastServiceValue.textContent =
-                completedRecords.length
-                    ? formatDate(
-                        completedRecords[0]
-                            .lastServiceDate
-                    )
-                    : "—";
+                formatDate(
+                    latestCompleted.lastServiceDate
+                );
 
 
-            updateMaintenanceAlert(
-                latestRecords
-            );
+            lastServiceMachine.textContent =
+
+                `${latestCompleted.machineName} · ${latestCompleted.serviceActivity}`;
+
+        }
+        else {
+
+            lastServiceValue.textContent =
+                "—";
+
+
+            lastServiceMachine.textContent =
+                "No completed maintenance record";
 
         }
 
 
-        // ==========================================
-        // ALERT
-        // ==========================================
-
-        function updateMaintenanceAlert(
-            latestRecords
+        if (
+            attentionRecords.length === 0
         ) {
 
-            const today =
-                getTodayDate();
+            maintenanceAlert.hidden =
+                true;
 
 
-            const attentionRecords =
-                latestRecords.filter(
-                    function (
-                        record
-                    ) {
+            maintenanceAlertText.textContent =
+                "";
+
+
+            return;
+
+        }
+
+
+        maintenanceAlert.hidden =
+            false;
+
+
+        maintenanceAlertText.textContent =
+
+            attentionRecords
+
+                .map(
+                    function (item) {
+
+                        return (
+                            `${item.record.machineName} (${item.schedule.label})`
+                        );
+
+                    }
+                )
+
+                .join(", ")
+
+            + ".";
+
+    }
+
+
+    /* =========================================
+       BADGE HELPERS
+    ========================================= */
+
+    function machineStatusClass(status) {
+
+        if (status === "Operational") {
+            return "machine-operational";
+        }
+
+
+        if (status === "Maintenance") {
+            return "machine-maintenance";
+        }
+
+
+        return "machine-out";
+
+    }
+
+
+    function scheduleClass(key) {
+
+        if (key === "overdue") {
+            return "schedule-overdue";
+        }
+
+
+        if (key === "due") {
+            return "schedule-due";
+        }
+
+
+        return "schedule-scheduled";
+
+    }
+
+
+    /* =========================================
+       INLINE DELETE
+       NO alert() / confirm()
+    ========================================= */
+
+    function actionHTML(record) {
+
+        if (
+            Number(pendingDeleteId) ===
+            Number(record.id)
+        ) {
+
+            return `
+
+                <span class="maintenance-delete-question">
+                    Delete?
+                </span>
+
+                <button
+                    class="maintenance-confirm-button"
+                    type="button"
+                    data-maintenance-action="confirm-delete"
+                    data-id="${record.id}"
+                >
+                    Confirm
+                </button>
+
+                <button
+                    class="maintenance-cancel-button"
+                    type="button"
+                    data-maintenance-action="cancel-delete"
+                    data-id="${record.id}"
+                >
+                    Cancel
+                </button>
+
+            `;
+
+        }
+
+
+        return `
+
+            <button
+                class="maintenance-edit-button"
+                type="button"
+                data-maintenance-action="edit"
+                data-id="${record.id}"
+            >
+                Edit
+            </button>
+
+            <button
+                class="maintenance-delete-button"
+                type="button"
+                data-maintenance-action="delete"
+                data-id="${record.id}"
+            >
+                Delete
+            </button>
+
+        `;
+
+    }
+
+
+    /* =========================================
+       DISPLAY RECORDS
+    ========================================= */
+
+    function displayMaintenanceRecords() {
+
+        const searchText =
+            maintenanceSearch.value
+                .trim()
+                .toLowerCase();
+
+
+        const filter =
+            scheduleFilter.value;
+
+
+        const filteredRecords =
+            maintenanceRecords
+
+                .filter(
+                    function (record) {
+
+                        const schedule =
+                            getScheduleStatus(
+                                record.nextServiceDate
+                            );
+
 
                         if (
-                            !record.nextServiceDate
+                            filter !== "all" &&
+                            schedule.key !== filter
                         ) {
 
                             return false;
@@ -2382,476 +2738,352 @@ document.addEventListener(
                         }
 
 
-                        if (
-                            record.nextServiceDate <=
-                            today
-                        ) {
+                        if (!searchText) {
 
                             return true;
 
                         }
 
 
+                        const searchable =
+                            [
+                                record.maintenanceId,
+                                record.machineName,
+                                record.component,
+                                record.maintenanceType,
+                                record.serviceActivity,
+                                record.responsiblePerson
+                            ]
+                            .join(" ")
+                            .toLowerCase();
+
+
+                        return searchable.includes(
+                            searchText
+                        );
+
+                    }
+                )
+
+                .sort(
+                    function (a, b) {
+
+                        if (
+                            a.lastServiceDate !==
+                            b.lastServiceDate
+                        ) {
+
+                            return (
+                                b.lastServiceDate
+                                    .localeCompare(
+                                        a.lastServiceDate
+                                    )
+                            );
+
+                        }
+
+
                         return (
-                            daysBetween(
-                                today,
-                                record.nextServiceDate
-                            ) <= 7
+                            Number(b.createdAt) -
+                            Number(a.createdAt)
                         );
 
                     }
                 );
 
 
-            if (
-                attentionRecords.length ===
-                0
-            ) {
-
-                maintenanceAlertBox.hidden =
-                    true;
+        maintenanceTableBody.innerHTML =
+            "";
 
 
-                return;
+        if (
+            filteredRecords.length === 0
+        ) {
 
-            }
+            maintenanceTableBody.innerHTML = `
 
+                <tr class="maintenance-empty-row">
 
-            const names =
-                attentionRecords
-                    .slice(
-                        0,
-                        3
-                    )
-                    .map(
-                        function (
-                            record
-                        ) {
+                    <td colspan="11">
 
-                            return (
-                                record.machineName +
-                                " (" +
-                                getScheduleStatus(
-                                    record
-                                ).text +
-                                ")"
-                            );
+                        No maintenance records match the current filter.
 
-                        }
-                    );
+                    </td>
+
+                </tr>
+
+            `;
 
 
-            maintenanceAlertText.textContent =
-                names.join(", ") +
-                (
-                    attentionRecords.length >
-                    3
-                        ? " and more."
-                        : "."
-                );
-
-
-            maintenanceAlertBox.hidden =
-                false;
+            return;
 
         }
 
 
-        // ==========================================
-        // DISPLAY RECORDS
-        // ==========================================
+        filteredRecords.forEach(
+            function (record) {
 
-        function displayMaintenanceRecords() {
+                const schedule =
+                    getScheduleStatus(
+                        record.nextServiceDate
+                    );
 
-            maintenanceTableBody.innerHTML =
-                "";
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
 
 
-            if (
-                maintenanceRecords.length ===
-                0
-            ) {
+                row.innerHTML = `
 
-                maintenanceTableBody.innerHTML = `
+                    <td>
 
-                    <tr class="maintenance-empty-row">
+                        <span class="maintenance-id">
 
-                        <td colspan="9">
+                            ${escapeHTML(
+                                record.maintenanceId
+                            )}
 
-                            No maintenance records found.
+                        </span>
 
-                        </td>
+                    </td>
 
-                    </tr>
+
+                    <td>
+
+                        <span class="maintenance-primary-text">
+
+                            ${escapeHTML(
+                                record.machineName
+                            )}
+
+                        </span>
+
+                        <span class="maintenance-secondary-text">
+
+                            ${escapeHTML(
+                                record.component
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="maintenance-primary-text">
+
+                            ${escapeHTML(
+                                record.maintenanceType
+                            )}
+
+                        </span>
+
+                        <span class="maintenance-secondary-text">
+
+                            ${escapeHTML(
+                                record.serviceActivity
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${formatDate(
+                            record.lastServiceDate
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${formatDate(
+                            record.nextServiceDate
+                        )}
+
+                        <span class="maintenance-secondary-text">
+
+                            ${record.maintenanceInterval} days
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${Number(
+                            record.downtimeHours
+                        ).toLocaleString(
+                            "en-US",
+                            {
+                                maximumFractionDigits: 2
+                            }
+                        )} hrs
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="maintenance-primary-text">
+
+                            ${formatMoney(
+                                record.maintenanceCost
+                            )}
+
+                        </span>
+
+                        <span class="maintenance-secondary-text">
+
+                            ${escapeHTML(
+                                record.sparePartUsed ||
+                                "None"
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="maintenance-primary-text">
+
+                            ${escapeHTML(
+                                record.responsiblePerson
+                            )}
+
+                        </span>
+
+                        <span class="maintenance-secondary-text">
+
+                            ${escapeHTML(
+                                record.maintenanceStatus
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                maintenance-badge
+                                ${machineStatusClass(
+                                    record.machineStatus
+                                )}
+                            "
+                        >
+
+                            ${escapeHTML(
+                                record.machineStatus
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                maintenance-badge
+                                ${scheduleClass(
+                                    schedule.key
+                                )}
+                            "
+                        >
+
+                            ${escapeHTML(
+                                schedule.label
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="maintenance-table-actions">
+
+                            ${actionHTML(
+                                record
+                            )}
+
+                        </div>
+
+                    </td>
 
                 `;
 
 
-                updateSummary();
+                maintenanceTableBody.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
 
 
+    maintenanceSearch.addEventListener(
+        "input",
+        displayMaintenanceRecords
+    );
+
+
+    scheduleFilter.addEventListener(
+        "change",
+        displayMaintenanceRecords
+    );
+
+
+    /* =========================================
+       TABLE ACTIONS
+    ========================================= */
+
+    maintenanceTableBody.addEventListener(
+        "click",
+        function (event) {
+
+            const button =
+                event.target.closest(
+                    "button[data-maintenance-action]"
+                );
+
+
+            if (!button) {
                 return;
-
             }
 
 
-            const sortedRecords =
-                [
-                    ...maintenanceRecords
-                ].sort(
-                    function (
-                        first,
-                        second
-                    ) {
-
-                        return String(
-                            second.lastServiceDate
-                        ).localeCompare(
-                            String(
-                                first.lastServiceDate
-                            )
-                        );
-
-                    }
+            const id =
+                Number(
+                    button.dataset.id
                 );
 
 
-            sortedRecords.forEach(
-                function (
-                    record
-                ) {
+            const action =
+                button.dataset
+                    .maintenanceAction;
 
-                    const schedule =
-                        getScheduleStatus(
-                            record
-                        );
 
+            if (action === "edit") {
 
-                    const row =
-                        document.createElement(
-                            "tr"
-                        );
-
-
-                    row.innerHTML = `
-
-                        <td>
-
-                            <span class="maintenance-primary-text">
-
-                                ${escapeHTML(
-                                    record.machineName
-                                )}
-
-                            </span>
-
-                            <span class="maintenance-secondary-text">
-
-                                ${escapeHTML(
-                                    record.component
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <span class="maintenance-primary-text">
-
-                                ${escapeHTML(
-                                    getMaintenanceTypeText(
-                                        record.maintenanceType
-                                    )
-                                )}
-
-                            </span>
-
-                            <span class="maintenance-secondary-text">
-
-                                ${escapeHTML(
-                                    getServiceText(
-                                        record.serviceType
-                                    )
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHTML(
-                                formatDate(
-                                    record.lastServiceDate
-                                )
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHTML(
-                                formatDate(
-                                    record.nextServiceDate
-                                )
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            <span class="maintenance-primary-text">
-
-                                ${formatMoney(
-                                    record.cost
-                                )}
-
-                            </span>
-
-                            <span class="maintenance-secondary-text">
-
-                                ${escapeHTML(
-                                    record.sparePart ||
-                                    "None"
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <span class="maintenance-primary-text">
-
-                                ${escapeHTML(
-                                    record.technicianName ||
-                                    "—"
-                                )}
-
-                            </span>
-
-                            <span class="maintenance-secondary-text">
-
-                                ${
-                                    record.technicianType ===
-                                    "external"
-                                        ? "External"
-                                        : "Employee"
-                                }
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <span
-                                class="
-                                    maintenance-badge
-                                    ${getMachineStatusClass(
-                                        record.machineStatus
-                                    )}
-                                "
-                            >
-
-                                ${escapeHTML(
-                                    getMachineStatusText(
-                                        record.machineStatus
-                                    )
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <span
-                                class="
-                                    maintenance-badge
-                                    ${schedule.className}
-                                "
-                            >
-
-                                ${escapeHTML(
-                                    schedule.text
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <div class="maintenance-action-group">
-
-                                <button
-                                    class="maintenance-edit-button"
-                                    type="button"
-                                    data-action="edit"
-                                    data-id="${record.id}"
-                                >
-                                    Edit
-                                </button>
-
-
-                                <button
-                                    class="maintenance-delete-button"
-                                    type="button"
-                                    data-action="delete"
-                                    data-id="${record.id}"
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    `;
-
-
-                    maintenanceTableBody
-                        .appendChild(
-                            row
-                        );
-
-                }
-            );
-
-
-            updateSummary();
-
-        }
-
-
-        // ==========================================
-        // EXPENSE STORAGE
-        // ==========================================
-
-        function loadExpensesForSync() {
-
-            const stored =
-                localStorage.getItem(
-                    "expenses"
-                );
-
-
-            if (!stored) {
-
-                return [];
-
-            }
-
-
-            try {
-
-                const parsed =
-                    JSON.parse(
-                        stored
-                    );
-
-
-                return Array.isArray(
-                    parsed
-                )
-                    ? parsed
-                    : [];
-
-            } catch (error) {
-
-                console.error(
-                    "Expense data could not be read:",
-                    error
-                );
-
-
-                return [];
-
-            }
-
-        }
-
-
-        // ==========================================
-        // REMOVE LINKED EXPENSE
-        // ==========================================
-
-        function removeLinkedExpense(
-            maintenanceId
-        ) {
-
-            const expenses =
-                loadExpensesForSync();
-
-
-            const updatedExpenses =
-                expenses.filter(
-                    function (
-                        expense
-                    ) {
-
-                        return !(
-                            expense.sourceType ===
-                                "maintenance" &&
-
-                            sameId(
-                                expense.sourceId,
-                                maintenanceId
-                            )
-                        );
-
-                    }
-                );
-
-
-            if (
-                updatedExpenses.length !==
-                expenses.length
-            ) {
-
-                localStorage.setItem(
-                    "expenses",
-                    JSON.stringify(
-                        updatedExpenses
-                    )
-                );
-
-            }
-
-        }
-
-
-        // ==========================================
-        // SYNC TO EXPENSE
-        // ==========================================
-
-        function syncMaintenanceExpense(
-            record
-        ) {
-
-            /*
-                Only completed maintenance
-                becomes actual expense.
-            */
-
-            if (
-                record.status !==
-                    "completed" ||
-                Number(record.cost) <= 0
-            ) {
-
-                removeLinkedExpense(
-                    record.id
+                editMaintenanceRecord(
+                    id
                 );
 
 
@@ -2860,738 +3092,30 @@ document.addEventListener(
             }
 
 
-            const expenses =
-                loadExpensesForSync();
+            if (action === "delete") {
 
-
-            const linkedIndex =
-                expenses.findIndex(
-                    function (
-                        expense
-                    ) {
-
-                        return (
-                            expense.sourceType ===
-                                "maintenance" &&
-
-                            sameId(
-                                expense.sourceId,
-                                record.id
-                            )
-                        );
-
-                    }
-                );
-
-
-            const expenseData = {
-
-                id:
-                    linkedIndex !== -1
-                        ? expenses[
-                            linkedIndex
-                        ].id
-                        : (
-                            "maintenance-" +
-                            record.id
-                        ),
-
-                type:
-                    "maintenance",
-
-                amount:
-                    Number(
-                        record.cost
-                    ),
-
-                date:
-                    record.lastServiceDate,
-
-                description:
-                    record.machineName +
-                    " - " +
-                    record.component +
-                    " - " +
-                    getServiceText(
-                        record.serviceType
-                    ),
-
-                paymentMethod:
-                    record.paymentMethod,
-
-                status:
-                    record.paymentStatus,
-
-                sourceType:
-                    "maintenance",
-
-                sourceId:
-                    record.id
-
-            };
-
-
-            if (
-                linkedIndex === -1
-            ) {
-
-                expenses.push(
-                    expenseData
-                );
-
-            } else {
-
-                expenses[linkedIndex] =
-                    expenseData;
-
-            }
-
-
-            localStorage.setItem(
-                "expenses",
-                JSON.stringify(
-                    expenses
-                )
-            );
-
-        }
-
-
-        // ==========================================
-        // GET SELECTED SPARE PART
-        // ==========================================
-
-        function getSelectedSparePart() {
-
-            if (
-                sparePartSelect.value ===
-                "none"
-            ) {
-
-                return {
-
-                    name:
-                        "None",
-
-                    type:
-                        "none"
-
-                };
-
-            }
-
-
-            if (
-                sparePartSelect.value ===
-                "other"
-            ) {
-
-                const customPart =
-                    otherSparePart.value
-                        .trim();
-
-
-                if (
-                    !customPart
-                ) {
-
-                    return null;
-
-                }
-
-
-                return {
-
-                    name:
-                        customPart,
-
-                    type:
-                        "other"
-
-                };
-
-            }
-
-
-            if (
-                !sparePartSelect.value
-            ) {
-
-                return null;
-
-            }
-
-
-            return {
-
-                name:
-                    sparePartSelect.value,
-
-                type:
-                    "catalog"
-
-            };
-
-        }
-
-
-        // ==========================================
-        // GET RESPONSIBLE PERSON
-        // ==========================================
-
-        function getResponsiblePerson() {
-
-            const value =
-                technicianSelect.value;
-
-
-            if (!value) {
-
-                return null;
-
-            }
-
-
-            if (
-                value ===
-                "external"
-            ) {
-
-                const technicianName =
-                    externalTechnicianName
-                        .value
-                        .trim();
-
-
-                if (
-                    !technicianName
-                ) {
-
-                    return null;
-
-                }
-
-
-                return {
-
-                    type:
-                        "external",
-
-                    employeeId:
-                        null,
-
-                    name:
-                        technicianName
-
-                };
-
-            }
-
-
-            if (
-                value.startsWith(
-                    "employee:"
-                )
-            ) {
-
-                const employeeId =
-                    value.replace(
-                        "employee:",
-                        ""
-                    );
-
-
-                const employee =
-                    employees.find(
-                        function (
-                            employee
-                        ) {
-
-                            return sameId(
-                                employee.id,
-                                employeeId
-                            );
-
-                        }
-                    );
-
-
-                if (!employee) {
-
-                    return null;
-
-                }
-
-
-                return {
-
-                    type:
-                        "employee",
-
-                    employeeId:
-                        employee.id,
-
-                    name:
-                        employee.name
-
-                };
-
-            }
-
-
-            return null;
-
-        }
-
-
-        // ==========================================
-        // FORM SUBMIT
-        // ==========================================
-
-        maintenanceForm.addEventListener(
-            "submit",
-            function (
-                event
-            ) {
-
-                event.preventDefault();
-
-
-                const selectedMachine =
-                    machines.find(
-                        function (
-                            machine
-                        ) {
-
-                            return sameId(
-                                machine.id,
-                                machineName.value
-                            );
-
-                        }
-                    );
-
-
-                if (
-                    !selectedMachine
-                ) {
-
-                    showToast(
-                        "Please select a machine.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                const selectedSparePart =
-                    getSelectedSparePart();
-
-
-                if (
-                    !selectedSparePart
-                ) {
-
-                    showToast(
-                        "Please select or enter the spare part information.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                const responsiblePerson =
-                    getResponsiblePerson();
-
-
-                if (
-                    !responsiblePerson
-                ) {
-
-                    showToast(
-                        "Please select or enter the responsible person.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                const interval =
-                    Number(
-                        maintenanceInterval.value
-                    );
-
-
-                const cost =
-                    Number(
-                        maintenanceCost.value
-                    );
-
-
-                const downtime =
-                    Number(
-                        downtimeHours.value
-                    );
-
-
-                if (
-                    !Number.isFinite(
-                        interval
-                    ) ||
-                    interval <= 0
-                ) {
-
-                    showToast(
-                        "Maintenance interval must be greater than zero.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                if (
-                    !Number.isFinite(
-                        cost
-                    ) ||
-                    cost < 0
-                ) {
-
-                    showToast(
-                        "Maintenance cost cannot be negative.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                if (
-                    !Number.isFinite(
-                        downtime
-                    ) ||
-                    downtime < 0
-                ) {
-
-                    showToast(
-                        "Downtime cannot be negative.",
-                        "error"
-                    );
-
-
-                    return;
-
-                }
-
-
-                const calculatedNextDate =
-                    addDays(
-                        lastServiceDate.value,
-                        interval
-                    );
-
-
-                const recordData = {
-
-                    machineId:
-                        selectedMachine.id,
-
-                    machineName:
-                        selectedMachine.name,
-
-                    component:
-                        componentName.value,
-
-                    maintenanceType:
-                        maintenanceType.value,
-
-                    serviceType:
-                        serviceType.value,
-
-                    lastServiceDate:
-                        lastServiceDate.value,
-
-                    maintenanceInterval:
-                        interval,
-
-                    nextServiceDate:
-                        calculatedNextDate,
-
-                    machineStatus:
-                        machineStatus.value,
-
-                    damageSeverity:
-                        damageSeverity.value,
-
-                    downtimeHours:
-                        downtime,
-
-                    sparePart:
-                        selectedSparePart.name,
-
-                    sparePartType:
-                        selectedSparePart.type,
-
-                    cost:
-                        cost,
-
-                    technicianType:
-                        responsiblePerson.type,
-
-                    technicianEmployeeId:
-                        responsiblePerson.employeeId,
-
-                    technicianName:
-                        responsiblePerson.name,
-
-                    // Backward compatibility
-                    technician:
-                        responsiblePerson.name,
-
-                    paymentMethod:
-                        maintenancePaymentMethod
-                            .value,
-
-                    paymentStatus:
-                        maintenancePaymentStatus
-                            .value,
-
-                    status:
-                        maintenanceStatus.value,
-
-                    notes:
-                        maintenanceNotes.value
-                            .trim()
-
-                };
-
-
-                // ==================================
-                // UPDATE
-                // ==================================
-
-                if (
-                    editingMaintenanceId !==
-                    null
-                ) {
-
-                    const index =
-                        maintenanceRecords
-                            .findIndex(
-                                function (
-                                    record
-                                ) {
-
-                                    return sameId(
-                                        record.id,
-                                        editingMaintenanceId
-                                    );
-
-                                }
-                            );
-
-
-                    if (
-                        index !== -1
-                    ) {
-
-                        maintenanceRecords[
-                            index
-                        ] = {
-
-                            id:
-                                maintenanceRecords[
-                                    index
-                                ].id,
-
-                            ...recordData
-
-                        };
-
-
-                        syncMaintenanceExpense(
-                            maintenanceRecords[
-                                index
-                            ]
-                        );
-
-                    }
-
-
-                    saveMaintenanceRecords();
-
-
-                    displayMaintenanceRecords();
-
-
-                    resetMaintenanceForm();
-
-
-                    showToast(
-                        "Maintenance record updated successfully!"
-                    );
-
-
-                    return;
-
-                }
-
-
-                // ==================================
-                // NEW RECORD
-                // ==================================
-
-                const newRecord = {
-
-                    id:
-                        Date.now(),
-
-                    ...recordData
-
-                };
-
-
-                maintenanceRecords.push(
-                    newRecord
-                );
-
-
-                syncMaintenanceExpense(
-                    newRecord
-                );
-
-
-                saveMaintenanceRecords();
+                pendingDeleteId =
+                    id;
 
 
                 displayMaintenanceRecords();
 
 
-                resetMaintenanceForm();
-
-
-                if (
-                    newRecord.status ===
-                        "completed" &&
-                    newRecord.cost > 0
-                ) {
-
-                    showToast(
-                        "Maintenance saved and cost synced to Expenses!"
-                    );
-
-                } else {
-
-                    showToast(
-                        "Maintenance record saved successfully!"
-                    );
-
-                }
+                return;
 
             }
-        );
 
 
-        // ==========================================
-        // TABLE ACTIONS
-        // ==========================================
-
-        maintenanceTableBody.addEventListener(
-            "click",
-            function (
-                event
+            if (
+                action ===
+                "cancel-delete"
             ) {
 
-                const button =
-                    event.target.closest(
-                        "button"
-                    );
+                pendingDeleteId =
+                    null;
 
 
-                if (!button) {
-
-                    return;
-
-                }
-
-
-                const action =
-                    button.dataset.action;
-
-
-                const id =
-                    button.dataset.id;
-
-
-                if (
-                    action ===
-                    "edit"
-                ) {
-
-                    editMaintenanceRecord(
-                        id
-                    );
-
-                }
-
-
-                if (
-                    action ===
-                    "delete"
-                ) {
-
-                    deleteMaintenanceRecord(
-                        id
-                    );
-
-                }
-
-            }
-        );
-
-
-        // ==========================================
-        // EDIT
-        // ==========================================
-
-        function editMaintenanceRecord(
-            id
-        ) {
-
-            const record =
-                maintenanceRecords.find(
-                    function (
-                        record
-                    ) {
-
-                        return sameId(
-                            record.id,
-                            id
-                        );
-
-                    }
-                );
-
-
-            if (!record) {
-
-                showToast(
-                    "Maintenance record not found.",
-                    "error"
-                );
+                displayMaintenanceRecords();
 
 
                 return;
@@ -3599,411 +3123,345 @@ document.addEventListener(
             }
 
 
-            populateMachineDropdown(
-                record.machineId
-            );
-
-
-            populateComponentDropdown(
-                record.machineId,
-                record.component
-            );
-
-
-            populateSparePartDropdown(
-                record.machineId,
-                record.sparePart
-            );
-
-
-            maintenanceType.value =
-                record.maintenanceType;
-
-
-            serviceType.value =
-                record.serviceType;
-
-
-            lastServiceDate.value =
-                record.lastServiceDate;
-
-
-            maintenanceInterval.value =
-                record.maintenanceInterval;
-
-
-            nextServiceDate.value =
-                record.nextServiceDate;
-
-
-            machineStatus.value =
-                record.machineStatus;
-
-
-            damageSeverity.value =
-                record.damageSeverity;
-
-
-            downtimeHours.value =
-                record.downtimeHours;
-
-
-            maintenanceCost.value =
-                record.cost;
-
-
-            // ======================================
-            // Responsible Person
-            // ======================================
-
             if (
-                record.technicianType ===
-                    "employee" &&
-                record.technicianEmployeeId !==
-                    null &&
-                record.technicianEmployeeId !==
-                    undefined
+                action ===
+                "confirm-delete"
             ) {
 
-                populateTechnicianDropdown(
-                    "employee:" +
-                    record.technicianEmployeeId
-                );
+                const record =
+                    maintenanceRecords.find(
+                        function (item) {
 
+                            return (
+                                Number(item.id) ===
+                                id
+                            );
 
-                externalTechnicianField
-                    .classList
-                    .add(
-                        "hidden"
+                        }
                     );
 
 
-                externalTechnicianName.required =
-                    false;
+                maintenanceRecords =
+                    maintenanceRecords.filter(
+                        function (item) {
 
+                            return (
+                                Number(item.id) !==
+                                id
+                            );
 
-                externalTechnicianName.value =
-                    "";
-
-            } else {
-
-                populateTechnicianDropdown(
-                    "external"
-                );
-
-
-                externalTechnicianField
-                    .classList
-                    .remove(
-                        "hidden"
+                        }
                     );
 
 
-                externalTechnicianName.required =
-                    true;
+                pendingDeleteId =
+                    null;
 
 
-                externalTechnicianName.value =
-                    record.technicianName ||
-                    record.technician ||
-                    "";
+                saveMaintenanceRecords();
 
-            }
+                refreshMaintenancePage();
 
-
-            maintenancePaymentMethod.value =
-                record.paymentMethod;
-
-
-            maintenancePaymentStatus.value =
-                record.paymentStatus;
-
-
-            maintenanceStatus.value =
-                record.status;
-
-
-            maintenanceNotes.value =
-                record.notes ||
-                "";
-
-
-            editingMaintenanceId =
-                record.id;
-
-
-            maintenanceFormTitle.textContent =
-                "Update Maintenance Record";
-
-
-            saveMaintenanceButton.innerHTML = `
-
-                <span aria-hidden="true">
-                    ▣
-                </span>
-
-                Update Maintenance
-
-            `;
-
-
-            maintenanceForm.scrollIntoView(
-                {
-                    behavior:
-                        "smooth",
-
-                    block:
-                        "center"
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // DELETE
-        // ==========================================
-
-        function deleteMaintenanceRecord(
-            id
-        ) {
-
-            const exists =
-                maintenanceRecords.some(
-                    function (
-                        record
-                    ) {
-
-                        return sameId(
-                            record.id,
-                            id
-                        );
-
-                    }
-                );
-
-
-            if (!exists) {
 
                 showToast(
-                    "Maintenance record not found.",
-                    "error"
-                );
 
+                    record
 
-                return;
+                        ?
 
-            }
+                        `${record.maintenanceId} deleted successfully.`
 
+                        :
 
-            maintenanceRecords =
-                maintenanceRecords.filter(
-                    function (
-                        record
-                    ) {
+                        "Maintenance record deleted successfully."
 
-                        return !sameId(
-                            record.id,
-                            id
-                        );
-
-                    }
-                );
-
-
-            removeLinkedExpense(
-                id
-            );
-
-
-            saveMaintenanceRecords();
-
-
-            displayMaintenanceRecords();
-
-
-            if (
-                editingMaintenanceId !==
-                    null &&
-                sameId(
-                    editingMaintenanceId,
-                    id
-                )
-            ) {
-
-                resetMaintenanceForm();
-
-            }
-
-
-            showToast(
-                "Maintenance record deleted successfully!"
-            );
-
-        }
-
-
-        // ==========================================
-        // RESET FORM
-        // ==========================================
-
-        function resetMaintenanceForm() {
-
-            maintenanceForm.reset();
-
-
-            editingMaintenanceId =
-                null;
-
-
-            populateMachineDropdown();
-
-
-            componentName.innerHTML = `
-
-                <option
-                    value=""
-                    selected
-                    disabled
-                >
-                    Select machine first
-                </option>
-
-            `;
-
-
-            componentName.disabled =
-                true;
-
-
-            sparePartSelect.innerHTML = `
-
-                <option
-                    value=""
-                    selected
-                    disabled
-                >
-                    Select machine first
-                </option>
-
-            `;
-
-
-            sparePartSelect.disabled =
-                true;
-
-
-            hideOtherSparePartField();
-
-
-            populateTechnicianDropdown();
-
-
-            externalTechnicianField
-                .classList
-                .add(
-                    "hidden"
-                );
-
-
-            externalTechnicianName.required =
-                false;
-
-
-            externalTechnicianName.value =
-                "";
-
-
-            lastServiceDate.value =
-                getTodayDate();
-
-
-            downtimeHours.value =
-                0;
-
-
-            nextServiceDate.value =
-                "";
-
-
-            maintenanceFormTitle.textContent =
-                "Add Maintenance Record";
-
-
-            saveMaintenanceButton.innerHTML = `
-
-                <span aria-hidden="true">
-                    ▣
-                </span>
-
-                Save Maintenance
-
-            `;
-
-        }
-
-
-        // ==========================================
-        // PROFILE NAME
-        // ==========================================
-
-        function loadProfileName() {
-
-            try {
-
-                const profile =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "riceMillProfile"
-                        ) ||
-                        "{}"
-                    );
-
-
-                if (
-                    profile.fullName
-                ) {
-
-                    maintenanceTopbarUserName
-                        .textContent =
-                        profile.fullName;
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Profile information could not be loaded:",
-                    error
                 );
 
             }
 
         }
+    );
 
 
-        // ==========================================
-        // INITIAL LOAD
-        // ==========================================
+    /* =========================================
+       REFRESH
+    ========================================= */
 
-        populateMachineDropdown();
+    function refreshMaintenancePage() {
 
-
-        populateTechnicianDropdown();
-
-
-        lastServiceDate.value =
-            getTodayDate();
-
-
-        downtimeHours.value =
-            0;
-
+        updateSummary();
 
         displayMaintenanceRecords();
 
+    }
 
-        loadProfileName();
+
+    /* =========================================
+       TOAST
+    ========================================= */
+
+    function showToast(
+        message,
+        type = "success"
+    ) {
+
+        const existing =
+            document.querySelector(
+                ".maintenance-toast"
+            );
+
+
+        if (existing) {
+            existing.remove();
+        }
+
+
+        const toast =
+            document.createElement(
+                "div"
+            );
+
+
+        toast.className =
+            `maintenance-toast ${type}`;
+
+
+        toast.innerHTML = `
+
+            <span class="maintenance-toast-icon">
+
+                ${
+                    type === "error"
+                        ? "!"
+                        : "✓"
+                }
+
+            </span>
+
+            <span>
+
+                ${escapeHTML(
+                    message
+                )}
+
+            </span>
+
+        `;
+
+
+        document.body.appendChild(
+            toast
+        );
+
+
+        requestAnimationFrame(
+            function () {
+
+                toast.classList.add(
+                    "show"
+                );
+
+            }
+        );
+
+
+        setTimeout(
+            function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        toast.remove();
+
+                    },
+                    250
+                );
+
+            },
+            2800
+        );
 
     }
-);
+
+
+    /* =========================================
+       SIDEBAR
+    ========================================= */
+
+    function openSidebar() {
+
+        if (!sidebar) {
+            return;
+        }
+
+
+        sidebar.classList.add(
+            "open"
+        );
+
+
+        if (sidebarBackdrop) {
+
+            sidebarBackdrop.classList.add(
+                "show"
+            );
+
+        }
+
+
+        if (menuButton) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeSidebar() {
+
+        if (!sidebar) {
+            return;
+        }
+
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        if (sidebarBackdrop) {
+
+            sidebarBackdrop.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        if (menuButton) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    if (menuButton) {
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "open"
+                    )
+                ) {
+
+                    closeSidebar();
+
+                }
+                else {
+
+                    openSidebar();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    if (sidebarBackdrop) {
+
+        sidebarBackdrop.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    }
+
+
+    /* =========================================
+       ESCAPE
+    ========================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key !== "Escape") {
+                return;
+            }
+
+
+            if (pendingDeleteId !== null) {
+
+                pendingDeleteId =
+                    null;
+
+
+                displayMaintenanceRecords();
+
+
+                return;
+
+            }
+
+
+            closeSidebar();
+
+        }
+    );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
+
+    populateMachines();
+
+    populateResponsiblePeople();
+
+
+    lastServiceDateInput.value =
+        getTodayDate();
+
+
+    downtimeHoursInput.value =
+        0;
+
+
+    maintenanceCostInput.value =
+        0;
+
+
+    saveMaintenanceRecords();
+
+
+    refreshMaintenancePage();
+
+});

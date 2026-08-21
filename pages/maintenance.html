@@ -7,932 +7,1168 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Machine Maintenance Management - Smart Rice Mill ERP & Logistics Management System">
+
     <title>Machine Maintenance | Smart Rice Mill ERP</title>
 
-    <!-- Common Dashboard CSS -->
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 
-    <!-- Maintenance Page CSS -->
-    <link rel="stylesheet" href="../styles/maintenance.css">
+    <link rel="stylesheet"
+          href="../styles/maintenance.css">
 </head>
+
 
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
-        <aside class="sidebar">
 
-            <div class="sidebar-header">
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
 
-                <div class="sidebar-logo"
-                     aria-hidden="true">
+    <aside class="sidebar"
+           id="sidebar">
 
-                    <span class="logo-shape logo-shape-one"></span>
-                    <span class="logo-shape logo-shape-two"></span>
+        <div class="sidebar-header">
+
+            <div class="sidebar-logo"
+                 aria-hidden="true">
+
+                <span class="logo-shape logo-shape-one"></span>
+                <span class="logo-shape logo-shape-two"></span>
+
+            </div>
+
+
+            <div class="sidebar-brand">
+
+                <h2>
+                    Smart Rice Mill
+                </h2>
+
+                <p>
+                    ERP &amp; Logistics<br>
+                    Management System
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-navigation"
+             aria-label="Main navigation">
+
+
+            <a class="navigation-link"
+               href="dashboard.html">
+
+                <span class="navigation-icon">
+                    ⌂
+                </span>
+
+                <span class="navigation-text">
+                    Dashboard
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="notifications.html">
+
+                <span class="navigation-icon">
+                    🔔
+                </span>
+
+                <span class="navigation-text">
+                    Notifications
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="purchase.html">
+
+                <span class="navigation-icon">
+                    🛒
+                </span>
+
+                <span class="navigation-text">
+                    Purchase
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="production.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Production
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="inventory.html">
+
+                <span class="navigation-icon">
+                    ▣
+                </span>
+
+                <span class="navigation-text">
+                    Inventory
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="sales.html">
+
+                <span class="navigation-icon">
+                    ◇
+                </span>
+
+                <span class="navigation-text">
+                    Sales
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="delivery.html">
+
+                <span class="navigation-icon">
+                    ▱
+                </span>
+
+                <span class="navigation-text">
+                    Delivery
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- =====================================
+                 CORRECT SERIAL:
+                 REPORTS BEFORE EXPENSE & SALARY
+            ====================================== -->
+
+            <a class="navigation-link"
+               href="reports.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Reports
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="expense.html">
+
+                <span class="navigation-icon">
+                    ৳
+                </span>
+
+                <span class="navigation-text">
+                    Expense &amp; Salary
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- =====================================
+                 SETTINGS
+                 Expanded = downward chevron
+            ====================================== -->
+
+            <a class="navigation-link"
+               href="profile.html">
+
+                <span class="navigation-icon">
+                    ⚙
+                </span>
+
+                <span class="navigation-text">
+                    Settings
+                </span>
+
+                <span class="navigation-arrow">
+                    ⌄
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link sub-navigation-link"
+               href="users.html">
+
+                <span class="navigation-icon">
+                    👥
+                </span>
+
+                <span class="navigation-text">
+                    User Roles
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link active"
+               href="maintenance.html">
+
+                <span class="navigation-icon">
+                    🔧
+                </span>
+
+                <span class="navigation-text">
+                    Maintenance
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <a class="logout-link"
+           href="#"
+           id="logoutBtn">
+
+            <span class="logout-icon">
+                ↪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </aside>
+
+
+    <div class="sidebar-backdrop"
+         id="sidebarBackdrop">
+    </div>
+
+
+    <!-- =========================================
+         MAIN AREA
+    ========================================== -->
+
+    <main class="main-area">
+
+
+        <!-- =========================================
+             TOPBAR
+        ========================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button"
+                        id="menuButton"
+                        type="button"
+                        aria-label="Open navigation menu"
+                        aria-expanded="false">
+
+                    ☰
+
+                </button>
+
+
+                <h1>
+                    Machine Maintenance
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <a class="notification-area"
+                   href="notifications.html"
+                   aria-label="Open notifications">
+
+                    <span class="notification-icon">
+                        ♧
+                    </span>
+
+                    <span class="notification-count">
+                        3
+                    </span>
+
+                </a>
+
+
+                <a class="user-profile"
+                   href="profile.html">
+
+                    <div class="user-avatar">
+                        👤
+                    </div>
+
+
+                    <div class="user-information">
+
+                        <strong>
+                            Admin User
+                        </strong>
+
+                        <span>
+                            Rice Mill Owner
+                        </span>
+
+                    </div>
+
+
+                    <span class="profile-arrow">
+                        ⌄
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================================
+             CONTENT
+        ========================================== -->
+
+        <section class="dashboard-content maintenance-content">
+
+
+            <!-- =========================================
+                 PAGE INTRO
+            ========================================== -->
+
+            <div class="maintenance-page-heading">
+
+                <div>
+
+                    <h2>
+                        Preventive &amp; Corrective Maintenance Control
+                    </h2>
+
+                    <p>
+                        Track machine condition, service intervals, downtime,
+                        spare parts, maintenance cost and responsible personnel.
+                    </p>
 
                 </div>
 
-                <div class="sidebar-brand">
 
-                    <h2>Smart Rice Mill</h2>
+                <div class="maintenance-heading-badges">
 
-                    <p>
-                        ERP &amp; Logistics<br>
-                        Management System
-                    </p>
+                    <span class="maintenance-heading-badge">
+                        Schedule Driven
+                    </span>
+
+                    <span class="maintenance-heading-badge">
+                        Cost Tracked
+                    </span>
 
                 </div>
 
             </div>
 
 
-            <nav class="sidebar-navigation"
-                 aria-label="Main navigation">
+            <!-- =========================================
+                 SUMMARY CARDS
+            ========================================== -->
 
-                <a class="navigation-link"
-                   href="dashboard.html">
+            <section class="maintenance-summary-grid">
 
-                    <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
-                    <span class="navigation-arrow">›</span>
 
-                </a>
+                <article class="maintenance-summary-card">
 
-
-                <a class="navigation-link"
-                   href="purchase.html">
-
-                    <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="production.html">
-
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="inventory.html">
-
-                    <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="sales.html">
-
-                    <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="delivery.html">
-
-                    <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="expense.html">
-
-                    <span class="navigation-icon">৳</span>
-                    <span class="navigation-text">
-                        Expense &amp; Salary
-                    </span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link active"
-                   href="maintenance.html">
-
-                    <span class="navigation-icon">🔧</span>
-                    <span class="navigation-text">
-                        Maintenance
-                    </span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="reports.html">
-
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="profile.html">
-
-                    <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-            </nav>
-
-
-            <a class="logout-link"
-               href="../index.html">
-
-                <span class="logout-icon">↪</span>
-                <span>Logout</span>
-
-            </a>
-
-        </aside>
-
-
-        <!-- =====================================
-             Main Area
-        ====================================== -->
-        <main class="main-area">
-
-            <!-- =====================================
-                 Topbar
-            ====================================== -->
-            <header class="topbar">
-
-                <div class="topbar-left">
-
-                    <button class="menu-button"
-                            type="button"
-                            aria-label="Open navigation menu">
-                        ☰
-                    </button>
-
-                    <h1>Machine Maintenance</h1>
-
-                </div>
-
-
-                <div class="topbar-right">
-
-                    <a class="notification-area notification-page-link"
-                       href="notifications.html"
-                       aria-label="View notifications">
-
-                        <span class="notification-icon">
-                            ♧
-                        </span>
-
-                        <span class="notification-count">
-                            3
-                        </span>
-
-                    </a>
-
-
-                    <a class="user-profile profile-topbar-link"
-                       href="profile.html">
-
-                        <div class="user-avatar"
-                             aria-hidden="true">
-                            👤
-                        </div>
-
-
-                        <div class="user-information">
-
-                            <strong id="maintenanceTopbarUserName">
-                                Admin User
-                            </strong>
-
-                            <span>
-                                Rice Mill Owner
-                            </span>
-
-                        </div>
-
-                        <span class="profile-arrow">
-                            ⌄
-                        </span>
-
-                    </a>
-
-                </div>
-
-            </header>
-
-
-            <!-- =====================================
-                 Maintenance Content
-            ====================================== -->
-            <section class="dashboard-content maintenance-content">
-
-                <!-- =====================================
-                     Summary Cards
-                ====================================== -->
-                <section class="maintenance-summary-grid"
-                         aria-label="Machine maintenance summary">
-
-                    <article class="summary-card">
-
-                        <div class="summary-icon green-icon">
-                            ⚙️
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Active Machines</p>
-
-                            <h2 class="green-value"
-                                id="activeMachinesValue">
-                                0
-                            </h2>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="summary-card">
-
-                        <div class="summary-icon orange-icon">
-                            🔧
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Maintenance Due</p>
-
-                            <h2 class="orange-value"
-                                id="maintenanceDueValue">
-                                0
-                            </h2>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="summary-card">
-
-                        <div class="summary-icon blue-icon">
-                            ▣
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Last Service</p>
-
-                            <h2 class="blue-value last-service-value"
-                                id="lastServiceValue">
-                                —
-                            </h2>
-
-                        </div>
-
-                    </article>
-
-                </section>
-
-
-                <!-- =====================================
-                     Reminder Alert
-                ====================================== -->
-                <div class="maintenance-alert-box"
-                     id="maintenanceAlertBox"
-                     hidden>
-
-                    <div class="maintenance-alert-icon">
-                        !
+                    <div class="maintenance-summary-icon active-machine-icon">
+                        ⚙
                     </div>
+
 
                     <div>
 
-                        <strong>
-                            Maintenance Attention Required
-                        </strong>
+                        <span>
+                            Active Machines
+                        </span>
 
-                        <p id="maintenanceAlertText">
+                        <h2 id="activeMachinesValue">
+                            0
+                        </h2>
+
+                        <small>
+                            Registered and available
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+                <article class="maintenance-summary-card">
+
+                    <div class="maintenance-summary-icon due-machine-icon">
+                        🔧
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Maintenance Due
+                        </span>
+
+                        <h2 id="maintenanceDueValue">
+                            0
+                        </h2>
+
+                        <small>
+                            Overdue or due soon
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+                <article class="maintenance-summary-card">
+
+                    <div class="maintenance-summary-icon last-service-icon">
+                        ▣
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Last Service
+                        </span>
+
+                        <h2 id="lastServiceValue">
+                            —
+                        </h2>
+
+                        <small id="lastServiceMachine">
+                            No maintenance record
+                        </small>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+            <!-- =========================================
+                 MAINTENANCE ATTENTION
+            ========================================== -->
+
+            <section class="maintenance-alert"
+                     id="maintenanceAlert"
+                     hidden>
+
+                <div class="maintenance-alert-icon">
+                    !
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Maintenance Attention Required
+                    </strong>
+
+                    <p id="maintenanceAlertText">
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================================
+                 MAINTENANCE FORM
+            ========================================== -->
+
+            <section class="content-card maintenance-form-card">
+
+
+                <div class="maintenance-form-heading">
+
+                    <div>
+
+                        <h2 id="maintenanceFormTitle">
+                            Add Maintenance Record
+                        </h2>
+
+                        <p>
+                            Next service date is calculated automatically
+                            from the last service date and maintenance interval.
                         </p>
 
                     </div>
 
+
+                    <span class="research-based-badge">
+                        Preventive + Corrective
+                    </span>
+
                 </div>
 
 
-                <!-- =====================================
-                     Maintenance Form
-                ====================================== -->
-                <section class="content-card maintenance-form-card">
-
-                    <h2 id="maintenanceFormTitle">
-                        Add Maintenance Record
-                    </h2>
+                <form id="maintenanceForm"
+                      class="maintenance-form"
+                      novalidate>
 
 
-                    <form class="maintenance-form"
-                          id="maintenanceForm">
+                    <div class="maintenance-field">
 
-                        <!-- Machine -->
-                        <div class="form-field">
+                        <label for="machineName">
+                            Machine Name *
+                        </label>
 
-                            <label for="machine-name">
-                                Machine Name
-                            </label>
+                        <select id="machineName"
+                                required>
 
-                            <select id="machine-name"
-                                    name="machineName"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select machine
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Component -->
-                        <div class="form-field">
-
-                            <label for="component-name">
-                                Component
-                            </label>
-
-                            <select id="component-name"
-                                    name="componentName"
-                                    required
+                            <option value=""
+                                    selected
                                     disabled>
 
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select machine first
-                                </option>
+                                Select machine
 
-                            </select>
+                            </option>
 
-                        </div>
-
-
-                        <!-- Maintenance Type -->
-                        <div class="form-field">
-
-                            <label for="maintenance-type">
-                                Maintenance Type
-                            </label>
-
-                            <select id="maintenance-type"
-                                    name="maintenanceType"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select maintenance type
-                                </option>
-
-                                <option value="preventive">
-                                    Preventive
-                                </option>
-
-                                <option value="corrective">
-                                    Corrective
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Service Activity -->
-                        <div class="form-field">
-
-                            <label for="service-type">
-                                Service Activity
-                            </label>
-
-                            <select id="service-type"
-                                    name="serviceType"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select service activity
-                                </option>
-
-                                <option value="inspection">
-                                    Inspection
-                                </option>
-
-                                <option value="cleaning">
-                                    Cleaning
-                                </option>
-
-                                <option value="lubrication">
-                                    Lubrication
-                                </option>
-
-                                <option value="oil-change">
-                                    Oil Change
-                                </option>
-
-                                <option value="repair">
-                                    Repair
-                                </option>
-
-                                <option value="parts-replacement">
-                                    Parts Replacement
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Last Service Date -->
-                        <div class="form-field">
-
-                            <label for="last-service-date">
-                                Last Service Date
-                            </label>
-
-                            <input
-                                type="date"
-                                id="last-service-date"
-                                name="lastServiceDate"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Interval -->
-                        <div class="form-field">
-
-                            <label for="maintenance-interval">
-                                Maintenance Interval (Days)
-                            </label>
-
-                            <input
-                                type="number"
-                                id="maintenance-interval"
-                                name="maintenanceInterval"
-                                placeholder="Example: 30"
-                                min="1"
-                                step="1"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Next Service Date -->
-                        <div class="form-field">
-
-                            <label for="next-service-date">
-                                Next Service Date
-                            </label>
-
-                            <input
-                                type="date"
-                                id="next-service-date"
-                                name="nextServiceDate"
-                                readonly
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Machine Status -->
-                        <div class="form-field">
-
-                            <label for="machine-status">
-                                Machine Status
-                            </label>
-
-                            <select id="machine-status"
-                                    name="machineStatus"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select machine status
-                                </option>
-
-                                <option value="operational">
-                                    Operational
-                                </option>
-
-                                <option value="under-maintenance">
-                                    Under Maintenance
-                                </option>
-
-                                <option value="breakdown">
-                                    Breakdown
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Damage Severity -->
-                        <div class="form-field">
-
-                            <label for="damage-severity">
-                                Damage Severity
-                            </label>
-
-                            <select id="damage-severity"
-                                    name="damageSeverity"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select damage severity
-                                </option>
-
-                                <option value="none">
-                                    None
-                                </option>
-
-                                <option value="minor">
-                                    Minor
-                                </option>
-
-                                <option value="moderate">
-                                    Moderate
-                                </option>
-
-                                <option value="major">
-                                    Major
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Downtime -->
-                        <div class="form-field">
-
-                            <label for="downtime-hours">
-                                Downtime (Hours)
-                            </label>
-
-                            <input
-                                type="number"
-                                id="downtime-hours"
-                                name="downtimeHours"
-                                placeholder="Enter downtime"
-                                min="0"
-                                step="0.5"
-                                value="0"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- =================================
-                             Spare Part Dropdown
-                        ================================== -->
-                        <div class="form-field">
-
-                            <label for="spare-part-select">
-                                Spare Part Used
-                            </label>
-
-                            <select id="spare-part-select"
-                                    name="sparePartSelect"
-                                    required
-                                    disabled>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select machine first
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Other Spare Part -->
-                        <div class="form-field conditional-field hidden"
-                             id="otherSparePartField">
-
-                            <label for="other-spare-part">
-                                Other Spare Part
-                            </label>
-
-                            <input
-                                type="text"
-                                id="other-spare-part"
-                                name="otherSparePart"
-                                placeholder="Enter spare part name"
-                            >
-
-                        </div>
-
-
-                        <!-- Maintenance Cost -->
-                        <div class="form-field">
-
-                            <label for="maintenance-cost">
-                                Maintenance Cost
-                            </label>
-
-                            <input
-                                type="number"
-                                id="maintenance-cost"
-                                name="maintenanceCost"
-                                placeholder="Enter cost"
-                                min="0"
-                                step="0.01"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- =================================
-                             Responsible Person
-                        ================================== -->
-                        <div class="form-field">
-
-                            <label for="technician-select">
-                                Technician / Responsible Person
-                            </label>
-
-                            <select id="technician-select"
-                                    name="technicianSelect"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select responsible person
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- External Technician -->
-                        <div class="form-field conditional-field hidden"
-                             id="externalTechnicianField">
-
-                            <label for="external-technician-name">
-                                External Technician Name
-                            </label>
-
-                            <input
-                                type="text"
-                                id="external-technician-name"
-                                name="externalTechnicianName"
-                                placeholder="Enter technician name"
-                            >
-
-                        </div>
-
-
-                        <!-- Payment Method -->
-                        <div class="form-field">
-
-                            <label for="maintenance-payment-method">
-                                Payment Method
-                            </label>
-
-                            <select id="maintenance-payment-method"
-                                    name="maintenancePaymentMethod"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select payment method
-                                </option>
-
-                                <option value="cash">
-                                    Cash
-                                </option>
-
-                                <option value="bank">
-                                    Bank Transfer
-                                </option>
-
-                                <option value="mobile-banking">
-                                    Mobile Banking
-                                </option>
-
-                                <option value="cheque">
-                                    Cheque
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Payment Status -->
-                        <div class="form-field">
-
-                            <label for="maintenance-payment-status">
-                                Payment Status
-                            </label>
-
-                            <select id="maintenance-payment-status"
-                                    name="maintenancePaymentStatus"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select payment status
-                                </option>
-
-                                <option value="paid">
-                                    Paid
-                                </option>
-
-                                <option value="due">
-                                    Due
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Maintenance Status -->
-                        <div class="form-field">
-
-                            <label for="maintenance-status">
-                                Maintenance Status
-                            </label>
-
-                            <select id="maintenance-status"
-                                    name="maintenanceStatus"
-                                    required>
-
-                                <option value=""
-                                        selected
-                                        disabled>
-                                    Select maintenance status
-                                </option>
-
-                                <option value="completed">
-                                    Completed
-                                </option>
-
-                                <option value="pending">
-                                    Pending
-                                </option>
-
-                                <option value="in-progress">
-                                    In Progress
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Notes -->
-                        <div class="form-field maintenance-notes-field">
-
-                            <label for="maintenance-notes">
-                                Notes
-                            </label>
-
-                            <textarea
-                                id="maintenance-notes"
-                                name="maintenanceNotes"
-                                rows="4"
-                                placeholder="Write maintenance details, observations or recommendations..."
-                            ></textarea>
-
-                        </div>
-
-
-                        <!-- Save -->
-                        <div class="form-action">
-
-                            <button
-                                class="primary-action-button"
-                                id="saveMaintenanceButton"
-                                type="submit"
-                            >
-
-                                <span aria-hidden="true">
-                                    ▣
-                                </span>
-
-                                Save Maintenance
-
-                            </button>
-
-                        </div>
-
-                    </form>
-
-                </section>
-
-
-                <!-- =====================================
-                     Maintenance Records
-                ====================================== -->
-                <section class="content-card maintenance-list-card">
-
-                    <div class="maintenance-list-header">
-
-                        <div>
-
-                            <h2>
-                                Maintenance Records
-                            </h2>
-
-                            <p>
-                                Service history, schedules and machine condition.
-                            </p>
-
-                        </div>
+                        </select>
 
                     </div>
 
 
-                    <div class="table-wrapper">
+                    <div class="maintenance-field">
 
-                        <table class="maintenance-table">
+                        <label for="machineComponent">
+                            Component *
+                        </label>
 
-                            <thead>
+                        <select id="machineComponent"
+                                disabled
+                                required>
 
-                                <tr>
-                                    <th>Machine / Component</th>
-                                    <th>Maintenance</th>
-                                    <th>Last Service</th>
-                                    <th>Next Service</th>
-                                    <th>Cost</th>
-                                    <th>Responsible</th>
-                                    <th>Machine Status</th>
-                                    <th>Schedule</th>
-                                    <th>Action</th>
-                                </tr>
+                            <option value="">
+                                Select machine first
+                            </option>
 
-                            </thead>
-
-
-                            <tbody id="maintenanceTableBody">
-                            </tbody>
-
-                        </table>
+                        </select>
 
                     </div>
 
-                </section>
+
+                    <div class="maintenance-field">
+
+                        <label for="maintenanceType">
+                            Maintenance Type *
+                        </label>
+
+                        <select id="maintenanceType"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+
+                                Select maintenance type
+
+                            </option>
+
+                            <option value="Preventive">
+                                Preventive Maintenance
+                            </option>
+
+                            <option value="Corrective">
+                                Corrective Maintenance
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="serviceActivity">
+                            Service Activity *
+                        </label>
+
+                        <select id="serviceActivity"
+                                disabled
+                                required>
+
+                            <option value="">
+                                Select maintenance type first
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="lastServiceDate">
+                            Last Service Date *
+                        </label>
+
+                        <input
+                            type="date"
+                            id="lastServiceDate"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="maintenanceInterval">
+                            Maintenance Interval (Days) *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="maintenanceInterval"
+                            min="1"
+                            max="3650"
+                            step="1"
+                            placeholder="Example: 30"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="nextServiceDate">
+                            Next Service Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="nextServiceDate"
+                            readonly
+                        >
+
+                        <small>
+                            Last Service + Maintenance Interval
+                        </small>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="machineStatus">
+                            Machine Status *
+                        </label>
+
+                        <select id="machineStatus"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+
+                                Select machine status
+
+                            </option>
+
+                            <option value="Operational">
+                                Operational
+                            </option>
+
+                            <option value="Maintenance">
+                                Under Maintenance
+                            </option>
+
+                            <option value="Out of Service">
+                                Out of Service
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="damageSeverity">
+                            Damage Severity *
+                        </label>
+
+                        <select id="damageSeverity"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+
+                                Select damage severity
+
+                            </option>
+
+                            <option value="None">
+                                None
+                            </option>
+
+                            <option value="Minor">
+                                Minor
+                            </option>
+
+                            <option value="Moderate">
+                                Moderate
+                            </option>
+
+                            <option value="Major">
+                                Major
+                            </option>
+
+                            <option value="Critical">
+                                Critical
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="downtimeHours">
+                            Downtime (Hours) *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="downtimeHours"
+                            min="0"
+                            step="0.25"
+                            value="0"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="sparePartUsed">
+                            Spare Part Used
+                        </label>
+
+                        <select id="sparePartUsed"
+                                disabled>
+
+                            <option value="">
+                                Select machine first
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="maintenanceCost">
+                            Maintenance Cost (৳) *
+                        </label>
+
+                        <input
+                            type="number"
+                            id="maintenanceCost"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter cost"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="responsiblePerson">
+                            Technician / Responsible Person *
+                        </label>
+
+                        <select id="responsiblePerson"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+
+                                Select responsible person
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="paymentMethod">
+                            Payment Method *
+                        </label>
+
+                        <select id="paymentMethod"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+
+                                Select payment method
+
+                            </option>
+
+                            <option value="Cash">
+                                Cash
+                            </option>
+
+                            <option value="Bank Transfer">
+                                Bank Transfer
+                            </option>
+
+                            <option value="Mobile Banking">
+                                Mobile Banking
+                            </option>
+
+                            <option value="Cheque">
+                                Cheque
+                            </option>
+
+                            <option value="Not Applicable">
+                                Not Applicable
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="paymentStatus">
+                            Payment Status *
+                        </label>
+
+                        <select id="paymentStatus"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+
+                                Select payment status
+
+                            </option>
+
+                            <option value="Paid">
+                                Paid
+                            </option>
+
+                            <option value="Due">
+                                Due
+                            </option>
+
+                            <option value="Not Applicable">
+                                Not Applicable
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field">
+
+                        <label for="maintenanceStatus">
+                            Maintenance Status *
+                        </label>
+
+                        <select id="maintenanceStatus"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+
+                                Select maintenance status
+
+                            </option>
+
+                            <option value="Completed">
+                                Completed
+                            </option>
+
+                            <option value="In Progress">
+                                In Progress
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="maintenance-field maintenance-notes-field">
+
+                        <label for="maintenanceNotes">
+                            Notes
+                        </label>
+
+                        <textarea
+                            id="maintenanceNotes"
+                            rows="4"
+                            maxlength="500"
+                            placeholder="Write maintenance details, observations or recommendations..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="maintenance-form-actions">
+
+                        <button
+                            class="maintenance-secondary-button"
+                            id="cancelMaintenanceEditBtn"
+                            type="button"
+                            hidden
+                        >
+                            Cancel Edit
+                        </button>
+
+
+                        <button
+                            class="maintenance-primary-button"
+                            id="saveMaintenanceBtn"
+                            type="submit"
+                        >
+
+                            <span aria-hidden="true">
+                                ▣
+                            </span>
+
+                            Save Maintenance
+
+                        </button>
+
+                    </div>
+
+                </form>
 
             </section>
 
-        </main>
 
-    </div>
+            <!-- =========================================
+                 RECORDS
+            ========================================== -->
+
+            <section class="content-card maintenance-record-card">
 
 
-    <!-- Authentication -->
-    <script src="../scripts/auth.js"></script>
+                <div class="maintenance-record-heading">
 
-    <!-- Maintenance Logic -->
-    <script src="../scripts/maintenance.js"></script>
+                    <div>
+
+                        <h2>
+                            Maintenance Records
+                        </h2>
+
+                        <p>
+                            Service history, schedules, machine condition,
+                            downtime and maintenance cost.
+                        </p>
+
+                    </div>
+
+
+                    <div class="maintenance-record-tools">
+
+                        <input
+                            type="search"
+                            id="maintenanceSearch"
+                            placeholder="Search machine or technician"
+                        >
+
+
+                        <select id="scheduleFilter">
+
+                            <option value="all">
+                                All Schedules
+                            </option>
+
+                            <option value="overdue">
+                                Overdue
+                            </option>
+
+                            <option value="due">
+                                Due Soon
+                            </option>
+
+                            <option value="scheduled">
+                                Scheduled
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="maintenance-table-wrapper">
+
+                    <table class="maintenance-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    ID
+                                </th>
+
+                                <th>
+                                    Machine / Component
+                                </th>
+
+                                <th>
+                                    Maintenance
+                                </th>
+
+                                <th>
+                                    Last Service
+                                </th>
+
+                                <th>
+                                    Next Service
+                                </th>
+
+                                <th>
+                                    Downtime
+                                </th>
+
+                                <th>
+                                    Cost / Spare
+                                </th>
+
+                                <th>
+                                    Responsible
+                                </th>
+
+                                <th>
+                                    Machine Status
+                                </th>
+
+                                <th>
+                                    Schedule
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="maintenanceTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="../scripts/auth.js"></script>
+
+<script src="../scripts/maintenance.js"></script>
 
 </body>
 
