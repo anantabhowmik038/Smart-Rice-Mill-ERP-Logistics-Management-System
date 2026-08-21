@@ -8,11 +8,16 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Sales and Invoice Management - Smart Rice Mill ERP & Logistics Management System">
+
     <title>Sales & Invoice Management | Smart Rice Mill ERP</title>
 
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 
-    <link rel="stylesheet" href="../styles/sales.css">
+    <link rel="stylesheet"
+          href="../styles/sales.css">
 
 </head>
 
@@ -22,11 +27,12 @@
     <div class="dashboard-layout">
 
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
 
-        <aside class="sidebar">
+        <aside class="sidebar"
+               id="sidebar">
 
             <div class="sidebar-header">
 
@@ -41,7 +47,9 @@
 
                 <div class="sidebar-brand">
 
-                    <h2>Smart Rice Mill</h2>
+                    <h2>
+                        Smart Rice Mill
+                    </h2>
 
                     <p>
                         ERP &amp; Logistics<br>
@@ -61,7 +69,25 @@
                    href="dashboard.html">
 
                     <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
+
+                    <span class="navigation-text">
+                        Dashboard
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="notifications.html">
+
+                    <span class="navigation-icon">🔔</span>
+
+                    <span class="navigation-text">
+                        Notifications
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -71,7 +97,39 @@
                    href="purchase.html">
 
                     <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
+
+                    <span class="navigation-text">
+                        Purchase
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="supplier.html">
+
+                    <span class="navigation-icon">👥</span>
+
+                    <span class="navigation-text">
+                        Farmer &amp; Supplier
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="quality.html">
+
+                    <span class="navigation-icon">✓</span>
+
+                    <span class="navigation-text">
+                        Quality Inspection
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -81,7 +139,11 @@
                    href="production.html">
 
                     <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
+
+                    <span class="navigation-text">
+                        Production
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -91,7 +153,11 @@
                    href="inventory.html">
 
                     <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
+
+                    <span class="navigation-text">
+                        Inventory
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -101,7 +167,25 @@
                    href="sales.html">
 
                     <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
+
+                    <span class="navigation-text">
+                        Sales
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="customer.html">
+
+                    <span class="navigation-icon">👤</span>
+
+                    <span class="navigation-text">
+                        Customers
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -111,7 +195,11 @@
                    href="delivery.html">
 
                     <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
+
+                    <span class="navigation-text">
+                        Delivery
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -121,7 +209,25 @@
                    href="reports.html">
 
                     <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
+
+                    <span class="navigation-text">
+                        Reports
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="expense.html">
+
+                    <span class="navigation-icon">৳</span>
+
+                    <span class="navigation-text">
+                        Expense &amp; Salary
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -131,7 +237,39 @@
                    href="profile.html">
 
                     <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
+
+                    <span class="navigation-text">
+                        Settings
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link sub-navigation-link"
+                   href="users.html">
+
+                    <span class="navigation-icon">👥</span>
+
+                    <span class="navigation-text">
+                        User Roles
+                    </span>
+
+                    <span class="navigation-arrow">›</span>
+
+                </a>
+
+
+                <a class="navigation-link"
+                   href="maintenance.html">
+
+                    <span class="navigation-icon">🔧</span>
+
+                    <span class="navigation-text">
+                        Maintenance
+                    </span>
+
                     <span class="navigation-arrow">›</span>
 
                 </a>
@@ -140,46 +278,63 @@
 
 
             <a class="logout-link"
-               href="../index.html">
+               href="#"
+               id="logoutBtn">
 
                 <span class="logout-icon">↪</span>
-                <span>Logout</span>
+
+                <span>
+                    Logout
+                </span>
 
             </a>
 
         </aside>
 
 
+        <div class="sidebar-backdrop"
+             id="sidebarBackdrop">
+        </div>
 
-        <!-- =====================================
-             Main Area
-        ====================================== -->
+
+        <!-- =========================================
+             MAIN AREA
+        ========================================== -->
 
         <main class="main-area">
 
 
-            <!-- Topbar -->
+            <!-- =========================================
+                 TOPBAR
+            ========================================== -->
 
             <header class="topbar">
 
                 <div class="topbar-left">
 
                     <button class="menu-button"
+                            id="menuButton"
                             type="button"
-                            aria-label="Open navigation menu">
+                            aria-label="Open navigation menu"
+                            aria-expanded="false">
 
                         ☰
 
                     </button>
 
-                    <h1>Sales &amp; Invoice Management</h1>
+
+                    <h1>
+                        Sales &amp; Invoice Management
+                    </h1>
 
                 </div>
 
 
                 <div class="topbar-right">
 
-                    <div class="notification-area">
+                    <a class="notification-area"
+                       href="notifications.html"
+                       aria-label="Open notifications">
 
                         <span class="notification-icon">
                             ♧
@@ -189,24 +344,26 @@
                             3
                         </span>
 
-                    </div>
+                    </a>
 
 
-                    <div class="user-profile">
+                    <a class="user-profile"
+                       href="profile.html">
 
-                        <div class="user-avatar"
-                             aria-hidden="true">
-
+                        <div class="user-avatar">
                             👤
-
                         </div>
 
 
                         <div class="user-information">
 
-                            <strong>Admin User</strong>
+                            <strong>
+                                Admin User
+                            </strong>
 
-                            <span>Rice Mill Owner</span>
+                            <span>
+                                Rice Mill Owner
+                            </span>
 
                         </div>
 
@@ -215,27 +372,56 @@
                             ⌄
                         </span>
 
-                    </div>
+                    </a>
 
                 </div>
 
             </header>
 
 
-
-            <!-- =====================================
-                 Sales Content
-            ====================================== -->
+            <!-- =========================================
+                 CONTENT
+            ========================================== -->
 
             <section class="dashboard-content sales-content">
 
 
-                <!-- =====================================
-                     Dynamic Summary
-                ====================================== -->
+                <!-- =========================================
+                     PAGE HEADING
+                ========================================== -->
 
-                <section class="sales-summary-grid"
-                         aria-label="Sales summary">
+                <div class="sales-page-heading">
+
+                    <div>
+
+                        <h2>
+                            Sales Processing
+                        </h2>
+
+                        <p>
+                            Generate inventory-linked invoices,
+                            track customer payments and allocate stock
+                            using FIFO-oriented issue logic.
+                        </p>
+
+                    </div>
+
+
+                    <a class="inventory-shortcut"
+                       href="inventory.html">
+
+                        Inventory →
+
+                    </a>
+
+                </div>
+
+
+                <!-- =========================================
+                     SUMMARY CARDS
+                ========================================== -->
+
+                <section class="sales-summary-grid">
 
 
                     <article class="summary-card">
@@ -247,7 +433,9 @@
 
                         <div class="summary-details">
 
-                            <p>Today Sales</p>
+                            <p>
+                                Today’s Sales
+                            </p>
 
                             <h2 class="green-value"
                                 id="todaySalesValue">
@@ -261,7 +449,6 @@
                     </article>
 
 
-
                     <article class="summary-card">
 
                         <div class="summary-icon blue-icon">
@@ -271,7 +458,9 @@
 
                         <div class="summary-details">
 
-                            <p>Invoices</p>
+                            <p>
+                                Active Invoices
+                            </p>
 
                             <h2 class="blue-value"
                                 id="invoiceCountValue">
@@ -285,7 +474,6 @@
                     </article>
 
 
-
                     <article class="summary-card">
 
                         <div class="summary-icon orange-icon">
@@ -295,10 +483,12 @@
 
                         <div class="summary-details">
 
-                            <p>Due Payment</p>
+                            <p>
+                                Outstanding Customer Due
+                            </p>
 
                             <h2 class="orange-value"
-                                id="salesDueValue">
+                                id="customerDueValue">
 
                                 ৳0
 
@@ -311,54 +501,87 @@
                 </section>
 
 
-
-                <!-- =====================================
-                     Generate Invoice
-                ====================================== -->
+                <!-- =========================================
+                     INVOICE FORM
+                ========================================== -->
 
                 <section class="content-card sales-form-card">
 
-                    <h2>Generate Invoice</h2>
+                    <div class="sales-card-heading">
+
+                        <div>
+
+                            <h2>
+                                Generate Sales Invoice
+                            </h2>
+
+                            <p>
+                                Available stock is checked before
+                                an invoice can be generated.
+                            </p>
+
+                        </div>
 
 
-                    <form class="sales-form"
-                          id="salesForm"
+                        <span class="sales-form-note">
+                            Oldest available production stock is
+                            allocated first for FIFO-oriented traceability.
+                        </span>
+
+                    </div>
+
+
+                    <form id="salesForm"
+                          class="sales-form"
                           novalidate>
+
+
+                        <!-- Invoice Date -->
+
+                        <div class="sales-form-field">
+
+                            <label for="saleDate">
+                                Invoice Date *
+                            </label>
+
+                            <input
+                                type="date"
+                                id="saleDate"
+                                required
+                            >
+
+                        </div>
 
 
                         <!-- Customer -->
 
-                        <div class="form-field">
+                        <div class="sales-form-field customer-field">
 
-                            <label for="customer-name">
-
-                                Customer Name
-
+                            <label for="customerSelect">
+                                Customer *
                             </label>
 
 
-                            <div class="customer-selection-row">
+                            <div class="customer-input-row">
 
-                                <select id="customer-name"
-                                        name="customerName">
+                                <select id="customerSelect"
+                                        required>
 
                                     <option value=""
                                             selected
                                             disabled>
 
-                                        Select customer name
+                                        Select customer
 
                                     </option>
 
                                 </select>
 
 
-                                <a href="customer.html"
-                                   class="add-customer-button">
+                                <a class="add-customer-button"
+                                   href="customer.html">
 
-                                    <span>+</span>
-
-                                    Add New Customer
+                                    + Add Customer
 
                                 </a>
 
@@ -367,20 +590,16 @@
                         </div>
 
 
-
                         <!-- Product -->
 
-                        <div class="form-field">
+                        <div class="sales-form-field">
 
-                            <label for="product">
-
-                                Product
-
+                            <label for="saleProduct">
+                                Product *
                             </label>
 
-
-                            <select id="product"
-                                    name="product">
+                            <select id="saleProduct"
+                                    required>
 
                                 <option value=""
                                         selected
@@ -390,19 +609,20 @@
 
                                 </option>
 
-
-                                <option value="rice">
-                                    Rice
+                                <option value="wholeRice">
+                                    Whole Rice
                                 </option>
-
 
                                 <option value="khud">
-                                    Khud
+                                    Khud / Broken Rice
                                 </option>
 
-
                                 <option value="tush">
-                                    Tush
+                                    Tush / Husk
+                                </option>
+
+                                <option value="bran">
+                                    Rice Bran
                                 </option>
 
                             </select>
@@ -410,114 +630,96 @@
                         </div>
 
 
-
                         <!-- Available Stock -->
 
-                        <div class="form-field">
+                        <div class="sales-form-field">
 
-                            <label for="available-stock">
-
+                            <label for="availableStock">
                                 Available Stock
-
                             </label>
-
 
                             <input
                                 type="text"
-                                id="available-stock"
-                                name="availableStock"
-                                placeholder="Select product first"
+                                id="availableStock"
+                                value="Select product first"
                                 readonly
                             >
 
                         </div>
-
 
 
                         <!-- Quantity -->
 
-                        <div class="form-field">
+                        <div class="sales-form-field">
 
-                            <label for="quantity">
-
-                                Quantity (kg)
-
+                            <label for="saleQuantity">
+                                Quantity (kg) *
                             </label>
-
 
                             <input
                                 type="number"
-                                id="quantity"
-                                name="quantity"
-                                placeholder="Enter quantity"
+                                id="saleQuantity"
                                 min="0.01"
                                 step="0.01"
+                                placeholder="Enter quantity in kg"
+                                required
                             >
 
                         </div>
-
 
 
                         <!-- Price -->
 
-                        <div class="form-field">
+                        <div class="sales-form-field">
 
-                            <label for="price">
-
-                                Price per kg
-
+                            <label for="pricePerKg">
+                                Price per kg (৳) *
                             </label>
-
 
                             <input
                                 type="number"
-                                id="price"
-                                name="price"
-                                placeholder="Enter price per kg"
+                                id="pricePerKg"
                                 min="0.01"
                                 step="0.01"
+                                placeholder="Enter current selling price"
+                                required
                             >
 
                         </div>
-
 
 
                         <!-- Total -->
 
-                        <div class="form-field">
+                        <div class="sales-form-field calculated-field">
 
-                            <label for="total-amount">
-
+                            <label for="totalAmount">
                                 Total Amount
-
                             </label>
-
 
                             <input
                                 type="text"
-                                id="total-amount"
-                                name="totalAmount"
-                                placeholder="৳0"
+                                id="totalAmount"
+                                value="৳0"
                                 readonly
                             >
+
+                            <small>
+                                Quantity × price per kg
+                            </small>
 
                         </div>
 
 
+                        <!-- Payment Status -->
 
-                        <!-- Payment -->
+                        <div class="sales-form-field">
 
-                        <div class="form-field">
-
-                            <label for="payment-status">
-
-                                Payment Status
-
+                            <label for="paymentStatus">
+                                Payment Status *
                             </label>
 
-
-                            <select id="payment-status"
-                                    name="paymentStatus">
+                            <select id="paymentStatus"
+                                    required>
 
                                 <option value=""
                                         selected
@@ -527,19 +729,16 @@
 
                                 </option>
 
-
                                 <option value="paid">
                                     Paid
                                 </option>
 
+                                <option value="partial">
+                                    Partially Paid
+                                </option>
 
                                 <option value="due">
                                     Due
-                                </option>
-
-
-                                <option value="partial">
-                                    Partially Paid
                                 </option>
 
                             </select>
@@ -547,65 +746,70 @@
                         </div>
 
 
+                        <!-- Amount Paid -->
 
-                        <!-- Partial Paid Amount -->
+                        <div class="sales-form-field">
 
-                        <div class="form-field"
-                             id="salesPartialField"
-                             hidden>
-
-                            <label for="paid-amount">
-
-                                Paid Amount
-
+                            <label for="amountPaid">
+                                Amount Paid (৳)
                             </label>
-
 
                             <input
                                 type="number"
-                                id="paid-amount"
-                                name="paidAmount"
-                                placeholder="Enter paid amount"
+                                id="amountPaid"
                                 min="0"
                                 step="0.01"
+                                value="0"
+                                disabled
                             >
 
-
-                            <small id="salesBalanceText">
-
+                            <small id="amountPaidHelp">
+                                Select payment status first.
                             </small>
 
                         </div>
 
 
+                        <!-- Remaining Due -->
+
+                        <div class="sales-form-field calculated-field">
+
+                            <label for="remainingDue">
+                                Remaining Due
+                            </label>
+
+                            <input
+                                type="text"
+                                id="remainingDue"
+                                value="৳0"
+                                readonly
+                            >
+
+                        </div>
+
 
                         <!-- Delivery -->
 
-                        <div class="form-field">
+                        <div class="sales-form-field">
 
-                            <label for="delivery-required">
-
-                                Delivery Required
-
+                            <label for="deliveryRequired">
+                                Delivery Required *
                             </label>
 
-
-                            <select id="delivery-required"
-                                    name="deliveryRequired">
+                            <select id="deliveryRequired"
+                                    required>
 
                                 <option value=""
                                         selected
                                         disabled>
 
-                                    Select delivery required
+                                    Select delivery option
 
                                 </option>
-
 
                                 <option value="yes">
                                     Yes
                                 </option>
-
 
                                 <option value="no">
                                     No
@@ -616,14 +820,70 @@
                         </div>
 
 
+                        <!-- Notes -->
 
-                        <!-- Generate -->
+                        <div class="sales-form-field sales-notes-field">
 
-                        <div class="form-action">
+                            <label for="salesNotes">
+                                Invoice Notes
+                            </label>
 
-                            <button class="primary-action-button"
-                                    type="submit"
-                                    id="generateInvoiceBtn">
+                            <input
+                                type="text"
+                                id="salesNotes"
+                                maxlength="180"
+                                placeholder="Optional sales or delivery note"
+                            >
+
+                        </div>
+
+
+                        <!-- =================================
+                             FIFO PREVIEW
+                        ================================== -->
+
+                        <div class="fifo-preview-card">
+
+                            <div class="fifo-preview-heading">
+
+                                <div>
+
+                                    <h3>
+                                        FIFO Stock Allocation Preview
+                                    </h3>
+
+                                    <p>
+                                        Shows which oldest stock sources
+                                        will fulfil this invoice.
+                                    </p>
+
+                                </div>
+
+
+                                <span class="fifo-badge">
+                                    FIFO Oriented
+                                </span>
+
+                            </div>
+
+
+                            <div id="fifoPreview"
+                                 class="fifo-preview-content">
+
+                                Select a product and enter quantity
+                                to preview stock allocation.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Action -->
+
+                        <div class="sales-form-action">
+
+                            <button class="generate-invoice-button"
+                                    type="submit">
 
                                 <span aria-hidden="true">
                                     ▣
@@ -640,17 +900,60 @@
                 </section>
 
 
-
-                <!-- =====================================
-                     Sales List
-                ====================================== -->
+                <!-- =========================================
+                     SALES LIST
+                ========================================== -->
 
                 <section class="content-card sales-list-card">
 
-                    <h2>Sales &amp; Invoice List</h2>
+                    <div class="sales-list-heading">
+
+                        <div>
+
+                            <h2>
+                                Sales &amp; Invoice History
+                            </h2>
+
+                            <p>
+                                Voided invoices remain visible to
+                                preserve transaction history.
+                            </p>
+
+                        </div>
 
 
-                    <div class="table-wrapper">
+                        <div class="sales-list-controls">
+
+                            <input
+                                type="search"
+                                id="salesSearch"
+                                placeholder="Search invoice or customer"
+                                aria-label="Search invoices"
+                            >
+
+
+                            <select id="salesStatusFilter">
+
+                                <option value="all">
+                                    All Invoices
+                                </option>
+
+                                <option value="active">
+                                    Active
+                                </option>
+
+                                <option value="voided">
+                                    Voided
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="sales-table-wrapper">
 
                         <table class="sales-table">
 
@@ -660,19 +963,27 @@
 
                                     <th>Invoice</th>
 
+                                    <th>Date</th>
+
                                     <th>Customer</th>
 
                                     <th>Product</th>
 
                                     <th>Quantity</th>
 
+                                    <th>Price/kg</th>
+
                                     <th>Total</th>
+
+                                    <th>Paid</th>
+
+                                    <th>Due</th>
 
                                     <th>Payment</th>
 
                                     <th>Delivery</th>
 
-                                    <th>Date</th>
+                                    <th>Status</th>
 
                                     <th>Action</th>
 
@@ -682,7 +993,6 @@
 
 
                             <tbody id="salesTableBody">
-
                             </tbody>
 
                         </table>
@@ -694,6 +1004,160 @@
             </section>
 
         </main>
+
+    </div>
+
+
+    <!-- =========================================
+         INVOICE DETAILS MODAL
+    ========================================== -->
+
+    <div class="invoice-modal-backdrop"
+         id="invoiceModalBackdrop"
+         hidden>
+
+        <section class="invoice-modal"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="invoiceModalTitle">
+
+            <div class="invoice-modal-header">
+
+                <div>
+
+                    <h2 id="invoiceModalTitle">
+                        Invoice Details
+                    </h2>
+
+                    <p id="invoiceModalSubtitle">
+                    </p>
+
+                </div>
+
+
+                <button class="invoice-modal-close"
+                        id="closeInvoiceModalBtn"
+                        type="button"
+                        aria-label="Close invoice">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="invoice-detail-grid">
+
+                <div class="invoice-detail-item">
+
+                    <span>
+                        Customer
+                    </span>
+
+                    <strong id="modalCustomer">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="invoice-detail-item">
+
+                    <span>
+                        Product
+                    </span>
+
+                    <strong id="modalProduct">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="invoice-detail-item">
+
+                    <span>
+                        Quantity
+                    </span>
+
+                    <strong id="modalQuantity">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="invoice-detail-item">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="modalTotal">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="invoice-detail-item">
+
+                    <span>
+                        Amount Paid
+                    </span>
+
+                    <strong id="modalPaid">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="invoice-detail-item">
+
+                    <span>
+                        Remaining Due
+                    </span>
+
+                    <strong id="modalDue">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="invoice-allocation-section">
+
+                <h3>
+                    FIFO Stock Sources
+                </h3>
+
+                <div id="modalAllocationList"
+                     class="modal-allocation-list">
+                </div>
+
+            </div>
+
+
+            <div class="invoice-modal-footer">
+
+                <span id="modalDelivery">
+                </span>
+
+                <button class="modal-done-button"
+                        id="invoiceModalDoneBtn"
+                        type="button">
+
+                    Done
+
+                </button>
+
+            </div>
+
+        </section>
 
     </div>
 
