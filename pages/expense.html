@@ -7,788 +7,1050 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="Expense and Salary Management - Smart Rice Mill ERP & Logistics Management System">
+
     <title>Expense & Salary Management | Smart Rice Mill ERP</title>
 
-    <!-- Common Dashboard CSS -->
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 
-    <!-- Expense Page CSS -->
-    <link rel="stylesheet" href="../styles/expense.css">
+    <link rel="stylesheet"
+          href="../styles/expense.css">
 </head>
+
 
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
-        <aside class="sidebar">
 
-            <div class="sidebar-header">
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
 
-                <div class="sidebar-logo"
-                     aria-hidden="true">
+    <aside class="sidebar"
+           id="sidebar">
 
-                    <span class="logo-shape logo-shape-one"></span>
-                    <span class="logo-shape logo-shape-two"></span>
+        <div class="sidebar-header">
+
+            <div class="sidebar-logo"
+                 aria-hidden="true">
+
+                <span class="logo-shape logo-shape-one"></span>
+                <span class="logo-shape logo-shape-two"></span>
+
+            </div>
+
+
+            <div class="sidebar-brand">
+
+                <h2>
+                    Smart Rice Mill
+                </h2>
+
+                <p>
+                    ERP &amp; Logistics<br>
+                    Management System
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-navigation"
+             aria-label="Main navigation">
+
+
+            <a class="navigation-link"
+               href="dashboard.html">
+
+                <span class="navigation-icon">
+                    ⌂
+                </span>
+
+                <span class="navigation-text">
+                    Dashboard
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="notifications.html">
+
+                <span class="navigation-icon">
+                    🔔
+                </span>
+
+                <span class="navigation-text">
+                    Notifications
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="purchase.html">
+
+                <span class="navigation-icon">
+                    🛒
+                </span>
+
+                <span class="navigation-text">
+                    Purchase
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="production.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Production
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="inventory.html">
+
+                <span class="navigation-icon">
+                    ▣
+                </span>
+
+                <span class="navigation-text">
+                    Inventory
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="sales.html">
+
+                <span class="navigation-icon">
+                    ◇
+                </span>
+
+                <span class="navigation-text">
+                    Sales
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <a class="navigation-link"
+               href="delivery.html">
+
+                <span class="navigation-icon">
+                    ▱
+                </span>
+
+                <span class="navigation-text">
+                    Delivery
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- =====================================
+                 REPORTS
+            ====================================== -->
+
+            <a class="navigation-link"
+               href="reports.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Reports
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- =====================================
+                 EXPENSE & SALARY
+                 ACTIVE PAGE
+            ====================================== -->
+
+            <a class="navigation-link active"
+               href="expense.html">
+
+                <span class="navigation-icon">
+                    ৳
+                </span>
+
+                <span class="navigation-text">
+                    Expense &amp; Salary
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- =====================================
+                 SETTINGS
+                 SUBMENU IS HIDDEN ON THIS PAGE
+                 SO ARROW MUST POINT RIGHT
+            ====================================== -->
+
+            <a class="navigation-link"
+               href="profile.html">
+
+                <span class="navigation-icon">
+                    ⚙
+                </span>
+
+                <span class="navigation-text">
+                    Settings
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- =====================================
+                 USER ROLES SUBMENU
+            ====================================== -->
+
+            <a class="navigation-link sub-navigation-link"
+               href="users.html">
+
+                <span class="navigation-icon">
+                    👥
+                </span>
+
+                <span class="navigation-text">
+                    User Roles
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- =====================================
+                 MAINTENANCE
+            ====================================== -->
+
+            <a class="navigation-link"
+               href="maintenance.html">
+
+                <span class="navigation-icon">
+                    🔧
+                </span>
+
+                <span class="navigation-text">
+                    Maintenance
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <a class="logout-link"
+           href="#"
+           id="logoutBtn">
+
+            <span class="logout-icon">
+                ↪
+            </span>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </aside>
+
+
+    <div class="sidebar-backdrop"
+         id="sidebarBackdrop">
+    </div>
+
+
+    <!-- =========================================
+         MAIN AREA
+    ========================================== -->
+
+    <main class="main-area">
+
+
+        <!-- =========================================
+             TOPBAR
+        ========================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button"
+                        id="menuButton"
+                        type="button"
+                        aria-label="Open navigation menu"
+                        aria-expanded="false">
+
+                    ☰
+
+                </button>
+
+
+                <h1>
+                    Expense &amp; Salary Management
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <a class="notification-area"
+                   href="notifications.html"
+                   aria-label="Open notifications">
+
+                    <span class="notification-icon">
+                        ♧
+                    </span>
+
+                    <span class="notification-count">
+                        3
+                    </span>
+
+                </a>
+
+
+                <a class="user-profile"
+                   href="profile.html">
+
+                    <div class="user-avatar">
+                        👤
+                    </div>
+
+
+                    <div class="user-information">
+
+                        <strong>
+                            Admin User
+                        </strong>
+
+                        <span>
+                            Rice Mill Owner
+                        </span>
+
+                    </div>
+
+
+                    <span class="profile-arrow">
+                        ⌄
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================================
+             CONTENT
+        ========================================== -->
+
+        <section class="dashboard-content finance-content">
+
+
+            <!-- =========================================
+                 PAGE HEADING
+            ========================================== -->
+
+            <div class="finance-page-heading">
+
+                <div>
+
+                    <h2>
+                        Operating Cost &amp; Payroll Control
+                    </h2>
+
+                    <p>
+                        Record operating expenses and employee salary obligations
+                        while keeping financial reports synchronized.
+                    </p>
 
                 </div>
 
 
-                <div class="sidebar-brand">
+                <div class="finance-heading-badges">
 
-                    <h2>Smart Rice Mill</h2>
+                    <span class="finance-heading-badge">
+                        Report Linked
+                    </span>
 
-                    <p>
-                        ERP &amp; Logistics<br>
-                        Management System
-                    </p>
+                    <span class="finance-heading-badge">
+                        Payment Tracked
+                    </span>
 
                 </div>
 
             </div>
 
 
-            <nav class="sidebar-navigation"
-                 aria-label="Main navigation">
+            <!-- =========================================
+                 SUMMARY CARDS
+            ========================================== -->
 
-                <a class="navigation-link"
-                   href="dashboard.html">
+            <section class="finance-summary-grid">
 
-                    <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
-                    <span class="navigation-arrow">›</span>
 
-                </a>
+                <article class="summary-card">
 
+                    <div class="summary-icon green-icon">
+                        ▣
+                    </div>
 
-                <a class="navigation-link"
-                   href="purchase.html">
 
-                    <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
-                    <span class="navigation-arrow">›</span>
+                    <div class="summary-details">
 
-                </a>
+                        <p>
+                            Today's Expense
+                        </p>
 
+                        <h2 class="green-value"
+                            id="todayExpenseValue">
 
-                <a class="navigation-link"
-                   href="production.html">
+                            ৳0
 
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
-                    <span class="navigation-arrow">›</span>
+                        </h2>
 
-                </a>
+                    </div>
 
+                </article>
 
-                <a class="navigation-link"
-                   href="inventory.html">
 
-                    <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
-                    <span class="navigation-arrow">›</span>
+                <article class="summary-card">
 
-                </a>
+                    <div class="summary-icon blue-icon">
+                        👥
+                    </div>
 
 
-                <a class="navigation-link"
-                   href="sales.html">
+                    <div class="summary-details">
 
-                    <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
-                    <span class="navigation-arrow">›</span>
+                        <p>
+                            Salary Due
+                        </p>
 
-                </a>
+                        <h2 class="blue-value"
+                            id="salaryDueValue">
 
+                            ৳0
 
-                <a class="navigation-link"
-                   href="delivery.html">
+                        </h2>
 
-                    <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
-                    <span class="navigation-arrow">›</span>
+                    </div>
 
-                </a>
+                </article>
 
 
-                <a class="navigation-link active"
-                   href="expense.html">
+                <article class="summary-card">
 
-                    <span class="navigation-icon">৳</span>
-                    <span class="navigation-text">
-                        Expense &amp; Salary
-                    </span>
-                    <span class="navigation-arrow">›</span>
+                    <div class="summary-icon maintenance-summary-icon">
+                        🔧
+                    </div>
 
-                </a>
 
+                    <div class="summary-details">
 
-                <a class="navigation-link"
-                   href="reports.html">
+                        <p>
+                            Maintenance Cost
+                        </p>
 
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
-                    <span class="navigation-arrow">›</span>
+                        <h2 class="maintenance-summary-value"
+                            id="maintenanceCostValue">
 
-                </a>
+                            ৳0
 
+                        </h2>
 
-                <a class="navigation-link"
-                   href="profile.html">
+                    </div>
 
-                    <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
-                    <span class="navigation-arrow">›</span>
+                </article>
 
-                </a>
+            </section>
 
-            </nav>
 
+            <!-- =========================================
+                 ENTRY FORMS
+            ========================================== -->
 
-            <a class="logout-link"
-               href="../index.html">
+            <section class="finance-entry-grid">
 
-                <span class="logout-icon">↪</span>
-                <span>Logout</span>
-
-            </a>
-
-        </aside>
-
-
-        <!-- =====================================
-             Main Area
-        ====================================== -->
-        <main class="main-area">
-
-            <!-- =====================================
-                 Topbar
-            ====================================== -->
-            <header class="topbar">
-
-                <div class="topbar-left">
-
-                    <button
-                        class="menu-button"
-                        type="button"
-                        aria-label="Open navigation menu"
-                    >
-                        ☰
-                    </button>
-
-                    <h1>
-                        Expense &amp; Salary Management
-                    </h1>
-
-                </div>
-
-
-                <div class="topbar-right">
-
-                    <a class="notification-area"
-                       href="notifications.html"
-                       aria-label="View notifications">
-
-                        <span class="notification-icon">
-                            ♧
-                        </span>
-
-                        <span class="notification-count">
-                            3
-                        </span>
-
-                    </a>
-
-
-                    <a class="user-profile"
-                       href="profile.html">
-
-                        <div class="user-avatar"
-                             aria-hidden="true">
-
-                            👤
-
-                        </div>
-
-
-                        <div class="user-information">
-
-                            <strong id="expenseTopbarUserName">
-                                Admin User
-                            </strong>
-
-                            <span>
-                                Rice Mill Owner
-                            </span>
-
-                        </div>
-
-                        <span class="profile-arrow">
-                            ⌄
-                        </span>
-
-                    </a>
-
-                </div>
-
-            </header>
-
-
-            <!-- =====================================
-                 Expense & Salary Content
-            ====================================== -->
-            <section class="dashboard-content expense-content">
 
                 <!-- =====================================
-                     Summary Cards
+                     EXPENSE FORM
                 ====================================== -->
-                <section class="expense-summary-grid"
-                         aria-label="Expense and salary summary">
 
-                    <!-- Today's Expense -->
-                    <article class="summary-card">
+                <section class="content-card finance-form-card">
 
-                        <div class="summary-icon green-icon">
-                            ▣
-                        </div>
+                    <div class="finance-card-heading">
 
-                        <div class="summary-details">
+                        <div>
 
-                            <p>
-                                Today’s Expense
-                            </p>
-
-                            <h2 class="green-value"
-                                id="todayExpenseValue">
-
-                                ৳0
-
+                            <h2 id="expenseFormTitle">
+                                Add Expense
                             </h2>
 
-                        </div>
-
-                    </article>
-
-
-                    <!-- Salary Due -->
-                    <article class="summary-card">
-
-                        <div class="summary-icon blue-icon">
-                            👥
-                        </div>
-
-                        <div class="summary-details">
-
                             <p>
-                                Salary Due
+                                Record non-procurement operating expenses.
                             </p>
 
-                            <h2 class="blue-value"
-                                id="salaryDueValue">
+                        </div>
 
-                                ৳0
 
-                            </h2>
+                        <span class="finance-card-badge">
+                            Operating Expense
+                        </span>
+
+                    </div>
+
+
+                    <form id="expenseForm"
+                          class="finance-form"
+                          novalidate>
+
+
+                        <div class="finance-form-field">
+
+                            <label for="expenseType">
+                                Expense Type *
+                            </label>
+
+                            <select id="expenseType"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select expense type
+                                </option>
+
+                                <option value="Electricity Bill">
+                                    Electricity Bill
+                                </option>
+
+                                <option value="Fuel Cost">
+                                    Fuel Cost
+                                </option>
+
+                                <option value="Truck Rent">
+                                    Truck Rent
+                                </option>
+
+                                <option value="Labour Cost">
+                                    Labour Cost
+                                </option>
+
+                                <option value="Packaging">
+                                    Packaging
+                                </option>
+
+                                <option value="Office Expense">
+                                    Office Expense
+                                </option>
+
+                                <option value="Utility Bill">
+                                    Utility Bill
+                                </option>
+
+                                <option value="Transport Expense">
+                                    Transport Expense
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
 
                         </div>
 
-                    </article>
 
+                        <div class="finance-form-field">
 
-                    <!-- Maintenance Cost -->
-                    <article class="summary-card">
+                            <label for="expenseAmount">
+                                Amount (৳) *
+                            </label>
 
-                        <div class="summary-icon orange-icon">
-                            🔧
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>
-                                Maintenance Cost
-                            </p>
-
-                            <h2 class="orange-value"
-                                id="maintenanceCostValue">
-
-                                ৳0
-
-                            </h2>
+                            <input
+                                type="number"
+                                id="expenseAmount"
+                                min="0.01"
+                                step="0.01"
+                                placeholder="Enter amount"
+                                required
+                            >
 
                         </div>
 
-                    </article>
+
+                        <div class="finance-form-field">
+
+                            <label for="expenseDate">
+                                Date *
+                            </label>
+
+                            <input
+                                type="date"
+                                id="expenseDate"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="finance-form-field">
+
+                            <label for="expenseDescription">
+                                Description *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="expenseDescription"
+                                maxlength="160"
+                                placeholder="Enter expense description"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="finance-form-field">
+
+                            <label for="expensePaymentMethod">
+                                Payment Method *
+                            </label>
+
+                            <select id="expensePaymentMethod"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select payment method
+                                </option>
+
+                                <option value="Cash">
+                                    Cash
+                                </option>
+
+                                <option value="Bank Transfer">
+                                    Bank Transfer
+                                </option>
+
+                                <option value="Mobile Banking">
+                                    Mobile Banking
+                                </option>
+
+                                <option value="Cheque">
+                                    Cheque
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="finance-form-field">
+
+                            <label for="expensePaymentStatus">
+                                Payment Status *
+                            </label>
+
+                            <select id="expensePaymentStatus"
+                                    required>
+
+                                <option value=""
+                                        selected
+                                        disabled>
+                                    Select payment status
+                                </option>
+
+                                <option value="paid">
+                                    Paid
+                                </option>
+
+                                <option value="due">
+                                    Due
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="finance-form-action">
+
+                            <button class="secondary-finance-button"
+                                    id="cancelExpenseEditBtn"
+                                    type="button"
+                                    hidden>
+
+                                Cancel Edit
+
+                            </button>
+
+
+                            <button class="primary-finance-button"
+                                    id="saveExpenseBtn"
+                                    type="submit">
+
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
+
+                                Save Expense
+
+                            </button>
+
+                        </div>
+
+                    </form>
 
                 </section>
 
 
                 <!-- =====================================
-                     Forms
+                     SALARY FORM
                 ====================================== -->
-                <section class="management-form-grid">
 
-                    <!-- =================================
-                         Add Expense
-                    ================================== -->
-                    <section class="content-card expense-form-card">
+                <section class="content-card finance-form-card">
 
-                        <h2 id="expenseFormTitle">
-                            Add Expense
-                        </h2>
+                    <div class="finance-card-heading">
+
+                        <div>
+
+                            <h2 id="salaryFormTitle">
+                                Add Salary
+                            </h2>
+
+                            <p>
+                                Record monthly employee salary and payment status.
+                            </p>
+
+                        </div>
 
 
-                        <form class="expense-form"
-                              id="expenseForm">
+                        <span class="finance-card-badge">
+                            Payroll
+                        </span>
 
-                            <!-- Expense Type -->
-                            <div class="form-field">
+                    </div>
 
-                                <label for="expense-type">
-                                    Expense Type
-                                </label>
 
-                                <select
-                                    id="expense-type"
-                                    name="expenseType"
-                                    required
-                                >
+                    <form id="salaryForm"
+                          class="finance-form"
+                          novalidate>
 
-                                    <option
-                                        value=""
+
+                        <div class="finance-form-field">
+
+                            <label for="salaryEmployee">
+                                Employee *
+                            </label>
+
+                            <select id="salaryEmployee"
+                                    required>
+
+                                <option value=""
                                         selected
-                                        disabled
-                                    >
-                                        Select expense type
-                                    </option>
+                                        disabled>
+                                    Select employee
+                                </option>
 
-                                    <option value="electricity">
-                                        Electricity Bill
-                                    </option>
+                            </select>
 
-                                    <option value="truck-rent">
-                                        Truck Rent
-                                    </option>
-
-                                    <option value="labour-cost">
-                                        Labour Cost
-                                    </option>
-
-                                    <option value="maintenance">
-                                        Maintenance
-                                    </option>
-
-                                    <option value="fuel">
-                                        Fuel Cost
-                                    </option>
-
-                                    <option value="office">
-                                        Office Expense
-                                    </option>
-
-                                    <option value="other">
-                                        Other Expense
-                                    </option>
-
-                                </select>
-
-                            </div>
+                        </div>
 
 
-                            <!-- Amount -->
-                            <div class="form-field">
+                        <div class="finance-form-field">
 
-                                <label for="expense-amount">
-                                    Amount
-                                </label>
+                            <label for="salaryRole">
+                                Role
+                            </label>
 
-                                <input
-                                    type="number"
-                                    id="expense-amount"
-                                    name="expenseAmount"
-                                    placeholder="Enter amount"
-                                    min="0.01"
-                                    step="0.01"
-                                    required
-                                >
+                            <input
+                                type="text"
+                                id="salaryRole"
+                                placeholder="Auto-filled from employee"
+                                readonly
+                            >
 
-                            </div>
+                        </div>
 
 
-                            <!-- Date -->
-                            <div class="form-field">
+                        <div class="finance-form-field">
 
-                                <label for="expense-date">
-                                    Date
-                                </label>
+                            <label for="salaryMonth">
+                                Salary Month *
+                            </label>
 
-                                <input
-                                    type="date"
-                                    id="expense-date"
-                                    name="expenseDate"
-                                    required
-                                >
+                            <input
+                                type="month"
+                                id="salaryMonth"
+                                required
+                            >
 
-                            </div>
+                        </div>
 
 
-                            <!-- Description -->
-                            <div class="form-field">
+                        <div class="finance-form-field">
 
-                                <label for="expense-description">
-                                    Description
-                                </label>
+                            <label for="salaryAmount">
+                                Salary Amount (৳) *
+                            </label>
 
-                                <input
-                                    type="text"
-                                    id="expense-description"
-                                    name="expenseDescription"
-                                    placeholder="Enter description"
-                                    required
-                                >
+                            <input
+                                type="number"
+                                id="salaryAmount"
+                                min="0.01"
+                                step="0.01"
+                                placeholder="Enter salary amount"
+                                required
+                            >
 
-                            </div>
+                        </div>
 
 
-                            <!-- Payment Method -->
-                            <div class="form-field">
+                        <div class="finance-form-field">
 
-                                <label for="payment-method">
-                                    Payment Method
-                                </label>
+                            <label for="salaryPaymentStatus">
+                                Payment Status *
+                            </label>
 
-                                <select
-                                    id="payment-method"
-                                    name="paymentMethod"
-                                    required
-                                >
+                            <select id="salaryPaymentStatus"
+                                    required>
 
-                                    <option
-                                        value=""
+                                <option value=""
                                         selected
-                                        disabled
-                                    >
-                                        Select payment method
-                                    </option>
+                                        disabled>
+                                    Select payment status
+                                </option>
 
-                                    <option value="cash">
-                                        Cash
-                                    </option>
+                                <option value="paid">
+                                    Paid
+                                </option>
 
-                                    <option value="bank">
-                                        Bank Transfer
-                                    </option>
+                                <option value="due">
+                                    Due
+                                </option>
 
-                                    <option value="mobile-banking">
-                                        Mobile Banking
-                                    </option>
+                                <option value="partial">
+                                    Partially Paid
+                                </option>
 
-                                    <option value="cheque">
-                                        Cheque
-                                    </option>
+                            </select>
 
-                                </select>
+                        </div>
 
-                            </div>
 
+                        <div class="finance-form-field">
 
-                            <!-- Payment Status -->
-                            <div class="form-field">
+                            <label for="salaryPaidAmount">
+                                Paid Amount (৳)
+                            </label>
 
-                                <label for="expense-status">
-                                    Payment Status
-                                </label>
+                            <input
+                                type="number"
+                                id="salaryPaidAmount"
+                                min="0"
+                                step="0.01"
+                                placeholder="Enter paid amount"
+                                disabled
+                            >
 
-                                <select
-                                    id="expense-status"
-                                    name="expenseStatus"
-                                    required
-                                >
+                        </div>
 
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                    >
-                                        Select payment status
-                                    </option>
 
-                                    <option value="paid">
-                                        Paid
-                                    </option>
+                        <div class="finance-form-action">
 
-                                    <option value="due">
-                                        Due
-                                    </option>
+                            <button class="secondary-finance-button"
+                                    id="cancelSalaryEditBtn"
+                                    type="button"
+                                    hidden>
 
-                                </select>
+                                Cancel Edit
 
-                            </div>
+                            </button>
 
 
-                            <div class="form-action">
+                            <button class="primary-finance-button"
+                                    id="saveSalaryBtn"
+                                    type="submit">
 
-                                <button
-                                    class="primary-action-button"
-                                    id="saveExpenseButton"
-                                    type="submit"
-                                >
+                                <span aria-hidden="true">
+                                    ▣
+                                </span>
 
-                                    <span aria-hidden="true">
-                                        ▣
-                                    </span>
+                                Save Salary
 
-                                    Save Expense
+                            </button>
 
-                                </button>
+                        </div>
 
-                            </div>
-
-                        </form>
-
-                    </section>
-
-
-                    <!-- =================================
-                         Add Salary
-                    ================================== -->
-                    <section class="content-card salary-form-card">
-
-                        <h2 id="salaryFormTitle">
-                            Add Salary
-                        </h2>
-
-
-                        <form class="salary-form"
-                              id="salaryForm">
-
-                            <!-- Employee -->
-                            <div class="form-field">
-
-                                <label for="employee-name">
-                                    Employee
-                                </label>
-
-                                <select
-                                    id="employee-name"
-                                    name="employeeName"
-                                    required
-                                >
-
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                    >
-                                        Select employee
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                            <!-- Role -->
-                            <div class="form-field">
-
-                                <label for="employee-role">
-                                    Role
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="employee-role"
-                                    name="employeeRole"
-                                    placeholder="Auto-filled from employee"
-                                    readonly
-                                >
-
-                            </div>
-
-
-                            <!-- Salary Month -->
-                            <div class="form-field">
-
-                                <label for="salary-month">
-                                    Salary Month
-                                </label>
-
-                                <input
-                                    type="month"
-                                    id="salary-month"
-                                    name="salaryMonth"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Salary Amount -->
-                            <div class="form-field">
-
-                                <label for="salary-amount">
-                                    Salary Amount
-                                </label>
-
-                                <input
-                                    type="number"
-                                    id="salary-amount"
-                                    name="salaryAmount"
-                                    placeholder="Enter salary amount"
-                                    min="0.01"
-                                    step="0.01"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <!-- Payment Status -->
-                            <div class="form-field">
-
-                                <label for="salary-status">
-                                    Payment Status
-                                </label>
-
-                                <select
-                                    id="salary-status"
-                                    name="salaryStatus"
-                                    required
-                                >
-
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                    >
-                                        Select payment status
-                                    </option>
-
-                                    <option value="paid">
-                                        Paid
-                                    </option>
-
-                                    <option value="due">
-                                        Due
-                                    </option>
-
-                                    <option value="partial">
-                                        Partially Paid
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                            <!-- Paid Amount -->
-                            <div class="form-field">
-
-                                <label for="salary-paid-amount">
-                                    Paid Amount
-                                </label>
-
-                                <input
-                                    type="number"
-                                    id="salary-paid-amount"
-                                    name="salaryPaidAmount"
-                                    placeholder="Enter paid amount"
-                                    min="0"
-                                    step="0.01"
-                                    required
-                                >
-
-                            </div>
-
-
-                            <div class="form-action">
-
-                                <button
-                                    class="primary-action-button"
-                                    id="saveSalaryButton"
-                                    type="submit"
-                                >
-
-                                    <span aria-hidden="true">
-                                        ▣
-                                    </span>
-
-                                    Save Salary
-
-                                </button>
-
-                            </div>
-
-                        </form>
-
-                    </section>
+                    </form>
 
                 </section>
 
+            </section>
 
-                <!-- =====================================
-                     Records
-                ====================================== -->
-                <section class="records-grid"
-                         id="recordsGrid">
 
-                    <!-- =================================
-                         Recent Expenses
-                    ================================== -->
-                    <section
-                        class="content-card records-card"
-                        data-record-card="expenses"
-                    >
+            <!-- =========================================
+                 RECORD TABLES
+            ========================================== -->
 
-                        <div class="records-card-header">
+            <section class="finance-records-grid">
+
+
+                <!-- RECENT EXPENSES -->
+
+                <section class="content-card finance-record-card"
+                         id="expenseRecordsCard">
+
+                    <div class="record-card-header">
+
+                        <div>
 
                             <h2>
                                 Recent Expenses
                             </h2>
 
-
-                            <div class="records-card-controls">
-
-                                <button
-                                    class="record-window-button"
-                                    type="button"
-                                    data-record-action="collapse"
-                                    aria-label="Collapse recent expenses"
-                                    title="Collapse"
-                                >
-                                    −
-                                </button>
-
-
-                                <button
-                                    class="record-window-button"
-                                    type="button"
-                                    data-record-action="maximize"
-                                    aria-label="Expand recent expenses"
-                                    title="Expand"
-                                >
-                                    ⛶
-                                </button>
-
-                            </div>
+                            <p>
+                                Operating-expense transaction history.
+                            </p>
 
                         </div>
 
 
-                        <div class="table-wrapper record-table-content">
+                        <div class="record-window-controls">
 
-                            <table class="expense-table">
+                            <button
+                                class="record-window-button"
+                                type="button"
+                                data-card-target="expenseRecordsCard"
+                                data-card-action="minimize"
+                                aria-label="Minimize Recent Expenses"
+                                title="Minimize"
+                            >
+                                −
+                            </button>
+
+
+                            <button
+                                class="record-window-button"
+                                type="button"
+                                data-card-target="expenseRecordsCard"
+                                data-card-action="maximize"
+                                aria-label="Maximize Recent Expenses"
+                                title="Maximize"
+                            >
+                                ⛶
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="record-card-body">
+
+                        <div class="finance-table-wrapper">
+
+                            <table class="finance-table expense-record-table">
 
                                 <thead>
 
                                     <tr>
-                                        <th>Expense</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
-                                        <th>Method</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+
+                                        <th>
+                                            Expense
+                                        </th>
+
+                                        <th>
+                                            Amount
+                                        </th>
+
+                                        <th>
+                                            Date
+                                        </th>
+
+                                        <th>
+                                            Method
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+
                                     </tr>
 
                                 </thead>
@@ -801,65 +1063,99 @@
 
                         </div>
 
-                    </section>
+                    </div>
+
+                </section>
 
 
-                    <!-- =================================
-                         Salary Records
-                    ================================== -->
-                    <section
-                        class="content-card records-card"
-                        data-record-card="salaries"
-                    >
+                <!-- SALARY RECORDS -->
 
-                        <div class="records-card-header">
+                <section class="content-card finance-record-card"
+                         id="salaryRecordsCard">
+
+                    <div class="record-card-header">
+
+                        <div>
 
                             <h2>
                                 Salary Records
                             </h2>
 
-
-                            <div class="records-card-controls">
-
-                                <button
-                                    class="record-window-button"
-                                    type="button"
-                                    data-record-action="collapse"
-                                    aria-label="Collapse salary records"
-                                    title="Collapse"
-                                >
-                                    −
-                                </button>
-
-
-                                <button
-                                    class="record-window-button"
-                                    type="button"
-                                    data-record-action="maximize"
-                                    aria-label="Expand salary records"
-                                    title="Expand"
-                                >
-                                    ⛶
-                                </button>
-
-                            </div>
+                            <p>
+                                Monthly payroll and outstanding salary history.
+                            </p>
 
                         </div>
 
 
-                        <div class="table-wrapper record-table-content">
+                        <div class="record-window-controls">
 
-                            <table class="salary-table">
+                            <button
+                                class="record-window-button"
+                                type="button"
+                                data-card-target="salaryRecordsCard"
+                                data-card-action="minimize"
+                                aria-label="Minimize Salary Records"
+                                title="Minimize"
+                            >
+                                −
+                            </button>
+
+
+                            <button
+                                class="record-window-button"
+                                type="button"
+                                data-card-target="salaryRecordsCard"
+                                data-card-action="maximize"
+                                aria-label="Maximize Salary Records"
+                                title="Maximize"
+                            >
+                                ⛶
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="record-card-body">
+
+                        <div class="finance-table-wrapper">
+
+                            <table class="finance-table salary-record-table">
 
                                 <thead>
 
                                     <tr>
-                                        <th>Employee</th>
-                                        <th>Month</th>
-                                        <th>Salary</th>
-                                        <th>Due</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+
+                                        <th>
+                                            Employee
+                                        </th>
+
+                                        <th>
+                                            Month
+                                        </th>
+
+                                        <th>
+                                            Salary
+                                        </th>
+
+                                        <th>
+                                            Paid
+                                        </th>
+
+                                        <th>
+                                            Due
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+
                                     </tr>
 
                                 </thead>
@@ -872,22 +1168,21 @@
 
                         </div>
 
-                    </section>
+                    </div>
 
                 </section>
 
             </section>
 
-        </main>
+        </section>
 
-    </div>
+    </main>
+
+</div>
 
 
-    <!-- Authentication -->
-    <script src="../scripts/auth.js"></script>
-
-    <!-- Expense & Salary Logic -->
-    <script src="../scripts/expense.js"></script>
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/expense.js"></script>
 
 </body>
 

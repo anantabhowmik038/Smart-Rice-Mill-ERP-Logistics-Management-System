@@ -1,1507 +1,1343 @@
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        // ==========================================
-        // EXPENSE FORM ELEMENTS
-        // ==========================================
-
-        const expenseForm =
-            document.getElementById(
-                "expenseForm"
-            );
-
-        const expenseFormTitle =
-            document.getElementById(
-                "expenseFormTitle"
-            );
-
-        const expenseType =
-            document.getElementById(
-                "expense-type"
-            );
-
-        const expenseAmount =
-            document.getElementById(
-                "expense-amount"
-            );
-
-        const expenseDate =
-            document.getElementById(
-                "expense-date"
-            );
-
-        const expenseDescription =
-            document.getElementById(
-                "expense-description"
-            );
-
-        const paymentMethod =
-            document.getElementById(
-                "payment-method"
-            );
-
-        const expenseStatus =
-            document.getElementById(
-                "expense-status"
-            );
-
-        const saveExpenseButton =
-            document.getElementById(
-                "saveExpenseButton"
-            );
-
-
-        // ==========================================
-        // SALARY FORM ELEMENTS
-        // ==========================================
-
-        const salaryForm =
-            document.getElementById(
-                "salaryForm"
-            );
-
-        const salaryFormTitle =
-            document.getElementById(
-                "salaryFormTitle"
-            );
-
-        const employeeSelect =
-            document.getElementById(
-                "employee-name"
-            );
-
-        const employeeRole =
-            document.getElementById(
-                "employee-role"
-            );
-
-        const salaryMonth =
-            document.getElementById(
-                "salary-month"
-            );
-
-        const salaryAmount =
-            document.getElementById(
-                "salary-amount"
-            );
+document.addEventListener("DOMContentLoaded", function () {
 
-        const salaryStatus =
-            document.getElementById(
-                "salary-status"
-            );
+    /* =========================================
+       SMART RICE MILL ERP
+       EXPENSE & SALARY MANAGEMENT
+    ========================================= */
 
-        const salaryPaidAmount =
-            document.getElementById(
-                "salary-paid-amount"
-            );
 
-        const saveSalaryButton =
-            document.getElementById(
-                "saveSalaryButton"
-            );
+    /* =========================================
+       ELEMENTS
+    ========================================= */
 
+    const expenseForm =
+        document.getElementById(
+            "expenseForm"
+        );
 
-        // ==========================================
-        // TABLE ELEMENTS
-        // ==========================================
 
-        const expenseTableBody =
-            document.getElementById(
-                "expenseTableBody"
-            );
+    const salaryForm =
+        document.getElementById(
+            "salaryForm"
+        );
 
-        const salaryTableBody =
-            document.getElementById(
-                "salaryTableBody"
-            );
 
+    if (
+        !expenseForm ||
+        !salaryForm
+    ) {
 
-        // ==========================================
-        // SUMMARY ELEMENTS
-        // ==========================================
+        return;
 
-        const todayExpenseValue =
-            document.getElementById(
-                "todayExpenseValue"
-            );
+    }
 
-        const salaryDueValue =
-            document.getElementById(
-                "salaryDueValue"
-            );
 
-        const maintenanceCostValue =
-            document.getElementById(
-                "maintenanceCostValue"
-            );
+    const expenseTypeSelect =
+        document.getElementById(
+            "expenseType"
+        );
 
 
-        // ==========================================
-        // TOPBAR
-        // ==========================================
+    const expenseAmountInput =
+        document.getElementById(
+            "expenseAmount"
+        );
 
-        const expenseTopbarUserName =
-            document.getElementById(
-                "expenseTopbarUserName"
-            );
 
+    const expenseDateInput =
+        document.getElementById(
+            "expenseDate"
+        );
 
-        // ==========================================
-        // RECORD WINDOW ELEMENT
-        // ==========================================
 
-        const recordsGrid =
-            document.getElementById(
-                "recordsGrid"
-            );
+    const expenseDescriptionInput =
+        document.getElementById(
+            "expenseDescription"
+        );
 
 
-        // ==========================================
-        // EDIT STATE
-        // ==========================================
+    const expensePaymentMethodSelect =
+        document.getElementById(
+            "expensePaymentMethod"
+        );
 
-        let editingExpenseId =
-            null;
 
-        let editingSalaryId =
-            null;
+    const expensePaymentStatusSelect =
+        document.getElementById(
+            "expensePaymentStatus"
+        );
 
 
-        // ==========================================
-        // ID COMPARISON
-        // ==========================================
+    const expenseFormTitle =
+        document.getElementById(
+            "expenseFormTitle"
+        );
 
-        function sameId(
-            first,
-            second
-        ) {
 
-            return (
-                String(first) ===
-                String(second)
-            );
+    const saveExpenseBtn =
+        document.getElementById(
+            "saveExpenseBtn"
+        );
 
-        }
 
+    const cancelExpenseEditBtn =
+        document.getElementById(
+            "cancelExpenseEditBtn"
+        );
 
-        // ==========================================
-        // DATE HELPERS
-        // ==========================================
 
-        function getTodayDate() {
+    const salaryEmployeeSelect =
+        document.getElementById(
+            "salaryEmployee"
+        );
 
-            const today =
-                new Date();
 
+    const salaryRoleInput =
+        document.getElementById(
+            "salaryRole"
+        );
 
-            const year =
-                today.getFullYear();
 
+    const salaryMonthInput =
+        document.getElementById(
+            "salaryMonth"
+        );
 
-            const month =
-                String(
-                    today.getMonth() + 1
-                ).padStart(
-                    2,
-                    "0"
-                );
 
+    const salaryAmountInput =
+        document.getElementById(
+            "salaryAmount"
+        );
 
-            const day =
-                String(
-                    today.getDate()
-                ).padStart(
-                    2,
-                    "0"
-                );
 
+    const salaryPaymentStatusSelect =
+        document.getElementById(
+            "salaryPaymentStatus"
+        );
 
-            return (
-                year +
-                "-" +
-                month +
-                "-" +
-                day
-            );
 
-        }
+    const salaryPaidAmountInput =
+        document.getElementById(
+            "salaryPaidAmount"
+        );
 
 
-        function getCurrentMonth() {
+    const salaryFormTitle =
+        document.getElementById(
+            "salaryFormTitle"
+        );
 
-            const today =
-                new Date();
 
+    const saveSalaryBtn =
+        document.getElementById(
+            "saveSalaryBtn"
+        );
 
-            const year =
-                today.getFullYear();
 
+    const cancelSalaryEditBtn =
+        document.getElementById(
+            "cancelSalaryEditBtn"
+        );
 
-            const month =
-                String(
-                    today.getMonth() + 1
-                ).padStart(
-                    2,
-                    "0"
-                );
 
+    const expenseTableBody =
+        document.getElementById(
+            "expenseTableBody"
+        );
 
-            return (
-                year +
-                "-" +
-                month
-            );
 
-        }
+    const salaryTableBody =
+        document.getElementById(
+            "salaryTableBody"
+        );
 
 
-        function formatDate(
-            dateString
-        ) {
+    const todayExpenseValue =
+        document.getElementById(
+            "todayExpenseValue"
+        );
 
-            if (!dateString) {
 
-                return "—";
+    const salaryDueValue =
+        document.getElementById(
+            "salaryDueValue"
+        );
 
-            }
 
+    const maintenanceCostValue =
+        document.getElementById(
+            "maintenanceCostValue"
+        );
 
-            const date =
-                new Date(
-                    dateString +
-                    "T00:00:00"
-                );
 
+    const financeRecordsGrid =
+        document.querySelector(
+            ".finance-records-grid"
+        );
 
-            return date.toLocaleDateString(
-                "en-GB",
-                {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric"
-                }
-            );
 
-        }
+    const menuButton =
+        document.getElementById(
+            "menuButton"
+        );
 
 
-        function formatMonth(
-            monthString
-        ) {
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
 
-            if (!monthString) {
 
-                return "—";
+    const sidebarBackdrop =
+        document.getElementById(
+            "sidebarBackdrop"
+        );
 
-            }
 
+    /* =========================================
+       STATE
+    ========================================= */
 
-            const parts =
-                monthString.split(
-                    "-"
-                );
+    let editingExpenseId =
+        null;
 
 
-            if (
-                parts.length !== 2
-            ) {
+    let editingSalaryId =
+        null;
 
-                return monthString;
 
-            }
+    let pendingExpenseDeleteId =
+        null;
 
 
-            const date =
-                new Date(
-                    Number(parts[0]),
-                    Number(parts[1]) - 1,
-                    1
-                );
+    let pendingSalaryDeleteId =
+        null;
 
 
-            return date.toLocaleDateString(
-                "en-US",
-                {
-                    month: "short",
-                    year: "numeric"
-                }
-            );
+    /* =========================================
+       STORAGE
+    ========================================= */
 
-        }
+    function safeParseStorage(
+        key,
+        fallback = []
+    ) {
 
+        try {
 
-        // ==========================================
-        // MONEY FORMAT
-        // ==========================================
-
-        function formatMoney(
-            amount
-        ) {
-
-            const number =
-                Number(amount) || 0;
-
-
-            return (
-                "৳" +
-                number.toLocaleString(
-                    "en-BD",
-                    {
-                        maximumFractionDigits: 2
-                    }
-                )
-            );
-
-        }
-
-
-        // ==========================================
-        // SAFE HTML
-        // ==========================================
-
-        function escapeHTML(
-            value
-        ) {
-
-            const element =
-                document.createElement(
-                    "div"
-                );
-
-
-            element.textContent =
-                String(
-                    value ?? ""
-                );
-
-
-            return element.innerHTML;
-
-        }
-
-
-        // ==========================================
-        // TOAST
-        // ==========================================
-
-        function showToast(
-            message,
-            type = "success"
-        ) {
-
-            const previousToast =
-                document.querySelector(
-                    ".finance-toast"
-                );
-
-
-            if (previousToast) {
-
-                previousToast.remove();
-
-            }
-
-
-            const toast =
-                document.createElement(
-                    "div"
-                );
-
-
-            toast.className =
-                "finance-toast " +
-                type;
-
-
-            toast.innerHTML = `
-
-                <span class="toast-icon">
-
-                    ${
-                        type === "success"
-                            ? "✓"
-                            : "!"
-                    }
-
-                </span>
-
-                <span>
-                    ${escapeHTML(message)}
-                </span>
-
-            `;
-
-
-            document.body.appendChild(
-                toast
-            );
-
-
-            setTimeout(
-                function () {
-
-                    toast.classList.add(
-                        "show"
-                    );
-
-                },
-                50
-            );
-
-
-            setTimeout(
-                function () {
-
-                    toast.classList.remove(
-                        "show"
-                    );
-
-
-                    setTimeout(
-                        function () {
-
-                            toast.remove();
-
-                        },
-                        300
-                    );
-
-                },
-                2500
-            );
-
-        }
-
-
-        // ==========================================
-        // DEFAULT EMPLOYEES
-        // ==========================================
-
-        const defaultEmployees = [
-
-            {
-                id: 1001,
-                name: "Kamal",
-                role: "driver",
-                phone: "01700000001",
-                status: "active"
-            },
-
-            {
-                id: 1002,
-                name: "Rahim",
-                role: "labour",
-                phone: "01700000002",
-                status: "active"
-            },
-
-            {
-                id: 1003,
-                name: "Karim",
-                role: "operator",
-                phone: "01700000003",
-                status: "active"
-            },
-
-            {
-                id: 1004,
-                name: "Hasan",
-                role: "manager",
-                phone: "01700000004",
-                status: "active"
-            },
-
-            {
-                id: 1005,
-                name: "Salma",
-                role: "accountant",
-                phone: "01700000005",
-                status: "active"
-            }
-
-        ];
-
-
-        // ==========================================
-        // DEFAULT EXPENSES
-        // ==========================================
-
-        const defaultExpenses = [
-
-            {
-                id: 1,
-                type: "electricity",
-                amount: 12000,
-                date: "2026-07-01",
-                description:
-                    "Monthly electricity bill",
-                paymentMethod: "cash",
-                status: "paid"
-            },
-
-            {
-                id: 2,
-                type: "truck-rent",
-                amount: 8000,
-                date: "2026-07-01",
-                description:
-                    "Truck rent for rice delivery",
-                paymentMethod: "cash",
-                status: "paid"
-            },
-
-            {
-                id: 3,
-                type: "labour-cost",
-                amount: 5000,
-                date: "2026-07-01",
-                description:
-                    "Temporary labour payment",
-                paymentMethod: "cash",
-                status: "due"
-            }
-
-        ];
-
-
-        // ==========================================
-        // DEFAULT SALARIES
-        // ==========================================
-
-        const defaultSalaries = [
-
-            {
-                id: 1,
-                employeeId: 1002,
-                employeeName: "Rahim",
-                role: "labour",
-                month: "2026-07",
-                amount: 45000,
-                status: "due",
-                paidAmount: 0,
-                dueAmount: 45000
-            },
-
-            {
-                id: 2,
-                employeeId: 1001,
-                employeeName: "Kamal",
-                role: "driver",
-                month: "2026-07",
-                amount: 18000,
-                status: "paid",
-                paidAmount: 18000,
-                dueAmount: 0
-            }
-
-        ];
-
-
-        // ==========================================
-        // LOAD EMPLOYEES
-        // ==========================================
-
-        function loadEmployees() {
-
-            const stored =
+            const value =
                 localStorage.getItem(
-                    "employees"
+                    key
                 );
-
-
-            if (stored === null) {
-
-                const initialEmployees =
-                    defaultEmployees.map(
-                        function (employee) {
-
-                            return {
-                                ...employee
-                            };
-
-                        }
-                    );
-
-
-                localStorage.setItem(
-                    "employees",
-                    JSON.stringify(
-                        initialEmployees
-                    )
-                );
-
-
-                return initialEmployees;
-
-            }
-
-
-            try {
-
-                const parsed =
-                    JSON.parse(stored);
-
-
-                if (
-                    Array.isArray(parsed)
-                ) {
-
-                    return parsed;
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Employee data could not be parsed:",
-                    error
-                );
-
-            }
-
-
-            return [];
-
-        }
-
-
-        // ==========================================
-        // LOAD EXPENSES
-        // ==========================================
-
-        function loadExpenses() {
-
-            const stored =
-                localStorage.getItem(
-                    "expenses"
-                );
-
-
-            if (stored === null) {
-
-                const initialExpenses =
-                    defaultExpenses.map(
-                        function (expense) {
-
-                            return {
-                                ...expense
-                            };
-
-                        }
-                    );
-
-
-                localStorage.setItem(
-                    "expenses",
-                    JSON.stringify(
-                        initialExpenses
-                    )
-                );
-
-
-                return initialExpenses;
-
-            }
-
-
-            try {
-
-                const parsed =
-                    JSON.parse(stored);
-
-
-                if (
-                    Array.isArray(parsed)
-                ) {
-
-                    return parsed;
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Expense data could not be parsed:",
-                    error
-                );
-
-            }
-
-
-            return [];
-
-        }
-
-
-        // ==========================================
-        // LOAD SALARIES
-        // ==========================================
-
-        function loadSalaries() {
-
-            const stored =
-                localStorage.getItem(
-                    "salaries"
-                );
-
-
-            if (stored === null) {
-
-                const initialSalaries =
-                    defaultSalaries.map(
-                        function (salary) {
-
-                            return {
-                                ...salary
-                            };
-
-                        }
-                    );
-
-
-                localStorage.setItem(
-                    "salaries",
-                    JSON.stringify(
-                        initialSalaries
-                    )
-                );
-
-
-                return initialSalaries;
-
-            }
-
-
-            try {
-
-                const parsed =
-                    JSON.parse(stored);
-
-
-                if (
-                    Array.isArray(parsed)
-                ) {
-
-                    return parsed;
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Salary data could not be parsed:",
-                    error
-                );
-
-            }
-
-
-            return [];
-
-        }
-
-
-        // ==========================================
-        // DATA STATE
-        // ==========================================
-
-        let employees =
-            loadEmployees();
-
-
-        let expenses =
-            loadExpenses();
-
-
-        let salaries =
-            loadSalaries();
-
-
-        // ==========================================
-        // SAVE STORAGE
-        // ==========================================
-
-        function saveEmployees() {
-
-            localStorage.setItem(
-                "employees",
-                JSON.stringify(
-                    employees
-                )
-            );
-
-        }
-
-
-        function saveExpenses() {
-
-            localStorage.setItem(
-                "expenses",
-                JSON.stringify(
-                    expenses
-                )
-            );
-
-        }
-
-
-        function saveSalaries() {
-
-            localStorage.setItem(
-                "salaries",
-                JSON.stringify(
-                    salaries
-                )
-            );
-
-        }
-
-
-        // ==========================================
-        // MIGRATE EXPENSE DATA
-        // ==========================================
-
-        expenses =
-            expenses.map(
-                function (
-                    expense,
-                    index
-                ) {
-
-                    if (
-                        expense.id === undefined ||
-                        expense.id === null
-                    ) {
-
-                        expense.id =
-                            Date.now() +
-                            index;
-
-                    }
-
-
-                    expense.amount =
-                        Number(
-                            expense.amount
-                        ) || 0;
-
-
-                    return expense;
-
-                }
-            );
-
-
-        // ==========================================
-        // MIGRATE SALARY DATA
-        // ==========================================
-
-        salaries =
-            salaries.map(
-                function (
-                    salary,
-                    index
-                ) {
-
-                    if (
-                        salary.id === undefined ||
-                        salary.id === null
-                    ) {
-
-                        salary.id =
-                            Date.now() +
-                            index;
-
-                    }
-
-
-                    salary.amount =
-                        Number(
-                            salary.amount
-                        ) || 0;
-
-
-                    let employee =
-                        employees.find(
-                            function (
-                                employee
-                            ) {
-
-                                return sameId(
-                                    employee.id,
-                                    salary.employeeId
-                                );
-
-                            }
-                        );
-
-
-                    // ==================================
-                    // Legacy Employee Name Match
-                    // ==================================
-
-                    if (
-                        !employee &&
-                        salary.employeeName
-                    ) {
-
-                        employee =
-                            employees.find(
-                                function (
-                                    employee
-                                ) {
-
-                                    return (
-                                        employee.name
-                                            .trim()
-                                            .toLowerCase() ===
-
-                                        String(
-                                            salary.employeeName
-                                        )
-                                            .trim()
-                                            .toLowerCase()
-                                    );
-
-                                }
-                            );
-
-                    }
-
-
-                    // ==================================
-                    // Create Legacy Employee
-                    // ==================================
-
-                    if (
-                        !employee &&
-                        salary.employeeName
-                    ) {
-
-                        employee = {
-
-                            id:
-                                Date.now() +
-                                5000 +
-                                index,
-
-                            name:
-                                salary.employeeName,
-
-                            role:
-                                salary.role ||
-                                "labour",
-
-                            phone:
-                                "",
-
-                            status:
-                                "active"
-
-                        };
-
-
-                        employees.push(
-                            employee
-                        );
-
-                    }
-
-
-                    if (employee) {
-
-                        salary.employeeId =
-                            employee.id;
-
-
-                        salary.employeeName =
-                            employee.name;
-
-
-                        salary.role =
-                            employee.role;
-
-                    }
-
-
-                    // ==================================
-                    // Salary Calculation
-                    // ==================================
-
-                    if (
-                        salary.status ===
-                        "paid"
-                    ) {
-
-                        salary.paidAmount =
-                            salary.amount;
-
-
-                        salary.dueAmount =
-                            0;
-
-                    } else if (
-                        salary.status ===
-                        "due"
-                    ) {
-
-                        salary.paidAmount =
-                            0;
-
-
-                        salary.dueAmount =
-                            salary.amount;
-
-                    } else if (
-                        salary.status ===
-                        "partial"
-                    ) {
-
-                        salary.paidAmount =
-                            Number(
-                                salary.paidAmount
-                            ) || 0;
-
-
-                        salary.dueAmount =
-                            Math.max(
-                                0,
-                                salary.amount -
-                                salary.paidAmount
-                            );
-
-                    } else {
-
-                        salary.status =
-                            "due";
-
-
-                        salary.paidAmount =
-                            0;
-
-
-                        salary.dueAmount =
-                            salary.amount;
-
-                    }
-
-
-                    return salary;
-
-                }
-            );
-
-
-        saveEmployees();
-
-        saveExpenses();
-
-        saveSalaries();
-
-
-        // ==========================================
-        // ROLE TEXT
-        // ==========================================
-
-        function getRoleText(
-            role
-        ) {
-
-            const labels = {
-
-                labour:
-                    "Labour",
-
-                driver:
-                    "Driver",
-
-                operator:
-                    "Machine Operator",
-
-                manager:
-                    "Manager",
-
-                accountant:
-                    "Accountant",
-
-                technician:
-                    "Technician"
-
-            };
-
-
-            return (
-                labels[role] ||
-                role ||
-                "—"
-            );
-
-        }
-
-
-        // ==========================================
-        // EXPENSE TYPE TEXT
-        // ==========================================
-
-        function getExpenseTypeText(
-            type
-        ) {
-
-            const labels = {
-
-                electricity:
-                    "Electricity Bill",
-
-                "truck-rent":
-                    "Truck Rent",
-
-                "labour-cost":
-                    "Labour Cost",
-
-                maintenance:
-                    "Maintenance",
-
-                fuel:
-                    "Fuel Cost",
-
-                office:
-                    "Office Expense",
-
-                other:
-                    "Other Expense"
-
-            };
-
-
-            return (
-                labels[type] ||
-                type ||
-                "—"
-            );
-
-        }
-
-
-        // ==========================================
-        // PAYMENT METHOD TEXT
-        // ==========================================
-
-        function getPaymentMethodText(
-            method
-        ) {
-
-            const labels = {
-
-                cash:
-                    "Cash",
-
-                bank:
-                    "Bank Transfer",
-
-                "mobile-banking":
-                    "Mobile Banking",
-
-                cheque:
-                    "Cheque"
-
-            };
-
-
-            return (
-                labels[method] ||
-                method ||
-                "—"
-            );
-
-        }
-
-
-        // ==========================================
-        // STATUS TEXT
-        // ==========================================
-
-        function getStatusText(
-            status
-        ) {
-
-            if (
-                status ===
-                "paid"
-            ) {
-
-                return "Paid";
-
-            }
 
 
             if (
-                status ===
-                "due"
+                value === null
             ) {
 
-                return "Due";
+                return fallback;
 
             }
 
 
-            if (
-                status ===
-                "partial"
-            ) {
+            return (
+                JSON.parse(
+                    value
+                ) ??
+                fallback
+            );
 
-                return "Partial";
+        }
+        catch {
 
-            }
+            return fallback;
 
+        }
+
+    }
+
+
+    /* =========================================
+       SAFE HTML
+    ========================================= */
+
+    function escapeHTML(
+        value
+    ) {
+
+        const element =
+            document.createElement(
+                "div"
+            );
+
+
+        element.textContent =
+            String(
+                value ?? ""
+            );
+
+
+        return element.innerHTML;
+
+    }
+
+
+    /* =========================================
+       DATE HELPERS
+    ========================================= */
+
+    function getTodayDate() {
+
+        const today =
+            new Date();
+
+
+        const year =
+            today.getFullYear();
+
+
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        return (
+            `${year}-${month}-${day}`
+        );
+
+    }
+
+
+    function getCurrentMonth() {
+
+        const today =
+            new Date();
+
+
+        return (
+
+            `${today.getFullYear()}-${String(
+                today.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            )}`
+
+        );
+
+    }
+
+
+    function formatDate(
+        value
+    ) {
+
+        if (!value) {
 
             return "—";
 
         }
 
 
-        // ==========================================
-        // STATUS CLASS
-        // ==========================================
-
-        function getStatusClass(
-            status
-        ) {
-
-            if (
-                status ===
-                "paid"
-            ) {
-
-                return "finance-status-paid";
-
-            }
-
-
-            if (
-                status ===
-                "due"
-            ) {
-
-                return "finance-status-due";
-
-            }
-
-
-            if (
-                status ===
-                "partial"
-            ) {
-
-                return "finance-status-partial";
-
-            }
-
-
-            return "";
-
-        }
-
-
-        // ==========================================
-        // EMPLOYEE DROPDOWN
-        // ==========================================
-
-        function populateEmployeeDropdown(
-            selectedEmployeeId = ""
-        ) {
-
-            employeeSelect.innerHTML = `
-
-                <option
-                    value=""
-                    disabled
-                    ${
-                        selectedEmployeeId
-                            ? ""
-                            : "selected"
-                    }
-                >
-                    Select employee
-                </option>
-
-            `;
-
-
-            const activeEmployees =
-                employees
-                    .filter(
-                        function (
-                            employee
-                        ) {
-
-                            return (
-                                employee.status !==
-                                "inactive"
-                            );
-
-                        }
-                    )
-                    .sort(
-                        function (
-                            first,
-                            second
-                        ) {
-
-                            return String(
-                                first.name
-                            ).localeCompare(
-                                String(
-                                    second.name
-                                )
-                            );
-
-                        }
-                    );
-
-
-            activeEmployees.forEach(
-                function (
-                    employee
-                ) {
-
-                    const option =
-                        document.createElement(
-                            "option"
-                        );
-
-
-                    option.value =
-                        employee.id;
-
-
-                    option.textContent =
-                        employee.name +
-                        " — " +
-                        getRoleText(
-                            employee.role
-                        );
-
-
-                    if (
-                        sameId(
-                            employee.id,
-                            selectedEmployeeId
-                        )
-                    ) {
-
-                        option.selected =
-                            true;
-
-                    }
-
-
-                    employeeSelect
-                        .appendChild(
-                            option
-                        );
-
-                }
+        const date =
+            new Date(
+                `${value}T00:00:00`
             );
 
-        }
 
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day:
+                    "2-digit",
 
-        // ==========================================
-        // EMPLOYEE CHANGE
-        // ==========================================
+                month:
+                    "short",
 
-        employeeSelect.addEventListener(
-            "change",
-            function () {
-
-                const employee =
-                    employees.find(
-                        function (
-                            employee
-                        ) {
-
-                            return sameId(
-                                employee.id,
-                                employeeSelect.value
-                            );
-
-                        }
-                    );
-
-
-                if (!employee) {
-
-                    employeeRole.value =
-                        "";
-
-                    return;
-
-                }
-
-
-                employeeRole.value =
-                    getRoleText(
-                        employee.role
-                    );
-
+                year:
+                    "numeric"
             }
         );
 
-
-        // ==========================================
-        // SUMMARY
-        // ==========================================
-
-        function updateSummary() {
-
-            const today =
-                getTodayDate();
+    }
 
 
-            const todayExpense =
-                expenses
-                    .filter(
-                        function (
-                            expense
-                        ) {
+    function formatMonth(
+        value
+    ) {
 
-                            return (
-                                expense.date ===
-                                today
-                            );
+        if (!value) {
 
-                        }
-                    )
-                    .reduce(
-                        function (
-                            total,
-                            expense
-                        ) {
+            return "—";
 
-                            return (
-                                total +
+        }
+
+
+        const [
+            year,
+            month
+        ] =
+            value.split(
+                "-"
+            );
+
+
+        const date =
+            new Date(
+                Number(year),
+                Number(month) - 1,
+                1
+            );
+
+
+        return date.toLocaleDateString(
+            "en-US",
+            {
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       MONEY
+    ========================================= */
+
+    function formatMoney(
+        value
+    ) {
+
+        return (
+
+            `৳${Number(
+                value || 0
+            ).toLocaleString(
+                "en-US",
+                {
+                    maximumFractionDigits:
+                        2
+                }
+            )}`
+
+        );
+
+    }
+
+
+    /* =========================================
+       EMPLOYEES
+    ========================================= */
+
+    const DEFAULT_EMPLOYEES = [
+
+        {
+            id:
+                "EMP-001",
+
+            name:
+                "Rahim",
+
+            role:
+                "Labour",
+
+            baseSalary:
+                45000
+        },
+
+
+        {
+            id:
+                "EMP-002",
+
+            name:
+                "Kamal",
+
+            role:
+                "Driver",
+
+            baseSalary:
+                18000
+        }
+
+    ];
+
+
+    function loadEmployees() {
+
+        const keys = [
+
+            "employees",
+            "employeeRecords",
+            "staffRecords"
+
+        ];
+
+
+        for (
+            const key of
+            keys
+        ) {
+
+            const data =
+                safeParseStorage(
+                    key,
+                    null
+                );
+
+
+            if (
+                Array.isArray(data) &&
+                data.length >
+                0
+            ) {
+
+                return data.map(
+                    function (
+                        employee,
+                        index
+                    ) {
+
+                        return {
+
+                            id:
+
+                                employee.id ||
+                                employee.employeeId ||
+                                `EMP-${String(
+                                    index + 1
+                                ).padStart(
+                                    3,
+                                    "0"
+                                )}`,
+
+
+                            name:
+
+                                employee.name ||
+                                employee.employeeName ||
+                                `Employee ${index + 1}`,
+
+
+                            role:
+
+                                employee.role ||
+                                employee.designation ||
+                                "Employee",
+
+
+                            baseSalary:
+
                                 Number(
-                                    expense.amount
+                                    employee.baseSalary ||
+                                    employee.salary ||
+                                    0
                                 )
-                            );
 
-                        },
+                        };
+
+                    }
+                );
+
+            }
+
+        }
+
+
+        localStorage.setItem(
+            "employees",
+            JSON.stringify(
+                DEFAULT_EMPLOYEES
+            )
+        );
+
+
+        return [
+            ...DEFAULT_EMPLOYEES
+        ];
+
+    }
+
+
+    let employees =
+        loadEmployees();
+
+
+    /* =========================================
+       LOAD EXPENSES
+    ========================================= */
+
+    function loadExpenseRecords() {
+
+        let records =
+            safeParseStorage(
+                "expenseRecords",
+                null
+            );
+
+
+        if (
+            !Array.isArray(
+                records
+            )
+        ) {
+
+            records =
+                safeParseStorage(
+                    "expenses",
+                    []
+                );
+
+        }
+
+
+        if (
+            !Array.isArray(
+                records
+            )
+        ) {
+
+            return [];
+
+        }
+
+
+        return records.map(
+            function (
+                record,
+                index
+            ) {
+
+                const amount =
+                    Number(
+                        record.amount ||
+                        record.totalAmount ||
                         0
                     );
 
 
-            const salaryDue =
-                salaries.reduce(
+                const status =
+
+                    String(
+                        record.paymentStatus ||
+                        record.status ||
+                        "paid"
+                    )
+                    .toLowerCase();
+
+
+                return {
+
+                    id:
+
+                        record.id ??
+                        Date.now() +
+                        index,
+
+
+                    expenseId:
+
+                        record.expenseId ||
+                        `EXP-${String(
+                            index + 1
+                        ).padStart(
+                            3,
+                            "0"
+                        )}`,
+
+
+                    expenseType:
+
+                        record.expenseType ||
+                        record.type ||
+                        record.category ||
+                        "Other",
+
+
+                    amount:
+                        amount,
+
+
+                    expenseDate:
+
+                        record.expenseDate ||
+                        record.date ||
+                        getTodayDate(),
+
+
+                    date:
+
+                        record.expenseDate ||
+                        record.date ||
+                        getTodayDate(),
+
+
+                    description:
+
+                        record.description ||
+                        "",
+
+
+                    paymentMethod:
+
+                        record.paymentMethod ||
+                        record.method ||
+                        "Cash",
+
+
+                    paymentStatus:
+                        status,
+
+
+                    status:
+                        status,
+
+
+                    paidAmount:
+
+                        status === "paid"
+                            ? amount
+                            : 0,
+
+
+                    dueAmount:
+
+                        status === "due"
+                            ? amount
+                            : 0,
+
+
+                    createdAt:
+
+                        Number(
+                            record.createdAt ||
+                            record.id ||
+                            Date.now()
+                        )
+
+                };
+
+            }
+        );
+
+    }
+
+
+    let expenseRecords =
+        loadExpenseRecords();
+
+
+    function saveExpenseRecords() {
+
+        localStorage.setItem(
+            "expenseRecords",
+            JSON.stringify(
+                expenseRecords
+            )
+        );
+
+    }
+
+
+    /* =========================================
+       LOAD SALARY
+    ========================================= */
+
+    function loadSalaryRecords() {
+
+        let records =
+            safeParseStorage(
+                "salaryRecords",
+                null
+            );
+
+
+        if (
+            !Array.isArray(
+                records
+            )
+        ) {
+
+            records =
+                safeParseStorage(
+                    "salaries",
+                    []
+                );
+
+        }
+
+
+        if (
+            !Array.isArray(
+                records
+            )
+        ) {
+
+            return [];
+
+        }
+
+
+        return records.map(
+            function (
+                record,
+                index
+            ) {
+
+                const salary =
+                    Number(
+                        record.salary ||
+                        record.salaryAmount ||
+                        record.amount ||
+                        0
+                    );
+
+
+                const status =
+
+                    String(
+                        record.paymentStatus ||
+                        record.status ||
+                        "due"
+                    )
+                    .toLowerCase();
+
+
+                let paidAmount =
+                    Number(
+                        record.paidAmount ||
+                        0
+                    );
+
+
+                if (
+                    status === "paid"
+                ) {
+
+                    paidAmount =
+                        salary;
+
+                }
+
+
+                if (
+                    status === "due"
+                ) {
+
+                    paidAmount =
+                        0;
+
+                }
+
+
+                const dueAmount =
+                    Math.max(
+                        salary -
+                        paidAmount,
+                        0
+                    );
+
+
+                const month =
+
+                    record.salaryMonth ||
+                    record.month ||
+                    getCurrentMonth();
+
+
+                return {
+
+                    id:
+
+                        record.id ??
+                        Date.now() +
+                        index,
+
+
+                    salaryId:
+
+                        record.salaryId ||
+                        `SAL-${String(
+                            index + 1
+                        ).padStart(
+                            3,
+                            "0"
+                        )}`,
+
+
+                    employeeId:
+
+                        record.employeeId ||
+                        "",
+
+
+                    employeeName:
+
+                        record.employeeName ||
+                        record.employee ||
+                        record.name ||
+                        "Employee",
+
+
+                    role:
+
+                        record.role ||
+                        record.designation ||
+                        "Employee",
+
+
+                    salaryMonth:
+                        month,
+
+
+                    month:
+                        month,
+
+
+                    salary:
+                        salary,
+
+
+                    salaryAmount:
+                        salary,
+
+
+                    amount:
+                        salary,
+
+
+                    paymentStatus:
+                        status,
+
+
+                    status:
+                        status,
+
+
+                    paidAmount:
+                        paidAmount,
+
+
+                    dueAmount:
+                        dueAmount,
+
+
+                    salaryDate:
+                        `${month}-01`,
+
+
+                    date:
+                        `${month}-01`,
+
+
+                    createdAt:
+
+                        Number(
+                            record.createdAt ||
+                            record.id ||
+                            Date.now()
+                        )
+
+                };
+
+            }
+        );
+
+    }
+
+
+    let salaryRecords =
+        loadSalaryRecords();
+
+
+    function saveSalaryRecords() {
+
+        localStorage.setItem(
+            "salaryRecords",
+            JSON.stringify(
+                salaryRecords
+            )
+        );
+
+    }
+
+
+    /* =========================================
+       MAINTENANCE
+    ========================================= */
+
+    function getMaintenanceRecords() {
+
+        let records =
+            safeParseStorage(
+                "maintenanceRecords",
+                null
+            );
+
+
+        if (
+            !Array.isArray(
+                records
+            )
+        ) {
+
+            records =
+                safeParseStorage(
+                    "maintenance",
+                    []
+                );
+
+        }
+
+
+        return Array.isArray(
+            records
+        )
+            ? records
+            : [];
+
+    }
+
+
+    function getMaintenanceCost(
+        record
+    ) {
+
+        return Number(
+
+            record.cost ??
+            record.maintenanceCost ??
+            record.totalCost ??
+            record.amount ??
+            0
+
+        );
+
+    }
+
+
+    /* =========================================
+       RECORD CODE GENERATOR
+    ========================================= */
+
+    function generateRecordCode(
+        records,
+        property,
+        prefix
+    ) {
+
+        const numbers =
+            records
+                .map(
+                    function (
+                        record
+                    ) {
+
+                        const match =
+                            String(
+                                record[property] ||
+                                ""
+                            ).match(
+                                new RegExp(
+                                    `^${prefix}-(\\d+)$`,
+                                    "i"
+                                )
+                            );
+
+
+                        return (
+                            match
+                                ? Number(
+                                    match[1]
+                                )
+                                : 0
+                        );
+
+                    }
+                )
+                .filter(Boolean);
+
+
+        const nextNumber =
+
+            numbers.length > 0
+
+                ?
+
+                Math.max(
+                    ...numbers
+                ) + 1
+
+                :
+
+                1;
+
+
+        return (
+
+            `${prefix}-${String(
+                nextNumber
+            ).padStart(
+                3,
+                "0"
+            )}`
+
+        );
+
+    }
+
+
+    /* =========================================
+       EMPLOYEE DROPDOWN
+    ========================================= */
+
+    function populateEmployees() {
+
+        salaryEmployeeSelect.innerHTML = `
+
+            <option value=""
+                    selected
+                    disabled>
+
+                Select employee
+
+            </option>
+
+        `;
+
+
+        employees.forEach(
+            function (
+                employee
+            ) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    employee.id;
+
+
+                option.textContent =
+
+                    `${employee.name} — ${employee.role}`;
+
+
+                salaryEmployeeSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    salaryEmployeeSelect.addEventListener(
+        "change",
+        function () {
+
+            const employee =
+                employees.find(
+                    function (
+                        item
+                    ) {
+
+                        return (
+
+                            String(
+                                item.id
+                            )
+
+                            ===
+
+                            String(
+                                salaryEmployeeSelect.value
+                            )
+
+                        );
+
+                    }
+                );
+
+
+            if (!employee) {
+
+                salaryRoleInput.value =
+                    "";
+
+                return;
+
+            }
+
+
+            salaryRoleInput.value =
+                employee.role;
+
+
+            if (
+                Number(
+                    employee.baseSalary
+                ) > 0
+            ) {
+
+                salaryAmountInput.value =
+                    employee.baseSalary;
+
+            }
+
+
+            updateSalaryPaymentFields();
+
+        }
+    );
+
+
+    /* =========================================
+       SALARY STATUS LOGIC
+    ========================================= */
+
+    function updateSalaryPaymentFields() {
+
+        const status =
+            salaryPaymentStatusSelect.value;
+
+
+        const salary =
+            Number(
+                salaryAmountInput.value ||
+                0
+            );
+
+
+        if (
+            status === "paid"
+        ) {
+
+            salaryPaidAmountInput.disabled =
+                true;
+
+
+            salaryPaidAmountInput.value =
+                salary > 0
+                    ? salary
+                    : "";
+
+        }
+        else if (
+            status === "due"
+        ) {
+
+            salaryPaidAmountInput.disabled =
+                true;
+
+
+            salaryPaidAmountInput.value =
+                0;
+
+        }
+        else if (
+            status === "partial"
+        ) {
+
+            salaryPaidAmountInput.disabled =
+                false;
+
+
+            if (
+                Number(
+                    salaryPaidAmountInput.value
+                ) >= salary
+            ) {
+
+                salaryPaidAmountInput.value =
+                    "";
+
+            }
+
+        }
+        else {
+
+            salaryPaidAmountInput.disabled =
+                true;
+
+
+            salaryPaidAmountInput.value =
+                "";
+
+        }
+
+    }
+
+
+    salaryPaymentStatusSelect.addEventListener(
+        "change",
+        updateSalaryPaymentFields
+    );
+
+
+    salaryAmountInput.addEventListener(
+        "input",
+        updateSalaryPaymentFields
+    );
+
+
+    /* =========================================
+       SUMMARY
+    ========================================= */
+
+    function updateSummaryCards() {
+
+        const today =
+            getTodayDate();
+
+
+        const todayExpense =
+            expenseRecords
+
+                .filter(
+                    function (
+                        record
+                    ) {
+
+                        return (
+                            record.expenseDate ===
+                            today
+                        );
+
+                    }
+                )
+
+                .reduce(
                     function (
                         total,
-                        salary
+                        record
                     ) {
 
                         return (
                             total +
                             Number(
-                                salary.dueAmount ||
+                                record.amount ||
                                 0
                             )
                         );
@@ -1511,1137 +1347,163 @@ document.addEventListener(
                 );
 
 
-            const maintenanceCost =
-                expenses
-                    .filter(
-                        function (
-                            expense
-                        ) {
+        const salaryDue =
+            salaryRecords.reduce(
+                function (
+                    total,
+                    record
+                ) {
 
-                            return (
-                                expense.type ===
-                                "maintenance"
-                            );
-
-                        }
-                    )
-                    .reduce(
-                        function (
-                            total,
-                            expense
-                        ) {
-
-                            return (
-                                total +
-                                Number(
-                                    expense.amount
-                                )
-                            );
-
-                        },
-                        0
+                    return (
+                        total +
+                        Number(
+                            record.dueAmount ||
+                            0
+                        )
                     );
 
-
-            todayExpenseValue.textContent =
-                formatMoney(
-                    todayExpense
-                );
-
-
-            salaryDueValue.textContent =
-                formatMoney(
-                    salaryDue
-                );
-
-
-            maintenanceCostValue.textContent =
-                formatMoney(
-                    maintenanceCost
-                );
-
-        }
-
-
-        // ==========================================
-        // DISPLAY EXPENSES
-        // ==========================================
-
-        function displayExpenses() {
-
-            expenseTableBody.innerHTML =
-                "";
-
-
-            if (
-                expenses.length ===
+                },
                 0
-            ) {
-
-                expenseTableBody.innerHTML = `
-
-                    <tr class="finance-empty-row">
-
-                        <td colspan="6">
-                            No expense records found.
-                        </td>
-
-                    </tr>
-
-                `;
+            );
 
 
-                updateSummary();
-
-                return;
-
-            }
-
-
-            const sortedExpenses =
-                [
-                    ...expenses
-                ].sort(
+        const maintenanceCost =
+            getMaintenanceRecords()
+                .reduce(
                     function (
-                        first,
-                        second
+                        total,
+                        record
                     ) {
 
                         return (
-                            new Date(
-                                second.date
-                            ) -
-                            new Date(
-                                first.date
+                            total +
+                            getMaintenanceCost(
+                                record
                             )
                         );
 
-                    }
+                    },
+                    0
                 );
 
 
-            sortedExpenses.forEach(
-                function (
-                    expense
-                ) {
-
-                    const row =
-                        document.createElement(
-                            "tr"
-                        );
-
-
-                    row.innerHTML = `
-
-                        <td>
-
-                            <span class="record-primary-text">
-
-                                ${escapeHTML(
-                                    getExpenseTypeText(
-                                        expense.type
-                                    )
-                                )}
-
-                            </span>
-
-                            <span class="record-secondary-text">
-
-                                ${escapeHTML(
-                                    expense.description ||
-                                    "No description"
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            ${formatMoney(
-                                expense.amount
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHTML(
-                                formatDate(
-                                    expense.date
-                                )
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHTML(
-                                getPaymentMethodText(
-                                    expense.paymentMethod
-                                )
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            <span
-                                class="
-                                    finance-status-badge
-                                    ${getStatusClass(
-                                        expense.status
-                                    )}
-                                "
-                            >
-
-                                ${escapeHTML(
-                                    getStatusText(
-                                        expense.status
-                                    )
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <div class="finance-action-group">
-
-                                <button
-                                    class="finance-edit-button"
-                                    type="button"
-                                    data-expense-action="edit"
-                                    data-id="${expense.id}"
-                                >
-                                    Edit
-                                </button>
-
-
-                                <button
-                                    class="finance-delete-button"
-                                    type="button"
-                                    data-expense-action="delete"
-                                    data-id="${expense.id}"
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    `;
-
-
-                    expenseTableBody
-                        .appendChild(
-                            row
-                        );
-
-                }
+        todayExpenseValue.textContent =
+            formatMoney(
+                todayExpense
             );
 
 
-            updateSummary();
-
-        }
-
-
-        // ==========================================
-        // DISPLAY SALARIES
-        // ==========================================
-
-        function displaySalaries() {
-
-            salaryTableBody.innerHTML =
-                "";
-
-
-            if (
-                salaries.length ===
-                0
-            ) {
-
-                salaryTableBody.innerHTML = `
-
-                    <tr class="finance-empty-row">
-
-                        <td colspan="6">
-                            No salary records found.
-                        </td>
-
-                    </tr>
-
-                `;
-
-
-                updateSummary();
-
-                return;
-
-            }
-
-
-            const sortedSalaries =
-                [
-                    ...salaries
-                ].sort(
-                    function (
-                        first,
-                        second
-                    ) {
-
-                        return String(
-                            second.month ||
-                            ""
-                        ).localeCompare(
-                            String(
-                                first.month ||
-                                ""
-                            )
-                        );
-
-                    }
-                );
-
-
-            sortedSalaries.forEach(
-                function (
-                    salary
-                ) {
-
-                    const row =
-                        document.createElement(
-                            "tr"
-                        );
-
-
-                    row.innerHTML = `
-
-                        <td>
-
-                            <span class="record-primary-text">
-
-                                ${escapeHTML(
-                                    salary.employeeName
-                                )}
-
-                            </span>
-
-                            <span class="record-secondary-text">
-
-                                ${escapeHTML(
-                                    getRoleText(
-                                        salary.role
-                                    )
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            ${escapeHTML(
-                                formatMonth(
-                                    salary.month
-                                )
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${formatMoney(
-                                salary.amount
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            ${formatMoney(
-                                salary.dueAmount
-                            )}
-
-                        </td>
-
-
-                        <td>
-
-                            <span
-                                class="
-                                    finance-status-badge
-                                    ${getStatusClass(
-                                        salary.status
-                                    )}
-                                "
-                            >
-
-                                ${escapeHTML(
-                                    getStatusText(
-                                        salary.status
-                                    )
-                                )}
-
-                            </span>
-
-                        </td>
-
-
-                        <td>
-
-                            <div class="finance-action-group">
-
-                                <button
-                                    class="finance-edit-button"
-                                    type="button"
-                                    data-salary-action="edit"
-                                    data-id="${salary.id}"
-                                >
-                                    Edit
-                                </button>
-
-
-                                <button
-                                    class="finance-delete-button"
-                                    type="button"
-                                    data-salary-action="delete"
-                                    data-id="${salary.id}"
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
-
-                        </td>
-
-                    `;
-
-
-                    salaryTableBody
-                        .appendChild(
-                            row
-                        );
-
-                }
+        salaryDueValue.textContent =
+            formatMoney(
+                salaryDue
             );
 
 
-            updateSummary();
+        maintenanceCostValue.textContent =
+            formatMoney(
+                maintenanceCost
+            );
 
-        }
+    }
 
 
-        // ==========================================
-        // EXPENSE SUBMIT
-        // ==========================================
+    /* =========================================
+       EXPENSE VALIDATION
+    ========================================= */
 
-        expenseForm.addEventListener(
-            "submit",
-            function (
-                event
-            ) {
+    function validateExpenseForm() {
 
-                event.preventDefault();
-
-
-                const amount =
-                    Number(
-                        expenseAmount.value
-                    );
-
-
-                if (
-                    !Number.isFinite(
-                        amount
-                    ) ||
-                    amount <= 0
-                ) {
-
-                    showToast(
-                        "Expense amount must be greater than zero.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                if (
-                    !expenseDescription
-                        .value
-                        .trim()
-                ) {
-
-                    showToast(
-                        "Please enter an expense description.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                const expenseData = {
-
-                    type:
-                        expenseType.value,
-
-                    amount:
-                        amount,
-
-                    date:
-                        expenseDate.value,
-
-                    description:
-                        expenseDescription
-                            .value
-                            .trim(),
-
-                    paymentMethod:
-                        paymentMethod.value,
-
-                    status:
-                        expenseStatus.value
-
-                };
-
-
-                // ==================================
-                // UPDATE EXPENSE
-                // ==================================
-
-                if (
-                    editingExpenseId !==
-                    null
-                ) {
-
-                    const index =
-                        expenses.findIndex(
-                            function (
-                                expense
-                            ) {
-
-                                return sameId(
-                                    expense.id,
-                                    editingExpenseId
-                                );
-
-                            }
-                        );
-
-
-                    if (
-                        index !== -1
-                    ) {
-
-                        expenses[index] = {
-
-                            id:
-                                expenses[index].id,
-
-                            ...expenseData
-
-                        };
-
-                    }
-
-
-                    saveExpenses();
-
-                    displayExpenses();
-
-                    resetExpenseForm();
-
-
-                    showToast(
-                        "Expense updated successfully!"
-                    );
-
-
-                    return;
-
-                }
-
-
-                // ==================================
-                // NEW EXPENSE
-                // ==================================
-
-                expenses.push(
-                    {
-
-                        id:
-                            Date.now(),
-
-                        ...expenseData
-
-                    }
-                );
-
-
-                saveExpenses();
-
-                displayExpenses();
-
-                resetExpenseForm();
-
-
-                showToast(
-                    "Expense saved successfully!"
-                );
-
-            }
-        );
-
-
-        // ==========================================
-        // SALARY STATUS CONTROL
-        // ==========================================
-
-        function updateSalaryPaidAmountField() {
-
-            const amount =
-                Number(
-                    salaryAmount.value
-                ) || 0;
-
-
-            // Paid
-            if (
-                salaryStatus.value ===
-                "paid"
-            ) {
-
-                salaryPaidAmount.value =
-                    amount > 0
-                        ? amount
-                        : "";
-
-
-                salaryPaidAmount.disabled =
-                    true;
-
-
-                return;
-
-            }
-
-
-            // Due
-            if (
-                salaryStatus.value ===
-                "due"
-            ) {
-
-                salaryPaidAmount.value =
-                    0;
-
-
-                salaryPaidAmount.disabled =
-                    true;
-
-
-                return;
-
-            }
-
-
-            // Partial / Unselected
-            salaryPaidAmount.disabled =
-                false;
-
-        }
-
-
-        salaryStatus.addEventListener(
-            "change",
-            updateSalaryPaidAmountField
-        );
-
-
-        salaryAmount.addEventListener(
-            "input",
-            function () {
-
-                if (
-                    salaryStatus.value ===
-                        "paid" ||
-                    salaryStatus.value ===
-                        "due"
-                ) {
-
-                    updateSalaryPaidAmountField();
-
-                }
-
-            }
-        );
-
-
-        // ==========================================
-        // SALARY SUBMIT
-        // ==========================================
-
-        salaryForm.addEventListener(
-            "submit",
-            function (
-                event
-            ) {
-
-                event.preventDefault();
-
-
-                const selectedEmployee =
-                    employees.find(
-                        function (
-                            employee
-                        ) {
-
-                            return sameId(
-                                employee.id,
-                                employeeSelect.value
-                            );
-
-                        }
-                    );
-
-
-                if (
-                    !selectedEmployee
-                ) {
-
-                    showToast(
-                        "Please select an employee.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                const amount =
-                    Number(
-                        salaryAmount.value
-                    );
-
-
-                if (
-                    !Number.isFinite(
-                        amount
-                    ) ||
-                    amount <= 0
-                ) {
-
-                    showToast(
-                        "Salary amount must be greater than zero.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                if (
-                    !salaryStatus.value
-                ) {
-
-                    showToast(
-                        "Please select a salary payment status.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                let paidAmount =
-                    Number(
-                        salaryPaidAmount.value
-                    );
-
-
-                // Fully Paid
-                if (
-                    salaryStatus.value ===
-                    "paid"
-                ) {
-
-                    paidAmount =
-                        amount;
-
-                }
-
-
-                // Fully Due
-                if (
-                    salaryStatus.value ===
-                    "due"
-                ) {
-
-                    paidAmount =
-                        0;
-
-                }
-
-
-                // Partial
-                if (
-                    salaryStatus.value ===
-                    "partial"
-                ) {
-
-                    if (
-                        !Number.isFinite(
-                            paidAmount
-                        ) ||
-                        paidAmount <= 0 ||
-                        paidAmount >= amount
-                    ) {
-
-                        showToast(
-                            "For partial payment, paid amount must be greater than 0 and less than total salary.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-                }
-
-
-                const dueAmount =
-                    Math.max(
-                        0,
-                        amount -
-                        paidAmount
-                    );
-
-
-                // ==================================
-                // Duplicate Employee + Month
-                // ==================================
-
-                const duplicate =
-                    salaries.some(
-                        function (
-                            salary
-                        ) {
-
-                            return (
-
-                                sameId(
-                                    salary.employeeId,
-                                    selectedEmployee.id
-                                ) &&
-
-                                salary.month ===
-                                salaryMonth.value &&
-
-                                !sameId(
-                                    salary.id,
-                                    editingSalaryId
-                                )
-
-                            );
-
-                        }
-                    );
-
-
-                if (
-                    duplicate
-                ) {
-
-                    showToast(
-                        "Salary for this employee and month already exists.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                const salaryData = {
-
-                    employeeId:
-                        selectedEmployee.id,
-
-                    employeeName:
-                        selectedEmployee.name,
-
-                    role:
-                        selectedEmployee.role,
-
-                    month:
-                        salaryMonth.value,
-
-                    amount:
-                        amount,
-
-                    status:
-                        salaryStatus.value,
-
-                    paidAmount:
-                        paidAmount,
-
-                    dueAmount:
-                        dueAmount
-
-                };
-
-
-                // ==================================
-                // UPDATE SALARY
-                // ==================================
-
-                if (
-                    editingSalaryId !==
-                    null
-                ) {
-
-                    const index =
-                        salaries.findIndex(
-                            function (
-                                salary
-                            ) {
-
-                                return sameId(
-                                    salary.id,
-                                    editingSalaryId
-                                );
-
-                            }
-                        );
-
-
-                    if (
-                        index !== -1
-                    ) {
-
-                        salaries[index] = {
-
-                            id:
-                                salaries[index].id,
-
-                            ...salaryData
-
-                        };
-
-                    }
-
-
-                    saveSalaries();
-
-                    displaySalaries();
-
-                    resetSalaryForm();
-
-
-                    showToast(
-                        "Salary record updated successfully!"
-                    );
-
-
-                    return;
-
-                }
-
-
-                // ==================================
-                // NEW SALARY
-                // ==================================
-
-                salaries.push(
-                    {
-
-                        id:
-                            Date.now(),
-
-                        ...salaryData
-
-                    }
-                );
-
-
-                saveSalaries();
-
-                displaySalaries();
-
-                resetSalaryForm();
-
-
-                showToast(
-                    "Salary record saved successfully!"
-                );
-
-            }
-        );
-
-
-        // ==========================================
-        // EXPENSE TABLE ACTION
-        // ==========================================
-
-        expenseTableBody.addEventListener(
-            "click",
-            function (
-                event
-            ) {
-
-                const button =
-                    event.target.closest(
-                        "button"
-                    );
-
-
-                if (!button) {
-
-                    return;
-
-                }
-
-
-                const id =
-                    button.dataset.id;
-
-
-                const action =
-                    button.dataset
-                        .expenseAction;
-
-
-                if (
-                    action ===
-                    "edit"
-                ) {
-
-                    editExpense(
-                        id
-                    );
-
-                }
-
-
-                if (
-                    action ===
-                    "delete"
-                ) {
-
-                    deleteExpense(
-                        id
-                    );
-
-                }
-
-            }
-        );
-
-
-        // ==========================================
-        // SALARY TABLE ACTION
-        // ==========================================
-
-        salaryTableBody.addEventListener(
-            "click",
-            function (
-                event
-            ) {
-
-                const button =
-                    event.target.closest(
-                        "button"
-                    );
-
-
-                if (!button) {
-
-                    return;
-
-                }
-
-
-                const id =
-                    button.dataset.id;
-
-
-                const action =
-                    button.dataset
-                        .salaryAction;
-
-
-                if (
-                    action ===
-                    "edit"
-                ) {
-
-                    editSalary(
-                        id
-                    );
-
-                }
-
-
-                if (
-                    action ===
-                    "delete"
-                ) {
-
-                    deleteSalary(
-                        id
-                    );
-
-                }
-
-            }
-        );
-
-
-        // ==========================================
-        // EDIT EXPENSE
-        // ==========================================
-
-        function editExpense(
-            id
+        if (
+            !expenseTypeSelect.value
         ) {
 
-            const expense =
-                expenses.find(
-                    function (
-                        expense
-                    ) {
+            return "Please select an expense type.";
 
-                        return sameId(
-                            expense.id,
-                            id
-                        );
-
-                    }
-                );
+        }
 
 
-            if (!expense) {
+        const amount =
+            Number(
+                expenseAmountInput.value
+            );
+
+
+        if (
+            !Number.isFinite(
+                amount
+            ) ||
+            amount <= 0
+        ) {
+
+            return "Expense amount must be greater than zero.";
+
+        }
+
+
+        if (
+            !expenseDateInput.value
+        ) {
+
+            return "Please select the expense date.";
+
+        }
+
+
+        if (
+            expenseDescriptionInput.value
+                .trim()
+                .length < 3
+        ) {
+
+            return "Please enter a meaningful expense description.";
+
+        }
+
+
+        if (
+            !expensePaymentMethodSelect.value
+        ) {
+
+            return "Please select a payment method.";
+
+        }
+
+
+        if (
+            !expensePaymentStatusSelect.value
+        ) {
+
+            return "Please select a payment status.";
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================================
+       SAVE EXPENSE
+    ========================================= */
+
+    expenseForm.addEventListener(
+        "submit",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+
+            const error =
+                validateExpenseForm();
+
+
+            if (error) {
 
                 showToast(
-                    "Expense record not found.",
+                    error,
                     "error"
                 );
 
@@ -2650,167 +1512,583 @@ document.addEventListener(
             }
 
 
-            expenseType.value =
-                expense.type;
+            const amount =
+                Number(
+                    expenseAmountInput.value
+                );
 
 
-            expenseAmount.value =
-                expense.amount;
+            const status =
+                expensePaymentStatusSelect.value;
 
 
-            expenseDate.value =
-                expense.date;
+            const existingIndex =
+                expenseRecords.findIndex(
+                    function (
+                        record
+                    ) {
+
+                        return (
+
+                            Number(
+                                record.id
+                            )
+
+                            ===
+
+                            Number(
+                                editingExpenseId
+                            )
+
+                        );
+
+                    }
+                );
 
 
-            expenseDescription.value =
-                expense.description ||
-                "";
+            const existing =
+
+                existingIndex >= 0
+
+                    ?
+
+                    expenseRecords[
+                        existingIndex
+                    ]
+
+                    :
+
+                    null;
 
 
-            paymentMethod.value =
-                expense.paymentMethod;
+            const record = {
+
+                id:
+
+                    existing
+                        ? existing.id
+                        : Date.now(),
 
 
-            expenseStatus.value =
-                expense.status;
+                expenseId:
+
+                    existing
+                        ? existing.expenseId
+                        : generateRecordCode(
+                            expenseRecords,
+                            "expenseId",
+                            "EXP"
+                        ),
 
 
-            editingExpenseId =
-                expense.id;
+                expenseType:
+                    expenseTypeSelect.value,
 
 
-            expenseFormTitle.textContent =
-                "Update Expense";
+                amount:
+                    amount,
 
 
-            saveExpenseButton.innerHTML = `
+                expenseDate:
+                    expenseDateInput.value,
 
-                <span aria-hidden="true">
-                    ▣
+
+                date:
+                    expenseDateInput.value,
+
+
+                description:
+
+                    expenseDescriptionInput.value
+                        .trim(),
+
+
+                paymentMethod:
+                    expensePaymentMethodSelect.value,
+
+
+                paymentStatus:
+                    status,
+
+
+                status:
+                    status,
+
+
+                paidAmount:
+
+                    status === "paid"
+                        ? amount
+                        : 0,
+
+
+                dueAmount:
+
+                    status === "due"
+                        ? amount
+                        : 0,
+
+
+                createdAt:
+
+                    existing
+                        ? existing.createdAt
+                        : Date.now()
+
+            };
+
+
+            if (existing) {
+
+                expenseRecords[
+                    existingIndex
+                ] =
+                    record;
+
+
+                showToast(
+                    `${record.expenseId} updated successfully.`
+                );
+
+            }
+            else {
+
+                expenseRecords.push(
+                    record
+                );
+
+
+                showToast(
+                    `${record.expenseId} saved successfully.`
+                );
+
+            }
+
+
+            saveExpenseRecords();
+
+            updateSummaryCards();
+
+            displayExpenseRecords();
+
+            resetExpenseForm();
+
+        }
+    );
+
+
+    function resetExpenseForm() {
+
+        editingExpenseId =
+            null;
+
+
+        expenseForm.reset();
+
+
+        expenseDateInput.value =
+            getTodayDate();
+
+
+        expenseFormTitle.textContent =
+            "Add Expense";
+
+
+        saveExpenseBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ▣
+            </span>
+
+            Save Expense
+
+        `;
+
+
+        cancelExpenseEditBtn.hidden =
+            true;
+
+    }
+
+
+    cancelExpenseEditBtn.addEventListener(
+        "click",
+        resetExpenseForm
+    );
+
+
+    function editExpense(
+        id
+    ) {
+
+        const record =
+            expenseRecords.find(
+                function (
+                    item
+                ) {
+
+                    return (
+                        Number(item.id) ===
+                        Number(id)
+                    );
+
+                }
+            );
+
+
+        if (!record) {
+
+            return;
+
+        }
+
+
+        editingExpenseId =
+            record.id;
+
+
+        expenseTypeSelect.value =
+            record.expenseType;
+
+
+        expenseAmountInput.value =
+            record.amount;
+
+
+        expenseDateInput.value =
+            record.expenseDate;
+
+
+        expenseDescriptionInput.value =
+            record.description;
+
+
+        expensePaymentMethodSelect.value =
+            record.paymentMethod;
+
+
+        expensePaymentStatusSelect.value =
+            record.paymentStatus;
+
+
+        expenseFormTitle.textContent =
+
+            `Edit Expense — ${record.expenseId}`;
+
+
+        saveExpenseBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ✓
+            </span>
+
+            Update Expense
+
+        `;
+
+
+        cancelExpenseEditBtn.hidden =
+            false;
+
+
+        expenseForm.scrollIntoView(
+            {
+                behavior:
+                    "smooth",
+
+                block:
+                    "center"
+            }
+        );
+
+    }
+
+
+    function expenseActionHTML(
+        record
+    ) {
+
+        if (
+            Number(
+                pendingExpenseDeleteId
+            ) ===
+            Number(
+                record.id
+            )
+        ) {
+
+            return `
+
+                <span class="delete-question">
+                    Delete?
                 </span>
 
-                Update Expense
+                <button
+                    class="finance-confirm-button"
+                    type="button"
+                    data-expense-action="confirm-delete"
+                    data-id="${record.id}"
+                >
+                    Confirm
+                </button>
+
+                <button
+                    class="finance-cancel-button"
+                    type="button"
+                    data-expense-action="cancel-delete"
+                    data-id="${record.id}"
+                >
+                    Cancel
+                </button>
+
+            `;
+
+        }
+
+
+        return `
+
+            <button
+                class="finance-edit-button"
+                type="button"
+                data-expense-action="edit"
+                data-id="${record.id}"
+            >
+                Edit
+            </button>
+
+            <button
+                class="finance-delete-button"
+                type="button"
+                data-expense-action="delete"
+                data-id="${record.id}"
+            >
+                Delete
+            </button>
+
+        `;
+
+    }
+
+
+    function displayExpenseRecords() {
+
+        expenseTableBody.innerHTML =
+            "";
+
+
+        if (
+            expenseRecords.length === 0
+        ) {
+
+            expenseTableBody.innerHTML = `
+
+                <tr class="finance-empty-row">
+
+                    <td colspan="6">
+                        No expense records available.
+                    </td>
+
+                </tr>
 
             `;
 
 
-            expenseForm.scrollIntoView(
-                {
-                    behavior:
-                        "smooth",
+            return;
 
-                    block:
-                        "center"
+        }
+
+
+        [
+            ...expenseRecords
+        ]
+
+            .sort(
+                function (
+                    a,
+                    b
+                ) {
+
+                    if (
+                        a.expenseDate !==
+                        b.expenseDate
+                    ) {
+
+                        return (
+                            b.expenseDate.localeCompare(
+                                a.expenseDate
+                            )
+                        );
+
+                    }
+
+
+                    return (
+                        Number(
+                            b.createdAt
+                        )
+                        -
+                        Number(
+                            a.createdAt
+                        )
+                    );
+
+                }
+            )
+
+            .forEach(
+                function (
+                    record
+                ) {
+
+                    const statusClass =
+
+                        record.paymentStatus ===
+                        "paid"
+
+                            ?
+
+                            "status-paid"
+
+                            :
+
+                            "status-due";
+
+
+                    const statusText =
+
+                        record.paymentStatus ===
+                        "paid"
+
+                            ?
+
+                            "Paid"
+
+                            :
+
+                            "Due";
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            <span class="finance-primary-text">
+                                ${escapeHTML(
+                                    record.expenseType
+                                )}
+                            </span>
+
+                            <span
+                                class="finance-secondary-text"
+                                title="${escapeHTML(
+                                    record.description
+                                )}"
+                            >
+                                ${escapeHTML(
+                                    record.description
+                                )}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${formatMoney(
+                                record.amount
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatDate(
+                                record.expenseDate
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(
+                                record.paymentMethod
+                            )}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="
+                                    finance-status
+                                    ${statusClass}
+                                "
+                            >
+                                ${statusText}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="finance-table-actions">
+
+                                ${expenseActionHTML(
+                                    record
+                                )}
+
+                            </div>
+
+                        </td>
+
+                    `;
+
+
+                    expenseTableBody.appendChild(
+                        row
+                    );
+
                 }
             );
 
-        }
+    }
 
 
-        // ==========================================
-        // DELETE EXPENSE
-        // ==========================================
-
-        function deleteExpense(
-            id
+    expenseTableBody.addEventListener(
+        "click",
+        function (
+            event
         ) {
 
-            const exists =
-                expenses.some(
-                    function (
-                        expense
-                    ) {
-
-                        return sameId(
-                            expense.id,
-                            id
-                        );
-
-                    }
+            const button =
+                event.target.closest(
+                    "button[data-expense-action]"
                 );
 
 
-            if (!exists) {
-
-                showToast(
-                    "Expense record not found.",
-                    "error"
-                );
+            if (!button) {
 
                 return;
 
             }
 
 
-            expenses =
-                expenses.filter(
-                    function (
-                        expense
-                    ) {
-
-                        return !sameId(
-                            expense.id,
-                            id
-                        );
-
-                    }
+            const id =
+                Number(
+                    button.dataset.id
                 );
 
 
-            saveExpenses();
-
-            displayExpenses();
+            const action =
+                button.dataset.expenseAction;
 
 
             if (
-                editingExpenseId !==
-                    null &&
-                sameId(
-                    editingExpenseId,
-                    id
-                )
+                action === "edit"
             ) {
 
-                resetExpenseForm();
-
-            }
-
-
-            showToast(
-                "Expense deleted successfully!"
-            );
-
-        }
-
-
-        // ==========================================
-        // EDIT SALARY
-        // ==========================================
-
-        function editSalary(
-            id
-        ) {
-
-            const salary =
-                salaries.find(
-                    function (
-                        salary
-                    ) {
-
-                        return sameId(
-                            salary.id,
-                            id
-                        );
-
-                    }
-                );
-
-
-            if (!salary) {
-
-                showToast(
-                    "Salary record not found.",
-                    "error"
+                editExpense(
+                    id
                 );
 
                 return;
@@ -2818,118 +2096,219 @@ document.addEventListener(
             }
 
 
-            populateEmployeeDropdown(
-                salary.employeeId
+            if (
+                action === "delete"
+            ) {
+
+                pendingExpenseDeleteId =
+                    id;
+
+
+                displayExpenseRecords();
+
+                return;
+
+            }
+
+
+            if (
+                action === "cancel-delete"
+            ) {
+
+                pendingExpenseDeleteId =
+                    null;
+
+
+                displayExpenseRecords();
+
+                return;
+
+            }
+
+
+            if (
+                action === "confirm-delete"
+            ) {
+
+                expenseRecords =
+                    expenseRecords.filter(
+                        function (
+                            item
+                        ) {
+
+                            return (
+                                Number(item.id)
+                                !==
+                                id
+                            );
+
+                        }
+                    );
+
+
+                pendingExpenseDeleteId =
+                    null;
+
+
+                saveExpenseRecords();
+
+                updateSummaryCards();
+
+                displayExpenseRecords();
+
+
+                showToast(
+                    "Expense deleted successfully."
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       SALARY VALIDATION
+    ========================================= */
+
+    function validateSalaryForm() {
+
+        if (
+            !salaryEmployeeSelect.value
+        ) {
+
+            return "Please select an employee.";
+
+        }
+
+
+        if (
+            !salaryMonthInput.value
+        ) {
+
+            return "Please select the salary month.";
+
+        }
+
+
+        const salary =
+            Number(
+                salaryAmountInput.value
             );
+
+
+        if (
+            !Number.isFinite(
+                salary
+            ) ||
+            salary <= 0
+        ) {
+
+            return "Salary amount must be greater than zero.";
+
+        }
+
+
+        const status =
+            salaryPaymentStatusSelect.value;
+
+
+        if (!status) {
+
+            return "Please select a payment status.";
+
+        }
+
+
+        if (
+            status === "partial"
+        ) {
+
+            const paid =
+                Number(
+                    salaryPaidAmountInput.value
+                );
+
+
+            if (
+                !Number.isFinite(
+                    paid
+                ) ||
+                paid <= 0
+            ) {
+
+                return "Enter the amount already paid.";
+
+            }
+
+
+            if (
+                paid >= salary
+            ) {
+
+                return "Paid amount must be less than salary amount for Partially Paid status.";
+
+            }
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================================
+       SAVE SALARY
+    ========================================= */
+
+    salaryForm.addEventListener(
+        "submit",
+        function (
+            event
+        ) {
+
+            event.preventDefault();
+
+
+            const error =
+                validateSalaryForm();
+
+
+            if (error) {
+
+                showToast(
+                    error,
+                    "error"
+                );
+
+                return;
+
+            }
 
 
             const employee =
                 employees.find(
                     function (
-                        employee
+                        item
                     ) {
 
-                        return sameId(
-                            employee.id,
-                            salary.employeeId
+                        return (
+                            String(item.id)
+                            ===
+                            String(
+                                salaryEmployeeSelect.value
+                            )
                         );
 
                     }
                 );
 
 
-            employeeRole.value =
-                employee
-                    ? getRoleText(
-                        employee.role
-                    )
-                    : getRoleText(
-                        salary.role
-                    );
-
-
-            salaryMonth.value =
-                salary.month;
-
-
-            salaryAmount.value =
-                salary.amount;
-
-
-            salaryStatus.value =
-                salary.status;
-
-
-            salaryPaidAmount.disabled =
-                false;
-
-
-            salaryPaidAmount.value =
-                salary.paidAmount;
-
-
-            editingSalaryId =
-                salary.id;
-
-
-            updateSalaryPaidAmountField();
-
-
-            salaryFormTitle.textContent =
-                "Update Salary";
-
-
-            saveSalaryButton.innerHTML = `
-
-                <span aria-hidden="true">
-                    ▣
-                </span>
-
-                Update Salary
-
-            `;
-
-
-            salaryForm.scrollIntoView(
-                {
-                    behavior:
-                        "smooth",
-
-                    block:
-                        "center"
-                }
-            );
-
-        }
-
-
-        // ==========================================
-        // DELETE SALARY
-        // ==========================================
-
-        function deleteSalary(
-            id
-        ) {
-
-            const exists =
-                salaries.some(
-                    function (
-                        salary
-                    ) {
-
-                        return sameId(
-                            salary.id,
-                            id
-                        );
-
-                    }
-                );
-
-
-            if (!exists) {
+            if (!employee) {
 
                 showToast(
-                    "Salary record not found.",
+                    "Employee record could not be found.",
                     "error"
                 );
 
@@ -2938,480 +2317,1311 @@ document.addEventListener(
             }
 
 
-            salaries =
-                salaries.filter(
+            const salary =
+                Number(
+                    salaryAmountInput.value
+                );
+
+
+            const status =
+                salaryPaymentStatusSelect.value;
+
+
+            let paidAmount =
+                0;
+
+
+            if (
+                status === "paid"
+            ) {
+
+                paidAmount =
+                    salary;
+
+            }
+            else if (
+                status === "partial"
+            ) {
+
+                paidAmount =
+                    Number(
+                        salaryPaidAmountInput.value
+                    );
+
+            }
+
+
+            const dueAmount =
+                Math.max(
+                    salary -
+                    paidAmount,
+                    0
+                );
+
+
+            const existingIndex =
+                salaryRecords.findIndex(
                     function (
-                        salary
+                        record
                     ) {
 
-                        return !sameId(
-                            salary.id,
-                            id
+                        return (
+                            Number(record.id)
+                            ===
+                            Number(
+                                editingSalaryId
+                            )
                         );
 
                     }
                 );
 
 
-            saveSalaries();
+            const existing =
 
-            displaySalaries();
+                existingIndex >= 0
+
+                    ?
+
+                    salaryRecords[
+                        existingIndex
+                    ]
+
+                    :
+
+                    null;
+
+
+            const record = {
+
+                id:
+
+                    existing
+                        ? existing.id
+                        : Date.now(),
+
+
+                salaryId:
+
+                    existing
+                        ? existing.salaryId
+                        : generateRecordCode(
+                            salaryRecords,
+                            "salaryId",
+                            "SAL"
+                        ),
+
+
+                employeeId:
+                    employee.id,
+
+
+                employeeName:
+                    employee.name,
+
+
+                role:
+                    employee.role,
+
+
+                salaryMonth:
+                    salaryMonthInput.value,
+
+
+                month:
+                    salaryMonthInput.value,
+
+
+                salary:
+                    salary,
+
+
+                salaryAmount:
+                    salary,
+
+
+                amount:
+                    salary,
+
+
+                paymentStatus:
+                    status,
+
+
+                status:
+                    status,
+
+
+                paidAmount:
+                    paidAmount,
+
+
+                dueAmount:
+                    dueAmount,
+
+
+                salaryDate:
+                    `${salaryMonthInput.value}-01`,
+
+
+                date:
+                    `${salaryMonthInput.value}-01`,
+
+
+                createdAt:
+
+                    existing
+                        ? existing.createdAt
+                        : Date.now()
+
+            };
 
 
             if (
-                editingSalaryId !==
-                    null &&
-                sameId(
-                    editingSalaryId,
-                    id
-                )
+                existing
             ) {
 
-                resetSalaryForm();
+                salaryRecords[
+                    existingIndex
+                ] =
+                    record;
+
+
+                showToast(
+                    `${record.salaryId} updated successfully.`
+                );
+
+            }
+            else {
+
+                salaryRecords.push(
+                    record
+                );
+
+
+                showToast(
+                    `${record.salaryId} saved successfully.`
+                );
 
             }
 
 
-            showToast(
-                "Salary record deleted successfully!"
+            saveSalaryRecords();
+
+            updateSummaryCards();
+
+            displaySalaryRecords();
+
+            resetSalaryForm();
+
+        }
+    );
+
+
+    function resetSalaryForm() {
+
+        editingSalaryId =
+            null;
+
+
+        salaryForm.reset();
+
+
+        salaryMonthInput.value =
+            getCurrentMonth();
+
+
+        salaryRoleInput.value =
+            "";
+
+
+        salaryPaidAmountInput.value =
+            "";
+
+
+        salaryPaidAmountInput.disabled =
+            true;
+
+
+        salaryFormTitle.textContent =
+            "Add Salary";
+
+
+        saveSalaryBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ▣
+            </span>
+
+            Save Salary
+
+        `;
+
+
+        cancelSalaryEditBtn.hidden =
+            true;
+
+    }
+
+
+    cancelSalaryEditBtn.addEventListener(
+        "click",
+        resetSalaryForm
+    );
+
+
+    function editSalary(
+        id
+    ) {
+
+        const record =
+            salaryRecords.find(
+                function (
+                    item
+                ) {
+
+                    return (
+                        Number(item.id)
+                        ===
+                        Number(id)
+                    );
+
+                }
+            );
+
+
+        if (!record) {
+
+            return;
+
+        }
+
+
+        editingSalaryId =
+            record.id;
+
+
+        salaryEmployeeSelect.value =
+            record.employeeId;
+
+
+        salaryRoleInput.value =
+            record.role;
+
+
+        salaryMonthInput.value =
+            record.salaryMonth;
+
+
+        salaryAmountInput.value =
+            record.salary;
+
+
+        salaryPaymentStatusSelect.value =
+            record.paymentStatus;
+
+
+        updateSalaryPaymentFields();
+
+
+        if (
+            record.paymentStatus ===
+            "partial"
+        ) {
+
+            salaryPaidAmountInput.value =
+                record.paidAmount;
+
+        }
+
+
+        salaryFormTitle.textContent =
+
+            `Edit Salary — ${record.salaryId}`;
+
+
+        saveSalaryBtn.innerHTML = `
+
+            <span aria-hidden="true">
+                ✓
+            </span>
+
+            Update Salary
+
+        `;
+
+
+        cancelSalaryEditBtn.hidden =
+            false;
+
+
+        salaryForm.scrollIntoView(
+            {
+                behavior:
+                    "smooth",
+
+                block:
+                    "center"
+            }
+        );
+
+    }
+
+
+    function salaryActionHTML(
+        record
+    ) {
+
+        if (
+            Number(
+                pendingSalaryDeleteId
+            )
+            ===
+            Number(
+                record.id
+            )
+        ) {
+
+            return `
+
+                <span class="delete-question">
+                    Delete?
+                </span>
+
+                <button
+                    class="finance-confirm-button"
+                    type="button"
+                    data-salary-action="confirm-delete"
+                    data-id="${record.id}"
+                >
+                    Confirm
+                </button>
+
+                <button
+                    class="finance-cancel-button"
+                    type="button"
+                    data-salary-action="cancel-delete"
+                    data-id="${record.id}"
+                >
+                    Cancel
+                </button>
+
+            `;
+
+        }
+
+
+        return `
+
+            <button
+                class="finance-edit-button"
+                type="button"
+                data-salary-action="edit"
+                data-id="${record.id}"
+            >
+                Edit
+            </button>
+
+            <button
+                class="finance-delete-button"
+                type="button"
+                data-salary-action="delete"
+                data-id="${record.id}"
+            >
+                Delete
+            </button>
+
+        `;
+
+    }
+
+
+    function displaySalaryRecords() {
+
+        salaryTableBody.innerHTML =
+            "";
+
+
+        if (
+            salaryRecords.length === 0
+        ) {
+
+            salaryTableBody.innerHTML = `
+
+                <tr class="finance-empty-row">
+
+                    <td colspan="7">
+                        No salary records available.
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        [
+            ...salaryRecords
+        ]
+
+            .sort(
+                function (
+                    a,
+                    b
+                ) {
+
+                    if (
+                        a.salaryMonth !==
+                        b.salaryMonth
+                    ) {
+
+                        return (
+                            b.salaryMonth.localeCompare(
+                                a.salaryMonth
+                            )
+                        );
+
+                    }
+
+
+                    return (
+                        Number(
+                            b.createdAt
+                        )
+                        -
+                        Number(
+                            a.createdAt
+                        )
+                    );
+
+                }
+            )
+
+            .forEach(
+                function (
+                    record
+                ) {
+
+                    let statusClass =
+                        "status-due";
+
+
+                    let statusText =
+                        "Due";
+
+
+                    if (
+                        record.paymentStatus ===
+                        "paid"
+                    ) {
+
+                        statusClass =
+                            "status-paid";
+
+
+                        statusText =
+                            "Paid";
+
+                    }
+                    else if (
+                        record.paymentStatus ===
+                        "partial"
+                    ) {
+
+                        statusClass =
+                            "status-partial";
+
+
+                        statusText =
+                            "Partial";
+
+                    }
+
+
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    row.innerHTML = `
+
+                        <td>
+
+                            <span class="finance-primary-text">
+
+                                ${escapeHTML(
+                                    record.employeeName
+                                )}
+
+                            </span>
+
+                            <span class="finance-secondary-text">
+
+                                ${escapeHTML(
+                                    record.role
+                                )}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${formatMonth(
+                                record.salaryMonth
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatMoney(
+                                record.salary
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatMoney(
+                                record.paidAmount
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatMoney(
+                                record.dueAmount
+                            )}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="
+                                    finance-status
+                                    ${statusClass}
+                                "
+                            >
+                                ${statusText}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <div class="finance-table-actions">
+
+                                ${salaryActionHTML(
+                                    record
+                                )}
+
+                            </div>
+
+                        </td>
+
+                    `;
+
+
+                    salaryTableBody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+    }
+
+
+    salaryTableBody.addEventListener(
+        "click",
+        function (
+            event
+        ) {
+
+            const button =
+                event.target.closest(
+                    "button[data-salary-action]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            const id =
+                Number(
+                    button.dataset.id
+                );
+
+
+            const action =
+                button.dataset.salaryAction;
+
+
+            if (
+                action === "edit"
+            ) {
+
+                editSalary(
+                    id
+                );
+
+                return;
+
+            }
+
+
+            if (
+                action === "delete"
+            ) {
+
+                pendingSalaryDeleteId =
+                    id;
+
+
+                displaySalaryRecords();
+
+                return;
+
+            }
+
+
+            if (
+                action === "cancel-delete"
+            ) {
+
+                pendingSalaryDeleteId =
+                    null;
+
+
+                displaySalaryRecords();
+
+                return;
+
+            }
+
+
+            if (
+                action === "confirm-delete"
+            ) {
+
+                salaryRecords =
+                    salaryRecords.filter(
+                        function (
+                            item
+                        ) {
+
+                            return (
+                                Number(item.id)
+                                !==
+                                id
+                            );
+
+                        }
+                    );
+
+
+                pendingSalaryDeleteId =
+                    null;
+
+
+                saveSalaryRecords();
+
+                updateSummaryCards();
+
+                displaySalaryRecords();
+
+
+                showToast(
+                    "Salary record deleted successfully."
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       MINIMIZE / MAXIMIZE
+       UPDATED BEHAVIOR
+
+       Maximize now stays completely inside
+       .finance-records-grid.
+
+       It never moves over the forms above.
+    ========================================= */
+
+    function restoreAllRecordCards() {
+
+        document
+            .querySelectorAll(
+                ".finance-record-card"
+            )
+            .forEach(
+                function (
+                    card
+                ) {
+
+                    card.classList.remove(
+                        "is-maximized"
+                    );
+
+                }
+            );
+
+
+        if (
+            financeRecordsGrid
+        ) {
+
+            financeRecordsGrid.classList.remove(
+                "has-maximized-card"
             );
 
         }
 
 
-        // ==========================================
-        // RESET EXPENSE FORM
-        // ==========================================
+        document
+            .querySelectorAll(
+                '[data-card-action="maximize"]'
+            )
+            .forEach(
+                function (
+                    button
+                ) {
 
-        function resetExpenseForm() {
-
-            expenseForm.reset();
-
-
-            editingExpenseId =
-                null;
-
-
-            expenseDate.value =
-                getTodayDate();
+                    button.textContent =
+                        "⛶";
 
 
-            expenseFormTitle.textContent =
-                "Add Expense";
+                    button.title =
+                        "Maximize";
+
+                }
+            );
+
+    }
 
 
-            saveExpenseButton.innerHTML = `
+    document.addEventListener(
+        "click",
+        function (
+            event
+        ) {
 
-                <span aria-hidden="true">
-                    ▣
-                </span>
-
-                Save Expense
-
-            `;
-
-        }
-
-
-        // ==========================================
-        // RESET SALARY FORM
-        // ==========================================
-
-        function resetSalaryForm() {
-
-            salaryForm.reset();
+            const button =
+                event.target.closest(
+                    ".record-window-button"
+                );
 
 
-            editingSalaryId =
-                null;
+            if (!button) {
+
+                return;
+
+            }
 
 
-            populateEmployeeDropdown();
+            const targetId =
+                button.dataset.cardTarget;
 
 
-            employeeRole.value =
-                "";
+            const action =
+                button.dataset.cardAction;
 
 
-            salaryMonth.value =
-                getCurrentMonth();
+            const card =
+                document.getElementById(
+                    targetId
+                );
 
 
-            salaryPaidAmount.disabled =
-                false;
+            if (!card) {
+
+                return;
+
+            }
 
 
-            salaryPaidAmount.value =
-                "";
+            /* =================================
+               MINIMIZE
+            ================================== */
 
-
-            salaryFormTitle.textContent =
-                "Add Salary";
-
-
-            saveSalaryButton.innerHTML = `
-
-                <span aria-hidden="true">
-                    ▣
-                </span>
-
-                Save Salary
-
-            `;
-
-        }
-
-
-        // ==========================================
-        // RECORD CARD WINDOW CONTROLS
-        // Collapse + Expand / Restore
-        // ==========================================
-
-        recordsGrid.addEventListener(
-            "click",
-            function (
-                event
+            if (
+                action === "minimize"
             ) {
 
-                const button =
-                    event.target.closest(
-                        "[data-record-action]"
+                /*
+                   If currently maximized,
+                   return it to normal records
+                   grid first.
+                */
+
+                if (
+                    card.classList.contains(
+                        "is-maximized"
+                    )
+                ) {
+
+                    restoreAllRecordCards();
+
+                }
+
+
+                card.classList.toggle(
+                    "is-minimized"
+                );
+
+
+                button.title =
+
+                    card.classList.contains(
+                        "is-minimized"
+                    )
+
+                        ?
+
+                        "Restore"
+
+                        :
+
+                        "Minimize";
+
+
+                return;
+
+            }
+
+
+            /* =================================
+               MAXIMIZE
+            ================================== */
+
+            if (
+                action === "maximize"
+            ) {
+
+                const alreadyMaximized =
+                    card.classList.contains(
+                        "is-maximized"
                     );
 
 
-                if (!button) {
+                /*
+                   Clicking maximize again =
+                   restore normal 50/50 view.
+                */
+
+                if (
+                    alreadyMaximized
+                ) {
+
+                    restoreAllRecordCards();
 
                     return;
 
                 }
 
 
-                const card =
-                    button.closest(
-                        ".records-card"
+                /*
+                   Restore other cards first.
+                */
+
+                restoreAllRecordCards();
+
+
+                /*
+                   A maximized card must not
+                   remain minimized.
+                */
+
+                card.classList.remove(
+                    "is-minimized"
+                );
+
+
+                const minimizeButton =
+                    card.querySelector(
+                        '[data-card-action="minimize"]'
                     );
-
-
-                if (!card) {
-
-                    return;
-
-                }
-
-
-                const action =
-                    button.dataset
-                        .recordAction;
 
 
                 if (
-                    action ===
-                    "collapse"
+                    minimizeButton
                 ) {
 
-                    toggleRecordCollapse(
-                        card
-                    );
-
-                    return;
+                    minimizeButton.title =
+                        "Minimize";
 
                 }
 
 
+                /*
+                   Expand across BOTH lower
+                   records columns.
+                */
+
+                card.classList.add(
+                    "is-maximized"
+                );
+
+
                 if (
-                    action ===
-                    "maximize"
+                    financeRecordsGrid
                 ) {
 
-                    toggleRecordMaximize(
-                        card
+                    financeRecordsGrid.classList.add(
+                        "has-maximized-card"
                     );
+
+                }
+
+
+                button.textContent =
+                    "↙";
+
+
+                button.title =
+                    "Restore";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       ESCAPE = RESTORE MAXIMIZED TABLE
+    ========================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (
+            event
+        ) {
+
+            if (
+                event.key !== "Escape"
+            ) {
+
+                return;
+
+            }
+
+
+            const maximizedCard =
+                document.querySelector(
+                    ".finance-record-card.is-maximized"
+                );
+
+
+            if (
+                maximizedCard
+            ) {
+
+                restoreAllRecordCards();
+
+                return;
+
+            }
+
+
+            if (
+                pendingExpenseDeleteId !==
+                null
+            ) {
+
+                pendingExpenseDeleteId =
+                    null;
+
+
+                displayExpenseRecords();
+
+                return;
+
+            }
+
+
+            if (
+                pendingSalaryDeleteId !==
+                null
+            ) {
+
+                pendingSalaryDeleteId =
+                    null;
+
+
+                displaySalaryRecords();
+
+                return;
+
+            }
+
+
+            closeSidebar();
+
+        }
+    );
+
+
+    /* =========================================
+       TOAST
+    ========================================= */
+
+    function showToast(
+        message,
+        type = "success"
+    ) {
+
+        const oldToast =
+            document.querySelector(
+                ".finance-toast"
+            );
+
+
+        if (
+            oldToast
+        ) {
+
+            oldToast.remove();
+
+        }
+
+
+        const toast =
+            document.createElement(
+                "div"
+            );
+
+
+        toast.className =
+            `finance-toast ${type}`;
+
+
+        toast.innerHTML = `
+
+            <span class="finance-toast-icon">
+
+                ${
+                    type === "error"
+                        ? "!"
+                        : "✓"
+                }
+
+            </span>
+
+            <span>
+
+                ${escapeHTML(
+                    message
+                )}
+
+            </span>
+
+        `;
+
+
+        document.body.appendChild(
+            toast
+        );
+
+
+        requestAnimationFrame(
+            function () {
+
+                toast.classList.add(
+                    "show"
+                );
+
+            }
+        );
+
+
+        setTimeout(
+            function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        toast.remove();
+
+                    },
+                    250
+                );
+
+            },
+            2800
+        );
+
+    }
+
+
+    /* =========================================
+       SIDEBAR
+    ========================================= */
+
+    function openSidebar() {
+
+        if (!sidebar) {
+
+            return;
+
+        }
+
+
+        sidebar.classList.add(
+            "open"
+        );
+
+
+        if (
+            sidebarBackdrop
+        ) {
+
+            sidebarBackdrop.classList.add(
+                "show"
+            );
+
+        }
+
+
+        if (
+            menuButton
+        ) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeSidebar() {
+
+        if (!sidebar) {
+
+            return;
+
+        }
+
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        if (
+            sidebarBackdrop
+        ) {
+
+            sidebarBackdrop.classList.remove(
+                "show"
+            );
+
+        }
+
+
+        if (
+            menuButton
+        ) {
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    if (
+        menuButton
+    ) {
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    sidebar &&
+                    sidebar.classList.contains(
+                        "open"
+                    )
+                ) {
+
+                    closeSidebar();
+
+                }
+                else {
+
+                    openSidebar();
 
                 }
 
             }
         );
 
+    }
 
-        // ==========================================
-        // COLLAPSE RECORD CARD
-        // ==========================================
 
-        function toggleRecordCollapse(
-            card
-        ) {
+    if (
+        sidebarBackdrop
+    ) {
 
-            const collapseButton =
-                card.querySelector(
-                    '[data-record-action="collapse"]'
-                );
-
-
-            const isCurrentlyCollapsed =
-                card.classList.contains(
-                    "is-collapsed"
-                );
-
-
-            // ======================================
-            // Expand Collapsed Card
-            // ======================================
-
-            if (
-                isCurrentlyCollapsed
-            ) {
-
-                card.classList.remove(
-                    "is-collapsed"
-                );
-
-
-                collapseButton.textContent =
-                    "−";
-
-
-                collapseButton.title =
-                    "Collapse";
-
-
-                collapseButton.setAttribute(
-                    "aria-label",
-                    "Collapse record table"
-                );
-
-
-                return;
-
-            }
-
-
-            // ======================================
-            // Collapse Card
-            // ======================================
-
-            card.classList.add(
-                "is-collapsed"
-            );
-
-
-            collapseButton.textContent =
-                "+";
-
-
-            collapseButton.title =
-                "Show table";
-
-
-            collapseButton.setAttribute(
-                "aria-label",
-                "Show record table"
-            );
-
-        }
-
-
-        // ==========================================
-        // MAXIMIZE / RESTORE RECORD CARD
-        // ==========================================
-
-        function toggleRecordMaximize(
-            card
-        ) {
-
-            const maximizeButton =
-                card.querySelector(
-                    '[data-record-action="maximize"]'
-                );
-
-
-            const collapseButton =
-                card.querySelector(
-                    '[data-record-action="collapse"]'
-                );
-
-
-            const isCurrentlyMaximized =
-                card.classList.contains(
-                    "is-maximized"
-                );
-
-
-            // ======================================
-            // RESTORE
-            // ======================================
-
-            if (
-                isCurrentlyMaximized
-            ) {
-
-                card.classList.remove(
-                    "is-maximized"
-                );
-
-
-                recordsGrid.classList.remove(
-                    "has-maximized-card"
-                );
-
-
-                maximizeButton.textContent =
-                    "⛶";
-
-
-                maximizeButton.title =
-                    "Expand";
-
-
-                maximizeButton.setAttribute(
-                    "aria-label",
-                    "Expand record table"
-                );
-
-
-                return;
-
-            }
-
-
-            // ======================================
-            // Remove Previous Maximize
-            // ======================================
-
-            const previousMaximizedCard =
-                recordsGrid.querySelector(
-                    ".records-card.is-maximized"
-                );
-
-
-            if (
-                previousMaximizedCard
-            ) {
-
-                previousMaximizedCard
-                    .classList
-                    .remove(
-                        "is-maximized"
-                    );
-
-            }
-
-
-            // ======================================
-            // Automatically Open Collapsed Card
-            // ======================================
-
-            card.classList.remove(
-                "is-collapsed"
-            );
-
-
-            collapseButton.textContent =
-                "−";
-
-
-            collapseButton.title =
-                "Collapse";
-
-
-            collapseButton.setAttribute(
-                "aria-label",
-                "Collapse record table"
-            );
-
-
-            // ======================================
-            // Maximize Selected Card
-            // ======================================
-
-            card.classList.add(
-                "is-maximized"
-            );
-
-
-            recordsGrid.classList.add(
-                "has-maximized-card"
-            );
-
-
-            maximizeButton.textContent =
-                "↙";
-
-
-            maximizeButton.title =
-                "Restore";
-
-
-            maximizeButton.setAttribute(
-                "aria-label",
-                "Restore record table"
-            );
-
-        }
-
-
-        // ==========================================
-        // LOAD PROFILE NAME
-        // ==========================================
-
-        function loadProfileName() {
-
-            try {
-
-                const profile =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "riceMillProfile"
-                        ) ||
-                        "{}"
-                    );
-
-
-                if (
-                    profile.fullName
-                ) {
-
-                    expenseTopbarUserName
-                        .textContent =
-                        profile.fullName;
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Profile information could not be loaded:",
-                    error
-                );
-
-            }
-
-        }
-
-
-        // ==========================================
-        // INITIAL VALUES
-        // ==========================================
-
-        expenseDate.value =
-            getTodayDate();
-
-
-        salaryMonth.value =
-            getCurrentMonth();
-
-
-        populateEmployeeDropdown();
-
-
-        // ==========================================
-        // INITIAL DISPLAY
-        // ==========================================
-
-        displayExpenses();
-
-        displaySalaries();
-
-        loadProfileName();
+        sidebarBackdrop.addEventListener(
+            "click",
+            closeSidebar
+        );
 
     }
-);
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================= */
+
+    expenseDateInput.value =
+        getTodayDate();
+
+
+    salaryMonthInput.value =
+        getCurrentMonth();
+
+
+    populateEmployees();
+
+
+    saveExpenseRecords();
+
+    saveSalaryRecords();
+
+
+    updateSummaryCards();
+
+
+    displayExpenseRecords();
+
+    displaySalaryRecords();
+
+});

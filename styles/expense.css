@@ -1,525 +1,603 @@
 /* =========================================
-   Smart Rice Mill ERP
-   Expense & Salary Management Page
-   ========================================= */
+   SMART RICE MILL ERP
+   EXPENSE & SALARY MANAGEMENT
+========================================= */
 
 
-/* =========================================
-   Topbar Links
-   ========================================= */
-
-.notification-area,
-.user-profile {
-    color: inherit;
-    text-decoration: none;
+[hidden] {
+    display: none !important;
 }
 
 
 /* =========================================
-   Summary Cards
-   ========================================= */
+   PAGE
+========================================= */
 
-.expense-summary-grid {
+.finance-content {
+    padding-top: 26px;
+}
+
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.finance-page-heading {
+    margin-bottom: 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.finance-page-heading h2 {
+    color: #17231c;
+
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+
+.finance-page-heading p {
+    margin-top: 5px;
+
+    max-width: 760px;
+
+    color: #78837c;
+
+    font-size: 0.77rem;
+    line-height: 1.45;
+}
+
+
+.finance-heading-badges {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.finance-heading-badge {
+    padding: 7px 10px;
+
+    color: #147c35;
+    background: #edf8ef;
+
+    border: 1px solid #bfdfc7;
+    border-radius: 16px;
+
+    font-size: 0.62rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.finance-summary-grid {
     display: grid;
 
     grid-template-columns:
         repeat(3, minmax(0, 1fr));
 
-    gap: 28px;
-}
-
-.expense-summary-grid .summary-icon {
-    font-size: 2rem;
-    font-weight: 700;
+    gap: 22px;
 }
 
 
-/* =========================================
-   Form Cards Layout
-   ========================================= */
-
-.management-form-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 38px;
-
-    margin-top: 36px;
-
-    align-items: start;
-}
-
-.expense-form-card,
-.salary-form-card {
-    min-width: 0;
-
-    padding: 24px 25px 26px;
-}
-
-.expense-form-card h2,
-.salary-form-card h2 {
-    margin-bottom: 25px;
-}
-
-
-/* =========================================
-   Forms
-   ========================================= */
-
-.expense-form,
-.salary-form {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    column-gap: 28px;
-    row-gap: 20px;
-}
-
-
-/* =========================================
-   Form Fields
-   ========================================= */
-
-.form-field {
-    min-width: 0;
-}
-
-.form-field label {
-    display: block;
-
-    margin-bottom: 9px;
-
-    font-size: 0.9rem;
-    font-weight: 500;
-
-    color: #171e29;
-}
-
-.form-field input,
-.form-field select {
-    width: 100%;
-    height: 46px;
-
-    padding: 0 14px;
-
-    font-family: inherit;
-    font-size: 0.88rem;
-
-    color: #171e29;
-    background-color: #ffffff;
-
-    border: 1px solid #d7dee4;
-    border-radius: 7px;
-
-    outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background-color 0.2s ease;
-}
-
-.form-field input::placeholder {
-    color: #929aa6;
-}
-
-.form-field select {
-    cursor: pointer;
-}
-
-.form-field input:hover:not(:disabled),
-.form-field select:hover:not(:disabled) {
-    border-color: #b9c2ca;
-}
-
-.form-field input:focus,
-.form-field select:focus {
-    border-color: #139536;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(19, 149, 54, 0.11);
-}
-
-.form-field input[type="date"],
-.form-field input[type="month"] {
-    cursor: pointer;
-
-    color: #626d77;
-}
-
-
-/* =========================================
-   Readonly / Disabled Fields
-   ========================================= */
-
-.form-field input[readonly] {
-    color: #66717b;
-    background-color: #f5f7f8;
+.finance-summary-grid .summary-card {
+    min-height: 108px;
 
     cursor: default;
 }
 
-.form-field input:disabled,
-.form-field select:disabled {
-    color: #8a929b;
-    background-color: #f5f7f8;
+
+.finance-summary-grid .summary-card:hover {
+    transform: none;
+}
+
+
+.maintenance-summary-icon {
+    color: #d08000;
+
+    background: #fff3df;
+}
+
+
+.maintenance-summary-value {
+    color: #d08000;
+}
+
+
+/* =========================================
+   FORM GRID
+========================================= */
+
+.finance-entry-grid {
+    margin-top: 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 28px;
+
+    align-items: stretch;
+}
+
+
+.finance-form-card {
+    min-width: 0;
+    min-height: 430px;
+
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.finance-card-heading {
+    margin-bottom: 22px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+
+.finance-card-heading h2 {
+    color: #17231c;
+
+    font-size: 1.08rem;
+}
+
+
+.finance-card-heading p {
+    margin-top: 5px;
+
+    color: #7b867f;
+
+    font-size: 0.68rem;
+    line-height: 1.4;
+}
+
+
+.finance-card-badge {
+    padding: 6px 9px;
+
+    color: #147c35;
+    background: #edf8ef;
+
+    border: 1px solid #c0dfc7;
+    border-radius: 14px;
+
+    font-size: 0.58rem;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.finance-form {
+    flex: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    column-gap: 20px;
+    row-gap: 18px;
+
+    align-content: start;
+}
+
+
+.finance-form-field {
+    min-width: 0;
+}
+
+
+.finance-form-field label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #202b24;
+
+    font-size: 0.76rem;
+    font-weight: 600;
+}
+
+
+.finance-form-field input,
+.finance-form-field select {
+    width: 100%;
+    height: 43px;
+
+    padding: 0 12px;
+
+    color: #17231c;
+    background: #ffffff;
+
+    border: 1px solid #d4ded7;
+    border-radius: 7px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 0.75rem;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.finance-form-field input::placeholder {
+    color: #98a29b;
+}
+
+
+.finance-form-field input:focus,
+.finance-form-field select:focus {
+    border-color: #15913a;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(21, 145, 58, 0.09);
+}
+
+
+.finance-form-field input[readonly],
+.finance-form-field input:disabled {
+    color: #737e77;
+    background: #f4f7f5;
 
     cursor: not-allowed;
 }
 
 
 /* =========================================
-   Form Buttons
-   ========================================= */
+   FORM ACTION
+========================================= */
 
-.form-action {
+.finance-form-action {
     grid-column: 1 / -1;
 
+    margin-top: 18px;
+
     display: flex;
+    align-items: center;
     justify-content: center;
 
-    margin-top: 18px;
+    gap: 10px;
 }
 
-.primary-action-button {
-    min-width: 205px;
-    height: 48px;
 
-    padding: 0 25px;
+.primary-finance-button,
+.secondary-finance-button {
+    min-width: 170px;
+    height: 44px;
+
+    padding: 0 19px;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    gap: 8px;
+    gap: 7px;
 
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-
-    color: #ffffff;
-    background-color: #129238;
-
-    border: none;
     border-radius: 7px;
 
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 600;
+
     cursor: pointer;
+}
+
+
+.primary-finance-button {
+    color: #ffffff;
+    background: #129238;
 
     box-shadow:
         0 6px 14px
         rgba(18, 146, 56, 0.16);
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
 }
 
-.primary-action-button:hover {
-    background-color: #0e7f30;
 
-    box-shadow:
-        0 8px 17px
-        rgba(18, 146, 56, 0.22);
-
-    transform: translateY(-1px);
+.primary-finance-button:hover {
+    background: #0e7f30;
 }
 
-.primary-action-button:active {
-    transform: translateY(0);
+
+.secondary-finance-button {
+    color: #536058;
+    background: #ffffff;
+
+    border: 1px solid #ccd6cf;
 }
 
-.primary-action-button:focus-visible {
-    outline:
-        3px solid
-        rgba(18, 146, 56, 0.24);
 
-    outline-offset: 3px;
+.secondary-finance-button:hover {
+    background: #f3f6f4;
 }
 
 
 /* =========================================
-   Records Layout
-   ========================================= */
+   RECORDS AREA
 
-.records-grid {
+   IMPORTANT:
+   ALL MINIMIZE / MAXIMIZE ACTIVITY
+   STAYS INSIDE THIS SECTION.
+
+   It never overlaps the forms above.
+========================================= */
+
+.finance-records-grid {
+    margin-top: 34px;
+    margin-bottom: 24px;
+
+    min-height: 390px;
+
     display: grid;
 
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap: 30px;
-
-    margin-top: 55px;
+    gap: 28px;
 
     align-items: start;
 
-    transition:
-        grid-template-columns 0.25s ease;
+    position: relative;
 }
 
-.records-card {
+
+/* =========================================
+   NORMAL RECORD CARD
+========================================= */
+
+.finance-record-card {
     min-width: 0;
 
-    padding: 23px 21px 10px;
+    width: 100%;
+
+    height: 390px;
+    min-height: 390px;
+
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
 
     transition:
-        box-shadow 0.25s ease,
-        transform 0.25s ease;
+        height 0.2s ease,
+        min-height 0.2s ease,
+        opacity 0.18s ease;
 }
 
 
 /* =========================================
-   Records Card Header
-   ========================================= */
+   RECORD HEADER
+========================================= */
 
-.records-card-header {
+.record-card-header {
+    flex: 0 0 auto;
+
+    min-height: 76px;
+
+    padding: 18px 20px;
+
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 14px;
 
-    margin-bottom: 24px;
+    background: #ffffff;
+
+    border-bottom: 1px solid #e0e7e2;
 }
 
-.records-card-header h2 {
-    margin: 0;
+
+.record-card-header h2 {
+    color: #17231c;
+
+    font-size: 1.02rem;
+}
+
+
+.record-card-header p {
+    margin-top: 4px;
+
+    color: #7d8881;
+
+    font-size: 0.65rem;
 }
 
 
 /* =========================================
-   Collapse / Expand Controls
-   ========================================= */
+   MINIMIZE / MAXIMIZE BUTTONS
+========================================= */
 
-.records-card-controls {
+.record-window-controls {
+    flex: 0 0 auto;
+
     display: flex;
     align-items: center;
 
-    gap: 7px;
+    gap: 6px;
 }
 
+
 .record-window-button {
-    width: 33px;
-    height: 33px;
+    width: 32px;
+    height: 32px;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0;
+    color: #496057;
+    background: #ffffff;
+
+    border: 1px solid #d0dad3;
+    border-radius: 7px;
 
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 0.91rem;
     font-weight: 600;
-
-    color: #58636d;
-    background-color: #ffffff;
-
-    border: 1px solid #d4dce2;
-    border-radius: 7px;
 
     cursor: pointer;
 
     transition:
-        color 0.2s ease,
-        border-color 0.2s ease,
-        background-color 0.2s ease,
-        transform 0.2s ease;
+        background-color 0.17s ease,
+        color 0.17s ease,
+        border-color 0.17s ease;
 }
+
 
 .record-window-button:hover {
-    color: #118a34;
-    background-color: #f3faf5;
+    color: #147d35;
+    background: #edf8ef;
 
-    border-color: #15913a;
-}
-
-.record-window-button:active {
-    transform: scale(0.95);
-}
-
-.record-window-button:focus-visible {
-    outline:
-        3px solid
-        rgba(18, 146, 56, 0.18);
-
-    outline-offset: 2px;
+    border-color: #a8d0b1;
 }
 
 
 /* =========================================
-   Table Wrapper
-   ========================================= */
+   RECORD BODY
+========================================= */
 
-.table-wrapper {
+.record-card-body {
+    flex: 1;
+
+    min-height: 0;
+
+    padding: 0 18px 15px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================
+   TABLE WRAPPER
+========================================= */
+
+.finance-table-wrapper {
+    flex: 1;
+
     width: 100%;
+    min-height: 0;
 
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: auto;
 
     scrollbar-width: thin;
 }
 
 
 /* =========================================
-   Collapse State
-   ========================================= */
+   TABLE
+========================================= */
 
-.records-card.is-collapsed {
-    padding-bottom: 22px;
-}
-
-.records-card.is-collapsed
-.record-table-content {
-    display: none;
-}
-
-.records-card.is-collapsed
-.records-card-header {
-    margin-bottom: 0;
-}
-
-
-/* =========================================
-   Maximized State
-   ========================================= */
-
-.records-grid.has-maximized-card {
-    grid-template-columns: 1fr;
-}
-
-.records-grid.has-maximized-card
-.records-card:not(.is-maximized) {
-    display: none;
-}
-
-.records-card.is-maximized {
-    grid-column: 1 / -1;
-
+.finance-table {
     width: 100%;
 
-    box-shadow:
-        0 10px 30px
-        rgba(24, 44, 34, 0.10);
+    border-collapse: collapse;
+
+    font-size: 0.69rem;
 }
 
 
-/* Table can breathe when maximized */
-
-.records-card.is-maximized
-.expense-table,
-.records-card.is-maximized
-.salary-table {
-    min-width: 900px;
-}
-
-
-/* =========================================
-   Tables
-   ========================================= */
-
-.expense-table,
-.salary-table {
-    width: 100%;
+.expense-record-table {
     min-width: 720px;
-
-    border-collapse: separate;
-    border-spacing: 0;
-
-    font-size: 0.84rem;
 }
 
-.expense-table th,
-.expense-table td,
-.salary-table th,
-.salary-table td {
-    padding: 14px 15px;
+
+.salary-record-table {
+    min-width: 830px;
+}
+
+
+.finance-table thead {
+    position: sticky;
+    top: 0;
+
+    z-index: 2;
+
+    background: #fafcfa;
+
+    border: 1px solid #d8dfda;
+}
+
+
+.finance-table th,
+.finance-table td {
+    padding: 11px 10px;
 
     text-align: left;
     vertical-align: middle;
+
+    white-space: nowrap;
 }
 
 
-/* =========================================
-   Table Header
-   ========================================= */
+.finance-table th {
+    color: #344038;
 
-.expense-table thead th,
-.salary-table thead th {
-    font-weight: 500;
-
-    color: #171e29;
-    background-color: #fafcfc;
-
-    border-top: 1px solid #d8dee3;
-    border-bottom: 1px solid #d8dee3;
-}
-
-.expense-table thead th:first-child,
-.salary-table thead th:first-child {
-    border-left: 1px solid #d8dee3;
-
-    border-radius: 8px 0 0 8px;
-}
-
-.expense-table thead th:last-child,
-.salary-table thead th:last-child {
-    border-right: 1px solid #d8dee3;
-
-    border-radius: 0 8px 8px 0;
+    font-size: 0.65rem;
+    font-weight: 600;
 }
 
 
-/* =========================================
-   Table Body
-   ========================================= */
-
-.expense-table tbody td,
-.salary-table tbody td {
-    border-bottom: 1px solid #e1e5e8;
-}
-
-.expense-table tbody tr:last-child td,
-.salary-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.expense-table tbody tr:hover td,
-.salary-table tbody tr:hover td {
-    background-color: #fafcfa;
+.finance-table tbody tr {
+    border-bottom: 1px solid #e2e8e4;
 }
 
 
-/* =========================================
-   Record Text
-   ========================================= */
+.finance-table tbody tr:hover {
+    background: #fbfdfb;
+}
 
-.record-primary-text {
-    display: block;
+
+.finance-primary-text {
+    color: #1d2921;
 
     font-weight: 600;
-
-    color: #28323c;
 }
 
-.record-secondary-text {
-    display: block;
 
-    max-width: 190px;
+.finance-secondary-text {
+    display: block;
 
     margin-top: 3px;
 
+    max-width: 175px;
+
     overflow: hidden;
 
-    font-size: 0.76rem;
+    color: #808b84;
 
-    color: #7b858e;
+    font-size: 0.59rem;
 
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -527,318 +605,439 @@
 
 
 /* =========================================
-   Status Badges
-   ========================================= */
+   STATUS
+========================================= */
 
-.finance-status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
+.finance-status {
     min-width: 62px;
 
     padding: 5px 9px;
 
-    font-size: 0.74rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    font-size: 0.6rem;
     font-weight: 600;
-
-    border-radius: 20px;
 }
 
-.finance-status-paid {
-    color: #157336;
-    background-color: #eaf7ed;
+
+.status-paid {
+    color: #147d35;
+    background: #e9f7ed;
+
+    border: 1px solid #7ec28f;
 }
 
-.finance-status-due {
-    color: #a12626;
-    background-color: #fdecec;
+
+.status-due {
+    color: #bd3939;
+    background: #fff0f0;
+
+    border: 1px solid #e1aaaa;
 }
 
-.finance-status-partial {
-    color: #926800;
-    background-color: #fff5d8;
+
+.status-partial {
+    color: #b46c00;
+    background: #fff4e3;
+
+    border: 1px solid #e1b35f;
 }
 
 
 /* =========================================
-   Action Buttons
-   ========================================= */
+   ACTION BUTTONS
+========================================= */
 
-.finance-action-group {
+.finance-table-actions {
     display: flex;
     align-items: center;
 
     gap: 6px;
 }
 
+
 .finance-edit-button,
-.finance-delete-button {
-    min-width: 58px;
-    height: 32px;
+.finance-delete-button,
+.finance-confirm-button,
+.finance-cancel-button {
+    height: 30px;
 
     padding: 0 10px;
 
-    font-family: inherit;
-    font-size: 0.76rem;
-    font-weight: 600;
-
     border-radius: 6px;
 
-    cursor: pointer;
+    background: #ffffff;
 
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease,
-        border-color 0.2s ease;
+    font-family: inherit;
+    font-size: 0.62rem;
+    font-weight: 600;
+
+    cursor: pointer;
 }
+
 
 .finance-edit-button {
-    color: #148d35;
-    background-color: #ffffff;
+    color: #148039;
 
-    border: 1px solid #148d35;
+    border: 1px solid #40a65c;
 }
+
 
 .finance-edit-button:hover {
     color: #ffffff;
-    background-color: #148d35;
+    background: #168d3b;
 }
+
 
 .finance-delete-button {
-    color: #c62828;
-    background-color: #fff8f8;
+    color: #c43c3c;
 
-    border: 1px solid #e4aaaa;
+    border: 1px solid #e0a4a4;
 }
+
 
 .finance-delete-button:hover {
     color: #ffffff;
-    background-color: #c62828;
+    background: #c83d3d;
+}
 
-    border-color: #c62828;
+
+.finance-confirm-button {
+    color: #ffffff;
+    background: #c83d3d;
+
+    border: 1px solid #c83d3d;
+}
+
+
+.finance-cancel-button {
+    color: #536058;
+
+    border: 1px solid #c9d3cc;
+}
+
+
+.delete-question {
+    color: #b13838;
+
+    font-size: 0.6rem;
+    font-weight: 600;
 }
 
 
 /* =========================================
-   Empty Table
-   ========================================= */
+   EMPTY TABLE
+========================================= */
 
 .finance-empty-row td {
-    padding: 35px 20px;
+    height: 140px;
+
+    color: #808b84;
 
     text-align: center;
-
-    color: #7c868f;
-    background-color: #fafcfc;
 }
 
 
 /* =========================================
-   Toast
-   ========================================= */
+   MINIMIZED STATE
+
+   Keeps the original column.
+   Does not affect anything above.
+========================================= */
+
+.finance-record-card.is-minimized {
+    height: 76px;
+    min-height: 76px;
+}
+
+
+.finance-record-card.is-minimized
+.record-card-body {
+    display: none;
+}
+
+
+.finance-record-card.is-minimized
+.record-card-header {
+    border-bottom: 0;
+}
+
+
+/* =========================================
+   MAXIMIZED STATE
+
+   CRITICAL CHANGE:
+   NO position: fixed;
+   NO full-screen overlay.
+
+   It simply occupies BOTH columns of the
+   bottom finance-records-grid.
+========================================= */
+
+.finance-record-card.is-maximized {
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    height: 390px;
+    min-height: 390px;
+
+    position: relative;
+
+    z-index: 3;
+
+    margin: 0;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 8px 24px
+        rgba(16, 38, 23, 0.1);
+}
+
+
+.finance-record-card.is-maximized
+.record-card-body {
+    display: flex;
+}
+
+
+.finance-record-card.is-maximized
+.finance-table {
+    font-size: 0.72rem;
+}
+
+
+/* =========================================
+   HIDE THE OTHER CARD ONLY WHILE
+   ONE CARD IS MAXIMIZED
+
+   This means the maximized table uses the
+   exact combined width of the TWO lower
+   table cards.
+========================================= */
+
+.finance-records-grid.has-maximized-card
+.finance-record-card:not(.is-maximized) {
+    display: none;
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
 
 .finance-toast {
     position: fixed;
 
-    top: 25px;
-    right: 25px;
+    top: 94px;
+    right: 24px;
 
-    min-width: 290px;
-    max-width: 410px;
+    z-index: 8000;
+
+    max-width: 440px;
+
+    padding: 12px 15px;
 
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 
-    gap: 12px;
+    gap: 10px;
 
-    padding: 14px 18px;
+    color: #24512f;
+    background: #f0faf2;
 
-    color: #17351f;
-    background-color: #ffffff;
-
-    border-left: 5px solid #15913a;
+    border: 1px solid #b8dec1;
     border-radius: 8px;
 
     box-shadow:
-        0 6px 20px
-        rgba(0, 0, 0, 0.15);
+        0 12px 28px
+        rgba(20, 38, 25, 0.14);
 
-    font-size: 14px;
-    font-weight: 600;
-
-    z-index: 9999;
+    font-size: 0.75rem;
+    line-height: 1.45;
 
     opacity: 0;
 
-    transform: translateX(30px);
+    transform: translateY(-8px);
+
+    pointer-events: none;
 
     transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
+        opacity 0.2s ease,
+        transform 0.2s ease;
 }
+
 
 .finance-toast.show {
     opacity: 1;
 
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
-.finance-toast .toast-icon {
-    width: 26px;
-    height: 26px;
 
-    flex-shrink: 0;
+.finance-toast.error {
+    color: #8d2b2b;
+    background: #fff1f1;
 
-    display: flex;
+    border-color: #e5b0b0;
+}
+
+
+.finance-toast-icon {
+    flex: 0 0 auto;
+
+    width: 20px;
+    height: 20px;
+
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    color: #15913a;
-    background-color: #e7f5eb;
+    color: #ffffff;
+    background: #15913a;
 
     border-radius: 50%;
 
+    font-size: 0.68rem;
     font-weight: 700;
 }
 
-.finance-toast.error {
-    color: #8f1d1d;
 
-    border-left-color: #d32f2f;
-}
-
-.finance-toast.error .toast-icon {
-    color: #d32f2f;
-    background-color: #fdeaea;
+.finance-toast.error
+.finance-toast-icon {
+    background: #c83a3a;
 }
 
 
 /* =========================================
-   Responsive Design
-   ========================================= */
+   RESPONSIVE
+========================================= */
 
 @media screen and (max-width: 1250px) {
 
-    .expense-summary-grid {
-        gap: 20px;
-    }
-
-    .management-form-grid {
-        gap: 25px;
-    }
-
-    .expense-form,
-    .salary-form {
-        column-gap: 20px;
-    }
-
-}
-
-
-@media screen and (max-width: 1050px) {
-
-    .expense-summary-grid {
+    .finance-summary-grid {
         grid-template-columns:
             repeat(2, minmax(0, 1fr));
     }
 
-    .expense-summary-grid
-    .summary-card:last-child {
-        grid-column: 1 / -1;
-    }
 
-    .management-form-grid,
-    .records-grid {
+    .finance-entry-grid {
         grid-template-columns: 1fr;
     }
 
-    .records-grid {
-        margin-top: 35px;
+
+    .finance-records-grid {
+        grid-template-columns: 1fr;
+
+        min-height: auto;
+    }
+
+
+    .finance-record-card {
+        height: 390px;
+        min-height: 390px;
+    }
+
+
+    .finance-record-card.is-maximized {
+        grid-column: 1;
+
+        height: 390px;
+        min-height: 390px;
     }
 
 }
 
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 760px) {
 
-    .expense-summary-grid {
-        grid-template-columns: 1fr;
+    .finance-page-heading,
+    .finance-card-heading {
+        flex-direction: column;
 
-        gap: 16px;
+        align-items: flex-start;
     }
 
-    .expense-summary-grid
-    .summary-card:last-child {
+
+    .finance-heading-badges {
+        flex-wrap: wrap;
+    }
+
+
+    .finance-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .finance-form {
+        grid-template-columns: 1fr;
+    }
+
+
+    .finance-form-action {
         grid-column: auto;
+
+        flex-direction: column-reverse;
+
+        align-items: stretch;
     }
 
-    .management-form-grid {
-        margin-top: 25px;
-    }
 
-    .expense-form-card,
-    .salary-form-card {
-        padding: 21px 18px;
-    }
-
-    .expense-form,
-    .salary-form {
-        grid-template-columns: 1fr;
-
-        gap: 18px;
-    }
-
-    .form-action {
-        margin-top: 8px;
-    }
-
-    .primary-action-button {
+    .primary-finance-button,
+    .secondary-finance-button {
         width: 100%;
     }
 
-    .records-card {
+
+    .finance-form-card {
+        min-height: auto;
+    }
+
+
+    .finance-record-card {
+        height: 390px;
+        min-height: 390px;
+    }
+
+
+    .finance-record-card.is-minimized {
+        height: 76px;
+        min-height: 76px;
+    }
+
+
+    .finance-record-card.is-maximized {
+        height: 390px;
+        min-height: 390px;
+    }
+
+
+    .record-card-header {
         padding:
-            20px 16px 8px;
+            16px
+            14px;
     }
 
-    .records-card-header {
-        margin-bottom: 20px;
+
+    .record-card-body {
+        padding:
+            0
+            12px
+            12px;
     }
 
-}
-
-
-@media screen and (max-width: 440px) {
-
-    .expense-form-card h2,
-    .salary-form-card h2,
-    .records-card h2 {
-        font-size: 1.15rem;
-    }
-
-    .form-field input,
-    .form-field select {
-        height: 45px;
-    }
-
-    .expense-table th,
-    .expense-table td,
-    .salary-table th,
-    .salary-table td {
-        padding: 12px 13px;
-    }
-
-    .record-window-button {
-        width: 31px;
-        height: 31px;
-    }
 
     .finance-toast {
-        left: 15px;
-        right: 15px;
+        top: 82px;
 
-        min-width: auto;
+        left: 14px;
+        right: 14px;
+
         max-width: none;
     }
 
