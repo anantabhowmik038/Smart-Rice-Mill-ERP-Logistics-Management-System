@@ -7,583 +7,1019 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="User Role Management - Smart Rice Mill ERP & Logistics Management System">
+
     <title>User Role Management | Smart Rice Mill ERP</title>
 
-    <!-- Common Dashboard CSS -->
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet"
+          href="../styles/dashboard.css">
 
-    <!-- User Role Page CSS -->
-    <link rel="stylesheet" href="../styles/users.css">
+    <link rel="stylesheet"
+          href="../styles/users.css">
 </head>
+
 
 <body>
 
-    <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-        <!-- =====================================
-             Sidebar
-        ====================================== -->
-        <aside class="sidebar">
 
-            <div class="sidebar-header">
+    <!-- =========================================
+         SIDEBAR
+    ========================================== -->
 
-                <div class="sidebar-logo" aria-hidden="true">
-                    <span class="logo-shape logo-shape-one"></span>
-                    <span class="logo-shape logo-shape-two"></span>
+    <aside class="sidebar"
+           id="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="sidebar-logo"
+                 aria-hidden="true">
+
+                <span class="logo-shape logo-shape-one"></span>
+
+                <span class="logo-shape logo-shape-two"></span>
+
+            </div>
+
+
+            <div class="sidebar-brand">
+
+                <h2 id="sidebarMillName">
+                    Smart Rice Mill
+                </h2>
+
+                <p>
+                    ERP &amp; Logistics<br>
+                    Management System
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-navigation"
+             aria-label="Main navigation">
+
+
+            <!-- DASHBOARD -->
+
+            <a class="navigation-link"
+               href="dashboard.html">
+
+                <span class="navigation-icon">
+                    ⌂
+                </span>
+
+                <span class="navigation-text">
+                    Dashboard
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- NOTIFICATIONS -->
+
+            <a class="navigation-link"
+               href="notifications.html">
+
+                <span class="navigation-icon">
+                    🔔
+                </span>
+
+                <span class="navigation-text">
+                    Notifications
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- PURCHASE -->
+
+            <a class="navigation-link"
+               href="purchase.html">
+
+                <span class="navigation-icon">
+                    🛒
+                </span>
+
+                <span class="navigation-text">
+                    Purchase
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- PRODUCTION -->
+
+            <a class="navigation-link"
+               href="production.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Production
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- INVENTORY -->
+
+            <a class="navigation-link"
+               href="inventory.html">
+
+                <span class="navigation-icon">
+                    ▣
+                </span>
+
+                <span class="navigation-text">
+                    Inventory
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- SALES -->
+
+            <a class="navigation-link"
+               href="sales.html">
+
+                <span class="navigation-icon">
+                    ◇
+                </span>
+
+                <span class="navigation-text">
+                    Sales
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- DELIVERY -->
+
+            <a class="navigation-link"
+               href="delivery.html">
+
+                <span class="navigation-icon">
+                    ▱
+                </span>
+
+                <span class="navigation-text">
+                    Delivery
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- REPORTS -->
+
+            <a class="navigation-link"
+               href="reports.html">
+
+                <span class="navigation-icon">
+                    ▥
+                </span>
+
+                <span class="navigation-text">
+                    Reports
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- EXPENSE & SALARY -->
+
+            <a class="navigation-link"
+               href="expense.html">
+
+                <span class="navigation-icon">
+                    ৳
+                </span>
+
+                <span class="navigation-text">
+                    Expense &amp; Salary
+                </span>
+
+                <span class="navigation-arrow">
+                    ›
+                </span>
+
+            </a>
+
+
+            <!-- =========================================
+                 SETTINGS GROUP
+
+                 IMPORTANT:
+                 - Settings text -> profile.html
+                 - Arrow button -> submenu toggle
+                 - Arrow character always "›"
+                 - CSS rotates it when submenu opens
+            ========================================== -->
+
+            <div class="sidebar-menu-group settings-menu-group open"
+                 id="settingsMenuGroup">
+
+
+                <div class="sidebar-parent-row">
+
+
+                    <a class="navigation-link settings-parent-link"
+                       href="profile.html">
+
+                        <span class="navigation-icon">
+                            ⚙
+                        </span>
+
+                        <span class="navigation-text">
+                            Settings
+                        </span>
+
+                    </a>
+
+
+                    <button
+                        class="submenu-arrow-button"
+                        id="settingsToggle"
+                        type="button"
+                        aria-label="Toggle Settings submenu"
+                        aria-expanded="true"
+                        aria-controls="settingsSubmenu"
+                    >
+
+                        <span class="settings-chevron">
+                            ›
+                        </span>
+
+                    </button>
+
                 </div>
 
-                <div class="sidebar-brand">
 
-                    <h2>Smart Rice Mill</h2>
+                <!-- SETTINGS SUBMENU -->
 
-                    <p>
-                        ERP &amp; Logistics<br>
-                        Management System
-                    </p>
+                <div class="sidebar-submenu"
+                     id="settingsSubmenu">
+
+
+                    <a class="navigation-link sub-navigation-link active"
+                       href="users.html">
+
+                        <span class="navigation-icon">
+                            👥
+                        </span>
+
+                        <span class="navigation-text">
+                            User Roles
+                        </span>
+
+                    </a>
+
 
                 </div>
 
             </div>
 
 
-            <nav class="sidebar-navigation"
-                 aria-label="Main navigation">
+            <!-- MAINTENANCE -->
 
-                <a class="navigation-link"
-                   href="dashboard.html">
+            <a class="navigation-link"
+               href="maintenance.html">
 
-                    <span class="navigation-icon">⌂</span>
-                    <span class="navigation-text">Dashboard</span>
-                    <span class="navigation-arrow">›</span>
+                <span class="navigation-icon">
+                    🔧
+                </span>
 
-                </a>
+                <span class="navigation-text">
+                    Maintenance
+                </span>
 
-
-                <a class="navigation-link"
-                   href="purchase.html">
-
-                    <span class="navigation-icon">🛒</span>
-                    <span class="navigation-text">Purchase</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="production.html">
-
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Production</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="inventory.html">
-
-                    <span class="navigation-icon">▣</span>
-                    <span class="navigation-text">Inventory</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="sales.html">
-
-                    <span class="navigation-icon">◇</span>
-                    <span class="navigation-text">Sales</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="delivery.html">
-
-                    <span class="navigation-icon">▱</span>
-                    <span class="navigation-text">Delivery</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link"
-                   href="reports.html">
-
-                    <span class="navigation-icon">▥</span>
-                    <span class="navigation-text">Reports</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-
-                <a class="navigation-link active"
-                   href="profile.html">
-
-                    <span class="navigation-icon">⚙</span>
-                    <span class="navigation-text">Settings</span>
-                    <span class="navigation-arrow">›</span>
-
-                </a>
-
-            </nav>
-
-
-            <a class="logout-link"
-               href="../index.html">
-
-                <span class="logout-icon">↪</span>
-                <span>Logout</span>
+                <span class="navigation-arrow">
+                    ›
+                </span>
 
             </a>
 
-        </aside>
+
+        </nav>
 
 
-        <!-- =====================================
-             Main Area
-        ====================================== -->
-        <main class="main-area">
+        <!-- LOGOUT -->
 
-            <!-- =====================================
-                 Topbar
-            ====================================== -->
-            <header class="topbar">
+        <a class="logout-link"
+           href="#"
+           id="logoutBtn">
 
-                <div class="topbar-left">
+            <span class="logout-icon">
+                ↪
+            </span>
 
-                    <button class="menu-button"
-                            type="button"
-                            aria-label="Open navigation menu">
+            <span>
+                Logout
+            </span>
 
-                        ☰
+        </a>
 
-                    </button>
-
-                    <h1>User Role Management</h1>
-
-                </div>
+    </aside>
 
 
-                <div class="topbar-right">
+    <div class="sidebar-backdrop"
+         id="sidebarBackdrop">
+    </div>
 
-                    <a class="notification-area notification-page-link"
-                       href="notifications.html"
-                       aria-label="View notifications">
 
-                        <span class="notification-icon">♧</span>
+    <!-- =========================================
+         MAIN AREA
+    ========================================== -->
 
-                        <span class="notification-count">
-                            3
+    <main class="main-area">
+
+
+        <!-- =========================================
+             TOPBAR
+        ========================================== -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button class="menu-button"
+                        id="menuButton"
+                        type="button"
+                        aria-label="Open navigation menu"
+                        aria-expanded="false">
+
+                    ☰
+
+                </button>
+
+
+                <h1>
+                    User Role Management
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+
+                <a class="notification-area"
+                   href="notifications.html"
+                   aria-label="Open notifications">
+
+                    <span class="notification-icon">
+                        ♧
+                    </span>
+
+                    <span class="notification-count">
+                        3
+                    </span>
+
+                </a>
+
+
+                <a class="user-profile"
+                   href="profile.html">
+
+                    <div class="user-avatar">
+                        👤
+                    </div>
+
+
+                    <div class="user-information">
+
+                        <strong id="topbarUserName">
+                            Admin User
+                        </strong>
+
+                        <span>
+                            Rice Mill Owner
                         </span>
-
-                    </a>
-
-
-                    <div class="user-profile">
-
-                        <div class="user-avatar"
-                             aria-hidden="true">
-
-                            👤
-
-                        </div>
-
-                        <div class="user-information">
-
-                            <strong>Admin User</strong>
-                            <span>Rice Mill Owner</span>
-
-                        </div>
-
-                        <span class="profile-arrow">⌄</span>
 
                     </div>
 
+
+                    <span class="profile-arrow">
+                        ⌄
+                    </span>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================================
+             CONTENT
+        ========================================== -->
+
+        <section class="dashboard-content users-content">
+
+
+            <!-- =========================================
+                 PAGE HEADING
+            ========================================== -->
+
+            <div class="users-page-heading">
+
+                <div>
+
+                    <h2>
+                        Role-Based Access Control
+                    </h2>
+
+                    <p>
+                        Create system users, assign operational roles and control
+                        access to Smart Rice Mill ERP modules.
+                    </p>
+
                 </div>
 
-            </header>
+
+                <div class="users-heading-badges">
+
+                    <span class="users-heading-badge">
+                        RBAC Enabled
+                    </span>
+
+                    <span class="users-heading-badge">
+                        Owner Protected
+                    </span>
+
+                </div>
+
+            </div>
 
 
-            <!-- =====================================
-                 User Role Content
-            ====================================== -->
-            <section class="dashboard-content users-page">
+            <!-- =========================================
+                 SUMMARY
+            ========================================== -->
 
-                <!-- =====================================
-                     Summary Cards
-                ====================================== -->
-                <section class="users-summary-grid"
-                         aria-label="User role summary">
-
-                    <!-- Total Users -->
-                    <article class="summary-card">
-
-                        <div class="summary-icon green-icon users-simple-icon">
-                            👥
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Total Users</p>
-
-                            <h2 class="green-value">
-                                12
-                            </h2>
-
-                        </div>
-
-                    </article>
+            <section class="users-summary-grid">
 
 
-                    <!-- Admins -->
-                    <article class="summary-card">
+                <article class="users-summary-card">
 
-                        <div class="summary-icon blue-icon users-simple-icon">
-                            🛡
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Admins</p>
-
-                            <h2 class="blue-value">
-                                2
-                            </h2>
-
-                        </div>
-
-                    </article>
+                    <div class="users-summary-icon total-users-icon">
+                        👥
+                    </div>
 
 
-                    <!-- Managers -->
-                    <article class="summary-card">
+                    <div>
 
-                        <div class="summary-icon orange-icon users-simple-icon">
-                            👤
-                        </div>
+                        <span>
+                            Total Users
+                        </span>
 
-                        <div class="summary-details">
+                        <h2 id="totalUsersValue">
+                            0
+                        </h2>
 
-                            <p>Managers</p>
+                        <small>
+                            Registered accounts
+                        </small>
 
-                            <h2 class="orange-value">
-                                4
-                            </h2>
+                    </div>
 
-                        </div>
-
-                    </article>
-
-
-                    <!-- Drivers -->
-                    <article class="summary-card">
-
-                        <div class="summary-icon users-purple-icon users-simple-icon">
-                            🚚
-                        </div>
-
-                        <div class="summary-details">
-
-                            <p>Drivers</p>
-
-                            <h2 class="users-purple-value">
-                                3
-                            </h2>
-
-                        </div>
-
-                    </article>
-
-                </section>
+                </article>
 
 
-                <!-- =====================================
-                     Add User Form
-                ====================================== -->
-                <section class="content-card users-form-card">
+                <article class="users-summary-card">
 
-                    <h2>Add User</h2>
+                    <div class="users-summary-icon admin-users-icon">
+                        ◯
+                    </div>
 
 
-                    <form class="users-form">
+                    <div>
 
-                        <!-- Full Name -->
-                        <div class="users-form-field">
+                        <span>
+                            Admins
+                        </span>
 
-                            <label for="full-name">
-                                Full Name
-                            </label>
+                        <h2 id="adminUsersValue">
+                            0
+                        </h2>
+
+                        <small>
+                            Owner and administrators
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+                <article class="users-summary-card">
+
+                    <div class="users-summary-icon manager-users-icon">
+                        👤
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Managers
+                        </span>
+
+                        <h2 id="managerUsersValue">
+                            0
+                        </h2>
+
+                        <small>
+                            Operational managers
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+                <article class="users-summary-card">
+
+                    <div class="users-summary-icon driver-users-icon">
+                        🚚
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Drivers
+                        </span>
+
+                        <h2 id="driverUsersValue">
+                            0
+                        </h2>
+
+                        <small>
+                            Delivery personnel
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+            <!-- =========================================
+                 ADD / EDIT USER
+            ========================================== -->
+
+            <section class="content-card users-form-card">
+
+
+                <div class="users-form-heading">
+
+                    <div>
+
+                        <h2 id="userFormTitle">
+                            Add User
+                        </h2>
+
+                        <p>
+                            New accounts receive permissions automatically
+                            according to the selected role.
+                        </p>
+
+                    </div>
+
+
+                    <span class="users-form-badge">
+                        Access Controlled
+                    </span>
+
+                </div>
+
+
+                <form id="userForm"
+                      class="users-form"
+                      novalidate>
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="users-field">
+
+                        <label for="userFullName">
+                            Full Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="userFullName"
+                            maxlength="80"
+                            placeholder="Enter full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="users-field">
+
+                        <label for="userEmail">
+                            Email *
+                        </label>
+
+                        <input
+                            type="email"
+                            id="userEmail"
+                            maxlength="120"
+                            placeholder="Enter email address"
+                            autocomplete="off"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="users-field">
+
+                        <label for="userPhone">
+                            Phone Number *
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="userPhone"
+                            maxlength="20"
+                            placeholder="e.g. 01712345678"
+                            autocomplete="off"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- ROLE -->
+
+                    <div class="users-field">
+
+                        <label for="userRole">
+                            Role *
+                        </label>
+
+                        <select id="userRole"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+                                Select role
+                            </option>
+
+                            <option value="Admin">
+                                Admin
+                            </option>
+
+                            <option value="Manager">
+                                Manager
+                            </option>
+
+                            <option value="Accountant">
+                                Accountant
+                            </option>
+
+                            <option value="Operator">
+                                Operator
+                            </option>
+
+                            <option value="Driver">
+                                Driver
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="users-field">
+
+                        <label for="userStatus">
+                            Status *
+                        </label>
+
+                        <select id="userStatus"
+                                required>
+
+                            <option value=""
+                                    selected
+                                    disabled>
+                                Select status
+                            </option>
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="users-field">
+
+                        <label for="userPassword">
+
+                            Password
+
+                            <span id="passwordRequiredMark">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <div class="user-password-wrapper">
 
                             <input
-                                type="text"
-                                id="full-name"
-                                name="fullName"
-                                placeholder="Select full name"
-                                required
+                                type="password"
+                                id="userPassword"
+                                minlength="6"
+                                placeholder="Minimum 6 characters"
+                                autocomplete="new-password"
                             >
 
-                        </div>
 
-
-                        <!-- Email -->
-                        <div class="users-form-field">
-
-                            <label for="user-email">
-                                Email
-                            </label>
-
-                            <input
-                                type="email"
-                                id="user-email"
-                                name="userEmail"
-                                placeholder="Select email"
-                                required
+                            <button
+                                type="button"
+                                class="user-password-toggle"
+                                id="userPasswordToggle"
+                                aria-label="Show password"
                             >
-
-                        </div>
-
-
-                        <!-- Phone -->
-                        <div class="users-form-field">
-
-                            <label for="user-phone">
-                                Phone
-                            </label>
-
-                            <input
-                                type="tel"
-                                id="user-phone"
-                                name="userPhone"
-                                placeholder="Select phone"
-                                pattern="[0-9]{11}"
-                                maxlength="11"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Role -->
-                        <div class="users-form-field">
-
-                            <label for="user-role">
-                                Role
-                            </label>
-
-                            <select id="user-role"
-                                    name="userRole"
-                                    required>
-
-                                <option value="" selected disabled>
-                                    Select role
-                                </option>
-
-                                <option value="owner">
-                                    Owner
-                                </option>
-
-                                <option value="admin">
-                                    Admin
-                                </option>
-
-                                <option value="manager">
-                                    Manager
-                                </option>
-
-                                <option value="accountant">
-                                    Accountant
-                                </option>
-
-                                <option value="operator">
-                                    Machine Operator
-                                </option>
-
-                                <option value="driver">
-                                    Driver
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Status -->
-                        <div class="users-form-field">
-
-                            <label for="user-status">
-                                Status
-                            </label>
-
-                            <select id="user-status"
-                                    name="userStatus"
-                                    required>
-
-                                <option value="" selected disabled>
-                                    Select status
-                                </option>
-
-                                <option value="active">
-                                    Active
-                                </option>
-
-                                <option value="inactive">
-                                    Inactive
-                                </option>
-
-                                <option value="suspended">
-                                    Suspended
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Add User Button -->
-                        <div class="users-form-action">
-
-                            <button class="users-add-button"
-                                    type="button">
-
-                                <span aria-hidden="true">▣</span>
-                                Add User
-
+                                ◉
                             </button>
 
                         </div>
 
-                    </form>
 
-                </section>
-
-
-                <!-- =====================================
-                     User List
-                ====================================== -->
-                <section class="content-card users-list-card">
-
-                    <h2>User List</h2>
-
-
-                    <div class="table-wrapper">
-
-                        <table class="users-table">
-
-                            <thead>
-
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-                                <tr>
-
-                                    <td>Admin User</td>
-                                    <td>admin@ricemill.com</td>
-                                    <td>Owner</td>
-
-                                    <td>
-
-                                        <span class="status-badge users-active-status">
-                                            Active
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <button class="users-edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Manager User</td>
-                                    <td>manager@ricemill.com</td>
-                                    <td>Manager</td>
-
-                                    <td>
-
-                                        <span class="status-badge users-active-status">
-                                            Active
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <button class="users-edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
-
-                                <tr>
-
-                                    <td>Driver User</td>
-                                    <td>driver@ricemill.com</td>
-                                    <td>Driver</td>
-
-                                    <td>
-
-                                        <span class="status-badge users-active-status">
-                                            Active
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-
-                                        <button class="users-edit-button"
-                                                type="button">
-
-                                            Edit
-
-                                        </button>
-
-                                    </td>
-
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        <small id="passwordHelper">
+                            Required for a new user.
+                        </small>
 
                     </div>
 
-                </section>
+
+                    <!-- =================================
+                         ROLE ACCESS PREVIEW
+                    ================================== -->
+
+                    <div class="role-permission-preview"
+                         id="rolePermissionPreview">
+
+                        <div>
+
+                            <strong>
+                                Role Access
+                            </strong>
+
+                            <span>
+                                Select a role to preview module permissions.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         FORM ACTIONS
+                    ================================== -->
+
+                    <div class="users-form-actions">
+
+                        <button
+                            class="users-secondary-button"
+                            id="cancelUserEditBtn"
+                            type="button"
+                            hidden
+                        >
+                            Cancel Edit
+                        </button>
+
+
+                        <button
+                            class="users-primary-button"
+                            id="saveUserBtn"
+                            type="submit"
+                        >
+
+                            <span aria-hidden="true">
+                                ▣
+                            </span>
+
+                            Add User
+
+                        </button>
+
+                    </div>
+
+                </form>
 
             </section>
 
-        </main>
 
-    </div>
+            <!-- =========================================
+                 USER DIRECTORY
+            ========================================== -->
+
+            <section class="content-card users-table-card">
+
+
+                <div class="users-table-heading">
+
+                    <div>
+
+                        <h2>
+                            User Directory
+                        </h2>
+
+                        <p>
+                            Manage account status and review assigned system access.
+                        </p>
+
+                    </div>
+
+
+                    <div class="users-table-tools">
+
+                        <input
+                            type="search"
+                            id="userSearch"
+                            placeholder="Search user, ID, email or phone"
+                        >
+
+
+                        <select id="roleFilter">
+
+                            <option value="all">
+                                All Roles
+                            </option>
+
+                            <option value="Owner">
+                                Owner
+                            </option>
+
+                            <option value="Admin">
+                                Admin
+                            </option>
+
+                            <option value="Manager">
+                                Manager
+                            </option>
+
+                            <option value="Accountant">
+                                Accountant
+                            </option>
+
+                            <option value="Operator">
+                                Operator
+                            </option>
+
+                            <option value="Driver">
+                                Driver
+                            </option>
+
+                        </select>
+
+
+                        <select id="statusFilter">
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="Active">
+                                Active
+                            </option>
+
+                            <option value="Inactive">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="users-table-wrapper">
+
+                    <table class="users-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    User ID
+                                </th>
+
+                                <th>
+                                    User
+                                </th>
+
+                                <th>
+                                    Contact
+                                </th>
+
+                                <th>
+                                    Role
+                                </th>
+
+                                <th>
+                                    Access
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="userTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
 <script src="../scripts/auth.js"></script>
+<script src="../scripts/users.js"></script>
+
 </body>
 
 </html>
